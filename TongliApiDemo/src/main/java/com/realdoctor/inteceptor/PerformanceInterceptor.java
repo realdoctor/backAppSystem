@@ -42,7 +42,7 @@ public class PerformanceInterceptor {
     /**
      * 定义拦截规则：拦截com.realdoctor.**.web.controller包下面的所有类中，有@RequestMapping注解的方法。
      */
-    @Pointcut("execution(* com.realdoctor.back..dao..*(..)) || @annotation(com.easyway.business.framework.common.annotation.PerformanceClass)")
+    @Pointcut("execution(* com.realdoctor.back..dao..*(..)) || execution(* com.realdoctor.back..web..*(..)) || @annotation(com.easyway.business.framework.common.annotation.PerformanceClass)")
     public void controllerMethodPointcut() {
     }
 
