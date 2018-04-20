@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.easyway.business.framework.json.annotion.NotJsonData;
 import com.easyway.business.framework.pojo.BasePojo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User extends BasePojo {
 	private static final long serialVersionUID = 1L;
@@ -79,7 +78,6 @@ public class User extends BasePojo {
 	 */
 	private String verifyCode;
     
-	@JsonIgnore
 	@NotJsonData
     public String getVerifyCode() {
         return verifyCode;
