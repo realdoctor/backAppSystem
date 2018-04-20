@@ -14,4 +14,10 @@
 		from user t
 		where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="queryUser" parameterType="string" resultMap="BaseResultMap">
+        select 
+        	<include refid="columns"/> 
+        from user t where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+	</select>
 </mapper>

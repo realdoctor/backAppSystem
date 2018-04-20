@@ -1,7 +1,7 @@
 package com.realdoctor.back.user.dao;
 
-import com.realdoctor.back.user.pojo.User;
 import com.easyway.business.framework.dao.CrudDao;
+import com.realdoctor.back.user.pojo.User;
 
 public interface UserDao extends CrudDao<User> {
 
@@ -12,4 +12,6 @@ public interface UserDao extends CrudDao<User> {
      * @return
      */
     public User login(User user);
+    
+    public User queryUser(String mobilePhone);
 }
