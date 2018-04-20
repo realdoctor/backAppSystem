@@ -2,7 +2,7 @@
 
 <configuration status="WARN" monitorInterval="30">
 	<properties>
-        <property name="LOG_HOME">/logs/</property>
+        <property name="LOG_HOME">/home/logs/</property>
     </properties>
     
 	<!-- ===================================================================== -->
