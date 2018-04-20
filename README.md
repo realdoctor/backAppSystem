@@ -1,4 +1,4 @@
-KangChainSystem
+同力康链
 ===============
 
 主maven，只有pom文件
