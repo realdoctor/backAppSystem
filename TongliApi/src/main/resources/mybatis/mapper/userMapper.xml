@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.realdoctor.back.user.dao.UserDao">
 	<resultMap type="com.realdoctor.back.user.pojo.User" id="BaseResultMap">
-		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="BIGINT"/>
 		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
 		<result property="pwd" column="pwd" jdbcType="VARCHAR"/>
 		<result property="payPwd" column="pay_pwd" jdbcType="VARCHAR"/>
@@ -10,6 +10,7 @@
 		<result property="email" column="email" jdbcType="VARCHAR"/>
 		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
+		<result property="sentAddress" column="sent_address" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
@@ -22,6 +23,7 @@
 		t.email,
 		t.mobile_phone,
 		t.id_no,
+		t.sent_address,
 		t.add_time
 	</sql>
 
@@ -35,6 +37,7 @@
 		t.email,
 		t.mobile_phone,
 		t.id_no,
+		t.sent_address,
 		t.add_time
 		from user t 
 		<include refid="conditionQuery.core" />
@@ -57,16 +60,16 @@
 		<include refid="conditionQuery.core" />
 	</select>
 
-	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="get" resultMap="BaseResultMap" parameterType="java.math.BigInteger">
 		select
 		<include refid="columns"/>
 		from user t 
-		where t.user_id = #{userId,jdbcType=INTEGER}
+		where t.user_id = #{userId,jdbcType=BIGINT}
 	</select>
 
 	<delete id="delete" parameterType="com.realdoctor.back.user.pojo.User">
 		delete from user where 1=1 
-		and user_id=#{userId,jdbcType=INTEGER}
+		and user_id=#{userId,jdbcType=BIGINT}
 	</delete>
 
 	<insert id="save" parameterType="com.realdoctor.back.user.pojo.User" useGeneratedKeys="true" keyProperty="userId">
@@ -78,6 +81,7 @@
 		email,
 		mobile_phone,
 		id_no,
+		sent_address,
 		add_time
 		)
 		values(
@@ -88,6 +92,7 @@
 		#{email,jdbcType=VARCHAR},
 		#{mobilePhone,jdbcType=VARCHAR},
 		#{idNo,jdbcType=VARCHAR},
+		#{sentAddress,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -101,8 +106,9 @@
 		email = #{email,jdbcType=VARCHAR},
 		mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
 		id_no = #{idNo,jdbcType=VARCHAR},
+		sent_address = #{sentAddress,jdbcType=VARCHAR},
 		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and user_id = #{userId,jdbcType=INTEGER}
+		where 1=1 and user_id = #{userId,jdbcType=BIGINT}
 	</update>
 
 	<insert id="insertSelective" parameterType="com.realdoctor.back.user.pojo.User" useGeneratedKeys="true" keyProperty="userId">
@@ -129,6 +135,9 @@
 		  <if test="idNo != null">
 		    id_no,
 		  </if>
+		  <if test="sentAddress != null">
+		    sent_address,
+		  </if>
 		  <if test="addTime != null">
 		    add_time,
 		  </if>
@@ -141,6 +150,7 @@
 		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
+		  <if test="sentAddress != null">sent_address=#{sentAddress,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</trim>
 	</insert>
@@ -155,8 +165,9 @@
 		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
+		  <if test="sentAddress != null">sent_address=#{sentAddress,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</set>
-		where 1=1 and user_id = #{userId,jdbcType=INTEGER}
+		where 1=1 and user_id = #{userId,jdbcType=BIGINT}
 	</update>
 </mapper>
