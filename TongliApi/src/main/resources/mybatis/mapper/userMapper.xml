@@ -9,7 +9,7 @@
 		<result property="realName" column="real_name" jdbcType="VARCHAR"/>
 		<result property="email" column="email" jdbcType="VARCHAR"/>
 		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
-		<result property="idCard" column="id_card" jdbcType="VARCHAR"/>
+		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
@@ -21,7 +21,7 @@
 		t.real_name,
 		t.email,
 		t.mobile_phone,
-		t.id_card,
+		t.id_no,
 		t.add_time
 	</sql>
 
@@ -34,7 +34,7 @@
 		t.real_name,
 		t.email,
 		t.mobile_phone,
-		t.id_card,
+		t.id_no,
 		t.add_time
 		from user t 
 		<include refid="conditionQuery.core" />
@@ -77,7 +77,7 @@
 		real_name,
 		email,
 		mobile_phone,
-		id_card,
+		id_no,
 		add_time
 		)
 		values(
@@ -87,7 +87,7 @@
 		#{realName,jdbcType=VARCHAR},
 		#{email,jdbcType=VARCHAR},
 		#{mobilePhone,jdbcType=VARCHAR},
-		#{idCard,jdbcType=VARCHAR},
+		#{idNo,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -100,7 +100,7 @@
 		real_name = #{realName,jdbcType=VARCHAR},
 		email = #{email,jdbcType=VARCHAR},
 		mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
-		id_card = #{idCard,jdbcType=VARCHAR},
+		id_no = #{idNo,jdbcType=VARCHAR},
 		add_time = #{addTime,jdbcType=TIMESTAMP}
 		where 1=1 and user_id = #{userId,jdbcType=INTEGER}
 	</update>
@@ -126,8 +126,8 @@
 		  <if test="mobilePhone != null">
 		    mobile_phone,
 		  </if>
-		  <if test="idCard != null">
-		    id_card,
+		  <if test="idNo != null">
+		    id_no,
 		  </if>
 		  <if test="addTime != null">
 		    add_time,
@@ -140,7 +140,7 @@
 		  <if test="realName != null">real_name=#{realName,jdbcType=VARCHAR},</if>
 		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
-		  <if test="idCard != null">id_card=#{idCard,jdbcType=VARCHAR},</if>
+		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</trim>
 	</insert>
@@ -154,7 +154,7 @@
 		  <if test="realName != null">real_name=#{realName,jdbcType=VARCHAR},</if>
 		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
-		  <if test="idCard != null">id_card=#{idCard,jdbcType=VARCHAR},</if>
+		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where 1=1 and user_id = #{userId,jdbcType=INTEGER}

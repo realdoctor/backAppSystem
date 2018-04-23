@@ -14,7 +14,7 @@ public class User extends BasePojo {
 	private String realName;
 	private String email;
 	private String mobilePhone;
-	private String idCard;
+	private String idNo;
 	private Date addTime;
 	public Long getUserId() {
 		return userId;
@@ -60,12 +60,12 @@ public class User extends BasePojo {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-	public String getIdCard() {
-		return idCard;
-	}
-	public void setIdCard(String idCard) {
-		this.idCard = idCard;
-	}
+    public String getIdNo() {
+        return idNo;
+    }
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
 	public Date getAddTime() {
 		return addTime;
 	}
