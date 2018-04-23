@@ -20,7 +20,7 @@
 		</File>
 		
 		<RollingFile name="PROJECT" fileName="${LOG_HOME}/root.log"
-			filePattern="/logs/$${date:yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -| %m%n" />
 			<Policies>
@@ -31,7 +31,7 @@
 		</RollingFile>
 		
 		<RollingFile name="TASK" fileName="${LOG_HOME}/task.log"
-			filePattern="/logs/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
 			<Policies>
