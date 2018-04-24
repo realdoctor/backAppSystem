@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.realdoctor.back.outpatient.dao.OutpatientDao">
+	<resultMap type="com.realdoctor.back.outpatient.pojo.OutpatientInfo" id="OutpatientResultMap">
+		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
+		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
+		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
+		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
+		<result property="outpatDiagName" column="outpat_diag_name" jdbcType="VARCHAR"/>
+		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
+		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+		<result property="drugUsingDays" column="drug_using_days" jdbcType="INTEGER"/>
+		<result property="drugUsingFreq" column="drug_using_freq" jdbcType="VARCHAR"/>
+		<result property="drugDoseUnit" column="drug_dose_unit" jdbcType="VARCHAR"/>
+		<result property="drugPerDose" column="drug_per_dose" jdbcType="DECIMAL"/>
+		<result property="drugTotalUnit" column="drug_total_unit" jdbcType="VARCHAR"/>
+		<result property="spec" column="spec" jdbcType="VARCHAR"/>
+		<result property="drugStopDtime" column="drug_stop_dtime" jdbcType="TIMESTAMP"/>
+		<result property="drugStartDtime" column="drug_start_dtime" jdbcType="TIMESTAMP"/>
+		<result property="dispensingDtime" column="dispensing_dtime" jdbcType="TIMESTAMP"/>
+		<result property="dddValue" column="ddd_value" jdbcType="DECIMAL"/>
+		<result property="antibacterialFlag" column="antibacterial_flag" jdbcType="VARCHAR"/>
+		<result property="notes" column="notes" jdbcType="VARCHAR"/>
+	</resultMap>
+	<sql id="Outpatient_Select_Query">
+		SELECT
+			t.patient_id,
+			t.visit_dtime,
+			t.visit_org_name,
+			t.visit_dept_name,
+			t.resp_doctor_name,
+			t.outpat_diag_name,
+			t.drug_name,
+			t.drug_using_days,
+			t.drug_using_freq,
+			t.drug_dose_unit,
+			t.drug_per_dose,
+			t.drug_total_unit,
+			t.spec,
+			t.drug_stop_dtime,
+			t.drug_start_dtime,
+			t.dispensing_dtime,
+			t.ddd_value,
+			t.antibacterial_flag,
+			t.notes
+		FROM
+			baseinfo t0
+		LEFT JOIN (
+			SELECT
+				a.patient_id,
+				a.visit_dtime,
+				a.visit_org_name,
+				a.visit_dept_name,
+				a.resp_doctor_name,
+				b.outpat_diag_name,
+				c.drug_name,
+				c.drug_using_days,
+				c.drug_using_freq,
+				c.drug_dose_unit,
+				c.drug_per_dose,
+				c.drug_total_unit,
+				c.spec,
+				c.drug_stop_dtime,
+				c.drug_start_dtime,
+				c.dispensing_dtime,
+				c.ddd_value,
+				c.antibacterial_flag,
+				c.notes
+			FROM
+				outpatient a
+			LEFT JOIN outpatient_diag b ON (
+				a.outpat_form_no = b.outpat_form_no
+				AND a.org_code = b.org_code
+			)
+			LEFT JOIN outpatient_drug c ON (
+				a.outpat_form_no = c.outpat_form_no
+				AND a.org_code = c.org_code
+			)
+		) t ON t0.patient_id = t.patient_id
+	</sql>
+	<select id="frontList" resultMap="BaseResultMap"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		<include refid="Outpatient_Select_Query" />
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+			<when test="paramMap.orderCol!=null">
+				${paramMap.orderCol}
+			</when>
+			<otherwise>
+				t.visit_dtime desc
+			</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+			limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="frontListCnt"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery"
+		resultType="java.lang.Integer">
+		<include refid="Outpatient_Select_Query" />
+		<include refid="conditionQuery.core" />
+	</select>
+</mapper>

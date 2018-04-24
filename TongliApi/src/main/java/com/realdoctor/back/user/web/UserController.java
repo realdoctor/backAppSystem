@@ -94,6 +94,46 @@ public class UserController extends CrudController<User, UserBo> {
         return ResultUtil.success();
     }
 
+    /**
+     * 修改密码
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/updatePwd")
+    public ResultBody updatePwd(@RequestBody User user) throws Exception {
+        String mobilePhone = user.getMobilePhone();
+        String pwd = user.getPwd();
+        if (StringUtil.isEmpty(mobilePhone)) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (StringUtil.isEmpty(pwd)) {
+            return ResultUtil.error("密码不能为空！");
+        }
+        User userT = this.bo.login(user);
+        if (userT == null) {
+            return ResultUtil.error("用户不存在！");
+        } else {
+            userT.setPwd(MD5Util.encrypt(pwd));
+            this.bo.update(userT);
+        }
+
+        return ResultUtil.success();
+    }
+    
+    /**
+     * 个人信息
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/userInfo")
+    public ResultBody userInfo(@RequestBody User user) throws Exception {
+        return ResultUtil.success();
+    }
+    
     public static class UserQuery extends Grid {
 
         private String userId;
