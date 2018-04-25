@@ -3,11 +3,27 @@
 <mapper namespace="com.realdoctor.back.dal.dao.OutpatientDao">
 	<resultMap type="com.realdoctor.back.dal.vo.OutpatientInfoVo" id="OutpatientResultMap">
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
+		
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="sexCode" column="sex_code" jdbcType="VARCHAR"/>
+		<result property="birthDate" column="birth_date" jdbcType="TIMESTAMP"/>
+		<result property="idTypeCode" column="id_type_code" jdbcType="VARCHAR"/>
+		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
+		<result property="telNo" column="tel_no" jdbcType="VARCHAR"/>
+		<result property="nationalityCode" column="nationality_code" jdbcType="VARCHAR"/>
+		<result property="aboCode" column="abo_code" jdbcType="VARCHAR"/>
+		<result property="rhCode" column="rh_code" jdbcType="VARCHAR"/>
+		<result property="marriageCode" column="marriage_code" jdbcType="VARCHAR"/>
+		<result property="drugAllergyMark" column="drug_allergy_mark" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
+		<result property="outpatDiagCode" column="outpat_diag_code" jdbcType="VARCHAR"/>
 		<result property="outpatDiagName" column="outpat_diag_name" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
+		<result property="drugFormCode" column="drug_form_code" jdbcType="VARCHAR"/>
+		<result property="drugStdCode" column="drug_std_code" jdbcType="VARCHAR"/>
+		<result property="drugStdName" column="drug_std_name" jdbcType="VARCHAR"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
 		<result property="drugUsingDays" column="drug_using_days" jdbcType="INTEGER"/>
 		<result property="drugUsingFreq" column="drug_using_freq" jdbcType="VARCHAR"/>
@@ -26,26 +42,41 @@
 	<sql id="Outpatient_Select_Query">
 		SELECT
 			t.patient_id,
-			t.visit_dtime,
-			t.visit_org_name,
-			t.visit_dept_name,
-			t.resp_doctor_name,
-			t.outpat_diag_name,
-			t.drug_name,
-			t.drug_using_days,
-			t.drug_using_freq,
-			t.drug_dose_unit,
-			t.drug_per_dose,
-			t.drug_total_unit,
-			t.spec,
-			t.drug_stop_dtime,
-			t.drug_start_dtime,
-			t.dispensing_dtime,
-			t.ddd_value,
-			t.antibacterial_flag,
-			t.notes
+			t.`name`,
+			t.sex_code,
+			t.birth_date,
+			t.id_type_code,
+			t.id_no,
+			t.tel_no,
+			t.nationality_code,
+			t.abo_code,
+			t.rh_code,
+			t.marriage_code,
+			t.drug_allergy_mark,
+			t0.visit_dtime,
+			t0.visit_org_name,
+			t0.visit_dept_name,
+			t0.resp_doctor_name,
+			t0.outpat_diag_code,
+			t0.outpat_diag_name,
+			t0.drug_name,
+			t0.drug_form_code,
+			t0.drug_std_code,
+			t0.drug_std_name,
+			t0.drug_using_days,
+			t0.drug_using_freq,
+			t0.drug_dose_unit,
+			t0.drug_per_dose,
+			t0.drug_total_unit,
+			t0.spec,
+			t0.drug_stop_dtime,
+			t0.drug_start_dtime,
+			t0.dispensing_dtime,
+			t0.ddd_value,
+			t0.antibacterial_flag,
+			t0.notes
 		FROM
-			baseinfo t0
+			baseinfo t
 		LEFT JOIN (
 			SELECT
 				a.patient_id,
@@ -53,8 +84,12 @@
 				a.visit_org_name,
 				a.visit_dept_name,
 				a.resp_doctor_name,
+				b.outpat_diag_code,
 				b.outpat_diag_name,
 				c.drug_name,
+				c.drug_form_code,
+				c.drug_std_code,
+				c.drug_std_name,
 				c.drug_using_days,
 				c.drug_using_freq,
 				c.drug_dose_unit,
@@ -77,7 +112,7 @@
 				a.outpat_form_no = c.outpat_form_no
 				AND a.org_code = c.org_code
 			)
-		) t ON t0.patient_id = t.patient_id
+		) t0 ON t.patient_id = t0.patient_id
 	</sql>
 	
 	<select id="frontList" resultMap="OutpatientResultMap"
@@ -90,7 +125,7 @@
 				${paramMap.orderCol}
 			</when>
 			<otherwise>
-				t.visit_dtime desc
+				visit_dtime desc
 			</otherwise>
 		</choose>
 		<if test="paramMap.pageSize > 0">
@@ -101,7 +136,11 @@
 	<select id="frontListCnt"
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery"
 		resultType="java.lang.Integer">
-		<include refid="Outpatient_Select_Query" />
-		<include refid="conditionQuery.core" />
+		SELECT
+			COUNT(1)
+		FROM (
+			<include refid="Outpatient_Select_Query" />
+			<include refid="conditionQuery.core" />
+		) t
 	</select>
 </mapper>
