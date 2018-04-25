@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.inpatientInrecord.dao.InpatientInrecordDao">
-	<resultMap type="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord" id="BaseResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.InpatientInrecordDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.InpatientInrecord" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="inpatFormNo" column="inpat_form_no" jdbcType="VARCHAR"/>
 		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
@@ -196,12 +196,12 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord">
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.InpatientInrecord">
 		delete from inpatient_inrecord where 1=1 
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.InpatientInrecord" useGeneratedKeys="true" keyProperty="id">
 		insert into inpatient_inrecord (
 		inpat_form_no,
 		org_code,
@@ -312,7 +312,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord">
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.InpatientInrecord">
 		update inpatient_inrecord set
 		inpat_form_no = #{inpatFormNo,jdbcType=VARCHAR},
 		org_code = #{orgCode,jdbcType=VARCHAR},
@@ -369,7 +369,7 @@
 		where 1=1 and id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.InpatientInrecord" useGeneratedKeys="true" keyProperty="id">
 		insert into inpatient_inrecord
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="inpatFormNo != null">
@@ -585,7 +585,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.inpatientInrecord.pojo.InpatientInrecord">
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.InpatientInrecord">
 		update inpatient_inrecord 
 		<set>
 		  <if test="inpatFormNo != null">inpat_form_no=#{inpatFormNo,jdbcType=VARCHAR},</if>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.outpatientDiag.dao.OutpatientDiagDao">
-	<resultMap type="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag" id="BaseResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.OutpatientDiagDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.OutpatientDiag" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="diagnosisId" column="diagnosis_id" jdbcType="VARCHAR"/>
 		<result property="outpatFormNo" column="outpat_form_no" jdbcType="VARCHAR"/>
@@ -64,12 +64,12 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag">
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.OutpatientDiag">
 		delete from outpatient_diag where 1=1 
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.OutpatientDiag" useGeneratedKeys="true" keyProperty="id">
 		insert into outpatient_diag (
 		diagnosis_id,
 		outpat_form_no,
@@ -92,7 +92,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag">
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.OutpatientDiag">
 		update outpatient_diag set
 		diagnosis_id = #{diagnosisId,jdbcType=VARCHAR},
 		outpat_form_no = #{outpatFormNo,jdbcType=VARCHAR},
@@ -105,7 +105,7 @@
 		where 1=1 and id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDiag" useGeneratedKeys="true" keyProperty="id">
 		insert into outpatient_diag
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="diagnosisId != null">
@@ -145,7 +145,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.outpatientDiag.pojo.OutpatientDiag">
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDiag">
 		update outpatient_diag 
 		<set>
 		  <if test="diagnosisId != null">diagnosis_id=#{diagnosisId,jdbcType=VARCHAR},</if>

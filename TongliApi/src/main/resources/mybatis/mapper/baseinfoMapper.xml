@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.baseinfo.dao.BaseinfoDao">
-	<resultMap type="com.realdoctor.back.baseinfo.pojo.Baseinfo" id="BaseResultMap">
-		<result property="patientId" column="patient_id" jdbcType="BIGINT"/>
+<mapper namespace="com.realdoctor.back.dal.dao.BaseinfoDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.Baseinfo" id="BaseResultMap">
+		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="sexCode" column="sex_code" jdbcType="VARCHAR"/>
 		<result property="birthDate" column="birth_date" jdbcType="TIMESTAMP"/>
@@ -117,19 +117,19 @@
 		<include refid="conditionQuery.core" />
 	</select>
 
-	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="columns"/>
 		from baseinfo t 
-		where t.patient_id = #{patientId,jdbcType=BIGINT}
+		where t.patient_id = #{patientId,jdbcType=VARCHAR}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.baseinfo.pojo.Baseinfo">
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.Baseinfo">
 		delete from baseinfo where 1=1 
-		and patient_id=#{patientId,jdbcType=BIGINT}
+		and patient_id=#{patientId,jdbcType=VARCHAR}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.baseinfo.pojo.Baseinfo">
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.Baseinfo">
 		insert into baseinfo (
 		patient_id,
 		name,
@@ -162,7 +162,7 @@
 		last_update_dtime
 		)
 		values(
-		#{patientId,jdbcType=BIGINT},
+		#{patientId,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR},
 		#{sexCode,jdbcType=VARCHAR},
 		#{birthDate,jdbcType=TIMESTAMP},
@@ -194,9 +194,9 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.baseinfo.pojo.Baseinfo">
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.Baseinfo">
 		update baseinfo set
-		patient_id = #{patientId,jdbcType=BIGINT},
+		patient_id = #{patientId,jdbcType=VARCHAR},
 		name = #{name,jdbcType=VARCHAR},
 		sex_code = #{sexCode,jdbcType=VARCHAR},
 		birth_date = #{birthDate,jdbcType=TIMESTAMP},
@@ -225,10 +225,10 @@
 		genetic_disease_history = #{geneticDiseaseHistory,jdbcType=VARCHAR},
 		operation_history = #{operationHistory,jdbcType=VARCHAR},
 		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
-		where 1=1 and patient_id = #{patientId,jdbcType=BIGINT}
+		where 1=1 and patient_id = #{patientId,jdbcType=VARCHAR}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.baseinfo.pojo.Baseinfo">
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.Baseinfo">
 		insert into baseinfo
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="patientId != null">
@@ -320,7 +320,7 @@
 		  </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="patientId != null">patient_id=#{patientId,jdbcType=BIGINT},</if>
+		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
 		  <if test="sexCode != null">sex_code=#{sexCode,jdbcType=VARCHAR},</if>
 		  <if test="birthDate != null">birth_date=#{birthDate,jdbcType=TIMESTAMP},</if>
@@ -352,10 +352,10 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.baseinfo.pojo.Baseinfo">
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.Baseinfo">
 		update baseinfo 
 		<set>
-		  <if test="patientId != null">patient_id=#{patientId,jdbcType=BIGINT},</if>
+		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
 		  <if test="sexCode != null">sex_code=#{sexCode,jdbcType=VARCHAR},</if>
 		  <if test="birthDate != null">birth_date=#{birthDate,jdbcType=TIMESTAMP},</if>
@@ -385,6 +385,6 @@
 		  <if test="operationHistory != null">operation_history=#{operationHistory,jdbcType=VARCHAR},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
-		where 1=1 and patient_id = #{patientId,jdbcType=BIGINT}
+		where 1=1 and patient_id = #{patientId,jdbcType=VARCHAR}
 	</update>
 </mapper>

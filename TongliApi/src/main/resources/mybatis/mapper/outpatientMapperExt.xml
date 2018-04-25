@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.outpatient.dao.OutpatientDao">
-	<resultMap type="com.realdoctor.back.outpatient.pojo.OutpatientInfo" id="OutpatientResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.OutpatientDao">
+	<resultMap type="com.realdoctor.back.dal.vo.OutpatientInfoVo" id="OutpatientResultMap">
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
@@ -22,6 +22,7 @@
 		<result property="antibacterialFlag" column="antibacterial_flag" jdbcType="VARCHAR"/>
 		<result property="notes" column="notes" jdbcType="VARCHAR"/>
 	</resultMap>
+	
 	<sql id="Outpatient_Select_Query">
 		SELECT
 			t.patient_id,
@@ -78,7 +79,8 @@
 			)
 		) t ON t0.patient_id = t.patient_id
 	</sql>
-	<select id="frontList" resultMap="BaseResultMap"
+	
+	<select id="frontList" resultMap="OutpatientResultMap"
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		<include refid="Outpatient_Select_Query" />
 		<include refid="conditionQuery.core" />

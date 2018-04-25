@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.outpatientDrug.dao.OutpatientDrugDao">
-	<resultMap type="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug" id="BaseResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.OutpatientDrugDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.OutpatientDrug" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
 		<result property="outpatFormNo" column="outpat_form_no" jdbcType="VARCHAR"/>
@@ -115,12 +115,12 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug">
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
 		delete from outpatient_drug where 1=1 
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
 		insert into outpatient_drug (
 		org_code,
 		outpat_form_no,
@@ -177,7 +177,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug">
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
 		update outpatient_drug set
 		org_code = #{orgCode,jdbcType=VARCHAR},
 		outpat_form_no = #{outpatFormNo,jdbcType=VARCHAR},
@@ -207,7 +207,7 @@
 		where 1=1 and id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
 		insert into outpatient_drug
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="orgCode != null">
@@ -315,7 +315,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.outpatientDrug.pojo.OutpatientDrug">
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
 		update outpatient_drug 
 		<set>
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
