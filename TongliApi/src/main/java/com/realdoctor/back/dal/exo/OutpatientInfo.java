@@ -37,7 +37,7 @@ public class OutpatientInfo extends BasePojo {
     private String            rhCode;
     // 婚姻状况
     private String            marriageCode;
-    // 过敏标识
+    // 药物过敏史标志(0.否/FALSE,1.是/TRUE)
     private String            drugAllergyMark;
     // 就诊日期时间
     private Date              visitDtime;
