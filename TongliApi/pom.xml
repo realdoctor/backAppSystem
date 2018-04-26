@@ -27,6 +27,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- 业务框架 -->
+		<dependency>
+			<groupId>com.easyway.framework</groupId>
+			<artifactId>business-framework</artifactId>
+			<version>${business-framework.version}</version>
+		</dependency>
+		
 		<!-- ================================================= -->
 		<!-- Spring框架 -->
 		<!-- ================================================= -->
@@ -107,13 +114,6 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>${mybatis-spring.version}</version>
-		</dependency>
-		
-		<!-- 业务框架 -->
-		<dependency>
-			<groupId>com.easyway.framework</groupId>
-			<artifactId>business-framework</artifactId>
-			<version>${business-framework.version}</version>
 		</dependency>
 		
 		<!-- JDBC驱动 -->
