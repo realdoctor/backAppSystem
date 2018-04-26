@@ -1,4 +1,4 @@
-package com.realdoctor.back.dal.vo;
+package com.realdoctor.back.dal.exo;
 
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
@@ -8,7 +8,7 @@ import com.easyway.business.framework.pojo.BasePojo;
  * 
  * @author xl.liu
  */
-public class OutpatientInfoVo extends BasePojo {
+public class OutpatientInfo extends BasePojo {
 
     /**
      * 
