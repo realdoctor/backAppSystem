@@ -37,12 +37,20 @@ public class OutpatientController extends CrudController<Outpatient, OutpatientB
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 final OutpatientInfo info = (OutpatientInfo) pojo;
                 try {
-                    jsonObject.put("idTypeCodeName", ((Map) CacheManager.get(Constant.STD_PERSON_ID_TYPE)).get(info.getIdTypeCode()));
-                    jsonObject.put("marriageCodeName", ((Map) CacheManager.get(Constant.STD_MARRIAGE)).get(info.getMarriageCode()));
-                    jsonObject.put("aboCodeName", ((Map) CacheManager.get(Constant.STD_BLOOD_TYPE)).get(info.getAboCode()));
-                    jsonObject.put("rhCodeName", ((Map) CacheManager.get(Constant.STD_RH_RESULT)).get(info.getRhCode()));
-                    jsonObject.put("sexCodeName", ((Map) CacheManager.get(Constant.STD_SEX)).get(info.getSexCode()));
-                    jsonObject.put("drugFormCodeName", ((Map) CacheManager.get(Constant.STD_MEDICINE_FORM)).get(info.getDrugFormCode()));
+                    // 民族
+                    jsonObject.put("nationalityName", ((Map) CacheManager.get(Constant.STD_NATIONALITY)).get(info.getNationalityCode()));
+                    // 身份证类型
+                    jsonObject.put("idTypeName", ((Map) CacheManager.get(Constant.STD_PERSON_ID_TYPE)).get(info.getIdTypeCode()));
+                    // 婚姻状况
+                    jsonObject.put("marriageName", ((Map) CacheManager.get(Constant.STD_MARRIAGE)).get(info.getMarriageCode()));
+                    // 性别
+                    jsonObject.put("sexName", ((Map) CacheManager.get(Constant.STD_SEX)).get(info.getSexCode()));
+                    // 血型
+                    jsonObject.put("aboName", ((Map) CacheManager.get(Constant.STD_BLOOD_TYPE)).get(info.getAboCode()));
+                    // RH血型
+                    jsonObject.put("rhName", ((Map) CacheManager.get(Constant.STD_RH_RESULT)).get(info.getRhCode()));
+                    // 药物剂型名称
+                    jsonObject.put("drugFormName", ((Map) CacheManager.get(Constant.STD_MEDICINE_FORM)).get(info.getDrugFormCode()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

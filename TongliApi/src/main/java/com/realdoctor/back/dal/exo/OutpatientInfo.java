@@ -1,6 +1,8 @@
 package com.realdoctor.back.dal.exo;
 
 import java.util.Date;
+
+import com.easyway.business.framework.json.annotion.NotJsonData;
 import com.easyway.business.framework.pojo.BasePojo;
 
 /**
@@ -100,6 +102,7 @@ public class OutpatientInfo extends BasePojo {
         this.name = name;
     }
     
+    @NotJsonData
     public String getSexCode() {
         return sexCode;
     }
@@ -116,6 +119,7 @@ public class OutpatientInfo extends BasePojo {
         this.birthDate = birthDate;
     }
     
+    @NotJsonData
     public String getIdTypeCode() {
         return idTypeCode;
     }
@@ -140,6 +144,7 @@ public class OutpatientInfo extends BasePojo {
         this.telNo = telNo;
     }
     
+    @NotJsonData
     public String getNationalityCode() {
         return nationalityCode;
     }
@@ -148,6 +153,7 @@ public class OutpatientInfo extends BasePojo {
         this.nationalityCode = nationalityCode;
     }
     
+    @NotJsonData
     public String getAboCode() {
         return aboCode;
     }
@@ -156,6 +162,7 @@ public class OutpatientInfo extends BasePojo {
         this.aboCode = aboCode;
     }
     
+    @NotJsonData
     public String getRhCode() {
         return rhCode;
     }
@@ -164,6 +171,7 @@ public class OutpatientInfo extends BasePojo {
         this.rhCode = rhCode;
     }
     
+    @NotJsonData
     public String getMarriageCode() {
         return marriageCode;
     }
@@ -236,6 +244,7 @@ public class OutpatientInfo extends BasePojo {
         this.drugName = drugName;
     }
     
+    @NotJsonData
     public String getDrugFormCode() {
         return drugFormCode;
     }
