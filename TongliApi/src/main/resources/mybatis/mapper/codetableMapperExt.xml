@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.realdoctor.back.dal.dao.CodetableDao">
-	<select id="findSectionList" resultType="java.util.HashMap" parameterType="java.lang.String">
+	<resultMap type="com.realdoctor.back.dal.pojo.Codetable" id="CodeEntryResultMap">
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="description" column="description" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="findSectionList" resultMap="CodeEntryResultMap" parameterType="java.lang.String">
 	    SELECT
 			t.code,
 			t.description

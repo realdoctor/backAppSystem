@@ -1,7 +1,6 @@
 package com.realdoctor.back.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import com.realdoctor.exception.DBException;
 @Service
 public class CodetableBo extends CrudBo<Codetable, CodetableDao> {
 
-    public List<Map<String, Object>> findSectionList(String name) {
+    public List<Codetable> findSectionList(String name) {
         try {
             return this.dao.findSectionList(name);
         } catch (Exception ex) {

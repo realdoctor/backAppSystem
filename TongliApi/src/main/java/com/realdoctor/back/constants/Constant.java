@@ -61,4 +61,7 @@ public final class Constant {
 
     // 药物剂型代码
     public final static String STD_MEDICINE_FORM             = "STD_MEDICINE_FORM";
+
+    // 药物使用频率
+    public final static String STD_MEDICATION_USE_FREQUENCY  = "STD_MEDICATION_USE_FREQUENCY";
 }

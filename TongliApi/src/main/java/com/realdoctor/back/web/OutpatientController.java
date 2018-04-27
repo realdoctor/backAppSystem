@@ -51,6 +51,8 @@ public class OutpatientController extends CrudController<Outpatient, OutpatientB
                     jsonObject.put("rhName", ((Map) CacheManager.get(Constant.STD_RH_RESULT)).get(info.getRhCode()));
                     // 药物剂型名称
                     jsonObject.put("drugFormName", ((Map) CacheManager.get(Constant.STD_MEDICINE_FORM)).get(info.getDrugFormCode()));
+                    // 药物使用频率
+                    jsonObject.put("drugUsingFreq", ((Map) CacheManager.get(Constant.STD_MEDICATION_USE_FREQUENCY)).get(info.getDrugUsingFreq()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
