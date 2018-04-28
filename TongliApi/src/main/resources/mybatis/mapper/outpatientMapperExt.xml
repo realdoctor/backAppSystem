@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.realdoctor.back.dal.dao.OutpatientDao">
-	<resultMap type="com.realdoctor.back.dal.exo.OutpatientInfo" id="OutpatientResultMap">
+	<resultMap type="com.realdoctor.back.dal.pojo.OutpatientInfo" id="OutpatientResultMap">
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="sexCode" column="sex_code" jdbcType="VARCHAR"/>

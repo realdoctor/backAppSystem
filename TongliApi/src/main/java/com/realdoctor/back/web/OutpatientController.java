@@ -14,8 +14,8 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.realdoctor.back.constants.Constant;
-import com.realdoctor.back.dal.exo.OutpatientInfo;
 import com.realdoctor.back.dal.pojo.Outpatient;
+import com.realdoctor.back.dal.pojo.OutpatientInfo;
 import com.realdoctor.back.service.OutpatientBo;
 import com.realdoctor.util.CacheManager;
 

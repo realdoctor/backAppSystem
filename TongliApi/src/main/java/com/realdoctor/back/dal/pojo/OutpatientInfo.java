@@ -1,4 +1,4 @@
-package com.realdoctor.back.dal.exo;
+package com.realdoctor.back.dal.pojo;
 
 import java.util.Date;
 
