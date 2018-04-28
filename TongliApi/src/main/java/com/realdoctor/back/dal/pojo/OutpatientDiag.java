@@ -7,11 +7,10 @@ import java.math.BigInteger;
 public class OutpatientDiag extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private BigInteger id;
-	private String diagnosisId;
-	private String outpatFormNo;
 	private String orgCode;
-	private String outpatDiagName;
+	private String outpatFormNo;
 	private String outpatDiagCode;
+	private String outpatDiagName;
 	private Date diagDate;
 	private String diagTypeCode;
 	private Date lastUpdateDtime;
@@ -21,11 +20,11 @@ public class OutpatientDiag extends BasePojo {
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
-	public String getDiagnosisId() {
-		return diagnosisId;
+	public String getOrgCode() {
+		return orgCode;
 	}
-	public void setDiagnosisId(String diagnosisId) {
-		this.diagnosisId = diagnosisId;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 	public String getOutpatFormNo() {
 		return outpatFormNo;
@@ -33,23 +32,17 @@ public class OutpatientDiag extends BasePojo {
 	public void setOutpatFormNo(String outpatFormNo) {
 		this.outpatFormNo = outpatFormNo;
 	}
-	public String getOrgCode() {
-		return orgCode;
+	public String getOutpatDiagCode() {
+		return outpatDiagCode;
 	}
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
+	public void setOutpatDiagCode(String outpatDiagCode) {
+		this.outpatDiagCode = outpatDiagCode;
 	}
 	public String getOutpatDiagName() {
 		return outpatDiagName;
 	}
 	public void setOutpatDiagName(String outpatDiagName) {
 		this.outpatDiagName = outpatDiagName;
-	}
-	public String getOutpatDiagCode() {
-		return outpatDiagCode;
-	}
-	public void setOutpatDiagCode(String outpatDiagCode) {
-		this.outpatDiagCode = outpatDiagCode;
 	}
 	public Date getDiagDate() {
 		return diagDate;

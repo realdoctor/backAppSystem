@@ -1,12 +1,11 @@
 package com.realdoctor.back.service;
 
-import org.springframework.stereotype.Service;
-
-import com.realdoctor.back.common.Crud2Bo;
-import com.realdoctor.back.dal.dao.OutpatientDao;
 import com.realdoctor.back.dal.pojo.Outpatient;
+import com.easyway.business.framework.bo.CrudBo;
+import org.springframework.stereotype.Service;
+import com.realdoctor.back.dal.dao.OutpatientDao;
 
 @Service
-public class OutpatientBo extends Crud2Bo<Outpatient,OutpatientDao> {
+public class OutpatientBo extends CrudBo<Outpatient,OutpatientDao> {
 
 }
