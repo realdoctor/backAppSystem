@@ -11,6 +11,7 @@
 	<properties>
 		<!-- spring版本号 -->
 		<spring.version>4.3.14.RELEASE</spring.version>
+		<jackson.version>2.9.5</jackson.version>
 		<!-- mybatis版本号 -->
 		<mybatis.version>3.4.6</mybatis.version>
 		<mybatis-spring.version>1.3.2</mybatis-spring.version>
@@ -95,7 +96,24 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
+		
+		<!-- jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		
 		<!-- mybatis核心包 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -107,13 +125,6 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>${mybatis-spring.version}</version>
-		</dependency>
-		
-		<!-- 业务框架 -->
-		<dependency>
-			<groupId>com.easyway.framework</groupId>
-			<artifactId>business-framework</artifactId>
-			<version>${business-framework.version}</version>
 		</dependency>
 		
 		<!-- JDBC驱动 -->
@@ -344,6 +355,9 @@
 					<source>1.7</source>
 					<target>1.7</target>
 					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<extdirs>src\main\webapp\WEB-INF\lib</extdirs>
+					</compilerArguments>
 				</configuration>
 			</plugin>
 
