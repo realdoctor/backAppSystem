@@ -22,7 +22,7 @@ import com.realdoctor.back.service.OutpatientBo;
 public class PatientController extends CrudController<Outpatient, OutpatientBo> {
 
     /**
-     * 病历一览
+     * 患者病历列表
      * 
      * @param query
      * @return
