@@ -19,7 +19,7 @@ import com.realdoctor.back.service.OutpatientBo;
  */
 @RestController
 @RequestMapping(value = "/patient")
-public class OutpatientController extends CrudController<Outpatient, OutpatientBo> {
+public class PatientController extends CrudController<Outpatient, OutpatientBo> {
 
     /**
      * 病历一览
@@ -28,7 +28,7 @@ public class OutpatientController extends CrudController<Outpatient, OutpatientB
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/medicalRecord")
     public ResultBody list(OutpatientQuery query) throws Exception {
         return ResultUtil.success(this.bo.queryFrontList(query));
     }
