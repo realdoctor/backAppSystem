@@ -122,18 +122,6 @@ public class UserController extends CrudController<User, UserBo> {
         return ResultUtil.success();
     }
     
-    /**
-     * 个人信息
-     * 
-     * @param user
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/userInfo")
-    public ResultBody userInfo(@RequestBody User user) throws Exception {
-        return ResultUtil.success();
-    }
-    
     public static class UserQuery extends Grid {
 
         private String userId;
