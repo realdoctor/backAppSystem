@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.realdoctor.back.dal.dao.GoodsShopcarDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.GoodsShopcar" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
+		<result property="num" column="num" jdbcType="INTEGER"/>
+		<result property="status" column="status" jdbcType="TINYINT"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.id,
+		t.user_id,
+		t.goods_id,
+		t.num,
+		t.status,
+		t.add_time,
+		t.update_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.user_id,
+		t.goods_id,
+		t.num,
+		t.status,
+		t.add_time,
+		t.update_time
+		from goods_shopcar t 
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from goods_shopcar t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from goods_shopcar t 
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.GoodsShopcar">
+		delete from goods_shopcar where 1=1 
+		and id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_shopcar (
+		user_id,
+		goods_id,
+		num,
+		status,
+		add_time,
+		update_time
+		)
+		values(
+		#{userId,jdbcType=INTEGER},
+		#{goodsId,jdbcType=INTEGER},
+		#{num,jdbcType=INTEGER},
+		#{status,jdbcType=TINYINT},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.GoodsShopcar">
+		update goods_shopcar set
+		user_id = #{userId,jdbcType=INTEGER},
+		goods_id = #{goodsId,jdbcType=INTEGER},
+		num = #{num,jdbcType=INTEGER},
+		status = #{status,jdbcType=TINYINT},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_shopcar
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="userId != null">
+		    user_id,
+		  </if>
+		  <if test="goodsId != null">
+		    goods_id,
+		  </if>
+		  <if test="num != null">
+		    num,
+		  </if>
+		  <if test="status != null">
+		    status,
+		  </if>
+		  <if test="addTime != null">
+		    add_time,
+		  </if>
+		  <if test="updateTime != null">
+		    update_time,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>
+		  <if test="num != null">num=#{num,jdbcType=INTEGER},</if>
+		  <if test="status != null">status=#{status,jdbcType=TINYINT},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.GoodsShopcar">
+		update goods_shopcar 
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>
+		  <if test="num != null">num=#{num,jdbcType=INTEGER},</if>
+		  <if test="status != null">status=#{status,jdbcType=TINYINT},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

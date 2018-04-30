@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.realdoctor.back.dal.dao.GoodsOrderDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.GoodsOrder" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="payPrice" column="pay_price" jdbcType="DOUBLE"/>
+		<result property="payTime" column="pay_time" jdbcType="TIMESTAMP"/>
+		<result property="consignTime" column="consign_time" jdbcType="TIMESTAMP"/>
+		<result property="receiptTime" column="receipt_time" jdbcType="TIMESTAMP"/>
+		<result property="shippingName" column="shipping_name" jdbcType="VARCHAR"/>
+		<result property="shippingCode" column="shipping_code" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="TINYINT"/>
+		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.id,
+		t.order_no,
+		t.user_id,
+		t.pay_price,
+		t.pay_time,
+		t.consign_time,
+		t.receipt_time,
+		t.shipping_name,
+		t.shipping_code,
+		t.status,
+		t.close_time,
+		t.add_time,
+		t.update_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.order_no,
+		t.user_id,
+		t.pay_price,
+		t.pay_time,
+		t.consign_time,
+		t.receipt_time,
+		t.shipping_name,
+		t.shipping_code,
+		t.status,
+		t.close_time,
+		t.add_time,
+		t.update_time
+		from goods_order t 
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from goods_order t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from goods_order t 
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.GoodsOrder">
+		delete from goods_order where 1=1 
+		and id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_order (
+		order_no,
+		user_id,
+		pay_price,
+		pay_time,
+		consign_time,
+		receipt_time,
+		shipping_name,
+		shipping_code,
+		status,
+		close_time,
+		add_time,
+		update_time
+		)
+		values(
+		#{orderNo,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
+		#{payPrice,jdbcType=DOUBLE},
+		#{payTime,jdbcType=TIMESTAMP},
+		#{consignTime,jdbcType=TIMESTAMP},
+		#{receiptTime,jdbcType=TIMESTAMP},
+		#{shippingName,jdbcType=VARCHAR},
+		#{shippingCode,jdbcType=VARCHAR},
+		#{status,jdbcType=TINYINT},
+		#{closeTime,jdbcType=TIMESTAMP},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.GoodsOrder">
+		update goods_order set
+		order_no = #{orderNo,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=INTEGER},
+		pay_price = #{payPrice,jdbcType=DOUBLE},
+		pay_time = #{payTime,jdbcType=TIMESTAMP},
+		consign_time = #{consignTime,jdbcType=TIMESTAMP},
+		receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+		shipping_name = #{shippingName,jdbcType=VARCHAR},
+		shipping_code = #{shippingCode,jdbcType=VARCHAR},
+		status = #{status,jdbcType=TINYINT},
+		close_time = #{closeTime,jdbcType=TIMESTAMP},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="orderNo != null">
+		    order_no,
+		  </if>
+		  <if test="userId != null">
+		    user_id,
+		  </if>
+		  <if test="payPrice != null">
+		    pay_price,
+		  </if>
+		  <if test="payTime != null">
+		    pay_time,
+		  </if>
+		  <if test="consignTime != null">
+		    consign_time,
+		  </if>
+		  <if test="receiptTime != null">
+		    receipt_time,
+		  </if>
+		  <if test="shippingName != null">
+		    shipping_name,
+		  </if>
+		  <if test="shippingCode != null">
+		    shipping_code,
+		  </if>
+		  <if test="status != null">
+		    status,
+		  </if>
+		  <if test="closeTime != null">
+		    close_time,
+		  </if>
+		  <if test="addTime != null">
+		    add_time,
+		  </if>
+		  <if test="updateTime != null">
+		    update_time,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="payPrice != null">pay_price=#{payPrice,jdbcType=DOUBLE},</if>
+		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
+		  <if test="consignTime != null">consign_time=#{consignTime,jdbcType=TIMESTAMP},</if>
+		  <if test="receiptTime != null">receipt_time=#{receiptTime,jdbcType=TIMESTAMP},</if>
+		  <if test="shippingName != null">shipping_name=#{shippingName,jdbcType=VARCHAR},</if>
+		  <if test="shippingCode != null">shipping_code=#{shippingCode,jdbcType=VARCHAR},</if>
+		  <if test="status != null">status=#{status,jdbcType=TINYINT},</if>
+		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.GoodsOrder">
+		update goods_order 
+		<set>
+		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="payPrice != null">pay_price=#{payPrice,jdbcType=DOUBLE},</if>
+		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
+		  <if test="consignTime != null">consign_time=#{consignTime,jdbcType=TIMESTAMP},</if>
+		  <if test="receiptTime != null">receipt_time=#{receiptTime,jdbcType=TIMESTAMP},</if>
+		  <if test="shippingName != null">shipping_name=#{shippingName,jdbcType=VARCHAR},</if>
+		  <if test="shippingCode != null">shipping_code=#{shippingCode,jdbcType=VARCHAR},</if>
+		  <if test="status != null">status=#{status,jdbcType=TINYINT},</if>
+		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
