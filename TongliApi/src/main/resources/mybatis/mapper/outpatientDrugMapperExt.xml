@@ -1,4 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.realdoctor.back.dal.dao.OutpatientDrugDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.PatientDrug" id="PatientDrug_Select_Query">
+		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
+		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
+		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+		<result property="drugStdName" column="drug_std_name" jdbcType="VARCHAR"/>
+		<result property="drugStdCode" column="drug_std_code" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="PatientDrug_Select_Query">
+		<!-- 门诊用药 -->
+		SELECT
+			t.org_code,
+			t.drug_name,
+			t.drug_std_name,
+			t.drug_std_code,
+			t.last_update_dtime
+		FROM
+			outpatient_drug t
+		WHERE
+			t.org_code = #{paramMap.orgCode,jdbcType=VARCHAR} AND t.outpat_form_no = #{paramMap.outpatFormNo,jdbcType=VARCHAR}
+		
+		UNION ALL
+			
+		<!-- 住院用药 -->
+		SELECT
+			t.org_code,
+			t.patient_id,
+			t.drug_name,
+			t.drug_std_name,
+			t.drug_std_code,
+			t.last_update_dtime
+		FROM
+			inpatient_drug t
+		WHERE
+			t.org_code = #{paramMap.orgCode,jdbcType=VARCHAR} AND t.inpat_form_no = #{paramMap.inpatFormNo,jdbcType=VARCHAR}
+	</sql>
+	
+	<!-- 患者用药列表 -->
+	<select id="frontList" resultMap="MedicalRecordResultMap"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		<include refid="PatientDrug_Select_Query" />
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+			<when test="paramMap.orderCol!=null">
+				${paramMap.orderCol}
+			</when>
+			<otherwise>
+				last_update_dtime desc
+			</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+			limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="frontListCnt"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery"
+		resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM (
+			<include refid="PatientDrug_Select_Query" />
+			<include refid="conditionQuery.core" />
+		) t
+	</select>
 </mapper>

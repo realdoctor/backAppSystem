@@ -39,7 +39,7 @@
 		)
 	</sql>
 	
-	<!-- 病历一览 -->
+	<!-- 患者病历列表 -->
 	<select id="frontList" resultMap="MedicalRecordResultMap"
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		<include refid="Outpatient_Select_Query" />

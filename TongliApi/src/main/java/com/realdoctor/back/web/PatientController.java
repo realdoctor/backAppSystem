@@ -35,9 +35,19 @@ public class PatientController extends CrudController<Outpatient, OutpatientBo> 
 
     public static class OutpatientQuery extends Grid {
 
+        private String orgCode;
         private String patientId;
         private String beginDate;
         private String endDate;
+
+        @SingleValue(column = "org_code", equal = "=")
+        public String getOrgCode() {
+            return orgCode;
+        }
+
+        public void setOrgCode(String orgCode) {
+            this.orgCode = orgCode;
+        }
 
         @SingleValue(column = "patient_id", equal = "=")
         public String getPatientId() {
