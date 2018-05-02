@@ -11,18 +11,32 @@ import com.aliyuncs.profile.IClientProfile;
 public class SmsUtil {
 
     // 短信API产品名称
-    static final String product            = "Dysmsapi";
+    static String product            = "Dysmsapi";
     // 短信API产品域名
-    static final String domain             = "dysmsapi.aliyuncs.com";
-
-    static final String accessKeyId        = "LTAIBnXKgAXWJBfN";
-    static final String accessKeySecret    = "f0X3HbQl0WdkXdMCjW0hTol2OpW5T4";
-    static final String signName           = "康连健康";
+    static String domain             = "dysmsapi.aliyuncs.com";
+    static String accessKeyId        = "LTAIBnXKgAXWJBfN";
+    static String accessKeySecret    = "f0X3HbQl0WdkXdMCjW0hTol2OpW5T4";
+    static String signName           = "康连健康";
     // 验证码
-    static final String verifyTempleteCode = "SMS_133125186";
+    public static String verifyTempleteCode = "SMS_133125186";
     // 短信通知
-    static final String noticeTempleteCode = "SMS_133125186";
-
+    public static String noticeTempleteCode = "SMS_133125186";
+    static {
+        try {
+            PropConfig.getInstance().loadConfig("sms.properties");
+            PropConfig propConfig = PropConfig.getInstance();
+            product = propConfig.getPropertyValue("product");
+            domain = propConfig.getPropertyValue("domain");
+            accessKeyId = propConfig.getPropertyValue("accessKeyId");
+            accessKeySecret = propConfig.getPropertyValue("accessKeySecret");
+            signName = propConfig.getPropertyValue("signName");
+            verifyTempleteCode = propConfig.getPropertyValue("verifyTempleteCode");
+            noticeTempleteCode = propConfig.getPropertyValue("noticeTempleteCode");
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+    
     public static SendSmsResponse sendSms(String mobile, String templateParam,
                                           String templateCode) throws ClientException {
 
