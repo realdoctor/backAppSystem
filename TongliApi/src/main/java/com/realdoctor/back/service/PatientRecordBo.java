@@ -1,11 +1,12 @@
 package com.realdoctor.back.service;
 
-import com.realdoctor.back.dal.pojo.PatientRecord;
-import com.easyway.business.framework.bo.CrudBo;
-import com.realdoctor.back.dal.dao.PatientRecordDao;
 import org.springframework.stereotype.Service;
 
+import com.realdoctor.back.common.Crud2Bo;
+import com.realdoctor.back.dal.dao.PatientRecordDao;
+import com.realdoctor.back.dal.pojo.PatientRecord;
+
 @Service
-public class PatientRecordBo extends CrudBo<PatientRecord,PatientRecordDao> {
+public class PatientRecordBo extends Crud2Bo<PatientRecord,PatientRecordDao> {
 
 }

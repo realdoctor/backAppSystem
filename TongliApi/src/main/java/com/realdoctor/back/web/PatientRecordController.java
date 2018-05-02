@@ -8,12 +8,14 @@ import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.realdoctor.back.dal.pojo.PatientRecord;
 import com.realdoctor.back.service.PatientRecordBo;
 
 @RestController
 @RequestMapping(value = "/patient")
-public class PatientRecordController extends CrudController<PatientRecord,PatientRecordBo> {
+public class PatientRecordController extends CrudController<PatientRecord, PatientRecordBo> {
+
     /**
      * 患者病历列表
      * 
@@ -21,13 +23,12 @@ public class PatientRecordController extends CrudController<PatientRecord,Patien
      * @return
      * @throws Exception
      */
-    @GetMapping("/medicalRecord")
-    public ResultBody list(OutpatientQuery query) throws Exception {
-//        return ResultUtil.success(this.bo.queryFrontList(query));
-        return null;
+    @GetMapping
+    public ResultBody list(PatientQuery query) throws Exception {
+        return ResultUtil.success(this.bo.queryFrontList(query));
     }
 
-    public static class OutpatientQuery extends Grid {
+    public static class PatientQuery extends Grid {
 
         private String orgCode;
         private String patientId;

@@ -83,4 +83,35 @@ public class PatientRecord extends BasePojo {
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
+	
+	/**
+	 * 扩展字段
+	 */
+    private Integer patientRecordId;
+    private String  diagCode;
+    private String  diagName;
+    
+    public Integer getPatientRecordId() {
+        return patientRecordId;
+    }
+    
+    public void setPatientRecordId(Integer patientRecordId) {
+        this.patientRecordId = patientRecordId;
+    }
+    
+    public String getDiagCode() {
+        return diagCode;
+    }
+    
+    public void setDiagCode(String diagCode) {
+        this.diagCode = diagCode;
+    }
+    
+    public String getDiagName() {
+        return diagName;
+    }
+    
+    public void setDiagName(String diagName) {
+        this.diagName = diagName;
+    }
 }
