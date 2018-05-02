@@ -8,19 +8,12 @@ import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
-import com.easyway.business.framework.springmvc.result.ResultUtil;
-import com.realdoctor.back.dal.pojo.Outpatient;
-import com.realdoctor.back.service.OutpatientBo;
+import com.realdoctor.back.dal.pojo.PatientRecord;
+import com.realdoctor.back.service.PatientRecordBo;
 
-/**
- * 医疗服务-门诊摘要信息
- * 
- * @author xl.liu
- */
 @RestController
 @RequestMapping(value = "/patient")
-public class PatientController extends CrudController<Outpatient, OutpatientBo> {
-
+public class PatientRecordController extends CrudController<PatientRecord,PatientRecordBo> {
     /**
      * 患者病历列表
      * 
@@ -30,7 +23,8 @@ public class PatientController extends CrudController<Outpatient, OutpatientBo> 
      */
     @GetMapping("/medicalRecord")
     public ResultBody list(OutpatientQuery query) throws Exception {
-        return ResultUtil.success(this.bo.queryFrontList(query));
+//        return ResultUtil.success(this.bo.queryFrontList(query));
+        return null;
     }
 
     public static class OutpatientQuery extends Grid {

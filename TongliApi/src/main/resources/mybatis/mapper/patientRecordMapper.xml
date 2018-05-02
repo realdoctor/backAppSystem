@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.dal.dao.InpatientDao">
-	<resultMap type="com.realdoctor.back.dal.pojo.Inpatient" id="BaseResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.PatientRecordDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.PatientRecord" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
-		<result property="inpatFormNo" column="inpat_form_no" jdbcType="VARCHAR"/>
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
+		<result property="visitOrgCode" column="visit_org_code" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
+		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
 	<sql id="columns"> 
 		t.id,
 		t.org_code,
-		t.inpat_form_no,
 		t.patient_id,
 		t.visit_org_name,
+		t.visit_org_code,
 		t.visit_dept_name,
 		t.visit_dtime,
+		t.visit_way,
 		t.resp_doctor_name,
+		t.doctor_code,
 		t.last_update_dtime
 	</sql>
 
@@ -29,14 +33,16 @@
 		select
 		t.id,
 		t.org_code,
-		t.inpat_form_no,
 		t.patient_id,
 		t.visit_org_name,
+		t.visit_org_code,
 		t.visit_dept_name,
 		t.visit_dtime,
+		t.visit_way,
 		t.resp_doctor_name,
+		t.doctor_code,
 		t.last_update_dtime
-		from inpatient t 
+		from patient_record t 
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -53,66 +59,69 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from inpatient t
+		select count(*) from patient_record t
 		<include refid="conditionQuery.core" />
 	</select>
 
 	<select id="get" resultMap="BaseResultMap" parameterType="java.math.BigInteger">
 		select
 		<include refid="columns"/>
-		from inpatient t 
+		from patient_record t 
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.Inpatient">
-		delete from inpatient where 1=1 
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.PatientRecord">
+		delete from patient_record where 1=1 
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.Inpatient" useGeneratedKeys="true" keyProperty="id">
-		insert into inpatient (
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_record (
 		org_code,
-		inpat_form_no,
 		patient_id,
 		visit_org_name,
+		visit_org_code,
 		visit_dept_name,
 		visit_dtime,
+		visit_way,
 		resp_doctor_name,
+		doctor_code,
 		last_update_dtime
 		)
 		values(
 		#{orgCode,jdbcType=VARCHAR},
-		#{inpatFormNo,jdbcType=VARCHAR},
 		#{patientId,jdbcType=VARCHAR},
 		#{visitOrgName,jdbcType=VARCHAR},
+		#{visitOrgCode,jdbcType=VARCHAR},
 		#{visitDeptName,jdbcType=VARCHAR},
 		#{visitDtime,jdbcType=TIMESTAMP},
+		#{visitWay,jdbcType=VARCHAR},
 		#{respDoctorName,jdbcType=VARCHAR},
+		#{doctorCode,jdbcType=VARCHAR},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.dal.pojo.Inpatient">
-		update inpatient set
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.PatientRecord">
+		update patient_record set
 		org_code = #{orgCode,jdbcType=VARCHAR},
-		inpat_form_no = #{inpatFormNo,jdbcType=VARCHAR},
 		patient_id = #{patientId,jdbcType=VARCHAR},
 		visit_org_name = #{visitOrgName,jdbcType=VARCHAR},
+		visit_org_code = #{visitOrgCode,jdbcType=VARCHAR},
 		visit_dept_name = #{visitDeptName,jdbcType=VARCHAR},
 		visit_dtime = #{visitDtime,jdbcType=TIMESTAMP},
+		visit_way = #{visitWay,jdbcType=VARCHAR},
 		resp_doctor_name = #{respDoctorName,jdbcType=VARCHAR},
+		doctor_code = #{doctorCode,jdbcType=VARCHAR},
 		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
 		where 1=1 and id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.Inpatient" useGeneratedKeys="true" keyProperty="id">
-		insert into inpatient
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_record
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="orgCode != null">
 		    org_code,
-		  </if>
-		  <if test="inpatFormNo != null">
-		    inpat_form_no,
 		  </if>
 		  <if test="patientId != null">
 		    patient_id,
@@ -120,14 +129,23 @@
 		  <if test="visitOrgName != null">
 		    visit_org_name,
 		  </if>
+		  <if test="visitOrgCode != null">
+		    visit_org_code,
+		  </if>
 		  <if test="visitDeptName != null">
 		    visit_dept_name,
 		  </if>
 		  <if test="visitDtime != null">
 		    visit_dtime,
 		  </if>
+		  <if test="visitWay != null">
+		    visit_way,
+		  </if>
 		  <if test="respDoctorName != null">
 		    resp_doctor_name,
+		  </if>
+		  <if test="doctorCode != null">
+		    doctor_code,
 		  </if>
 		  <if test="lastUpdateDtime != null">
 		    last_update_dtime,
@@ -135,26 +153,30 @@
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="inpatFormNo != null">inpat_form_no=#{inpatFormNo,jdbcType=VARCHAR},</if>
 		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
 		  <if test="visitOrgName != null">visit_org_name=#{visitOrgName,jdbcType=VARCHAR},</if>
+		  <if test="visitOrgCode != null">visit_org_code=#{visitOrgCode,jdbcType=VARCHAR},</if>
 		  <if test="visitDeptName != null">visit_dept_name=#{visitDeptName,jdbcType=VARCHAR},</if>
 		  <if test="visitDtime != null">visit_dtime=#{visitDtime,jdbcType=TIMESTAMP},</if>
+		  <if test="visitWay != null">visit_way=#{visitWay,jdbcType=VARCHAR},</if>
 		  <if test="respDoctorName != null">resp_doctor_name=#{respDoctorName,jdbcType=VARCHAR},</if>
+		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.Inpatient">
-		update inpatient 
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.PatientRecord">
+		update patient_record 
 		<set>
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="inpatFormNo != null">inpat_form_no=#{inpatFormNo,jdbcType=VARCHAR},</if>
 		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
 		  <if test="visitOrgName != null">visit_org_name=#{visitOrgName,jdbcType=VARCHAR},</if>
+		  <if test="visitOrgCode != null">visit_org_code=#{visitOrgCode,jdbcType=VARCHAR},</if>
 		  <if test="visitDeptName != null">visit_dept_name=#{visitDeptName,jdbcType=VARCHAR},</if>
 		  <if test="visitDtime != null">visit_dtime=#{visitDtime,jdbcType=TIMESTAMP},</if>
+		  <if test="visitWay != null">visit_way=#{visitWay,jdbcType=VARCHAR},</if>
 		  <if test="respDoctorName != null">resp_doctor_name=#{respDoctorName,jdbcType=VARCHAR},</if>
+		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where 1=1 and id = #{id,jdbcType=BIGINT}

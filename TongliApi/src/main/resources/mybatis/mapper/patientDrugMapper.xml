@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.realdoctor.back.dal.dao.OutpatientDrugDao">
-	<resultMap type="com.realdoctor.back.dal.pojo.OutpatientDrug" id="BaseResultMap">
+<mapper namespace="com.realdoctor.back.dal.dao.PatientDrugDao">
+	<resultMap type="com.realdoctor.back.dal.pojo.PatientDrug" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
-		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
-		<result property="outpatFormNo" column="outpat_form_no" jdbcType="VARCHAR"/>
+		<result property="patientDiagId" column="patient_diag_id" jdbcType="INTEGER"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
 		<result property="drugStdName" column="drug_std_name" jdbcType="VARCHAR"/>
 		<result property="drugStdCode" column="drug_std_code" jdbcType="VARCHAR"/>
@@ -14,8 +13,7 @@
 
 	<sql id="columns"> 
 		t.id,
-		t.org_code,
-		t.outpat_form_no,
+		t.patient_diag_id,
 		t.drug_name,
 		t.drug_std_name,
 		t.drug_std_code,
@@ -26,14 +24,13 @@
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
 		t.id,
-		t.org_code,
-		t.outpat_form_no,
+		t.patient_diag_id,
 		t.drug_name,
 		t.drug_std_name,
 		t.drug_std_code,
 		t.notes,
 		t.last_update_dtime
-		from outpatient_drug t 
+		from patient_drug t 
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -50,26 +47,25 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from outpatient_drug t
+		select count(*) from patient_drug t
 		<include refid="conditionQuery.core" />
 	</select>
 
 	<select id="get" resultMap="BaseResultMap" parameterType="java.math.BigInteger">
 		select
 		<include refid="columns"/>
-		from outpatient_drug t 
+		from patient_drug t 
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
-		delete from outpatient_drug where 1=1 
+	<delete id="delete" parameterType="com.realdoctor.back.dal.pojo.PatientDrug">
+		delete from patient_drug where 1=1 
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
-		insert into outpatient_drug (
-		org_code,
-		outpat_form_no,
+	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_drug (
+		patient_diag_id,
 		drug_name,
 		drug_std_name,
 		drug_std_code,
@@ -77,8 +73,7 @@
 		last_update_dtime
 		)
 		values(
-		#{orgCode,jdbcType=VARCHAR},
-		#{outpatFormNo,jdbcType=VARCHAR},
+		#{patientDiagId,jdbcType=INTEGER},
 		#{drugName,jdbcType=VARCHAR},
 		#{drugStdName,jdbcType=VARCHAR},
 		#{drugStdCode,jdbcType=VARCHAR},
@@ -87,10 +82,9 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
-		update outpatient_drug set
-		org_code = #{orgCode,jdbcType=VARCHAR},
-		outpat_form_no = #{outpatFormNo,jdbcType=VARCHAR},
+	<update id="update" parameterType="com.realdoctor.back.dal.pojo.PatientDrug">
+		update patient_drug set
+		patient_diag_id = #{patientDiagId,jdbcType=INTEGER},
 		drug_name = #{drugName,jdbcType=VARCHAR},
 		drug_std_name = #{drugStdName,jdbcType=VARCHAR},
 		drug_std_code = #{drugStdCode,jdbcType=VARCHAR},
@@ -99,14 +93,11 @@
 		where 1=1 and id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug" useGeneratedKeys="true" keyProperty="id">
-		insert into outpatient_drug
+	<insert id="insertSelective" parameterType="com.realdoctor.back.dal.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_drug
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="orgCode != null">
-		    org_code,
-		  </if>
-		  <if test="outpatFormNo != null">
-		    outpat_form_no,
+		  <if test="patientDiagId != null">
+		    patient_diag_id,
 		  </if>
 		  <if test="drugName != null">
 		    drug_name,
@@ -125,8 +116,7 @@
 		  </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="outpatFormNo != null">outpat_form_no=#{outpatFormNo,jdbcType=VARCHAR},</if>
+		  <if test="patientDiagId != null">patient_diag_id=#{patientDiagId,jdbcType=INTEGER},</if>
 		  <if test="drugName != null">drug_name=#{drugName,jdbcType=VARCHAR},</if>
 		  <if test="drugStdName != null">drug_std_name=#{drugStdName,jdbcType=VARCHAR},</if>
 		  <if test="drugStdCode != null">drug_std_code=#{drugStdCode,jdbcType=VARCHAR},</if>
@@ -135,11 +125,10 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.OutpatientDrug">
-		update outpatient_drug 
+	<update id="updateSelective" parameterType="com.realdoctor.back.dal.pojo.PatientDrug">
+		update patient_drug 
 		<set>
-		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="outpatFormNo != null">outpat_form_no=#{outpatFormNo,jdbcType=VARCHAR},</if>
+		  <if test="patientDiagId != null">patient_diag_id=#{patientDiagId,jdbcType=INTEGER},</if>
 		  <if test="drugName != null">drug_name=#{drugName,jdbcType=VARCHAR},</if>
 		  <if test="drugStdName != null">drug_std_name=#{drugStdName,jdbcType=VARCHAR},</if>
 		  <if test="drugStdCode != null">drug_std_code=#{drugStdCode,jdbcType=VARCHAR},</if>
