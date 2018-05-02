@@ -12,7 +12,7 @@
 					t.user_id = #{userId,jdbcType=INTEGER}
 				</when>
 				<when test="idNo!=null and idNo !=''">
-					and t.mobile_phone = #{idNo,jdbcType=VARCHAR}
+					and t.id_no = #{idNo,jdbcType=VARCHAR}
 				</when>
 				<otherwise>
 					and t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}

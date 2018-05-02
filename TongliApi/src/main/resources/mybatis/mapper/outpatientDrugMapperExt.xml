@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.realdoctor.back.dal.dao.OutpatientDrugDao">
-	<resultMap type="com.realdoctor.back.dal.pojo.PatientDrug" id="PatientDrug_Select_Query">
+	<resultMap type="com.realdoctor.back.dal.pojo.PatientDrug" id="PatientDrugResultMap">
 		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
@@ -39,7 +39,7 @@
 	</sql>
 	
 	<!-- 患者用药列表 -->
-	<select id="frontList" resultMap="MedicalRecordResultMap"
+	<select id="frontList" resultMap="PatientDrugResultMap"
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		<include refid="PatientDrug_Select_Query" />
 		<include refid="conditionQuery.core" />
