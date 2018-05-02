@@ -87,16 +87,16 @@ public class PatientRecord extends BasePojo {
 	/**
 	 * 扩展字段
 	 */
-    private Integer patientRecordId;
+    private Integer patientDiagId;
     private String  diagCode;
     private String  diagName;
     
-    public Integer getPatientRecordId() {
-        return patientRecordId;
+    public Integer getPatientDiagId() {
+        return patientDiagId;
     }
     
-    public void setPatientRecordId(Integer patientRecordId) {
-        this.patientRecordId = patientRecordId;
+    public void setPatientDiagId(Integer patientDiagId) {
+        this.patientDiagId = patientDiagId;
     }
     
     public String getDiagCode() {

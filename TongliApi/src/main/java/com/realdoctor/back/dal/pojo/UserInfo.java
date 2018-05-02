@@ -1,6 +1,8 @@
 package com.realdoctor.back.dal.pojo;
 
 import java.util.Date;
+
+import com.easyway.business.framework.json.annotion.NotJsonData;
 import com.easyway.business.framework.pojo.BasePojo;
 import java.math.BigInteger;
 
@@ -54,6 +56,7 @@ public class UserInfo extends BasePojo {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@NotJsonData
 	public String getSexCode() {
 		return sexCode;
 	}
@@ -66,18 +69,21 @@ public class UserInfo extends BasePojo {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
+	@NotJsonData
 	public String getAboCode() {
 		return aboCode;
 	}
 	public void setAboCode(String aboCode) {
 		this.aboCode = aboCode;
 	}
+	@NotJsonData
 	public String getRhCode() {
 		return rhCode;
 	}
 	public void setRhCode(String rhCode) {
 		this.rhCode = rhCode;
 	}
+	@NotJsonData
 	public String getIdTypeCode() {
 		return idTypeCode;
 	}
@@ -96,18 +102,21 @@ public class UserInfo extends BasePojo {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
+	@NotJsonData
 	public String getMarriageCode() {
 		return marriageCode;
 	}
 	public void setMarriageCode(String marriageCode) {
 		this.marriageCode = marriageCode;
 	}
+	@NotJsonData
 	public String getNationalityCode() {
 		return nationalityCode;
 	}
 	public void setNationalityCode(String nationalityCode) {
 		this.nationalityCode = nationalityCode;
 	}
+	@NotJsonData
 	public String getCardTypeCode() {
 		return cardTypeCode;
 	}

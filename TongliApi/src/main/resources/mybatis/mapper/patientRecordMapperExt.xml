@@ -9,7 +9,7 @@
 		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
-		<result property="patientRecordId" column="patient_record_id" jdbcType="INTEGER"/>
+		<result property="patientDiagId" column="patient_diag_id" jdbcType="INTEGER"/>
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
@@ -20,8 +20,9 @@
 			t0.*
 		FROM
 			user_info t
-		LEFT JOIN (
+		INNER JOIN (
 			SELECT
+				a.id AS patient_diag_id,
 				a.org_code,
 				a.patient_id,
 				a.visit_org_name,
