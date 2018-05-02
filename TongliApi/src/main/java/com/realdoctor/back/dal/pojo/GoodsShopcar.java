@@ -9,7 +9,7 @@ public class GoodsShopcar extends BasePojo {
 	private Integer userId;
 	private Integer goodsId;
 	private Integer num;
-	private Integer status;
+	private String status;
 	private Date addTime;
 	private Date updateTime;
 	public Integer getId() {
@@ -36,10 +36,10 @@ public class GoodsShopcar extends BasePojo {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public Date getAddTime() {

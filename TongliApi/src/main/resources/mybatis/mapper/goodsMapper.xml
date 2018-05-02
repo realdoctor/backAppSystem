@@ -4,7 +4,6 @@
 	<resultMap type="com.realdoctor.back.dal.pojo.Goods" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="name" column="name" jdbcType="VARCHAR"/>
-		<result property="status" column="status" jdbcType="BIT"/>
 		<result property="store" column="store" jdbcType="INTEGER"/>
 		<result property="freezeStore" column="freeze_store" jdbcType="INTEGER"/>
 		<result property="shelvesTime" column="shelves_time" jdbcType="TIMESTAMP"/>
@@ -13,7 +12,8 @@
 		<result property="cost" column="cost" jdbcType="DECIMAL"/>
 		<result property="marketPrice" column="market_price" jdbcType="DECIMAL"/>
 		<result property="attribute" column="attribute" jdbcType="LONGVARCHAR"/>
-		<result property="addUser" column="add_user" jdbcType="INTEGER"/>
+		<result property="status" column="status" jdbcType="CHAR"/>
+		<result property="addUser" column="add_user" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
@@ -24,7 +24,6 @@
 	<sql id="columns"> 
 		t.id,
 		t.name,
-		t.status,
 		t.store,
 		t.freeze_store,
 		t.shelves_time,
@@ -33,6 +32,7 @@
 		t.cost,
 		t.market_price,
 		t.attribute,
+		t.status,
 		t.add_user,
 		t.add_time,
 		t.update_time,
@@ -43,7 +43,6 @@
 		select
 			t.id,
 			t.name,
-			t.status,
 			t.store,
 			t.freeze_store,
 			t.shelves_time,
@@ -52,12 +51,13 @@
 			t.cost,
 			t.market_price,
 			t.attribute,
+			t.status,
 			t.add_user,
 			t.add_time,
 			t.update_time,
-			t.small_pic,
-			t.big_pic
-		t.remark
+			t.remark,
+			gc.small_pic,
+			gc.big_pic
 		from goods t left join goods_pic gc on t.id=gc.goods_id
 		<include refid="conditionQuery.core" />
 		order by
@@ -94,7 +94,6 @@
 	<insert id="save" parameterType="com.realdoctor.back.dal.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
 		insert into goods (
 		name,
-		status,
 		store,
 		freeze_store,
 		shelves_time,
@@ -103,6 +102,7 @@
 		cost,
 		market_price,
 		attribute,
+		status,
 		add_user,
 		add_time,
 		update_time,
@@ -110,7 +110,6 @@
 		)
 		values(
 		#{name,jdbcType=VARCHAR},
-		#{status,jdbcType=BIT},
 		#{store,jdbcType=INTEGER},
 		#{freezeStore,jdbcType=INTEGER},
 		#{shelvesTime,jdbcType=TIMESTAMP},
@@ -119,7 +118,8 @@
 		#{cost,jdbcType=DECIMAL},
 		#{marketPrice,jdbcType=DECIMAL},
 		#{attribute,jdbcType=LONGVARCHAR},
-		#{addUser,jdbcType=INTEGER},
+		#{status,jdbcType=CHAR},
+		#{addUser,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{remark,jdbcType=VARCHAR}
@@ -129,7 +129,6 @@
 	<update id="update" parameterType="com.realdoctor.back.dal.pojo.Goods">
 		update goods set
 		name = #{name,jdbcType=VARCHAR},
-		status = #{status,jdbcType=BIT},
 		store = #{store,jdbcType=INTEGER},
 		freeze_store = #{freezeStore,jdbcType=INTEGER},
 		shelves_time = #{shelvesTime,jdbcType=TIMESTAMP},
@@ -138,7 +137,8 @@
 		cost = #{cost,jdbcType=DECIMAL},
 		market_price = #{marketPrice,jdbcType=DECIMAL},
 		attribute = #{attribute,jdbcType=LONGVARCHAR},
-		add_user = #{addUser,jdbcType=INTEGER},
+		status = #{status,jdbcType=CHAR},
+		add_user = #{addUser,jdbcType=VARCHAR},
 		add_time = #{addTime,jdbcType=TIMESTAMP},
 		update_time = #{updateTime,jdbcType=TIMESTAMP},
 		remark = #{remark,jdbcType=VARCHAR}
@@ -150,9 +150,6 @@
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="name != null">
 		    name,
-		  </if>
-		  <if test="status != null">
-		    status,
 		  </if>
 		  <if test="store != null">
 		    store,
@@ -178,6 +175,9 @@
 		  <if test="attribute != null">
 		    attribute,
 		  </if>
+		  <if test="status != null">
+		    status,
+		  </if>
 		  <if test="addUser != null">
 		    add_user,
 		  </if>
@@ -193,7 +193,6 @@
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="status != null">status=#{status,jdbcType=BIT},</if>
 		  <if test="store != null">store=#{store,jdbcType=INTEGER},</if>
 		  <if test="freezeStore != null">freeze_store=#{freezeStore,jdbcType=INTEGER},</if>
 		  <if test="shelvesTime != null">shelves_time=#{shelvesTime,jdbcType=TIMESTAMP},</if>
@@ -202,7 +201,8 @@
 		  <if test="cost != null">cost=#{cost,jdbcType=DECIMAL},</if>
 		  <if test="marketPrice != null">market_price=#{marketPrice,jdbcType=DECIMAL},</if>
 		  <if test="attribute != null">attribute=#{attribute,jdbcType=LONGVARCHAR},</if>
-		  <if test="addUser != null">add_user=#{addUser,jdbcType=INTEGER},</if>
+		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
+		  <if test="addUser != null">add_user=#{addUser,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
@@ -213,7 +213,6 @@
 		update goods 
 		<set>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="status != null">status=#{status,jdbcType=BIT},</if>
 		  <if test="store != null">store=#{store,jdbcType=INTEGER},</if>
 		  <if test="freezeStore != null">freeze_store=#{freezeStore,jdbcType=INTEGER},</if>
 		  <if test="shelvesTime != null">shelves_time=#{shelvesTime,jdbcType=TIMESTAMP},</if>
@@ -222,7 +221,8 @@
 		  <if test="cost != null">cost=#{cost,jdbcType=DECIMAL},</if>
 		  <if test="marketPrice != null">market_price=#{marketPrice,jdbcType=DECIMAL},</if>
 		  <if test="attribute != null">attribute=#{attribute,jdbcType=LONGVARCHAR},</if>
-		  <if test="addUser != null">add_user=#{addUser,jdbcType=INTEGER},</if>
+		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
+		  <if test="addUser != null">add_user=#{addUser,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>

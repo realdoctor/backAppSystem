@@ -7,7 +7,6 @@ public class Goods extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
-	private Boolean status;
 	private Integer store;
 	private Integer freezeStore;
 	private Date shelvesTime;
@@ -16,12 +15,11 @@ public class Goods extends BasePojo {
 	private Double cost;
 	private Double marketPrice;
 	private String attribute;
-	private Integer addUser;
+	private String status;
+	private String addUser;
 	private Date addTime;
 	private Date updateTime;
 	private String remark;
-	private String bigPic;
-	private String smallPic;
 	public Long getId() {
 		return id;
 	}
@@ -33,12 +31,6 @@ public class Goods extends BasePojo {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
 	}
 	public Integer getStore() {
 		return store;
@@ -88,10 +80,16 @@ public class Goods extends BasePojo {
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-	public Integer getAddUser() {
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getAddUser() {
 		return addUser;
 	}
-	public void setAddUser(Integer addUser) {
+	public void setAddUser(String addUser) {
 		this.addUser = addUser;
 	}
 	public Date getAddTime() {
@@ -112,6 +110,12 @@ public class Goods extends BasePojo {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
+	/**
+	 * 扩展字段
+	 */
+	private String bigPic;
+	private String smallPic;
     public String getBigPic() {
         return bigPic;
     }

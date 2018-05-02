@@ -4,8 +4,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -17,6 +19,7 @@ import com.easyway.business.framework.util.StringUtil;
 import com.realdoctor.back.dal.pojo.User;
 import com.realdoctor.back.service.UserBo;
 import com.realdoctor.util.MD5Util;
+import com.realdoctor.util.SmsUtil;
 import com.realdoctor.util.ValidateUtil;
 
 @RestController
@@ -120,6 +123,25 @@ public class UserController extends CrudController<User, UserBo> {
         }
 
         return ResultUtil.success();
+    }
+    
+    /**
+     * 发送短信验证码
+     * 
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/sendCode")
+    public ResultBody sendCode() throws Exception {
+        String mobile = "15857141388";
+        int code = (int) ((Math.random() * 9 + 1) * 100000);
+        SendSmsResponse sendSms = SmsUtil.sendSms(mobile, "{\"code\":\"" + code + "\"}", SmsUtil.verifyTempleteCode);
+        System.out.println("短信接口返回的数据----------------");
+        System.out.println("Code=" + sendSms.getCode());
+        System.out.println("Message=" + sendSms.getMessage());
+        System.out.println("RequestId=" + sendSms.getRequestId());
+        System.out.println("BizId=" + sendSms.getBizId());
+        return ResultUtil.success(sendSms);
     }
     
     public static class UserQuery extends Grid {

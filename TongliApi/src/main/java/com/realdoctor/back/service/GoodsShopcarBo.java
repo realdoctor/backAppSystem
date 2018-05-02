@@ -13,7 +13,6 @@ public class GoodsShopcarBo extends CrudBo<GoodsShopcar, GoodsShopcarDao> {
     public void clearCart(int userId) {
         try {
             this.dao.clearCart(userId);
-            ;
         } catch (Exception ex) {
             throw new DBException(ex);
         }

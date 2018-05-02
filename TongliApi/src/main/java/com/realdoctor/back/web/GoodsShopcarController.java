@@ -24,6 +24,13 @@ import com.realdoctor.back.service.GoodsShopcarBo;
 @RequestMapping(value = "/cart")
 public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsShopcarBo> {
 
+    /**
+     * 购物车列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping
     public ResultBody list(ShopcarQuery query) throws Exception {
         return super.list(query);
