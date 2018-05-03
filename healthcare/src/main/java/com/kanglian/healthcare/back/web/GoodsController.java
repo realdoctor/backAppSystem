@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -26,5 +27,16 @@ public class GoodsController extends CrudController<Goods, GoodsBo> {
 
     public static class GoodsQuery extends Grid {
 
+        // 商品分类
+        private String categoryId;
+
+        @SingleValue(column = "category_id", equal = "=")
+        public String getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+        }
     }
 }

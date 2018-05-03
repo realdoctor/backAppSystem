@@ -11,6 +11,14 @@
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="store" column="store" jdbcType="INTEGER"/>
+		<result property="cost" column="cost" jdbcType="DECIMAL"/>
+		<result property="bigPic" column="big_pic" jdbcType="VARCHAR"/>
+		<result property="smallPic" column="small_pic" jdbcType="VARCHAR"/>
+	</resultMap>
+	
 	<sql id="columns"> 
 		t.id,
 		t.user_id,
@@ -21,16 +29,23 @@
 		t.update_time
 	</sql>
 
-	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<select id="query" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
-		t.id,
-		t.user_id,
-		t.goods_id,
-		t.num,
-		t.status,
-		t.add_time,
-		t.update_time
+			t.id,
+			t.user_id,
+			t.goods_id,
+			t.num,
+			t.status,
+			t.add_time,
+			t.update_time,
+			t1.name,
+			t1.cost,
+			t1.store,
+			t2.small_pic,
+			t2.big_pic
 		from goods_shopcar t 
+		LEFT JOIN goods t1 ON t.goods_id = t1.id
+		LEFT JOIN goods_pic t2 ON t.goods_id = t2.goods_id
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>

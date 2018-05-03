@@ -54,4 +54,43 @@ public class GoodsShopcar extends BasePojo {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	
+	/**
+	 * 扩展字段
+	 */
+	private String name;
+    private Integer store;
+    private Double cost;
+	private String bigPic;
+    private String smallPic;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Integer getStore() {
+        return store;
+    }
+    public void setStore(Integer store) {
+        this.store = store;
+    }
+    public Double getCost() {
+        return cost;
+    }
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+    public String getBigPic() {
+        return bigPic;
+    }
+    public void setBigPic(String bigPic) {
+        this.bigPic = bigPic;
+    }
+    public String getSmallPic() {
+        return smallPic;
+    }
+    public void setSmallPic(String smallPic) {
+        this.smallPic = smallPic;
+    }
 }
