@@ -25,7 +25,9 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
      */
     @GetMapping
     public ResultBody list(PatientQuery query) throws Exception {
-        return ResultUtil.success(this.bo.queryFrontList(query));
+        query.setPageSize(0);// 不分页
+        Grid grid = this.bo.queryFrontList(query);
+        return ResultUtil.success(grid.getList());
     }
 
     public static class PatientQuery extends Grid {

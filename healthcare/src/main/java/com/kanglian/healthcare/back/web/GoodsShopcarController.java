@@ -34,7 +34,9 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      */
     @GetMapping
     public ResultBody list(ShopcarQuery query) throws Exception {
-        return super.list(query);
+        query.setPageSize(0);
+        Grid grid = this.listGrid(query);
+        return ResultUtil.success(grid.getList());
     }
 
     /**
