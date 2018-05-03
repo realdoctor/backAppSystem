@@ -12,6 +12,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.easyway.business.framework.util.DateUtil;
 import com.realdoctor.back.dal.pojo.GoodsShopcar;
 import com.realdoctor.back.service.GoodsShopcarBo;
 
@@ -44,12 +45,26 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/addCartItem")
-    public ResultBody addCartItem(ShopcarQuery query) throws Exception {
-        return super.list(query);
+    public ResultBody addCartItem(@RequestBody GoodsShopcar cart) throws Exception {
+        Integer userId = cart.getUserId();
+        Integer goodsId = cart.getGoodsId();
+        Integer num = cart.getNum();
+        if (userId == null) {
+            return ResultUtil.error("用户未登录！");
+        }
+        if (goodsId == null) {
+            return ResultUtil.error("加入购物车失败！");
+        }
+        if (num == null) {
+            cart.setNum(1);
+        }
+        cart.setAddTime(DateUtil.currentDate());
+        this.bo.save(cart);
+        return ResultUtil.success();
     }
     
     /**
-     * 删除单个商品
+     * 删除购物车单个商品
      * 
      * @param query
      * @return
