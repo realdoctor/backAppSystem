@@ -30,18 +30,18 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
 
     public static class PatientQuery extends Grid {
 
-        private String orgCode;
+        private String mobilePhone;
         private String patientId;
         private String beginDate;
         private String endDate;
 
-        @SingleValue(column = "org_code", equal = "=")
-        public String getOrgCode() {
-            return orgCode;
+        @SingleValue(column = "mobile_phone", equal = "=")
+        public String getMobilePhone() {
+            return mobilePhone;
         }
-
-        public void setOrgCode(String orgCode) {
-            this.orgCode = orgCode;
+        
+        public void setMobilePhone(String mobilePhone) {
+            this.mobilePhone = mobilePhone;
         }
 
         @SingleValue(column = "patient_id", equal = "=")

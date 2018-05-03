@@ -10,7 +10,7 @@
 			t.real_name,
 			t.email,
 			t.mobile_phone,
-			t.id_card
+			t.id_no
 		from user t
 		where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
 	</select>

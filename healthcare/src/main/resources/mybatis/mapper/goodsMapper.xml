@@ -8,7 +8,7 @@
 		<result property="freezeStore" column="freeze_store" jdbcType="INTEGER"/>
 		<result property="shelvesTime" column="shelves_time" jdbcType="TIMESTAMP"/>
 		<result property="categoryId" column="category_id" jdbcType="INTEGER"/>
-		<result property="description" column="description" jdbcType="LONGVARCHAR"/>
+		<result property="goodsDescription" column="description" jdbcType="LONGVARCHAR"/>
 		<result property="cost" column="cost" jdbcType="DECIMAL"/>
 		<result property="marketPrice" column="market_price" jdbcType="DECIMAL"/>
 		<result property="attribute" column="attribute" jdbcType="LONGVARCHAR"/>

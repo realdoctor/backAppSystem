@@ -11,8 +11,8 @@ public class Goods extends BasePojo {
 	private Integer freezeStore;
 	private Date shelvesTime;
 	private Integer categoryId;
-	private String description;
-	private Double cost;
+	private String goodsDescription;
+    private Double cost;
 	private Double marketPrice;
 	private String attribute;
 	private String status;
@@ -56,12 +56,12 @@ public class Goods extends BasePojo {
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	public String getGoodsDescription() {
+        return goodsDescription;
+    }
+    public void setGoodsDescription(String goodsDescription) {
+        this.goodsDescription = goodsDescription;
+    }
 	public Double getCost() {
 		return cost;
 	}
