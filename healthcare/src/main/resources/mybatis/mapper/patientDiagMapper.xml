@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.PatientDiagDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientDiag" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="BIGINT"/>
+		<result property="patientRecordId" column="patient_record_id" jdbcType="INTEGER"/>
+		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
+		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
+		<result property="diagDate" column="diag_date" jdbcType="TIMESTAMP"/>
+		<result property="diagTypeCode" column="diag_type_code" jdbcType="VARCHAR"/>
+		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.id,
+		t.patient_record_id,
+		t.diag_code,
+		t.diag_name,
+		t.diag_date,
+		t.diag_type_code,
+		t.last_update_dtime
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.patient_record_id,
+		t.diag_code,
+		t.diag_name,
+		t.diag_date,
+		t.diag_type_code,
+		t.last_update_dtime
+		from patient_diag t 
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from patient_diag t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.math.BigInteger">
+		select
+		<include refid="columns"/>
+		from patient_diag t 
+		where t.id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
+		delete from patient_diag where 1=1 
+		and id=#{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_diag (
+		patient_record_id,
+		diag_code,
+		diag_name,
+		diag_date,
+		diag_type_code,
+		last_update_dtime
+		)
+		values(
+		#{patientRecordId,jdbcType=INTEGER},
+		#{diagCode,jdbcType=VARCHAR},
+		#{diagName,jdbcType=VARCHAR},
+		#{diagDate,jdbcType=TIMESTAMP},
+		#{diagTypeCode,jdbcType=VARCHAR},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
+		update patient_diag set
+		patient_record_id = #{patientRecordId,jdbcType=INTEGER},
+		diag_code = #{diagCode,jdbcType=VARCHAR},
+		diag_name = #{diagName,jdbcType=VARCHAR},
+		diag_date = #{diagDate,jdbcType=TIMESTAMP},
+		diag_type_code = #{diagTypeCode,jdbcType=VARCHAR},
+		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
+		where 1=1 and id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag" useGeneratedKeys="true" keyProperty="id">
+		insert into patient_diag
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="patientRecordId != null">
+		    patient_record_id,
+		  </if>
+		  <if test="diagCode != null">
+		    diag_code,
+		  </if>
+		  <if test="diagName != null">
+		    diag_name,
+		  </if>
+		  <if test="diagDate != null">
+		    diag_date,
+		  </if>
+		  <if test="diagTypeCode != null">
+		    diag_type_code,
+		  </if>
+		  <if test="lastUpdateDtime != null">
+		    last_update_dtime,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		  <if test="patientRecordId != null">patient_record_id=#{patientRecordId,jdbcType=INTEGER},</if>
+		  <if test="diagCode != null">diag_code=#{diagCode,jdbcType=VARCHAR},</if>
+		  <if test="diagName != null">diag_name=#{diagName,jdbcType=VARCHAR},</if>
+		  <if test="diagDate != null">diag_date=#{diagDate,jdbcType=TIMESTAMP},</if>
+		  <if test="diagTypeCode != null">diag_type_code=#{diagTypeCode,jdbcType=VARCHAR},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+
+	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
+		update patient_diag 
+		<set>
+		  <if test="patientRecordId != null">patient_record_id=#{patientRecordId,jdbcType=INTEGER},</if>
+		  <if test="diagCode != null">diag_code=#{diagCode,jdbcType=VARCHAR},</if>
+		  <if test="diagName != null">diag_name=#{diagName,jdbcType=VARCHAR},</if>
+		  <if test="diagDate != null">diag_date=#{diagDate,jdbcType=TIMESTAMP},</if>
+		  <if test="diagTypeCode != null">diag_type_code=#{diagTypeCode,jdbcType=VARCHAR},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where 1=1 and id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsCategoryDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+		<result property="iconCls" column="icon_cls" jdbcType="VARCHAR"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="remark" column="remark" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.id,
+		t.name,
+		t.parent_id,
+		t.icon_cls,
+		t.add_time,
+		t.remark
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.name,
+		t.parent_id,
+		t.icon_cls,
+		t.add_time,
+		t.remark
+		from goods_category t 
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from goods_category t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from goods_category t 
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
+		delete from goods_category where 1=1 
+		and id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_category (
+		name,
+		parent_id,
+		icon_cls,
+		add_time,
+		remark
+		)
+		values(
+		#{name,jdbcType=VARCHAR},
+		#{parentId,jdbcType=INTEGER},
+		#{iconCls,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
+		update goods_category set
+		name = #{name,jdbcType=VARCHAR},
+		parent_id = #{parentId,jdbcType=INTEGER},
+		icon_cls = #{iconCls,jdbcType=VARCHAR},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		remark = #{remark,jdbcType=VARCHAR}
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_category
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="name != null">
+		    name,
+		  </if>
+		  <if test="parentId != null">
+		    parent_id,
+		  </if>
+		  <if test="iconCls != null">
+		    icon_cls,
+		  </if>
+		  <if test="addTime != null">
+		    add_time,
+		  </if>
+		  <if test="remark != null">
+		    remark,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+		  <if test="parentId != null">parent_id=#{parentId,jdbcType=INTEGER},</if>
+		  <if test="iconCls != null">icon_cls=#{iconCls,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+
+	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
+		update goods_category 
+		<set>
+		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+		  <if test="parentId != null">parent_id=#{parentId,jdbcType=INTEGER},</if>
+		  <if test="iconCls != null">icon_cls=#{iconCls,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
+		</set>
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

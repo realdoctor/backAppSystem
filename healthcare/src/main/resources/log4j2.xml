@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN" monitorInterval="30">
+	<properties>
+        <property name="LOG_HOME">/home/logs/</property>
+    </properties>
+    
+	<!-- ===================================================================== -->
+    <!--  以下是appender的定义                                                 -->
+    <!-- ===================================================================== -->
+	<appenders>
+		<!--这个输出控制台的配置 -->
+		<console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss,SSS} |-%-5p (%C{2},%L) -| %m%n" />
+		</console>
+
+		<!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用 -->
+		<File name="TEST" fileName="${LOG_HOME}/test.log" append="false">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
+		</File>
+		
+		<RollingFile name="PROJECT" fileName="${LOG_HOME}/root.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -| %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+		
+		<RollingFile name="TASK" fileName="${LOG_HOME}/task.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+				<!-- <SizeBasedTriggeringPolicy size="2 kB" /> -->
+			</Policies>
+		</RollingFile>
+	</appenders>
+
+	<!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+	<loggers>
+		<logger name="org.springframework" level="INFO"></logger>
+		<logger name="org.mybatis" level="INFO"></logger>
+		
+		<logger name="com.kanglian.healthcare.quartz" level="DEBUG" additivity="false">
+			<appender-ref ref="STDOUT"/>
+			<appender-ref ref="TASK" />
+		</logger>
+		
+		<root level="DEBUG">
+        	<appender-ref ref="STDOUT"/>
+        	<appender-ref ref="PROJECT"/>
+        	<appender-ref ref="TEST"/>
+		</root>
+	</loggers>
+</configuration>
