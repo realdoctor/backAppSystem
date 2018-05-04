@@ -6,7 +6,7 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class GoodsOrderItem extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private Integer orderId;
+	private Integer goodsOrderId;
 	private Integer goodsId;
 	private Integer goodsNum;
 	private Double goodsPrice;
@@ -18,11 +18,11 @@ public class GoodsOrderItem extends BasePojo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getOrderId() {
-		return orderId;
+	public Integer getGoodsOrderId() {
+		return goodsOrderId;
 	}
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
+	public void setGoodsOrderId(Integer goodsOrderId) {
+		this.goodsOrderId = goodsOrderId;
 	}
 	public Integer getGoodsId() {
 		return goodsId;
