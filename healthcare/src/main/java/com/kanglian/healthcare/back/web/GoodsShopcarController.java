@@ -13,6 +13,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.kanglian.healthcare.back.dal.cond.ShopcarCond;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
 
@@ -64,22 +65,18 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
     }
     
     /**
-     * 删除购物车单个商品
+     * 删除购物车
      * 
-     * @param query
+     * @param cond
      * @return
      * @throws Exception
      */
     @PostMapping("/deleteCartItem")
-    public ResultBody deleteCartItem(@RequestBody GoodsShopcar cart) throws Exception {
-        GoodsShopcar newcart = this.bo.get(cart);
-        if(newcart == null){
-            return ResultUtil.error("删除商品不存在！");
-        }
-        this.bo.delete(newcart);
+    public ResultBody deleteCartItem(@RequestBody ShopcarCond cond) throws Exception {
+        this.bo.deleteByIds(cond.getIds());
         return ResultUtil.success();
     }
-
+    
     /**
      * 清空购物车
      * 

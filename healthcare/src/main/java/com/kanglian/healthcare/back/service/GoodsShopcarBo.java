@@ -17,4 +17,12 @@ public class GoodsShopcarBo extends CrudBo<GoodsShopcar, GoodsShopcarDao> {
             throw new DBException(ex);
         }
     }
+
+    public void deleteByIds(String[] ids) {
+        try {
+            this.dao.deleteByIds(ids);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
