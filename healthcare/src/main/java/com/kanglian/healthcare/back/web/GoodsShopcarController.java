@@ -13,6 +13,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.cond.ShopcarCond;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
@@ -35,6 +36,9 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      */
     @GetMapping
     public ResultBody list(ShopcarQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getUserId())) {
+            return ResultUtil.error("用户未登录！");
+        }
         return ResultUtil.success(this.bo.query(query));
     }
 

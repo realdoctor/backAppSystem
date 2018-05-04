@@ -2,6 +2,7 @@ package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Goods extends BasePojo {
 	private static final long serialVersionUID = 1L;
@@ -11,7 +12,8 @@ public class Goods extends BasePojo {
 	private Integer freezeStore;
 	private Date shelvesTime;
 	private Integer categoryId;
-	private String goodsDescription;
+	@JsonProperty("goodsDescription")
+	private String description;
     private Double cost;
 	private Double marketPrice;
 	private String attribute;
@@ -56,11 +58,11 @@ public class Goods extends BasePojo {
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
-	public String getGoodsDescription() {
-        return goodsDescription;
+	public String getDescription() {
+        return description;
     }
-    public void setGoodsDescription(String goodsDescription) {
-        this.goodsDescription = goodsDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 	public Double getCost() {
 		return cost;
