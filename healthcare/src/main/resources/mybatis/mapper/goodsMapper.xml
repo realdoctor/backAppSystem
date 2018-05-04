@@ -8,10 +8,11 @@
 		<result property="freezeStore" column="freeze_store" jdbcType="INTEGER"/>
 		<result property="shelvesTime" column="shelves_time" jdbcType="TIMESTAMP"/>
 		<result property="categoryId" column="category_id" jdbcType="INTEGER"/>
-		<result property="description" column="description" jdbcType="LONGVARCHAR"/>
+		<result property="attribute" column="attribute" jdbcType="VARCHAR"/>
+		<result property="description" column="description" jdbcType="VARCHAR"/>
+		<result property="detail" column="detail" jdbcType="LONGVARCHAR"/>
 		<result property="cost" column="cost" jdbcType="DECIMAL"/>
 		<result property="marketPrice" column="market_price" jdbcType="DECIMAL"/>
-		<result property="attribute" column="attribute" jdbcType="LONGVARCHAR"/>
 		<result property="status" column="status" jdbcType="CHAR"/>
 		<result property="addUser" column="add_user" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
@@ -28,10 +29,11 @@
 		t.freeze_store,
 		t.shelves_time,
 		t.category_id,
+		t.attribute,
 		t.description,
+		t.detail,
 		t.cost,
 		t.market_price,
-		t.attribute,
 		t.status,
 		t.add_user,
 		t.add_time,
@@ -47,10 +49,11 @@
 			t.freeze_store,
 			t.shelves_time,
 			t.category_id,
+			t.attribute,
 			t.description,
+			t.detail,
 			t.cost,
 			t.market_price,
-			t.attribute,
 			t.status,
 			t.add_user,
 			t.add_time,
@@ -98,10 +101,11 @@
 		freeze_store,
 		shelves_time,
 		category_id,
+		attribute,
 		description,
+		detail,
 		cost,
 		market_price,
-		attribute,
 		status,
 		add_user,
 		add_time,
@@ -114,10 +118,11 @@
 		#{freezeStore,jdbcType=INTEGER},
 		#{shelvesTime,jdbcType=TIMESTAMP},
 		#{categoryId,jdbcType=INTEGER},
-		#{description,jdbcType=LONGVARCHAR},
+		#{attribute,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{detail,jdbcType=LONGVARCHAR},
 		#{cost,jdbcType=DECIMAL},
 		#{marketPrice,jdbcType=DECIMAL},
-		#{attribute,jdbcType=LONGVARCHAR},
 		#{status,jdbcType=CHAR},
 		#{addUser,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
@@ -133,10 +138,11 @@
 		freeze_store = #{freezeStore,jdbcType=INTEGER},
 		shelves_time = #{shelvesTime,jdbcType=TIMESTAMP},
 		category_id = #{categoryId,jdbcType=INTEGER},
-		description = #{description,jdbcType=LONGVARCHAR},
+		attribute = #{attribute,jdbcType=VARCHAR},
+		description = #{description,jdbcType=VARCHAR},
+		detail = #{detail,jdbcType=LONGVARCHAR},
 		cost = #{cost,jdbcType=DECIMAL},
 		market_price = #{marketPrice,jdbcType=DECIMAL},
-		attribute = #{attribute,jdbcType=LONGVARCHAR},
 		status = #{status,jdbcType=CHAR},
 		add_user = #{addUser,jdbcType=VARCHAR},
 		add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -163,17 +169,20 @@
 		  <if test="categoryId != null">
 		    category_id,
 		  </if>
+		  <if test="attribute != null">
+		    attribute,
+		  </if>
 		  <if test="description != null">
 		    description,
+		  </if>
+		  <if test="detail != null">
+		    detail,
 		  </if>
 		  <if test="cost != null">
 		    cost,
 		  </if>
 		  <if test="marketPrice != null">
 		    market_price,
-		  </if>
-		  <if test="attribute != null">
-		    attribute,
 		  </if>
 		  <if test="status != null">
 		    status,
@@ -197,10 +206,11 @@
 		  <if test="freezeStore != null">freeze_store=#{freezeStore,jdbcType=INTEGER},</if>
 		  <if test="shelvesTime != null">shelves_time=#{shelvesTime,jdbcType=TIMESTAMP},</if>
 		  <if test="categoryId != null">category_id=#{categoryId,jdbcType=INTEGER},</if>
-		  <if test="description != null">description=#{description,jdbcType=LONGVARCHAR},</if>
+		  <if test="attribute != null">attribute=#{attribute,jdbcType=VARCHAR},</if>
+		  <if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
+		  <if test="detail != null">detail=#{detail,jdbcType=LONGVARCHAR},</if>
 		  <if test="cost != null">cost=#{cost,jdbcType=DECIMAL},</if>
 		  <if test="marketPrice != null">market_price=#{marketPrice,jdbcType=DECIMAL},</if>
-		  <if test="attribute != null">attribute=#{attribute,jdbcType=LONGVARCHAR},</if>
 		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
 		  <if test="addUser != null">add_user=#{addUser,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
@@ -217,10 +227,11 @@
 		  <if test="freezeStore != null">freeze_store=#{freezeStore,jdbcType=INTEGER},</if>
 		  <if test="shelvesTime != null">shelves_time=#{shelvesTime,jdbcType=TIMESTAMP},</if>
 		  <if test="categoryId != null">category_id=#{categoryId,jdbcType=INTEGER},</if>
-		  <if test="description != null">description=#{description,jdbcType=LONGVARCHAR},</if>
+		  <if test="attribute != null">attribute=#{attribute,jdbcType=VARCHAR},</if>
+		  <if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
+		  <if test="detail != null">detail=#{detail,jdbcType=LONGVARCHAR},</if>
 		  <if test="cost != null">cost=#{cost,jdbcType=DECIMAL},</if>
 		  <if test="marketPrice != null">market_price=#{marketPrice,jdbcType=DECIMAL},</if>
-		  <if test="attribute != null">attribute=#{attribute,jdbcType=LONGVARCHAR},</if>
 		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
 		  <if test="addUser != null">add_user=#{addUser,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
