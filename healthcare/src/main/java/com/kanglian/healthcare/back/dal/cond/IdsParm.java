@@ -1,6 +1,6 @@
 package com.kanglian.healthcare.back.dal.cond;
 
-public class ShopcarCond {
+public class IdsParm {
 
     private String[] ids;
 

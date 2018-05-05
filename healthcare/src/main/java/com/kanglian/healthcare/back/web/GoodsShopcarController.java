@@ -14,7 +14,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.dal.cond.ShopcarCond;
+import com.kanglian.healthcare.back.dal.cond.IdsParm;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
 
@@ -76,7 +76,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/deleteCartItem")
-    public ResultBody deleteCartItem(@RequestBody ShopcarCond cond) throws Exception {
+    public ResultBody deleteCartItem(@RequestBody IdsParm cond) throws Exception {
         this.bo.deleteByIds(cond.getIds());
         return ResultUtil.success();
     }
