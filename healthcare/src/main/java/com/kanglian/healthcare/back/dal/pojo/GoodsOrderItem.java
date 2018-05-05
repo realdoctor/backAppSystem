@@ -11,7 +11,6 @@ public class GoodsOrderItem extends BasePojo {
 	private Integer goodsNum;
 	private Double goodsPrice;
 	private Date addTime;
-	private Date updateTime;
 	public Long getId() {
 		return id;
 	}
@@ -47,11 +46,5 @@ public class GoodsOrderItem extends BasePojo {
 	}
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
 	}
 }
