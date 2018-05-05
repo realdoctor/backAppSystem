@@ -9,16 +9,36 @@ import java.util.List;
  */
 public class PaymentOrder {
 
+    // 用户Id
+    private String      userId;
+    // 订单号
+    private String      orderNo;
     // 交易总额
-    private String      totalAmount;
+    private Double      totalAmount;
     // 订单列表
     private List<Order> goodsList;
 
-    public String getTotalAmount() {
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public Double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
