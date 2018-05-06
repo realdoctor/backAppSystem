@@ -27,7 +27,6 @@ public class PropConfig {
     /** logger */
     private final static Logger       logger         = LoggerFactory.getLogger(PropConfig.class);
     private final Map<String, String> betchConfigMap = new LinkedHashMap<String, String>();
-
     private static final String       CFG_FILE       = "config.properties";
 
     private static class SingletonHolder {
@@ -76,12 +75,12 @@ public class PropConfig {
                 file = new File("config/" + currentFile);
                 logger.debug("-----+++++++-----" + file.getAbsolutePath());
                 if (file.exists()) {
-                    logger.debug(MessageFormat.format("============>>>>从jar同级的config目录加载了{0}文件", currentFile));
+                    logger.debug(MessageFormat.format("============>>>>从config目录加载了{0}文件", currentFile));
                 }
             }
             Resource resource = new FileSystemResource(file);
             if (!resource.exists()) {
-                logger.debug("============>>>>从jar同级的config目录下还是找不到，那就直接用classpath下的");
+                logger.debug("============>>>>从config目录下还是找不到，那就直接用classpath下的");
                 resource = new ClassPathResource("/config/" + currentFile);
             }
 
