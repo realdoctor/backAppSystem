@@ -3,6 +3,7 @@ package com.kanglian.healthcare.util;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +40,24 @@ public final class NumberUtil {
         String machineId = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String orderId = machineId + String.format("%015d", hashCodeV);
         return orderId;
+    }
+
+    /**
+     * 产生num位的随机数
+     * 
+     * @return
+     */
+    public static String getRandByNum(int num) {
+        String length = "1";
+        for (int i = 0; i < num; i++) {
+            length += "0";
+        }
+        Random rad = new Random();
+        String result = rad.nextInt(Integer.parseInt(length)) + "";
+        if (result.length() != num) {
+            return getRandByNum(num);
+        }
+        return result;
     }
 
     public static double add(double v1, double v2) {// 加法

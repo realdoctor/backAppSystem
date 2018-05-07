@@ -1,14 +1,11 @@
 package com.kanglian.healthcare.util;
 
 import java.security.MessageDigest;
-import java.text.MessageFormat;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MD5Util {
 
-    private final static Logger logger = LoggerFactory.getLogger(MD5Util.class);
+    private static final String hexDigits[] =
+            {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
 
     /**
      * md5加密
@@ -16,30 +13,33 @@ public class MD5Util {
      * @return
      */
     public static String encrypt(String data) {
-        MessageDigest md;
+        return encrypt(data, null);
+    }
+
+    public static String encrypt(String origin, String charset) {
+        String resultString = null;
         try {
-            md = MessageDigest.getInstance("MD5");
-            md.update(data.toString().getBytes());
-            return bytesToHex(md.digest());
-        } catch (Exception ex) {
-            logger.info(MessageFormat.format("加密{0}异常", data), ex);
+            resultString = new String(origin);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if (charset == null || "".equals(charset))
+                resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
+            else
+                resultString = byteArrayToHexString(md.digest(resultString.getBytes(charset)));
+        } catch (Exception exception) {
         }
-        return null;
+        return resultString;
     }
 
-    private static String bytesToHex(byte[] ch) {
-        StringBuffer ret = new StringBuffer("");
+    private static String byteArrayToHexString(byte ch[]) {
+        StringBuffer resultSb = new StringBuffer();
         for (int i = 0; i < ch.length; i++)
-            ret.append(byteToHex(ch[i]));
-        return ret.toString();
+            resultSb.append(byteToHexString(ch[i]));
+
+        return resultSb.toString();
     }
 
-    /**
-     * 字节转换为16进制字符串
-     */
-    private static String byteToHex(byte ch) {
-        String str[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
-        return str[ch >> 4 & 0xF] + str[ch & 0xF];
+    private static String byteToHexString(byte ch) {
+        return hexDigits[ch >> 4 & 0xF] + hexDigits[ch & 0xF];
     }
 
     /**
