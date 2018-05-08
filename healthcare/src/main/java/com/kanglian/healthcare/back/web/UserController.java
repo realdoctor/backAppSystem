@@ -148,7 +148,10 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("手机号不能为空！");
         }
         String code = NumberUtil.getRandByNum(Constant.VERIFY_CODE_NUM);
-        SmsUtil.sendCode(mobilePhone, code);
+        boolean bool = SmsUtil.sendCode(mobilePhone, code);
+        if (!bool) {
+            return ResultUtil.error("发送手机验证码失败！");
+        }
         CacheManager.set(mobilePhone, code, 300000);// 5分钟过期
         Map<String, String> retMap = new HashMap<String, String>();
         retMap.put("code", code);

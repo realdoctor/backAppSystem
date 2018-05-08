@@ -1,5 +1,8 @@
 package com.kanglian.healthcare.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.alibaba.fastjson.JSON;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
@@ -10,6 +13,7 @@ import com.aliyuncs.profile.IClientProfile;
 
 public class SmsUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(SmsUtil.class);
     // 短信API产品名称
     static String product            = "Dysmsapi";
     // 短信API产品域名
@@ -85,11 +89,15 @@ public class SmsUtil {
     public static boolean sendCode(String mobile, String code) {
         try {
             SendSmsResponse response = sendSms(mobile, "{\"code\":\"" + code + "\"}", verifyTempleteCode);
+            printLog(response);
+            logger.debug("手机号{}，验证码{}，返回数据{}", new Object[] {mobile, code, JSON.toJSONString(response)});
             if (response.getCode() != null && response.getCode().equals("OK")) {
-                System.out.println("发送成功！");
+                logger.debug("手机号{}，验证码{}，发送成功！",new Object[] {mobile, code});
+                //System.out.println("发送成功！");
                 return true;
             } else {
-                System.out.println("发送失败！");
+                logger.debug("手机号{}，验证码{}，发送失败！",new Object[] {mobile, code});
+                //System.out.println("发送失败！");
                 return false;
             }
         } catch (ClientException ex) {
@@ -97,6 +105,14 @@ public class SmsUtil {
         }
     }
 
+    private static void printLog( SendSmsResponse sendSms) {
+        System.out.println("短信接口返回的数据----------------");
+        System.out.println("Code=" + sendSms.getCode());
+        System.out.println("Message=" + sendSms.getMessage());
+        System.out.println("RequestId=" + sendSms.getRequestId());
+        System.out.println("BizId=" + sendSms.getBizId());
+    }
+    
     /**
      * @param args
      * @throws Exception
