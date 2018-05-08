@@ -14,7 +14,8 @@ public class GoodsOrder extends BasePojo {
 	private Date receiptTime;
 	private String shippingName;
 	private String shippingCode;
-	private String status;
+	private String tradeStatus;
+	private String sentStatus;
 	private Date closeTime;
 	private Date addTime;
 	private Date updateTime;
@@ -72,11 +73,17 @@ public class GoodsOrder extends BasePojo {
 	public void setShippingCode(String shippingCode) {
 		this.shippingCode = shippingCode;
 	}
-	public String getStatus() {
-		return status;
+	public String getTradeStatus() {
+		return tradeStatus;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setTradeStatus(String tradeStatus) {
+		this.tradeStatus = tradeStatus;
+	}
+	public String getSentStatus() {
+		return sentStatus;
+	}
+	public void setSentStatus(String sentStatus) {
+		this.sentStatus = sentStatus;
 	}
 	public Date getCloseTime() {
 		return closeTime;

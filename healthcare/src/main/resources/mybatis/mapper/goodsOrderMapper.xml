@@ -11,7 +11,8 @@
 		<result property="receiptTime" column="receipt_time" jdbcType="TIMESTAMP"/>
 		<result property="shippingName" column="shipping_name" jdbcType="VARCHAR"/>
 		<result property="shippingCode" column="shipping_code" jdbcType="VARCHAR"/>
-		<result property="status" column="status" jdbcType="CHAR"/>
+		<result property="tradeStatus" column="trade_status" jdbcType="CHAR"/>
+		<result property="sentStatus" column="sent_status" jdbcType="CHAR"/>
 		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -27,7 +28,8 @@
 		t.receipt_time,
 		t.shipping_name,
 		t.shipping_code,
-		t.status,
+		t.trade_status,
+		t.sent_status,
 		t.close_time,
 		t.add_time,
 		t.update_time
@@ -44,7 +46,8 @@
 		t.receipt_time,
 		t.shipping_name,
 		t.shipping_code,
-		t.status,
+		t.trade_status,
+		t.sent_status,
 		t.close_time,
 		t.add_time,
 		t.update_time
@@ -91,7 +94,8 @@
 		receipt_time,
 		shipping_name,
 		shipping_code,
-		status,
+		trade_status,
+		sent_status,
 		close_time,
 		add_time,
 		update_time
@@ -105,7 +109,8 @@
 		#{receiptTime,jdbcType=TIMESTAMP},
 		#{shippingName,jdbcType=VARCHAR},
 		#{shippingCode,jdbcType=VARCHAR},
-		#{status,jdbcType=CHAR},
+		#{tradeStatus,jdbcType=CHAR},
+		#{sentStatus,jdbcType=CHAR},
 		#{closeTime,jdbcType=TIMESTAMP},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{updateTime,jdbcType=TIMESTAMP}
@@ -122,7 +127,8 @@
 		receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
 		shipping_name = #{shippingName,jdbcType=VARCHAR},
 		shipping_code = #{shippingCode,jdbcType=VARCHAR},
-		status = #{status,jdbcType=CHAR},
+		trade_status = #{tradeStatus,jdbcType=CHAR},
+		sent_status = #{sentStatus,jdbcType=CHAR},
 		close_time = #{closeTime,jdbcType=TIMESTAMP},
 		add_time = #{addTime,jdbcType=TIMESTAMP},
 		update_time = #{updateTime,jdbcType=TIMESTAMP}
@@ -156,8 +162,11 @@
 		  <if test="shippingCode != null">
 		    shipping_code,
 		  </if>
-		  <if test="status != null">
-		    status,
+		  <if test="tradeStatus != null">
+		    trade_status,
+		  </if>
+		  <if test="sentStatus != null">
+		    sent_status,
 		  </if>
 		  <if test="closeTime != null">
 		    close_time,
@@ -178,7 +187,8 @@
 		  <if test="receiptTime != null">receipt_time=#{receiptTime,jdbcType=TIMESTAMP},</if>
 		  <if test="shippingName != null">shipping_name=#{shippingName,jdbcType=VARCHAR},</if>
 		  <if test="shippingCode != null">shipping_code=#{shippingCode,jdbcType=VARCHAR},</if>
-		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
+		  <if test="tradeStatus != null">trade_status=#{tradeStatus,jdbcType=CHAR},</if>
+		  <if test="sentStatus != null">sent_status=#{sentStatus,jdbcType=CHAR},</if>
 		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
@@ -196,7 +206,8 @@
 		  <if test="receiptTime != null">receipt_time=#{receiptTime,jdbcType=TIMESTAMP},</if>
 		  <if test="shippingName != null">shipping_name=#{shippingName,jdbcType=VARCHAR},</if>
 		  <if test="shippingCode != null">shipping_code=#{shippingCode,jdbcType=VARCHAR},</if>
-		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
+		  <if test="tradeStatus != null">trade_status=#{tradeStatus,jdbcType=CHAR},</if>
+		  <if test="sentStatus != null">sent_status=#{sentStatus,jdbcType=CHAR},</if>
 		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
