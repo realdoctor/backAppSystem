@@ -1,0 +1,197 @@
+package com.kanglian.healthcare.back.web;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.alibaba.fastjson.JSON;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.easyway.business.framework.common.annotation.PerformanceClass;
+import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.easyway.business.framework.util.DateUtil;
+import com.kanglian.healthcare.back.constants.AlipayConfig;
+import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
+import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
+import com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog;
+import com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog;
+import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
+import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
+import com.kanglian.healthcare.back.service.GoodsOrderBo;
+import com.kanglian.healthcare.util.NumberUtil;
+import com.kanglian.healthcare.util.PayCommonUtil;
+
+/**
+ * 支付宝支付
+ * 
+ * @author xl.liu
+ */
+@Controller
+@RequestMapping(value = "/pay/alipay")
+public class AlipayController extends BaseController {
+
+    private final static Logger logger = LoggerFactory.getLogger(AlipayController.class);
+    @Autowired
+    private GoodsOrderBo        goodsOrderBo;
+    @Autowired
+    private AlipayOrderLogBo    alipayOrderLogBo;
+    @Autowired
+    private AlipayNotifyLogBo   alipayNotifyLogBo;
+
+    /**
+     * 拉取支付宝预付单
+     * 
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @RequestMapping(value = "/orderPay", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
+            throws Exception {
+        logger.debug("==============拉取支付宝预付单");
+        String userId = paymentOrder.getUserId();
+        // 外部订单号
+        final String orderNo = NumberUtil.getOrderNo();
+        paymentOrder.setOrderNo(orderNo);
+        /**
+         * 商品下单
+         */
+        Map<String, Object> notifyMap = goodsOrderBo.createGoodsOrder(paymentOrder);
+        /**
+         * 拉取支付宝预付单
+         */
+        // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]这里调试每次支付1分钱，在项目上线前应将此处改为订单的总金额格
+        String orderPrice = "0.01";
+        // 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
+        String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
+        Map<String, String> retMap = new HashMap<>();
+        // 实例化客户端
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
+                AlipayConfig.APPID, AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT,
+                AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
+        // 实例化具体API对应的request类，类名称和接口名称对应，当前调用接口名称：alipay.trade.app.pay
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setSubject("测试支付");// 订单标题
+        model.setBody("康连健康商品");// 对交易或商品的描述
+        model.setOutTradeNo(orderNo);
+        model.setTimeoutExpress("30m");// 30分钟付款超时
+        model.setTotalAmount(orderPrice);
+        /**
+         * 支付回调参数更新
+         */
+        notifyMap.put("userId", userId);
+        notifyMap.put("orderNo", orderNo);
+        model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JSON.toJSONString(notifyMap)));
+        alipayRequest.setBizModel(model);
+        alipayRequest.setNotifyUrl(alipayNotifyUrl);
+        try {
+            // 这里和普通的接口调用不同，使用的是sdkExecute
+            AlipayTradeAppPayResponse response = alipayClient.sdkExecute(alipayRequest);
+            String orderString = response.getBody();
+            retMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
+            /**
+             * 写入支付宝预付单日志
+             */
+            AlipayOrderLog alipayOrderLog = new AlipayOrderLog();
+            alipayOrderLog.setUserId(userId);
+            alipayOrderLog.setOrderNo(orderNo);
+            alipayOrderLog.setOrderString(orderString);
+            alipayOrderLog.setAddTime(DateUtil.currentDate());
+            alipayOrderLogBo.save(alipayOrderLog);
+        } catch (AlipayApiException e) {
+            throw new Exception("获取支付宝参数错误");
+        }
+        return ResultUtil.success(retMap);
+    }
+
+    /**
+     * 支付宝异步通知
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @RequestMapping(value = "/reCallBack", method = RequestMethod.POST)
+    @ResponseBody
+    public String orderPayNotify(@RequestBody AlipayNotifyResponse alipayResponse,
+            HttpServletRequest request) throws Exception {
+        logger.debug("==============支付宝回调");
+        // 写入支付宝回调日志
+        alipayNotifyLogBo.insertNotifyLog(alipayResponse);
+        
+        // 获取支付宝POST过来反馈信息
+        Map requestParams = request.getParameterMap();
+        logger.debug("支付宝回调结果1：" + requestParams.toString());
+        logger.debug("支付宝回调结果2：" + JSON.toJSONString(alipayResponse));
+        Map<String, String> params = new HashMap<String, String>();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            // 乱码解决，这段代码在出现乱码时使用。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+        
+//        try {
+//            // 验证签名
+//            boolean signVerified = AlipaySignature.rsaCheckV1(params,
+//                    AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, AlipayConfig.SIGNTYPE);
+//            if (signVerified) { // 签名验证成功
+//                // 付款金额
+//                String total_fee = params.get("total_amount");
+//                // 商户订单号
+//                String out_trade_no = params.get("out_trade_no");
+//                // 支付宝交易号
+//                String trade_no = params.get("trade_no");
+//                // 交易状态
+//                String trade_status = params.get("trade_status");
+//                // 附加数据
+//                String passback_params = PayCommonUtil.urlDecodeUTF8(params.get("passback_params"));
+//                logger.debug("支付宝异步通知，返回附加数据==" + passback_params);
+//                if (trade_status.equals("TRADE_FINISHED")) {
+//                    logger.info("支付失败= 订单号:{},支付宝交易号:{}", out_trade_no, trade_no);
+//                } else if (trade_status.equals("TRADE_SUCCESS")) {
+//                    logger.info("支付成功= 订单号:{},支付宝交易号:{}", out_trade_no, trade_no);
+//                    // TODO 支付成功处理业务逻辑，需要注意避免重复处理
+//                    if (!goodsOrderBo.orderPaySuccess(out_trade_no)) {
+//                        GoodsOrder order = new GoodsOrder();
+//                        order.setOrderNo(out_trade_no);
+//                        order.setStatus(PaymentStatus.PAYMENT_STATUS_PAY);
+//                        goodsOrderBo.updateOrderStatus(order);
+//                    }
+//                }
+//            } else {
+//                logger.debug("签名验证失败！");
+//                return "fail";
+//            }
+//        } catch (AlipayApiException e) {
+//            e.printStackTrace();
+//        }
+        return "success";
+    }
+
+}
