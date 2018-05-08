@@ -64,4 +64,7 @@ public final class Constant {
 
     // 药物使用频率
     public final static String STD_MEDICATION_USE_FREQUENCY  = "STD_MEDICATION_USE_FREQUENCY";
+
+    // 手机验证码位数
+    public final static int    VERIFY_CODE_NUM               = 4;
 }

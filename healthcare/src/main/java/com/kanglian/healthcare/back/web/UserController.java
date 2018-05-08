@@ -16,6 +16,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.back.constants.Constant;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.CacheManager;
@@ -146,7 +147,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
         }
-        String code = NumberUtil.getRandByNum(6);
+        String code = NumberUtil.getRandByNum(Constant.VERIFY_CODE_NUM);
         SmsUtil.sendCode(mobilePhone, code);
         CacheManager.set(mobilePhone, code, 300000);// 5分钟过期
         Map<String, String> retMap = new HashMap<String, String>();
