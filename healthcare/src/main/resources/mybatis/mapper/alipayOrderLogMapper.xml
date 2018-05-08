@@ -3,7 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.AlipayOrderLogDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
-		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="requestParams" column="request_params" jdbcType="LONGVARCHAR"/>
 		<result property="orderString" column="order_string" jdbcType="LONGVARCHAR"/>
@@ -69,7 +69,7 @@
 		add_time
 		)
 		values(
-		#{userId,jdbcType=INTEGER},
+		#{userId,jdbcType=VARCHAR},
 		#{orderNo,jdbcType=VARCHAR},
 		#{requestParams,jdbcType=LONGVARCHAR},
 		#{orderString,jdbcType=LONGVARCHAR},
@@ -79,7 +79,7 @@
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
 		update alipay_order_log set
-		user_id = #{userId,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=VARCHAR},
 		order_no = #{orderNo,jdbcType=VARCHAR},
 		request_params = #{requestParams,jdbcType=LONGVARCHAR},
 		order_string = #{orderString,jdbcType=LONGVARCHAR},
@@ -107,7 +107,7 @@
 		  </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="requestParams != null">request_params=#{requestParams,jdbcType=LONGVARCHAR},</if>
 		  <if test="orderString != null">order_string=#{orderString,jdbcType=LONGVARCHAR},</if>
@@ -118,7 +118,7 @@
 	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
 		update alipay_order_log 
 		<set>
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="requestParams != null">request_params=#{requestParams,jdbcType=LONGVARCHAR},</if>
 		  <if test="orderString != null">order_string=#{orderString,jdbcType=LONGVARCHAR},</if>

@@ -6,7 +6,7 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class AlipayNotifyLog extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private Integer userId;
+	private String userId;
 	private String orderNo;
 	private String notifyString;
 	private Date addTime;
@@ -16,10 +16,10 @@ public class AlipayNotifyLog extends BasePojo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	public String getOrderNo() {

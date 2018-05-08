@@ -3,7 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.AlipayNotifyLogDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
-		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="notifyString" column="notify_string" jdbcType="LONGVARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
@@ -65,7 +65,7 @@
 		add_time
 		)
 		values(
-		#{userId,jdbcType=INTEGER},
+		#{userId,jdbcType=VARCHAR},
 		#{orderNo,jdbcType=VARCHAR},
 		#{notifyString,jdbcType=LONGVARCHAR},
 		#{addTime,jdbcType=TIMESTAMP}
@@ -74,7 +74,7 @@
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog">
 		update alipay_notify_log set
-		user_id = #{userId,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=VARCHAR},
 		order_no = #{orderNo,jdbcType=VARCHAR},
 		notify_string = #{notifyString,jdbcType=LONGVARCHAR},
 		add_time = #{addTime,jdbcType=TIMESTAMP}
@@ -98,7 +98,7 @@
 		  </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="notifyString != null">notify_string=#{notifyString,jdbcType=LONGVARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
@@ -108,7 +108,7 @@
 	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog">
 		update alipay_notify_log 
 		<set>
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="notifyString != null">notify_string=#{notifyString,jdbcType=LONGVARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
