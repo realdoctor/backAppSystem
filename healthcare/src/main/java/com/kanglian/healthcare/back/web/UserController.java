@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -18,7 +16,9 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.util.CacheManager;
 import com.kanglian.healthcare.util.MD5Util;
+import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.SmsUtil;
 import com.kanglian.healthcare.util.ValidateUtil;
 
@@ -131,17 +131,19 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
+    @PerformanceClass
     @RequestMapping(method = RequestMethod.GET, value = "/sendCode")
-    public ResultBody sendCode() throws Exception {
-        String mobile = "15857141388";
-        int code = (int) ((Math.random() * 9 + 1) * 100000);
-        SendSmsResponse sendSms = SmsUtil.sendSms(mobile, "{\"code\":\"" + code + "\"}", SmsUtil.verifyTempleteCode);
-        System.out.println("短信接口返回的数据----------------");
-        System.out.println("Code=" + sendSms.getCode());
-        System.out.println("Message=" + sendSms.getMessage());
-        System.out.println("RequestId=" + sendSms.getRequestId());
-        System.out.println("BizId=" + sendSms.getBizId());
-        return ResultUtil.success(sendSms);
+    public ResultBody sendCode(String mobilePhone) throws Exception {
+        if (StringUtil.isBlank(mobilePhone)) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (ValidateUtil.isMobile(mobilePhone)) {
+            return ResultUtil.error("手机号不合法！");
+        }
+        String code = NumberUtil.getRandByNum(6);
+        SmsUtil.sendCode(mobilePhone, code);
+        CacheManager.set(mobilePhone, code, 300000);// 5分钟过期
+        return ResultUtil.success(code);
     }
     
     public static class UserQuery extends Grid {
