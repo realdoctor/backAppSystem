@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.service;
 
 import org.springframework.stereotype.Service;
-
 import com.easyway.business.framework.bo.CrudBo;
 import com.kanglian.healthcare.back.dal.dao.GoodsShopcarDao;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
@@ -21,6 +20,14 @@ public class GoodsShopcarBo extends CrudBo<GoodsShopcar, GoodsShopcarDao> {
     public void deleteByIds(String[] ids) {
         try {
             this.dao.deleteByIds(ids);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    public GoodsShopcar findGoodsShopcar(Integer userId, Integer goodsId) {
+        try {
+            return this.dao.findGoodsShopcar(String.valueOf(userId), String.valueOf(goodsId));
         } catch (Exception ex) {
             throw new DBException(ex);
         }

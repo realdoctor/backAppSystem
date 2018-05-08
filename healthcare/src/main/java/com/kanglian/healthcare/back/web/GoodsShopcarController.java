@@ -58,13 +58,22 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
             return ResultUtil.error("用户未登录！");
         }
         if (goodsId == null) {
-            return ResultUtil.error("加入购物车失败！");
+            return ResultUtil.error("未选择商品！");
         }
         if (num == null) {
             cart.setNum(1);
         }
         cart.setAddTime(DateUtil.currentDate());
-        this.bo.save(cart);
+        // 判断是否同一样商品
+        GoodsShopcar goodsShopcar = this.bo.findGoodsShopcar(userId, goodsId);
+        if (goodsShopcar != null) {// 说明已添加过
+            goodsShopcar.setNum(goodsShopcar.getNum() + cart.getNum());
+            goodsShopcar.setUpdateTime(DateUtil.currentDate());
+            this.bo.update(goodsShopcar);
+        } else {
+            this.bo.save(cart);
+        }
+        
         return ResultUtil.success();
     }
     
