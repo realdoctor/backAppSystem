@@ -17,6 +17,20 @@ public class User extends BasePojo {
 	private String idNo;
 	private String sentAddress;
 	private Date addTime;
+	
+	/**
+     * 扩展字段
+     */
+    private String verifyCode;
+    
+    @NotJsonData
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+    
 	public Long getUserId() {
 		return userId;
 	}
@@ -79,18 +93,4 @@ public class User extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
-	
-	/**
-	 * 扩展字段
-	 */
-	private String verifyCode;
-    
-	@NotJsonData
-    public String getVerifyCode() {
-        return verifyCode;
-    }
-    
-    public void setVerifyCode(String verifyCode) {
-        this.verifyCode = verifyCode;
-    }
 }

@@ -1,5 +1,7 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -147,7 +149,9 @@ public class UserController extends CrudController<User, UserBo> {
         String code = NumberUtil.getRandByNum(6);
         SmsUtil.sendCode(mobilePhone, code);
         CacheManager.set(mobilePhone, code, 300000);// 5分钟过期
-        return ResultUtil.success(code);
+        Map<String, String> retMap = new HashMap<String, String>();
+        retMap.put("code", code);
+        return ResultUtil.success(retMap);
     }
 
     public static class UserQuery extends Grid {
