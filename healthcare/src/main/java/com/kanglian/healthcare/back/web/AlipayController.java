@@ -119,10 +119,12 @@ public class AlipayController extends BaseController {
         alipayRequest.setBizModel(model);
         alipayRequest.setNotifyUrl(alipayNotifyUrl);
         String requestParams = JsonUtil.beanToJson(alipayRequest);
+        String responseString = null;
         String orderString = null;
         try {
             // 这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(alipayRequest);
+            responseString = JsonUtil.beanToJson(response);
             orderString = response.getBody();
             retResultMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
             logger.debug("=============用户Id：{}，订单号：{}，请求参数：{}，支付串：{}", new Object[] {userId, orderNo, requestParams, orderString});
@@ -132,7 +134,7 @@ public class AlipayController extends BaseController {
         /**
          * 写入支付宝预付单日志
          */
-        alipayOrderLogBo.insertPayOrderLog(userId, orderNo, requestParams, orderString);
+        alipayOrderLogBo.insertPayOrderLog(userId, orderNo, requestParams, responseString, orderString);
         return ResultUtil.success(retResultMap);
     }
 
