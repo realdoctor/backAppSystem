@@ -9,6 +9,7 @@ public class AlipayOrderLog extends BasePojo {
 	private String userId;
 	private String orderNo;
 	private String requestParams;
+	private String responseString;
 	private String orderString;
 	private Date addTime;
 	public Long getId() {
@@ -34,6 +35,12 @@ public class AlipayOrderLog extends BasePojo {
 	}
 	public void setRequestParams(String requestParams) {
 		this.requestParams = requestParams;
+	}
+	public String getResponseString() {
+		return responseString;
+	}
+	public void setResponseString(String responseString) {
+		this.responseString = responseString;
 	}
 	public String getOrderString() {
 		return orderString;
