@@ -13,6 +13,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.PatientRecordBo;
+import com.kanglian.healthcare.util.ValidateUtil;
 
 @RestController
 @RequestMapping(value = "/patient")
@@ -31,6 +32,9 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
         Integer clientNum = query.getClientNum();
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
+        }
+        if (!ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
         }
         query.setPageSize(0);// 不分页
         Grid grid = this.bo.queryFrontList(query);
