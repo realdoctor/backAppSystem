@@ -31,6 +31,12 @@ public class UserController extends CrudController<User, UserBo> {
 
     @GetMapping
     public ResultBody list(UserQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getMobilePhone())) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (ValidateUtil.isPhone(query.getMobilePhone())) {
+            return ResultUtil.error("请输入正确的11位手机号！");
+        }
         return super.list(query);
     }
 
