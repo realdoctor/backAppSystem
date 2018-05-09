@@ -45,12 +45,15 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
         Double calcPayMoney = 0d;
         for (Order order : paymentOrder.getGoodsList()) {
             Integer goodsId = order.getGoodsId();
+            Integer goodsNum = order.getGoodsNum();
+            if (goodsNum == null || goodsNum == 0)
+                goodsNum = 1;
             Goods goods = goodsDao.get(Long.valueOf(goodsId));
             if (goods != null) {
                 Double cost = goods.getCost();
                 if (cost == null)
                     cost = 0d;
-                calcPayMoney += cost;
+                calcPayMoney += (cost * goodsNum);
             }
         }
         int retval = NumberUtil.valueOf(totalAmount).compareTo(NumberUtil.valueOf(calcPayMoney));
