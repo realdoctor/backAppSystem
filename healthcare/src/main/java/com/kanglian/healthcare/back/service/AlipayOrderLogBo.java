@@ -15,13 +15,16 @@ public class AlipayOrderLogBo extends CrudBo<AlipayOrderLog, AlipayOrderLogDao> 
      * 
      * @param userId
      * @param orderNo
+     * @param requestParams
      * @param orderString
      */
-    public void insertPayOrderLog(String userId, String orderNo, String orderString) {
+    public void insertPayOrderLog(String userId, String orderNo, String requestParams,
+            String orderString) {
         try {
             AlipayOrderLog alipayOrderLog = new AlipayOrderLog();
             alipayOrderLog.setUserId(userId);
             alipayOrderLog.setOrderNo(orderNo);
+            alipayOrderLog.setRequestParams(requestParams);
             alipayOrderLog.setOrderString(orderString);
             alipayOrderLog.setAddTime(DateUtil.currentDate());
             this.dao.save(alipayOrderLog);
