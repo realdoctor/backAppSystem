@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.util;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -37,8 +38,8 @@ public final class NumberUtil {
         if (hashCodeV < 0) {// 有可能是负数
             hashCodeV = -hashCodeV;
         }
-        String machineId = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String orderId = machineId + String.format("%015d", hashCodeV);
+        String machineId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String orderId = machineId + String.format("%018d", hashCodeV);
         return orderId;
     }
 
@@ -84,6 +85,166 @@ public final class NumberUtil {
         return b1.divide(b2, 3, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
+    public static Long valueOf(Long value) {
+        if (value == null) {
+            return new Long(0);
+        }
+
+        return value;
+    }
+
+    public static Integer valueOf(Integer value) {
+        if (value == null) {
+            return new Integer(0);
+        }
+
+        return value;
+    }
+
+    /**
+     * 保留两位小数
+     * 
+     * @param value
+     * @return
+     */
+    public static Double valueOf(Double value) {
+        if (value == null) {
+            return new Double(0);
+        }
+        BigDecimal b = new BigDecimal(value);
+        double f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return f1;
+    }
+
+    public static Long valueOf(String value) {
+        if (value == null || value.length() == 0) {
+            return new Long(0);
+        }
+
+        return Long.valueOf(value);
+    }
+
+    /**
+     * 字符串转换为Integer
+     * 
+     * @param str 字符串
+     * @return Integer, str为null时返回0
+     */
+    public static Integer getInteger(Object obj) {
+        return getInteger(obj, 0);
+    }
+
+    /**
+     * 字符串转换为Integer
+     * 
+     * @param str 字符串
+     * @param def 默认值
+     * @return Integer, 字符串为null时返回def
+     */
+    public static Integer getInteger(Object obj, int def) {
+        String str = obj == null ? "" : obj.toString();
+
+        Integer i = null;
+
+        if (str.trim().length() == 0) {
+            i = new Integer(def);
+        } else {
+            try {
+                i = Integer.valueOf(str);
+            } catch (Exception e) {
+            }
+        }
+
+        return i == null ? new Integer(def) : i;
+    }
+
+    /**
+     * 字符串转换为Long
+     * 
+     * @param str 字符串
+     * @return Long, str为null时返回0
+     */
+    public static Long getLong(Object obj) {
+        return getLong(obj, 0);
+    }
+
+    /**
+     * 字符串转换为Long
+     * 
+     * @param str 字符串
+     * @param def 默认值
+     * @return Long, 字符串为null时返回def
+     */
+    public static Long getLong(Object obj, long def) {
+        String str = obj == null ? "" : obj.toString();
+
+        Long l = null;
+
+        if (str.trim().length() == 0) {
+            l = new Long(def);
+        } else {
+            try {
+                l = Long.valueOf(str);
+            } catch (Exception e) {
+            }
+        }
+
+        return l == null ? new Long(def) : l;
+    }
+
+    /**
+     * 字符串转换为Integer
+     * 
+     * @param str 字符串
+     * @return Integer, str为null时返回0
+     */
+    public static int getIntegerValue(Object obj) {
+        return getIntegerValue(obj, 0);
+    }
+
+    /**
+     * 字符串转换为Integer
+     * 
+     * @param str 字符串
+     * @param def 默认值
+     * @return Integer, 字符串为null时返回def
+     */
+    public static int getIntegerValue(Object obj, int def) {
+        return getInteger(obj, def).intValue();
+    }
+
+    /**
+     * 字符串转换为Long
+     * 
+     * @param str 字符串
+     * @return Long, str为null时返回0
+     */
+    public static long getLongValue(Object obj) {
+        return getLongValue(obj, 0);
+    }
+
+    /**
+     * 字符串转换为Long
+     * 
+     * @param str 字符串
+     * @param def 默认值
+     * @return Long, 字符串为null时返回def
+     */
+    public static long getLongValue(Object obj, long def) {
+        return getLong(obj, def).longValue();
+    }
+
+    /**
+     * Double保留两位小数
+     * 
+     * @param f
+     * @return
+     */
+    public static String getDoubleValue(Double f) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(f);
+    }
+
     /**
      * 检查是否是数字
      * 
@@ -96,5 +257,4 @@ public final class NumberUtil {
         Matcher m = p.matcher(value);
         return m.find();
     }
-
 }
