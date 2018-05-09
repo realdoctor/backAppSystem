@@ -34,7 +34,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isEmpty(query.getMobilePhone())) {
             return ResultUtil.error("手机号不能为空！");
         }
-        if (ValidateUtil.isPhone(query.getMobilePhone())) {
+        if (!ValidateUtil.isPhone(query.getMobilePhone())) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
         return super.list(query);
@@ -58,7 +58,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isEmpty(pwd)) {
             return ResultUtil.error("密码不能为空！");
         }
-        if (ValidateUtil.isPhone(mobilePhone)) {
+        if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
         user = this.bo.login(user);
@@ -95,7 +95,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isEmpty(verifyCode)) {
             return ResultUtil.error("验证码不能为空！");
         }
-        if (ValidateUtil.isPhone(mobilePhone)) {
+        if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
         // 判断用户唯一
@@ -137,7 +137,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isEmpty(pwd)) {
             return ResultUtil.error("密码不能为空！");
         }
-        if (ValidateUtil.isPhone(mobilePhone)) {
+        if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
         User userT = this.bo.login(user);
@@ -163,7 +163,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
         }
-        if (ValidateUtil.isPhone(mobilePhone)) {
+        if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
         String code = NumberUtil.getRandByNum(Constant.VERIFY_CODE_NUM);
