@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.alibaba.fastjson.JSON;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.Order;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
+import com.kanglian.healthcare.back.dal.dao.GoodsDao;
 import com.kanglian.healthcare.back.dal.dao.GoodsOrderDao;
 import com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao;
+import com.kanglian.healthcare.back.dal.pojo.Goods;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem;
 import com.kanglian.healthcare.exception.DBException;
+import com.kanglian.healthcare.util.JsonUtil;
+import com.kanglian.healthcare.util.NumberUtil;
 
 @Service
 public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
@@ -26,13 +30,36 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
     private static final Logger logger = LoggerFactory.getLogger(GoodsOrderBo.class);
 
     @Autowired
+    private GoodsDao            goodsDao;
+    @Autowired
     private GoodsOrderItemDao   goodsOrderItemDao;
+
+    /**
+     * 判断支付的总金额是否匹配，防止被修改
+     * 
+     * @param paymentOrder
+     * @return
+     */
+    public boolean reviewPaymentOrder(final PaymentOrder paymentOrder) {
+        Double totalAmount = paymentOrder.getTotalAmount();
+        Double calcPayMoney = 0d;
+        for (Order order : paymentOrder.getGoodsList()) {
+            Integer goodsId = order.getGoodsId();
+            Goods goods = goodsDao.get(Long.valueOf(goodsId));
+            Double cost = goods.getCost();
+            if (cost == null)
+                cost = 0d;
+            calcPayMoney += cost;
+        }
+        int retval = NumberUtil.valueOf(totalAmount).compareTo(NumberUtil.valueOf(calcPayMoney));
+        return retval == 0 ? true : false;
+    }
 
     /**
      * 创建订单信息
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public Map<String, Object> createGoodsOrder(PaymentOrder paymentOrder) {
+    public Map<String, Object> createGoodsOrder(final PaymentOrder paymentOrder) {
         Map<String, Object> retMap = new HashMap<String, Object>();
         try {
             // 1、订单信息
@@ -45,8 +72,8 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             goodsOrder.setAddTime(DateUtil.currentDate());
             this.dao.save(goodsOrder);
             final Integer goodsOrderId = goodsOrder.getId();
-            logger.debug("==========订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
-            logger.debug("==========订单详情：{}", JSON.toJSONString(paymentOrder.getGoodsList()));
+            logger.info("==========订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
+            logger.info("==========订单详情：{}", JsonUtil.object2Json(paymentOrder.getGoodsList()));
             // 2、订单详情
             for (Order order : paymentOrder.getGoodsList()) {
                 GoodsOrderItem goodsItem = new GoodsOrderItem();
@@ -56,6 +83,14 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                 goodsItem.setGoodsPrice(order.getGoodsPrice());
                 goodsItem.setAddTime(DateUtil.currentDate());
                 goodsOrderItemDao.save(goodsItem);
+
+                // 订单减库存
+                Integer goodsId = order.getGoodsId();
+                Goods goods = goodsDao.get(Long.valueOf(goodsId));
+                goods.setFreezeStore(goods.getFreezeStore() + order.getGoodsNum());
+                goods.setStore(goods.getStore() - order.getGoodsNum());
+                goods.setUpdateTime(DateUtil.currentDate());
+                goodsDao.update(goods);
             }
             retMap.put("orderId", goodsOrderId);
             retMap.put("orderNo", goodsOrder.getOrderNo());
@@ -66,18 +101,40 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
     }
 
     /**
-     * 判断该订单号已支付
+     * 支付宝回调业务处理
+     * 
+     * @param order
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void orderPaySuccess(final GoodsOrder order) {
+        // 更新订单状态
+        updateOrderStatus(order);
+        // 减冻结库存
+        List<GoodsOrderItem> orderItemList =
+                goodsOrderItemDao.findGoodsOrderItem(order.getOrderNo());
+        for (GoodsOrderItem orderItem : orderItemList) {
+            Integer goodsId = orderItem.getGoodsId();
+            Goods goods = goodsDao.get(Long.valueOf(goodsId));
+            goods.setFreezeStore(goods.getFreezeStore() - orderItem.getGoodsNum());
+            goods.setUpdateTime(DateUtil.currentDate());
+            goodsDao.update(goods);
+        }
+    }
+    
+    /**
+     * 判断该订单号交易状态：已支付
+     * 
      * @param orderNo
      * @return
      */
-    public boolean orderPaySuccess(String orderNo) {
+    public boolean orderPayStatus(String orderNo) {
         GoodsOrder goodsOrder = findGoodsOrder(orderNo);
         if (goodsOrder != null && goodsOrder.getTradeStatus() != null) {
             return goodsOrder.getTradeStatus().equals(PaymentStatus.PAYMENT_TRADE_SUCCESS);
         }
         return false;
     }
-    
+
     /**
      * 更新订单状态
      */
@@ -88,7 +145,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             throw new DBException(ex);
         }
     }
-    
+
     public GoodsOrder findGoodsOrder(String orderNo) {
         try {
             return this.dao.findGoodsOrder(orderNo);

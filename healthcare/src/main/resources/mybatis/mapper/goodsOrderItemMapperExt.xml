@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao">
+	<!-- 订单号获取订单明细 -->
+	<select id="findGoodsOrderItem" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			t1.id,
+			t1.goods_order_id,
+			t1.goods_id,
+			t1.goods_num,
+			t1.goods_price,
+			t1.add_time
+		FROM
+			goods_order t
+		LEFT JOIN goods_order_item t1 ON t.id = t1.goods_order_id
+		where t.order_no = #{orderNo,jdbcType=VARCHAR}
+	</select>
 </mapper>
