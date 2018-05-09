@@ -23,6 +23,7 @@ import com.kanglian.healthcare.util.CacheManager;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.SmsUtil;
+import com.kanglian.healthcare.util.ValidateUtil;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -50,6 +51,9 @@ public class UserController extends CrudController<User, UserBo> {
         }
         if (StringUtil.isEmpty(pwd)) {
             return ResultUtil.error("密码不能为空！");
+        }
+        if (ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
         }
         user = this.bo.login(user);
         if (user == null) {
@@ -84,6 +88,9 @@ public class UserController extends CrudController<User, UserBo> {
         }
         if (StringUtil.isEmpty(verifyCode)) {
             return ResultUtil.error("验证码不能为空！");
+        }
+        if (ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
         }
         // 判断用户唯一
         if (this.bo.ifExist(mobilePhone)) {
@@ -124,6 +131,9 @@ public class UserController extends CrudController<User, UserBo> {
         if (StringUtil.isEmpty(pwd)) {
             return ResultUtil.error("密码不能为空！");
         }
+        if (ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
+        }
         User userT = this.bo.login(user);
         if (userT == null) {
             return ResultUtil.error("用户不存在！");
@@ -146,6 +156,9 @@ public class UserController extends CrudController<User, UserBo> {
     public ResultBody sendCode(String mobilePhone) throws Exception {
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
+        }
+        if (ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
         }
         String code = NumberUtil.getRandByNum(Constant.VERIFY_CODE_NUM);
         boolean bool = SmsUtil.sendCode(mobilePhone, code);
