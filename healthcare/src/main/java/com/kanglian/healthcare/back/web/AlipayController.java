@@ -23,6 +23,7 @@ import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
@@ -31,6 +32,7 @@ import com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog;
 import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
 import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
+import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PayCommonUtil;
 
@@ -63,15 +65,30 @@ public class AlipayController extends BaseController {
     @ResponseBody
     public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
-        logger.debug("==============拉取支付宝预付单");
+        logger.info("==============进入拉取支付宝预付单");
+        if (StringUtil.isEmpty(paymentOrder.getUserId())) {
+            return ResultUtil.error("用户Id不能为空");
+        }
+        if (paymentOrder.getTotalAmount() == null) {
+            return ResultUtil.error("支付金额不能为空");
+        }
+        /**
+         * 判断支付的总金额是否匹配，防止被修改
+         */
+        if (!this.goodsOrderBo.reviewPaymentOrder(paymentOrder)) {
+            logger.info("支付的总金额与购买商品总价不一致，购买订单明细==={}", JsonUtil.object2Json(paymentOrder));
+            return ResultUtil.error("支付的总金额与购买商品总价不一致");
+        }
+
+        // 用户Id
         String userId = paymentOrder.getUserId();
         // 外部订单号
         final String orderNo = NumberUtil.getOrderNo();
         paymentOrder.setOrderNo(orderNo);
         /**
-         * 商品下单
+         * 用户购买商品入库明细
          */
-        Map<String, Object> notifyMap = goodsOrderBo.createGoodsOrder(paymentOrder);
+        Map<String, Object> notifyParmMap = goodsOrderBo.createGoodsOrder(paymentOrder);
         /**
          * 拉取支付宝预付单
          */
@@ -79,7 +96,7 @@ public class AlipayController extends BaseController {
         String orderPrice = "0.01";
         // 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
         String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
-        Map<String, String> retMap = new HashMap<>();
+        Map<String, String> retResultMap = new HashMap<>();
         // 实例化客户端
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
                 AlipayConfig.APPID, AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT,
@@ -96,29 +113,27 @@ public class AlipayController extends BaseController {
         /**
          * 支付回调参数更新
          */
-        notifyMap.put("userId", userId);
-        notifyMap.put("orderNo", orderNo);
-        model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JSON.toJSONString(notifyMap)));
+        notifyParmMap.put("userId", userId);
+        notifyParmMap.put("orderNo", orderNo);
+        model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JSON.toJSONString(notifyParmMap)));
         alipayRequest.setBizModel(model);
         alipayRequest.setNotifyUrl(alipayNotifyUrl);
+        String requestParams = JsonUtil.beanToJson(alipayRequest);
+        String orderString = null;
         try {
             // 这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(alipayRequest);
-            String orderString = response.getBody();
-            retMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
-            /**
-             * 写入支付宝预付单日志
-             */
-            AlipayOrderLog alipayOrderLog = new AlipayOrderLog();
-            alipayOrderLog.setUserId(userId);
-            alipayOrderLog.setOrderNo(orderNo);
-            alipayOrderLog.setOrderString(orderString);
-            alipayOrderLog.setAddTime(DateUtil.currentDate());
-            alipayOrderLogBo.save(alipayOrderLog);
+            orderString = response.getBody();
+            retResultMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
+            logger.debug("=============用户Id：{}，订单号：{}，请求参数：{}，支付串：{}", new Object[] {userId, orderNo, requestParams, orderString});
         } catch (AlipayApiException e) {
             throw new Exception("获取支付宝参数错误");
         }
-        return ResultUtil.success(retMap);
+        /**
+         * 写入支付宝预付单日志
+         */
+        alipayOrderLogBo.insertPayOrderLog(userId, orderNo, requestParams, orderString);
+        return ResultUtil.success(retResultMap);
     }
 
     /**
@@ -137,11 +152,10 @@ public class AlipayController extends BaseController {
         logger.debug("==============支付宝回调");
         // 写入支付宝回调日志
         alipayNotifyLogBo.insertNotifyLog(alipayResponse);
-        
         // 获取支付宝POST过来反馈信息
         Map requestParams = request.getParameterMap();
         logger.debug("支付宝回调结果1：" + requestParams.toString());
-        logger.debug("支付宝回调结果2：" + JSON.toJSONString(alipayResponse));
+        logger.debug("支付宝回调结果2：" + JsonUtil.beanToJson(alipayResponse));
         Map<String, String> params = new HashMap<String, String>();
         for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
             String name = (String) iter.next();
@@ -194,4 +208,39 @@ public class AlipayController extends BaseController {
         return "success";
     }
 
+    /**
+     * 支付宝异步通知
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @RequestMapping(value = "/notifyCallBack", method = RequestMethod.POST)
+    @ResponseBody
+    public String orderPayNotify2(@RequestBody AlipayNotifyResponse alipayResponse,
+            HttpServletRequest request) throws Exception {
+        logger.debug("==============支付宝回调");
+        // 写入支付宝回调日志
+        alipayNotifyLogBo.insertNotifyLog(alipayResponse);
+        // 获取支付宝POST过来反馈信息
+        Map requestParams = request.getParameterMap();
+        logger.debug("支付宝回调结果3：" + requestParams.toString());
+        logger.debug("支付宝回调结果4：" + JsonUtil.beanToJson(alipayResponse));
+        Map<String, String> params = new HashMap<String, String>();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            // 乱码解决，这段代码在出现乱码时使用。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+        return "success";
+    }
 }
