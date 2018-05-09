@@ -90,7 +90,7 @@ public class SmsUtil {
         try {
             SendSmsResponse response = sendSms(mobile, "{\"code\":\"" + code + "\"}", verifyTempleteCode);
             printLog(response);
-            logger.debug("手机号{}，验证码{}，返回数据{}", new Object[] {mobile, code, JSON.toJSONString(response)});
+            logger.info("手机号{}，验证码{}，返回数据{}", new Object[] {mobile, code, JSON.toJSONString(response)});
             if (response.getCode() != null && response.getCode().equals("OK")) {
                 logger.debug("手机号{}，验证码{}，发送成功！",new Object[] {mobile, code});
                 //System.out.println("发送成功！");
