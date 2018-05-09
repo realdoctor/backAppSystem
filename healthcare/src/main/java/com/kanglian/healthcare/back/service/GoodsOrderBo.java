@@ -46,10 +46,12 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
         for (Order order : paymentOrder.getGoodsList()) {
             Integer goodsId = order.getGoodsId();
             Goods goods = goodsDao.get(Long.valueOf(goodsId));
-            Double cost = goods.getCost();
-            if (cost == null)
-                cost = 0d;
-            calcPayMoney += cost;
+            if (goods != null) {
+                Double cost = goods.getCost();
+                if (cost == null)
+                    cost = 0d;
+                calcPayMoney += cost;
+            }
         }
         int retval = NumberUtil.valueOf(totalAmount).compareTo(NumberUtil.valueOf(calcPayMoney));
         return retval == 0 ? true : false;
@@ -87,10 +89,12 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                 // 订单减库存
                 Integer goodsId = order.getGoodsId();
                 Goods goods = goodsDao.get(Long.valueOf(goodsId));
-                goods.setFreezeStore(goods.getFreezeStore() + order.getGoodsNum());
-                goods.setStore(goods.getStore() - order.getGoodsNum());
-                goods.setUpdateTime(DateUtil.currentDate());
-                goodsDao.update(goods);
+                if (goods != null) {
+                    goods.setFreezeStore(goods.getFreezeStore() + order.getGoodsNum());
+                    goods.setStore(goods.getStore() - order.getGoodsNum());
+                    goods.setUpdateTime(DateUtil.currentDate());
+                    goodsDao.update(goods);
+                }
             }
             retMap.put("orderId", goodsOrderId);
             retMap.put("orderNo", goodsOrder.getOrderNo());
@@ -115,9 +119,11 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
         for (GoodsOrderItem orderItem : orderItemList) {
             Integer goodsId = orderItem.getGoodsId();
             Goods goods = goodsDao.get(Long.valueOf(goodsId));
-            goods.setFreezeStore(goods.getFreezeStore() - orderItem.getGoodsNum());
-            goods.setUpdateTime(DateUtil.currentDate());
-            goodsDao.update(goods);
+            if (goods != null) {
+                goods.setFreezeStore(goods.getFreezeStore() - orderItem.getGoodsNum());
+                goods.setUpdateTime(DateUtil.currentDate());
+                goodsDao.update(goods);
+            }
         }
     }
     
