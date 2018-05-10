@@ -99,7 +99,8 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                     goodsDao.update(goods);
                 }
             }
-            retMap.put("orderId", goodsOrderId);
+            retMap.put("userId", goodsOrder.getUserId());
+            retMap.put("orderId", goodsOrder.getId());
             retMap.put("orderNo", goodsOrder.getOrderNo());
             return retMap;
         } catch (Exception ex) {
