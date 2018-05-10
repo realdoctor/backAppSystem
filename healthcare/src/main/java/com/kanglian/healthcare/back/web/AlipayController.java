@@ -32,6 +32,7 @@ import com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog;
 import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
 import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
+import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PayCommonUtil;
@@ -52,7 +53,9 @@ public class AlipayController extends BaseController {
     private AlipayOrderLogBo    alipayOrderLogBo;
     @Autowired
     private AlipayNotifyLogBo   alipayNotifyLogBo;
-
+    @Autowired
+    private UserBo              userBo;
+    
     /**
      * 拉取支付宝预付单
      * 
@@ -72,6 +75,10 @@ public class AlipayController extends BaseController {
         if (paymentOrder.getTotalAmount() == null) {
             return ResultUtil.error("支付金额不能为空");
         }
+        // 判断用户是否存在
+        if(userBo.ifExist(Integer.valueOf(paymentOrder.getUserId()))) {
+            return ResultUtil.error("非法交易，用户不存在");
+        }
         /**
          * 判断支付的总金额是否匹配，防止被修改
          */
@@ -79,7 +86,6 @@ public class AlipayController extends BaseController {
             logger.info("支付的总金额与购买商品总价不一致，购买订单明细==={}", JsonUtil.object2Json(paymentOrder));
             return ResultUtil.error("支付的总金额与购买商品总价不一致");
         }
-
         // 用户Id
         String userId = paymentOrder.getUserId();
         // 外部订单号
@@ -111,7 +117,7 @@ public class AlipayController extends BaseController {
         model.setTimeoutExpress("30m");// 30分钟付款超时
         model.setTotalAmount(orderPrice);
         /**
-         * 支付回调参数更新
+         * 支付回调参数
          */
         notifyParmMap.put("userId", userId);
         notifyParmMap.put("orderNo", orderNo);
@@ -127,7 +133,7 @@ public class AlipayController extends BaseController {
             responseString = JsonUtil.beanToJson(response);
             orderString = response.getBody();
             retResultMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
-            logger.debug("=============用户Id：{}，订单号：{}，请求参数：{}，支付串：{}", new Object[] {userId, orderNo, requestParams, orderString});
+            logger.debug("=============用户Id：{}，订单号：{}，请求参数：{}，响应字符串：{}，支付串：{}", new Object[] {userId, orderNo, requestParams, responseString, orderString});
         } catch (AlipayApiException e) {
             throw new Exception("获取支付宝参数错误");
         }
