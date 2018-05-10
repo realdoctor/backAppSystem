@@ -2,9 +2,11 @@ package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GoodsOrderItem extends BasePojo {
 	private static final long serialVersionUID = 1L;
+	@JsonProperty("goodsOrderItemId")
 	private Long id;
 	private Integer goodsOrderId;
 	private Integer goodsId;

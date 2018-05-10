@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Goods extends BasePojo {
     private static final long serialVersionUID = 1L;
+    @JsonProperty("goodsId")
     private Long id;
     private String name;
     private Integer store;
