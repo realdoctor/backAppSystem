@@ -63,7 +63,7 @@
 		<include refid="conditionQuery.core" />
 	</select>
 
-	<select id="get" resultMap="BaseResultMap" parameterType="java.math.BigInteger">
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="columns"/>
 		from patient_record t 

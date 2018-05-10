@@ -1,10 +1,10 @@
 package com.kanglian.healthcare.back.service;
 
+import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
 import com.kanglian.healthcare.back.dal.dao.UserDao;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.exception.DBException;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserBo extends CrudBo<User, UserDao> {
@@ -26,7 +26,7 @@ public class UserBo extends CrudBo<User, UserDao> {
         }
     }
 
-    public boolean ifExist(Integer userId) {
+    public boolean ifExist(Long userId) {
         try {
             User user = this.dao.get(userId);
             return user != null ? true : false;

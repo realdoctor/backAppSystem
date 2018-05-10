@@ -2,11 +2,10 @@ package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
-import java.math.BigInteger;
 
 public class PatientRecord extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	private BigInteger id;
+	private Long id;
 	private String orgCode;
 	private String patientId;
 	private String visitOrgName;
@@ -17,10 +16,10 @@ public class PatientRecord extends BasePojo {
 	private String respDoctorName;
 	private String doctorCode;
 	private Date lastUpdateDtime;
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getOrgCode() {

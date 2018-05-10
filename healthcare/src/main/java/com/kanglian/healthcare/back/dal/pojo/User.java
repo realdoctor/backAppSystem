@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
-
 import com.easyway.business.framework.json.annotion.NotJsonData;
 import com.easyway.business.framework.pojo.BasePojo;
 
@@ -17,7 +16,6 @@ public class User extends BasePojo {
 	private String idNo;
 	private String sentAddress;
 	private Date addTime;
-	
 	/**
      * 扩展字段
      */

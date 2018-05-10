@@ -76,7 +76,7 @@ public class AlipayController extends BaseController {
             return ResultUtil.error("支付金额不能为空");
         }
         // 判断用户是否存在
-        if(userBo.ifExist(Integer.valueOf(paymentOrder.getUserId()))) {
+        if(!userBo.ifExist(Long.valueOf(paymentOrder.getUserId()))) {
             return ResultUtil.error("非法交易，用户不存在");
         }
         /**
