@@ -130,6 +130,11 @@ public class AlipayController extends BaseController {
         try {
             // 这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(alipayRequest);
+            if (!response.isSuccess()) {
+                logger.debug("==========调用失败");
+                return ResultUtil.error("拉取支付宝预付单失败");
+            }
+            logger.debug("==========调用成功");
             responseString = JsonUtil.beanToJson(response);
             orderString = response.getBody();
             retResultMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
