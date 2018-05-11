@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -13,6 +14,8 @@ import com.easyway.business.framework.springmvc.handler.CustomDateEditor;
 
 public class BaseController {
 
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    
     /**
      * 获取请求属性封装为Map类型
      * 
