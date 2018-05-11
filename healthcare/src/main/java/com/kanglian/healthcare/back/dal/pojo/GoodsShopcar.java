@@ -1,13 +1,13 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.json.annotion.JsonData;
 import com.easyway.business.framework.pojo.BasePojo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GoodsShopcar extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	@JsonProperty("goodsShopcarId")
+	@JSONField(name="goodsShopcarId")
 	private Integer id;
 	private Integer userId;
 	private Integer goodsId;

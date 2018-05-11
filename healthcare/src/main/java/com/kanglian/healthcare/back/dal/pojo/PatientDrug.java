@@ -2,21 +2,20 @@ package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
-import java.math.BigInteger;
 
 public class PatientDrug extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	private BigInteger id;
+	private Long id;
 	private Integer patientDiagId;
 	private String drugName;
 	private String drugStdName;
 	private String drugStdCode;
 	private String notes;
 	private Date lastUpdateDtime;
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getPatientDiagId() {

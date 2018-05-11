@@ -3,23 +3,35 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.NoticeMessageDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" id="BaseResultMapExt" extends="BaseResultMap">
 		<collection property="noticeDiagList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" select="getNoticeDiag" column="id">
-
 		</collection>
-		<!-- <collection property="noticeDiagDrugList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" select="getNoticeDiagDrug" column="id">
-			<result property="id" column="id" jdbcType="INTEGER"/>
-			<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
-			<result property="drugCode" column="drug_code" jdbcType="VARCHAR"/>
-			<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+		<collection property="noticeDiagDrugList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" select="getNoticeDiagDrug" column="id">
 		</collection>
 		<collection property="noticeCommentList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeComment" select="getNoticeComment" column="id">
-			<result property="id" column="id" jdbcType="INTEGER"/>
-			<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
-			<result property="sentUser" column="sent_user" jdbcType="INTEGER"/>
-			<result property="receiveUser" column="receive_user" jdbcType="INTEGER"/>
-			<result property="content" column="content" jdbcType="LONGVARCHAR"/>
-		</collection> -->
+		</collection>
 	</resultMap>
 
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" id="NoticeDiagResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
+		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" id="NoticeDiagDrugResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+		<result property="drugCode" column="drug_code" jdbcType="VARCHAR"/>
+		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeComment" id="NoticeCommentResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+		<result property="sentUser" column="sent_user" jdbcType="INTEGER"/>
+		<result property="receiveUser" column="receive_user" jdbcType="INTEGER"/>
+		<result property="content" column="content" jdbcType="LONGVARCHAR"/>
+	</resultMap>
+	
 	<select id="queryForList" resultMap="BaseResultMapExt" parameterType="java.lang.Long">
 		select
 			t.id,
@@ -33,15 +45,8 @@
 		order by t.id desc
 	</select>
 	
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" id="BaseResultMapX">
-		<result property="id" column="id" jdbcType="INTEGER"/>
-		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
-		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
-		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
-	</resultMap>
-	
 	<!-- 病历更新列表 -->
-	<select id="getNoticeDiag" resultMap="BaseResultMapX" parameterType="java.lang.Long">
+	<select id="getNoticeDiag" resultMap="NoticeDiagResultMap" parameterType="java.lang.Long">
 		select
 			t.id,
 			t.notice_message_id,
@@ -53,7 +58,7 @@
 	</select>
 	
 	<!-- 就诊用药提醒列表 -->
-	<select id="getNoticeDiagDrug" resultType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" parameterType="java.lang.Long">
+	<select id="getNoticeDiagDrug" resultMap="NoticeDiagDrugResultMap" parameterType="java.lang.Long">
 		select
 			t.id,
 			t.notice_message_id,
@@ -65,7 +70,7 @@
 	</select>
 	
 	<!-- 消息评论列表 -->
-	<select id="getNoticeComment" resultType="com.kanglian.healthcare.back.dal.pojo.NoticeComment" parameterType="java.lang.Long">
+	<select id="getNoticeComment" resultMap="NoticeCommentResultMap" parameterType="java.lang.Long">
 		select
 			t.id,
 			t.notice_message_id,

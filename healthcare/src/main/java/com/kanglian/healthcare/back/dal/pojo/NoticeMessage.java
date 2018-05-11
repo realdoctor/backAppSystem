@@ -2,13 +2,13 @@ package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
 import java.util.List;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.json.annotion.JsonData;
 import com.easyway.business.framework.pojo.BasePojo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NoticeMessage extends BasePojo {
     private static final long    serialVersionUID   = 1L;
-    @JsonProperty("noticeMessageId")
+    @JSONField(name="noticeMessageId")
     private Long                 id;
     private String               noticeTypeId;
     private String               noticeType;
@@ -17,8 +17,8 @@ public class NoticeMessage extends BasePojo {
     private Date                 addTime;
     // 一对多映射
     private List<NoticeDiag>     noticeDiagList;
-//    private List<NoticeDiagDrug> noticeDiagDrugList;
-//    private List<NoticeComment>  noticeCommentList;
+    private List<NoticeDiagDrug> noticeDiagDrugList;
+    private List<NoticeComment>  noticeCommentList;
 
     public List<NoticeDiag> getNoticeDiagList() {
         return noticeDiagList;
@@ -28,21 +28,21 @@ public class NoticeMessage extends BasePojo {
         this.noticeDiagList = noticeDiagList;
     }
 
-//    public List<NoticeDiagDrug> getNoticeDiagDrugList() {
-//        return noticeDiagDrugList;
-//    }
-//
-//    public void setNoticeDiagDrugList(List<NoticeDiagDrug> noticeDiagDrugList) {
-//        this.noticeDiagDrugList = noticeDiagDrugList;
-//    }
-//
-//    public List<NoticeComment> getNoticeCommentList() {
-//        return noticeCommentList;
-//    }
-//
-//    public void setNoticeCommentList(List<NoticeComment> noticeCommentList) {
-//        this.noticeCommentList = noticeCommentList;
-//    }
+    public List<NoticeDiagDrug> getNoticeDiagDrugList() {
+        return noticeDiagDrugList;
+    }
+
+    public void setNoticeDiagDrugList(List<NoticeDiagDrug> noticeDiagDrugList) {
+        this.noticeDiagDrugList = noticeDiagDrugList;
+    }
+
+    public List<NoticeComment> getNoticeCommentList() {
+        return noticeCommentList;
+    }
+
+    public void setNoticeCommentList(List<NoticeComment> noticeCommentList) {
+        this.noticeCommentList = noticeCommentList;
+    }
 
     @JsonData(field = "noticeMessageId")
     public Long getId() {

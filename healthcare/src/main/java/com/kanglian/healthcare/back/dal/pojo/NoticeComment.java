@@ -1,11 +1,11 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NoticeComment extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	@JsonProperty("noticeCommentId")
+	@JSONField(name="noticeCommentId")
 	private Long id;
 	private String noticeMessageId;
 	private Integer sentUser;

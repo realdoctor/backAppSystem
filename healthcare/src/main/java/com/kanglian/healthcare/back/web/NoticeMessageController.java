@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,6 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.NoticeMessage;
 import com.kanglian.healthcare.back.service.NoticeMessageBo;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.util.BeanToMapUtil;
 
 /**
  * 消息提醒
@@ -64,11 +62,7 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
         }
         
         List<NoticeMessage> list = this.bo.queryForList(Long.valueOf(userId));
-//        for(NoticeMessage m :list) {
-//            System.err.println(m.getNoticeDiagList());
-//        }
-//        List<Map<String, Object>> mapList = BeanToMapUtil.convertListBean2ListMap(list, NoticeMessage.class);
-        return ResultUtil.success(null);
+        return ResultUtil.success(list);
     }
 
     public static class NoticeMessageQuery extends Grid {
