@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.NoticeMessageDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" id="BaseResultMapExt" extends="BaseResultMap">
+		<collection property="noticeDiagList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" select="getNoticeDiag" column="id">
+
+		</collection>
+		<!-- <collection property="noticeDiagDrugList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" select="getNoticeDiagDrug" column="id">
+			<result property="id" column="id" jdbcType="INTEGER"/>
+			<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+			<result property="drugCode" column="drug_code" jdbcType="VARCHAR"/>
+			<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+		</collection>
+		<collection property="noticeCommentList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeComment" select="getNoticeComment" column="id">
+			<result property="id" column="id" jdbcType="INTEGER"/>
+			<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+			<result property="sentUser" column="sent_user" jdbcType="INTEGER"/>
+			<result property="receiveUser" column="receive_user" jdbcType="INTEGER"/>
+			<result property="content" column="content" jdbcType="LONGVARCHAR"/>
+		</collection> -->
+	</resultMap>
+
+	<select id="queryForList" resultMap="BaseResultMapExt" parameterType="java.lang.Long">
+		select
+			t.id,
+			t.notice_type_id,
+			t1.type,
+			t.user_id,
+			t.content,
+			t.add_time
+		from notice_message t left join notice_type t1 on t.notice_type_id = t1.id
+		where t.id = #{id,jdbcType=INTEGER}
+		order by t.id desc
+	</select>
+	
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" id="BaseResultMapX">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
+		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
+		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 病历更新列表 -->
+	<select id="getNoticeDiag" resultMap="BaseResultMapX" parameterType="java.lang.Long">
+		select
+			t.id,
+			t.notice_message_id,
+			t.diag_code,
+			t.diag_name
+		from notice_diag t
+		where t.notice_message_id = #{id,jdbcType=INTEGER}
+		order by t.id desc
+	</select>
+	
+	<!-- 就诊用药提醒列表 -->
+	<select id="getNoticeDiagDrug" resultType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" parameterType="java.lang.Long">
+		select
+			t.id,
+			t.notice_message_id,
+			t.drug_code,
+			t.drug_name
+		from notice_diag_drug t
+		where t.notice_message_id = #{id,jdbcType=INTEGER}
+		order by t.id desc
+	</select>
+	
+	<!-- 消息评论列表 -->
+	<select id="getNoticeComment" resultType="com.kanglian.healthcare.back.dal.pojo.NoticeComment" parameterType="java.lang.Long">
+		select
+			t.id,
+			t.notice_message_id,
+			t.sent_user,
+			t.receive_user,
+			t.content
+		from notice_comment t
+		where t.notice_message_id = #{id,jdbcType=INTEGER}
+		order by t.id desc
+	</select>
+</mapper>
