@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -29,8 +28,6 @@ import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
-import com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog;
-import com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
 import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
@@ -124,7 +121,7 @@ public class AlipayController extends BaseController {
          */
         notifyParmMap.put("userId", userId);
         notifyParmMap.put("orderNo", orderNo);
-        model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JSON.toJSONString(notifyParmMap)));
+        model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JsonUtil.beanToJson(notifyParmMap)));
         alipayRequest.setBizModel(model);
         alipayRequest.setNotifyUrl(alipayNotifyUrl);
         String requestParams = JsonUtil.beanToJson(alipayRequest);
