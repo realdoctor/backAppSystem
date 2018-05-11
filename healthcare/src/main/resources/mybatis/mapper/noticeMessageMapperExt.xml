@@ -41,7 +41,7 @@
 			t.content,
 			t.add_time
 		from notice_message t left join notice_type t1 on t.notice_type_id = t1.id
-		where t.id = #{id,jdbcType=INTEGER}
+		where t.user_id=#{userId,jdbcType=VARCHAR}
 		order by t.id desc
 	</select>
 	
