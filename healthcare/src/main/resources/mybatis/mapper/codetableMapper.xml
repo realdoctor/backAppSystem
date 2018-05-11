@@ -53,33 +53,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
-		insert into codetable (
-		section,
-		name,
-		code,
-		description,
-		code_notes
-		)
-		values(
-		#{section,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR},
-		#{code,jdbcType=VARCHAR},
-		#{description,jdbcType=VARCHAR},
-		#{codeNotes,jdbcType=VARCHAR}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
-		update codetable set
-		section = #{section,jdbcType=VARCHAR},
-		name = #{name,jdbcType=VARCHAR},
-		code = #{code,jdbcType=VARCHAR},
-		description = #{description,jdbcType=VARCHAR},
-		code_notes = #{codeNotes,jdbcType=VARCHAR}
-		where 1=1 and code = #{code,jdbcType=VARCHAR} and name = #{name,jdbcType=VARCHAR} and section = #{section,jdbcType=VARCHAR}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
 		insert into codetable
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="section != null">
@@ -107,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
 		update codetable 
 		<set>
 		  <if test="section != null">section=#{section,jdbcType=VARCHAR},</if>

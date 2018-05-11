@@ -95,63 +95,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
-		insert into goods (
-		name,
-		store,
-		freeze_store,
-		shelves_time,
-		category_id,
-		attribute,
-		description,
-		detail,
-		cost,
-		market_price,
-		status,
-		add_user,
-		add_time,
-		update_time,
-		remark
-		)
-		values(
-		#{name,jdbcType=VARCHAR},
-		#{store,jdbcType=INTEGER},
-		#{freezeStore,jdbcType=INTEGER},
-		#{shelvesTime,jdbcType=TIMESTAMP},
-		#{categoryId,jdbcType=INTEGER},
-		#{attribute,jdbcType=VARCHAR},
-		#{description,jdbcType=VARCHAR},
-		#{detail,jdbcType=LONGVARCHAR},
-		#{cost,jdbcType=DECIMAL},
-		#{marketPrice,jdbcType=DECIMAL},
-		#{status,jdbcType=CHAR},
-		#{addUser,jdbcType=VARCHAR},
-		#{addTime,jdbcType=TIMESTAMP},
-		#{updateTime,jdbcType=TIMESTAMP},
-		#{remark,jdbcType=VARCHAR}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">
-		update goods set
-		name = #{name,jdbcType=VARCHAR},
-		store = #{store,jdbcType=INTEGER},
-		freeze_store = #{freezeStore,jdbcType=INTEGER},
-		shelves_time = #{shelvesTime,jdbcType=TIMESTAMP},
-		category_id = #{categoryId,jdbcType=INTEGER},
-		attribute = #{attribute,jdbcType=VARCHAR},
-		description = #{description,jdbcType=VARCHAR},
-		detail = #{detail,jdbcType=LONGVARCHAR},
-		cost = #{cost,jdbcType=DECIMAL},
-		market_price = #{marketPrice,jdbcType=DECIMAL},
-		status = #{status,jdbcType=CHAR},
-		add_user = #{addUser,jdbcType=VARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP},
-		update_time = #{updateTime,jdbcType=TIMESTAMP},
-		remark = #{remark,jdbcType=VARCHAR}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
 		insert into goods
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="name != null">
@@ -219,7 +162,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">
 		update goods 
 		<set>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>

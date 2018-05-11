@@ -76,48 +76,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
-		insert into patient_record (
-		org_code,
-		patient_id,
-		visit_org_name,
-		visit_org_code,
-		visit_dept_name,
-		visit_dtime,
-		visit_way,
-		resp_doctor_name,
-		doctor_code,
-		last_update_dtime
-		)
-		values(
-		#{orgCode,jdbcType=VARCHAR},
-		#{patientId,jdbcType=VARCHAR},
-		#{visitOrgName,jdbcType=VARCHAR},
-		#{visitOrgCode,jdbcType=VARCHAR},
-		#{visitDeptName,jdbcType=VARCHAR},
-		#{visitDtime,jdbcType=TIMESTAMP},
-		#{visitWay,jdbcType=VARCHAR},
-		#{respDoctorName,jdbcType=VARCHAR},
-		#{doctorCode,jdbcType=VARCHAR},
-		#{lastUpdateDtime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
-		update patient_record set
-		org_code = #{orgCode,jdbcType=VARCHAR},
-		patient_id = #{patientId,jdbcType=VARCHAR},
-		visit_org_name = #{visitOrgName,jdbcType=VARCHAR},
-		visit_org_code = #{visitOrgCode,jdbcType=VARCHAR},
-		visit_dept_name = #{visitDeptName,jdbcType=VARCHAR},
-		visit_dtime = #{visitDtime,jdbcType=TIMESTAMP},
-		visit_way = #{visitWay,jdbcType=VARCHAR},
-		resp_doctor_name = #{respDoctorName,jdbcType=VARCHAR},
-		doctor_code = #{doctorCode,jdbcType=VARCHAR},
-		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
 		insert into patient_record
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="orgCode != null">
@@ -165,7 +123,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
 		update patient_record 
 		<set>
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>

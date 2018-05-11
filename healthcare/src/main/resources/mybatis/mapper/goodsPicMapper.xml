@@ -58,30 +58,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_pic (
-		goods_id,
-		big_pic,
-		small_pic,
-		add_time
-		)
-		values(
-		#{goodsId,jdbcType=INTEGER},
-		#{bigPic,jdbcType=VARCHAR},
-		#{smallPic,jdbcType=VARCHAR},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">
-		update goods_pic set
-		goods_id = #{goodsId,jdbcType=INTEGER},
-		big_pic = #{bigPic,jdbcType=VARCHAR},
-		small_pic = #{smallPic,jdbcType=VARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_pic
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="goodsId != null">
@@ -105,7 +81,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">
 		update goods_pic 
 		<set>
 		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>

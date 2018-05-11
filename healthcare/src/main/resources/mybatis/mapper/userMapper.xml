@@ -73,45 +73,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.User" useGeneratedKeys="true" keyProperty="userId">
-		insert into user (
-		user_name,
-		pwd,
-		pay_pwd,
-		real_name,
-		email,
-		mobile_phone,
-		id_no,
-		sent_address,
-		add_time
-		)
-		values(
-		#{userName,jdbcType=VARCHAR},
-		#{pwd,jdbcType=VARCHAR},
-		#{payPwd,jdbcType=VARCHAR},
-		#{realName,jdbcType=VARCHAR},
-		#{email,jdbcType=VARCHAR},
-		#{mobilePhone,jdbcType=VARCHAR},
-		#{idNo,jdbcType=VARCHAR},
-		#{sentAddress,jdbcType=VARCHAR},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
-		update user set
-		user_name = #{userName,jdbcType=VARCHAR},
-		pwd = #{pwd,jdbcType=VARCHAR},
-		pay_pwd = #{payPwd,jdbcType=VARCHAR},
-		real_name = #{realName,jdbcType=VARCHAR},
-		email = #{email,jdbcType=VARCHAR},
-		mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
-		id_no = #{idNo,jdbcType=VARCHAR},
-		sent_address = #{sentAddress,jdbcType=VARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and user_id = #{userId,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.User" useGeneratedKeys="true" keyProperty="userId">
 		insert into user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="userName != null">
@@ -155,7 +116,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
 		update user 
 		<set>
 		  <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR},</if>

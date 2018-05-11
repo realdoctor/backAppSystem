@@ -60,30 +60,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" useGeneratedKeys="true" keyProperty="id">
-		insert into notice_message (
-		notice_type_id,
-		user_id,
-		content,
-		add_time
-		)
-		values(
-		#{noticeTypeId,jdbcType=VARCHAR},
-		#{userId,jdbcType=VARCHAR},
-		#{content,jdbcType=LONGVARCHAR},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
-		update notice_message set
-		notice_type_id = #{noticeTypeId,jdbcType=VARCHAR},
-		user_id = #{userId,jdbcType=VARCHAR},
-		content = #{content,jdbcType=LONGVARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=INTEGER}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" useGeneratedKeys="true" keyProperty="id">
 		insert into notice_message
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="noticeTypeId != null">
@@ -107,7 +83,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
 		update notice_message 
 		<set>
 		  <if test="noticeTypeId != null">notice_type_id=#{noticeTypeId,jdbcType=VARCHAR},</if>

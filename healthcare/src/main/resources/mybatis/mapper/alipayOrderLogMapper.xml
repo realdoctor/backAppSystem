@@ -64,36 +64,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" useGeneratedKeys="true" keyProperty="id">
-		insert into alipay_order_log (
-		user_id,
-		order_no,
-		request_params,
-		response_string,
-		order_string,
-		add_time
-		)
-		values(
-		#{userId,jdbcType=VARCHAR},
-		#{orderNo,jdbcType=VARCHAR},
-		#{requestParams,jdbcType=LONGVARCHAR},
-		#{responseString,jdbcType=LONGVARCHAR},
-		#{orderString,jdbcType=LONGVARCHAR},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
-		update alipay_order_log set
-		user_id = #{userId,jdbcType=VARCHAR},
-		order_no = #{orderNo,jdbcType=VARCHAR},
-		request_params = #{requestParams,jdbcType=LONGVARCHAR},
-		response_string = #{responseString,jdbcType=LONGVARCHAR},
-		order_string = #{orderString,jdbcType=LONGVARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" useGeneratedKeys="true" keyProperty="id">
 		insert into alipay_order_log
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="userId != null">
@@ -125,7 +95,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
 		update alipay_order_log 
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>

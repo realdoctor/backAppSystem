@@ -61,33 +61,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_category (
-		name,
-		parent_id,
-		icon_cls,
-		add_time,
-		remark
-		)
-		values(
-		#{name,jdbcType=VARCHAR},
-		#{parentId,jdbcType=INTEGER},
-		#{iconCls,jdbcType=VARCHAR},
-		#{addTime,jdbcType=TIMESTAMP},
-		#{remark,jdbcType=VARCHAR}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
-		update goods_category set
-		name = #{name,jdbcType=VARCHAR},
-		parent_id = #{parentId,jdbcType=INTEGER},
-		icon_cls = #{iconCls,jdbcType=VARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP},
-		remark = #{remark,jdbcType=VARCHAR}
-		where 1=1 and id = #{id,jdbcType=INTEGER}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_category
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="name != null">
@@ -115,7 +88,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">
 		update goods_category 
 		<set>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>

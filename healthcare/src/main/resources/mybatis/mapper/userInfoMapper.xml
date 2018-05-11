@@ -97,69 +97,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo" useGeneratedKeys="true" keyProperty="id">
-		insert into user_info (
-		user_id,
-		org_code,
-		patient_id,
-		name,
-		sex_code,
-		birth_date,
-		abo_code,
-		rh_code,
-		id_type_code,
-		id_no,
-		mobile_phone,
-		marriage_code,
-		nationality_code,
-		card_type_code,
-		card_no,
-		drug_allergy_mark,
-		last_update_dtime
-		)
-		values(
-		#{userId,jdbcType=INTEGER},
-		#{orgCode,jdbcType=VARCHAR},
-		#{patientId,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR},
-		#{sexCode,jdbcType=VARCHAR},
-		#{birthDate,jdbcType=TIMESTAMP},
-		#{aboCode,jdbcType=VARCHAR},
-		#{rhCode,jdbcType=VARCHAR},
-		#{idTypeCode,jdbcType=VARCHAR},
-		#{idNo,jdbcType=VARCHAR},
-		#{mobilePhone,jdbcType=VARCHAR},
-		#{marriageCode,jdbcType=VARCHAR},
-		#{nationalityCode,jdbcType=VARCHAR},
-		#{cardTypeCode,jdbcType=VARCHAR},
-		#{cardNo,jdbcType=VARCHAR},
-		#{drugAllergyMark,jdbcType=CHAR},
-		#{lastUpdateDtime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo">
-		update user_info set
-		user_id = #{userId,jdbcType=INTEGER},
-		org_code = #{orgCode,jdbcType=VARCHAR},
-		patient_id = #{patientId,jdbcType=VARCHAR},
-		name = #{name,jdbcType=VARCHAR},
-		sex_code = #{sexCode,jdbcType=VARCHAR},
-		birth_date = #{birthDate,jdbcType=TIMESTAMP},
-		abo_code = #{aboCode,jdbcType=VARCHAR},
-		rh_code = #{rhCode,jdbcType=VARCHAR},
-		id_type_code = #{idTypeCode,jdbcType=VARCHAR},
-		id_no = #{idNo,jdbcType=VARCHAR},
-		mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
-		marriage_code = #{marriageCode,jdbcType=VARCHAR},
-		nationality_code = #{nationalityCode,jdbcType=VARCHAR},
-		card_type_code = #{cardTypeCode,jdbcType=VARCHAR},
-		card_no = #{cardNo,jdbcType=VARCHAR},
-		drug_allergy_mark = #{drugAllergyMark,jdbcType=CHAR},
-		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo" useGeneratedKeys="true" keyProperty="id">
 		insert into user_info
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="userId != null">
@@ -235,7 +172,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo">
 		update user_info 
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

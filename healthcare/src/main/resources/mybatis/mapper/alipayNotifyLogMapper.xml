@@ -58,30 +58,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog" useGeneratedKeys="true" keyProperty="id">
-		insert into alipay_notify_log (
-		user_id,
-		order_no,
-		notify_string,
-		add_time
-		)
-		values(
-		#{userId,jdbcType=VARCHAR},
-		#{orderNo,jdbcType=VARCHAR},
-		#{notifyString,jdbcType=LONGVARCHAR},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog">
-		update alipay_notify_log set
-		user_id = #{userId,jdbcType=VARCHAR},
-		order_no = #{orderNo,jdbcType=VARCHAR},
-		notify_string = #{notifyString,jdbcType=LONGVARCHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog" useGeneratedKeys="true" keyProperty="id">
 		insert into alipay_notify_log
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="userId != null">
@@ -105,7 +81,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayNotifyLog">
 		update alipay_notify_log 
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>

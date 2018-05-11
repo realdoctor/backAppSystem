@@ -64,36 +64,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag" useGeneratedKeys="true" keyProperty="id">
-		insert into patient_diag (
-		patient_record_id,
-		diag_code,
-		diag_name,
-		diag_date,
-		diag_type_code,
-		last_update_dtime
-		)
-		values(
-		#{patientRecordId,jdbcType=INTEGER},
-		#{diagCode,jdbcType=VARCHAR},
-		#{diagName,jdbcType=VARCHAR},
-		#{diagDate,jdbcType=TIMESTAMP},
-		#{diagTypeCode,jdbcType=VARCHAR},
-		#{lastUpdateDtime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
-		update patient_diag set
-		patient_record_id = #{patientRecordId,jdbcType=INTEGER},
-		diag_code = #{diagCode,jdbcType=VARCHAR},
-		diag_name = #{diagName,jdbcType=VARCHAR},
-		diag_date = #{diagDate,jdbcType=TIMESTAMP},
-		diag_type_code = #{diagTypeCode,jdbcType=VARCHAR},
-		last_update_dtime = #{lastUpdateDtime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag" useGeneratedKeys="true" keyProperty="id">
 		insert into patient_diag
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="patientRecordId != null">
@@ -125,7 +95,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">
 		update patient_diag 
 		<set>
 		  <if test="patientRecordId != null">patient_record_id=#{patientRecordId,jdbcType=INTEGER},</if>

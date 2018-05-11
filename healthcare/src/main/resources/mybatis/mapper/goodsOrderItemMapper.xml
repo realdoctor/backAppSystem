@@ -61,33 +61,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_order_item (
-		goods_order_id,
-		goods_id,
-		goods_num,
-		goods_price,
-		add_time
-		)
-		values(
-		#{goodsOrderId,jdbcType=INTEGER},
-		#{goodsId,jdbcType=INTEGER},
-		#{goodsNum,jdbcType=INTEGER},
-		#{goodsPrice,jdbcType=DOUBLE},
-		#{addTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">
-		update goods_order_item set
-		goods_order_id = #{goodsOrderId,jdbcType=INTEGER},
-		goods_id = #{goodsId,jdbcType=INTEGER},
-		goods_num = #{goodsNum,jdbcType=INTEGER},
-		goods_price = #{goodsPrice,jdbcType=DOUBLE},
-		add_time = #{addTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_order_item
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="goodsOrderId != null">
@@ -115,7 +88,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">
 		update goods_order_item 
 		<set>
 		  <if test="goodsOrderId != null">goods_order_id=#{goodsOrderId,jdbcType=INTEGER},</if>

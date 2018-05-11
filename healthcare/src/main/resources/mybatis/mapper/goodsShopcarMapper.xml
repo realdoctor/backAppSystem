@@ -79,36 +79,6 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_shopcar (
-		user_id,
-		goods_id,
-		num,
-		status,
-		add_time,
-		update_time
-		)
-		values(
-		#{userId,jdbcType=INTEGER},
-		#{goodsId,jdbcType=INTEGER},
-		#{num,jdbcType=INTEGER},
-		#{status,jdbcType=CHAR},
-		#{addTime,jdbcType=TIMESTAMP},
-		#{updateTime,jdbcType=TIMESTAMP}
-		)
-	</insert>
-
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar">
-		update goods_shopcar set
-		user_id = #{userId,jdbcType=INTEGER},
-		goods_id = #{goodsId,jdbcType=INTEGER},
-		num = #{num,jdbcType=INTEGER},
-		status = #{status,jdbcType=CHAR},
-		add_time = #{addTime,jdbcType=TIMESTAMP},
-		update_time = #{updateTime,jdbcType=TIMESTAMP}
-		where 1=1 and id = #{id,jdbcType=INTEGER}
-	</update>
-
-	<insert id="insertSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_shopcar
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="userId != null">
@@ -140,7 +110,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateSelective" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar">
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar">
 		update goods_shopcar 
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
