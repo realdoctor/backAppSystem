@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import com.easyway.business.framework.json.annotion.JsonData;
 import com.easyway.business.framework.pojo.BasePojo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,6 +25,7 @@ public class Goods extends BasePojo {
     private Date addTime;
     private Date updateTime;
     private String remark;
+    @JsonData(field="goodsId")
     public Long getId() {
         return id;
     }
@@ -69,6 +71,7 @@ public class Goods extends BasePojo {
     public String getDescription() {
         return description;
     }
+    @JsonData(field="goodsDescription")
     public void setDescription(String description) {
         this.description = description;
     }
