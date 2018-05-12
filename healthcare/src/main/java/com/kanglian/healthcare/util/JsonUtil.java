@@ -5,6 +5,8 @@ import java.util.Map;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.PropertyPreFilter;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
 /**
  * JSON操作工具类
@@ -43,7 +45,7 @@ public class JsonUtil {
             return null;
         }
     }
-    
+
     /**
      * Bean对象转JSON
      * 
@@ -100,5 +102,18 @@ public class JsonUtil {
             return null;
         }
         return JSON.parseObject(json, Map.class);
+    }
+
+    /**
+     * 过滤实体中的字段
+     * 
+     * @param src 需要过滤的对象，如 list,entity
+     * @param clazz 实体的class
+     * @param args 需要的字段，使用逗号分隔，如：time,desc
+     * @return
+     */
+    public static String filterFieldsJson(Object src, Class<?> clazz, String... args) {
+        PropertyPreFilter filter = new SimplePropertyPreFilter(clazz, args);
+        return JSON.toJSONString(src, filter);
     }
 }
