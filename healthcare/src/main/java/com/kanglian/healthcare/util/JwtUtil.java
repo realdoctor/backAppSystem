@@ -19,11 +19,21 @@ public class JwtUtil {
      */
     public static final String JWT_ID               = "jwt";
     public static final String JWT_SECRET           = "9ff28bfa80b1beaca18e167df071db6e";
-    public static final int    JWT_TTL              = 20 * 1000; // 30*60*1000;// token有效时间,单位毫秒
-    public static final int    JWT_REFRESH_INTERVAL = 18 * 1000; // 55*60*1000;
-    public static final int    JWT_REFRESH_TTL      = 60 * 1000; // 12*60*60*1000;
+    public static final int    JWT_TTL              = 604800000; // token有效时间7t,单位毫秒
+    public static final int    JWT_REFRESH_INTERVAL = 55*60*1000;
+    public static final int    JWT_REFRESH_TTL      = 12*60*60*1000;
 
-    public static String generToken(String userId, String subject, long TTLMillis) {
+    /**
+     * 签发JWT
+     * 
+     * @param id jwt的唯一身份标识，主要用来作为一次性token，从而回避重放攻击。
+     * @param iss jwt签发者
+     * @param subject jwt所面向的用户
+     * @param ttlMillis 有效期，单位毫秒
+     * @return token
+     * @throws Exception
+     */
+    public static String generToken(String id, String subject, long TTLMillis) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
@@ -32,11 +42,11 @@ public class JwtUtil {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
         // 添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
-                .setHeaderParam("alg", "HS256").setId(userId).setIssuedAt(now) // 创建时间
+                .setHeaderParam("alg", "HS256").setId(id).setIssuedAt(now) // 创建时间
                 .setSubject(subject) // 主题
                 .setIssuer("Online JWT Builder") // 发送人
                 .setAudience("kanglian") // 个人签名
-                .claim("userId", userId)// 自定义key
+                // .claim("key","vaule")// 自定义key
                 .signWith(signatureAlgorithm, signingKey);
         // 添加Token过期时间
         if (TTLMillis >= 0) {
@@ -51,12 +61,16 @@ public class JwtUtil {
         return builder.compact();
     }
 
-    // 解析Token，同时也能验证Token，当验证失败返回null
+    /**
+     * 解析Token，同时也能验证Token，当验证失败返回null
+     * 
+     * @param token
+     * @return
+     */
     public static Claims verifyToken(String token) {
         try {
             Claims claims =
-                    Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET))
-                            .parseClaimsJws(token).getBody();
+                    Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET)).parseClaimsJws(token).getBody();
             return claims;
         } catch (SignatureException | ExpiredJwtException ex) {
             return null;
