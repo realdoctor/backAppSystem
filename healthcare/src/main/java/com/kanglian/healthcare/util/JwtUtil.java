@@ -18,7 +18,7 @@ public class JwtUtil {
      * jwt
      */
     public static final String JWT_ID               = "jwt";
-    public static final String JWT_SECRET           = "7786df7fc3a34e26a61c034d5ec8245d";
+    public static final String JWT_SECRET           = "9ff28bfa80b1beaca18e167df071db6e";
     public static final int    JWT_TTL              = 20 * 1000; // 30*60*1000;// token有效时间,单位毫秒
     public static final int    JWT_REFRESH_INTERVAL = 18 * 1000; // 55*60*1000;
     public static final int    JWT_REFRESH_TTL      = 60 * 1000; // 12*60*60*1000;
@@ -36,7 +36,7 @@ public class JwtUtil {
                 .setSubject(subject) // 主题
                 .setIssuer("Online JWT Builder") // 发送人
                 .setAudience("kanglian") // 个人签名
-                // .claim("key","vaule")// 自定义key
+                .claim("userId", userId)// 自定义key
                 .signWith(signatureAlgorithm, signingKey);
         // 添加Token过期时间
         if (TTLMillis >= 0) {
