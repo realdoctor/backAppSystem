@@ -1,11 +1,11 @@
 package com.kanglian.healthcare.back.web;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSONObject;
+import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
@@ -27,6 +27,7 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
 
     @Autowired
     private UserBo userBo;
+    
     /**
      * 最近消息提醒一览
      * 
@@ -52,17 +53,36 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      * @return
      * @throws Exception
      */
-    @GetMapping("/{userId}")
-    public ResultBody noticeMessageList(@PathVariable("userId") String userId) throws Exception {
-        if (StringUtil.isEmpty(userId)) {
-            return ResultUtil.error("用户未登录！");
-        }
-        if (!userBo.ifExist(Long.valueOf(userId))) {
-            return ResultUtil.error("用户不存在");
-        }
-        
-        List<NoticeMessage> list = this.bo.queryForList(Long.valueOf(userId));
-        return ResultUtil.success(list);
+    @GetMapping("/frontList")
+    public ResultBody noticeMessageList(NoticeMessageQuery query) throws Exception {
+        final Grid grid = this.bo.queryFrontList(query);
+        return ResultUtil.success(grid, new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                NoticeMessage message = (NoticeMessage) pojo;
+                try {
+                    // 就诊用药提醒
+                    if ("1".equals(message.getNoticeTypeId())) {
+                        jsonObject.put("dataList", message.getNoticeDiagDrugList());
+                        jsonObject.remove("noticeDiagList");
+                        jsonObject.remove("noticeDiagDrugList");
+                        jsonObject.remove("noticeCommentList");
+                    } 
+                    // 病历更新
+                    else if ("2".equals(message.getNoticeTypeId())) {
+                        jsonObject.put("dataList", message.getNoticeDiagList());
+                        jsonObject.remove("noticeDiagList");
+                        jsonObject.remove("noticeDiagDrugList");
+                        jsonObject.remove("noticeCommentList");
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+
+        });
     }
 
     public static class NoticeMessageQuery extends Grid {

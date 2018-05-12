@@ -32,7 +32,8 @@
 		<result property="content" column="content" jdbcType="LONGVARCHAR"/>
 	</resultMap>
 	
-	<select id="queryForList" resultMap="BaseResultMapExt" parameterType="java.lang.Long">
+	<!-- 消息提醒列表 -->
+	<select id="frontList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
 			t.id,
 			t.notice_type_id,
@@ -41,8 +42,24 @@
 			t.content,
 			t.add_time
 		from notice_message t left join notice_type t1 on t.notice_type_id = t1.id
-		where t.user_id=#{userId,jdbcType=VARCHAR}
-		order by t.id desc
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		notice_type_id asc, id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="frontListCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from notice_message t
+		<include refid="conditionQuery.core" />
 	</select>
 	
 	<!-- 病历更新列表 -->

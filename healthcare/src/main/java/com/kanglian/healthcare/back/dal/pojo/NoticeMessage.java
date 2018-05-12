@@ -7,8 +7,8 @@ import com.easyway.business.framework.json.annotion.JsonData;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class NoticeMessage extends BasePojo {
-    private static final long    serialVersionUID   = 1L;
-    @JSONField(name="noticeMessageId")
+    private static final long    serialVersionUID = 1L;
+    @JSONField(name = "noticeMessageId")
     private Long                 id;
     private String               noticeTypeId;
     private String               noticeType;
