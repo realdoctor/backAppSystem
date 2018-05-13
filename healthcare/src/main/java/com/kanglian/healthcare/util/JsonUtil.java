@@ -83,11 +83,11 @@ public class JsonUtil {
      * @param clazz
      * @return
      */
-    public static Object jsonToBean(String json, Object clazz) {
+    public static <T> T jsonToBean(String json, Class<T> clazz) {
         if (StringUtils.isEmpty(json) || clazz == null) {
             return null;
         }
-        return JSON.parseObject(json, clazz.getClass());
+        return JSON.parseObject(json, clazz);
     }
 
     /**
