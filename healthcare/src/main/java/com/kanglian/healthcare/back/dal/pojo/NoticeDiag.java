@@ -8,7 +8,9 @@ public class NoticeDiag extends BasePojo {
 	@JSONField(name="noticeDiagId")
 	private Long id;
 	private String noticeMessageId;
+	@JSONField(name="stdCode")
 	private String diagCode;
+	@JSONField(name="stdName")
 	private String diagName;
 	public Long getId() {
 		return id;

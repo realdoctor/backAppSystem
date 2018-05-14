@@ -8,7 +8,9 @@ public class NoticeDiagDrug extends BasePojo {
 	@JSONField(name="noticeDiagDrugId")
 	private Long id;
 	private String noticeMessageId;
+	@JSONField(name="stdCode")
 	private String drugCode;
+	@JSONField(name="stdName")
 	private String drugName;
 	public Long getId() {
 		return id;
