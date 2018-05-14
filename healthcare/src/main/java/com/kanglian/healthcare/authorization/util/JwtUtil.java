@@ -5,11 +5,9 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.impl.Base64Codec;
 
 public class JwtUtil {
@@ -71,7 +69,7 @@ public class JwtUtil {
             Claims claims =
                     Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET)).parseClaimsJws(token).getBody();
             return claims;
-        } catch (SignatureException | ExpiredJwtException ex) {
+        } catch (Exception ex) {
             return null;
         }
     }
