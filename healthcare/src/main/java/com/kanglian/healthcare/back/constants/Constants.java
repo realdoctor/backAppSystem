@@ -1,6 +1,6 @@
 package com.kanglian.healthcare.back.constants;
 
-public final class Constant {
+public final class Constants {
 
     // 卡类型代码（社保卡、医保卡、身份证）
     public final static String STD_CARD_TYPE                 = "STD_CARD_TYPE";
@@ -67,4 +67,10 @@ public final class Constant {
 
     // 手机验证码位数
     public final static int    VERIFY_CODE_NUM               = 4;
+
+    // 手机验证码
+    public static final String VERIFY_CODE_KEY               = "VERIFY_CODE_";
+
+    // 缓存字典码表
+    public static final String REDIS_CACHE_CODETABLE         = "INIT_CACHE_CODETABLE";
 }

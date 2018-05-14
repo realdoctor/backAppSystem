@@ -2,6 +2,9 @@ package com.kanglian.healthcare.back.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +19,17 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.constants.Constant;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
+import com.kanglian.healthcare.authorization.util.JwtUtil;
+import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.util.CacheManager;
+import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
+import com.kanglian.healthcare.util.RedisCache;
 import com.kanglian.healthcare.util.SmsUtil;
 import com.kanglian.healthcare.util.ValidateUtil;
 
@@ -29,6 +37,11 @@ import com.kanglian.healthcare.util.ValidateUtil;
 @RequestMapping(value = "/user")
 public class UserController extends CrudController<User, UserBo> {
 
+    @Autowired
+    private RedisTokenManager redisTokenManager;
+    @Autowired
+    private RedisCache redisCache;
+    
     @GetMapping
     public ResultBody list(UserQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getMobilePhone())) {
@@ -70,7 +83,27 @@ public class UserController extends CrudController<User, UserBo> {
                 return ResultUtil.error("密码不正确！");
             }
         }
-        return ResultUtil.success(user.toJSONObject());
+        
+        // 一个用户只能绑定一个Token，单点登录。用户退出，令牌失效
+        String token = redisTokenManager.getToken(mobilePhone);
+        if (token == null) {
+            // 生成Token
+            token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
+            redisTokenManager.createRelationship(mobilePhone, token);
+        } else {
+            logger.info("========手机号{}，已登录另外一台客户端。token={}", new Object[] {mobilePhone, token});
+        }
+        User userT = new User();
+        BeanUtils.copyProperties(user, userT);
+        userT.setRefreshToken(true);// 客户端自动刷新token
+        userT.setLastUpdateDtime(DateUtil.currentDate());// 判断客户端刷新token频率
+        String refreshToken =
+                JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(userT), JwtUtil.JWT_REFRESH_TTL);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("token", token);
+        resultMap.put("refreshToken", refreshToken);
+        resultMap.put("user", userT);
+        return ResultUtil.success(resultMap);
     }
 
     /**
@@ -104,11 +137,11 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("用户已存在！");
         }
         // 手机验证码
-        if (CacheManager.get(mobilePhone) == null) {
+        Object cacheVCode = redisCache.getCacheObject(Constants.VERIFY_CODE_KEY+mobilePhone);
+        if (cacheVCode == null) {
             return ResultUtil.error("验证码过期，请重新获取！");
         } else {
-            String code = CacheManager.get(mobilePhone);
-            if (!code.equals(verifyCode)) {
+            if (!cacheVCode.equals(verifyCode)) {
                 return ResultUtil.error("手机验证码不正确！");
             }
         }
@@ -127,6 +160,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
+    @Authorization
     @PostMapping("/updatePwd")
     public ResultBody updatePwd(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
@@ -143,11 +177,11 @@ public class UserController extends CrudController<User, UserBo> {
         User userT = this.bo.login(user);
         if (userT == null) {
             return ResultUtil.error("用户不存在！");
-        } else {
-            userT.setPwd(MD5Util.encrypt(pwd));
-            this.bo.update(userT);
         }
-
+        userT.setPwd(MD5Util.encrypt(pwd));
+        userT.setLastUpdateDtime(DateUtil.currentDate());
+        this.bo.update(userT);
+        redisTokenManager.delRelationshipByKey(mobilePhone);
         return ResultUtil.success();
     }
 
@@ -166,17 +200,54 @@ public class UserController extends CrudController<User, UserBo> {
         if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
-        String code = NumberUtil.getRandByNum(Constant.VERIFY_CODE_NUM);
-        boolean bool = SmsUtil.sendCode(mobilePhone, code);
+        String verifyCode = NumberUtil.getRandByNum(Constants.VERIFY_CODE_NUM);
+        boolean bool = SmsUtil.sendCode(mobilePhone, verifyCode);
         if (!bool) {
             return ResultUtil.error("发送手机验证码失败！");
         }
-        CacheManager.set(mobilePhone, code, 300000);// 5分钟过期
+        // 5分钟过期
+        redisCache.setCacheObject(Constants.VERIFY_CODE_KEY+mobilePhone, verifyCode, 5L, TimeUnit.MINUTES);
         Map<String, String> retMap = new HashMap<String, String>();
-        retMap.put("code", code);
+        retMap.put("code", verifyCode);
         return ResultUtil.success(retMap);
     }
+    
+    /**
+     * 用户退出
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @PostMapping("/logout")
+    public ResultBody logout(@CurrentUser User user) throws Exception {
+        redisTokenManager.delRelationshipByKey(user.getMobilePhone());
+        return ResultUtil.success();
+    }
 
+    /**
+     * 客户端自动刷新token
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @GetMapping("/refreshToken")
+    public ResultBody refreshToken(@CurrentUser User user) throws Exception {
+        if (user == null) {
+            return ResultUtil.error("刷新token失败");
+        }
+        // 重新生成Token
+        String token = JwtUtil.generToken(user.getMobilePhone(), JsonUtil.beanToJson(user),
+                JwtUtil.JWT_TTL);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("token", token);
+        redisTokenManager.createRelationship(user.getMobilePhone(), token);
+        return ResultUtil.success(resultMap);
+    }
+    
     public static class UserQuery extends Grid {
 
         private String userId;

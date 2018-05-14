@@ -14,6 +14,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.cond.IdsParm;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
@@ -23,6 +24,7 @@ import com.kanglian.healthcare.back.service.GoodsShopcarBo;
  * 
  * @author xl.liu
  */
+@Authorization
 @RestController
 @RequestMapping(value = "/cart")
 public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsShopcarBo> {

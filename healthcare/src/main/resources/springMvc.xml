@@ -36,6 +36,9 @@
                 </property>
             </bean>
         </mvc:message-converters>
+        <!-- <mvc:argument-resolvers>
+			<bean class="com.kanglian.healthcare.inteceptor.CurrentUserMethodArgumentResolver" />
+		</mvc:argument-resolvers> -->
     </mvc:annotation-driven>
 
 	<!-- 使用注解开发，不用配置controller，需要配置一个组件扫描器 -->
@@ -53,7 +56,13 @@
 	<mvc:cors>
         <mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,OPTIONS"/>
     </mvc:cors>
+
+	<!-- 拦截器 -->
+	<!-- <mvc:interceptors>
+		<bean class="com.kanglian.healthcare.inteceptor.AuthorizationInterceptor"></bean>
+	</mvc:interceptors> -->
     
+    <!-- 启动对@AspectJ注解的支持  -->
     <aop:aspectj-autoproxy expose-proxy="true"/>
     <!-- 处理静态资源被"/"所拦截的问题 -->
     <mvc:default-servlet-handler/>
