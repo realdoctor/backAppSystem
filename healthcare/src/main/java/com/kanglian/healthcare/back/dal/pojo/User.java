@@ -16,14 +16,17 @@ public class User extends BasePojo {
 	private String realName;
 	private String email;
 	private String mobilePhone;
+	@JSONField(serialize=false)
 	private String idNo;
 	private String sentAddress;
+	@JSONField(serialize=false)
 	private Date addTime;
+	private Date lastUpdateDtime;
 	/**
      * 扩展字段
      */
-    private String verifyCode;
-    
+    private transient String verifyCode;
+    private boolean refreshToken;
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;
@@ -31,7 +34,12 @@ public class User extends BasePojo {
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
     }
-    
+    public boolean isRefreshToken() {
+        return refreshToken;
+    }
+    public void setRefreshToken(boolean refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 	public Long getUserId() {
 		return userId;
 	}
@@ -94,4 +102,10 @@ public class User extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
+	public Date getLastUpdateDtime() {
+        return lastUpdateDtime;
+    }
+    public void setLastUpdateDtime(Date lastUpdateDtime) {
+        this.lastUpdateDtime = lastUpdateDtime;
+    }
 }
