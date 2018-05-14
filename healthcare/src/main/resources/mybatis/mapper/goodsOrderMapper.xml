@@ -85,63 +85,36 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_order
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="orderNo != null">
-		    order_no,
-		  </if>
-		  <if test="userId != null">
-		    user_id,
-		  </if>
-		  <if test="payPrice != null">
-		    pay_price,
-		  </if>
-		  <if test="payTime != null">
-		    pay_time,
-		  </if>
-		  <if test="consignTime != null">
-		    consign_time,
-		  </if>
-		  <if test="receiptTime != null">
-		    receipt_time,
-		  </if>
-		  <if test="shippingName != null">
-		    shipping_name,
-		  </if>
-		  <if test="shippingCode != null">
-		    shipping_code,
-		  </if>
-		  <if test="tradeStatus != null">
-		    trade_status,
-		  </if>
-		  <if test="sentStatus != null">
-		    sent_status,
-		  </if>
-		  <if test="closeTime != null">
-		    close_time,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		  <if test="updateTime != null">
-		    update_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
-		  <if test="payPrice != null">pay_price=#{payPrice,jdbcType=DOUBLE},</if>
-		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
-		  <if test="consignTime != null">consign_time=#{consignTime,jdbcType=TIMESTAMP},</if>
-		  <if test="receiptTime != null">receipt_time=#{receiptTime,jdbcType=TIMESTAMP},</if>
-		  <if test="shippingName != null">shipping_name=#{shippingName,jdbcType=VARCHAR},</if>
-		  <if test="shippingCode != null">shipping_code=#{shippingCode,jdbcType=VARCHAR},</if>
-		  <if test="tradeStatus != null">trade_status=#{tradeStatus,jdbcType=CHAR},</if>
-		  <if test="sentStatus != null">sent_status=#{sentStatus,jdbcType=CHAR},</if>
-		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into goods_order (
+		order_no,
+		user_id,
+		pay_price,
+		pay_time,
+		consign_time,
+		receipt_time,
+		shipping_name,
+		shipping_code,
+		trade_status,
+		sent_status,
+		close_time,
+		add_time,
+		update_time
+		)
+		values(
+		#{orderNo,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
+		#{payPrice,jdbcType=DOUBLE},
+		#{payTime,jdbcType=TIMESTAMP},
+		#{consignTime,jdbcType=TIMESTAMP},
+		#{receiptTime,jdbcType=TIMESTAMP},
+		#{shippingName,jdbcType=VARCHAR},
+		#{shippingCode,jdbcType=VARCHAR},
+		#{tradeStatus,jdbcType=CHAR},
+		#{sentStatus,jdbcType=CHAR},
+		#{closeTime,jdbcType=TIMESTAMP},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">

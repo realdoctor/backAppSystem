@@ -76,51 +76,30 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
-		insert into patient_record
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="orgCode != null">
-		    org_code,
-		  </if>
-		  <if test="patientId != null">
-		    patient_id,
-		  </if>
-		  <if test="visitOrgName != null">
-		    visit_org_name,
-		  </if>
-		  <if test="visitOrgCode != null">
-		    visit_org_code,
-		  </if>
-		  <if test="visitDeptName != null">
-		    visit_dept_name,
-		  </if>
-		  <if test="visitDtime != null">
-		    visit_dtime,
-		  </if>
-		  <if test="visitWay != null">
-		    visit_way,
-		  </if>
-		  <if test="respDoctorName != null">
-		    resp_doctor_name,
-		  </if>
-		  <if test="doctorCode != null">
-		    doctor_code,
-		  </if>
-		  <if test="lastUpdateDtime != null">
-		    last_update_dtime,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
-		  <if test="visitOrgName != null">visit_org_name=#{visitOrgName,jdbcType=VARCHAR},</if>
-		  <if test="visitOrgCode != null">visit_org_code=#{visitOrgCode,jdbcType=VARCHAR},</if>
-		  <if test="visitDeptName != null">visit_dept_name=#{visitDeptName,jdbcType=VARCHAR},</if>
-		  <if test="visitDtime != null">visit_dtime=#{visitDtime,jdbcType=TIMESTAMP},</if>
-		  <if test="visitWay != null">visit_way=#{visitWay,jdbcType=VARCHAR},</if>
-		  <if test="respDoctorName != null">resp_doctor_name=#{respDoctorName,jdbcType=VARCHAR},</if>
-		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
-		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into patient_record (
+		org_code,
+		patient_id,
+		visit_org_name,
+		visit_org_code,
+		visit_dept_name,
+		visit_dtime,
+		visit_way,
+		resp_doctor_name,
+		doctor_code,
+		last_update_dtime
+		)
+		values(
+		#{orgCode,jdbcType=VARCHAR},
+		#{patientId,jdbcType=VARCHAR},
+		#{visitOrgName,jdbcType=VARCHAR},
+		#{visitOrgCode,jdbcType=VARCHAR},
+		#{visitDeptName,jdbcType=VARCHAR},
+		#{visitDtime,jdbcType=TIMESTAMP},
+		#{visitWay,jdbcType=VARCHAR},
+		#{respDoctorName,jdbcType=VARCHAR},
+		#{doctorCode,jdbcType=VARCHAR},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">

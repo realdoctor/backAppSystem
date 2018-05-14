@@ -97,79 +97,44 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo" useGeneratedKeys="true" keyProperty="id">
-		insert into user_info
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">
-		    user_id,
-		  </if>
-		  <if test="orgCode != null">
-		    org_code,
-		  </if>
-		  <if test="patientId != null">
-		    patient_id,
-		  </if>
-		  <if test="name != null">
-		    name,
-		  </if>
-		  <if test="sexCode != null">
-		    sex_code,
-		  </if>
-		  <if test="birthDate != null">
-		    birth_date,
-		  </if>
-		  <if test="aboCode != null">
-		    abo_code,
-		  </if>
-		  <if test="rhCode != null">
-		    rh_code,
-		  </if>
-		  <if test="idTypeCode != null">
-		    id_type_code,
-		  </if>
-		  <if test="idNo != null">
-		    id_no,
-		  </if>
-		  <if test="mobilePhone != null">
-		    mobile_phone,
-		  </if>
-		  <if test="marriageCode != null">
-		    marriage_code,
-		  </if>
-		  <if test="nationalityCode != null">
-		    nationality_code,
-		  </if>
-		  <if test="cardTypeCode != null">
-		    card_type_code,
-		  </if>
-		  <if test="cardNo != null">
-		    card_no,
-		  </if>
-		  <if test="drugAllergyMark != null">
-		    drug_allergy_mark,
-		  </if>
-		  <if test="lastUpdateDtime != null">
-		    last_update_dtime,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
-		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
-		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>
-		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="sexCode != null">sex_code=#{sexCode,jdbcType=VARCHAR},</if>
-		  <if test="birthDate != null">birth_date=#{birthDate,jdbcType=TIMESTAMP},</if>
-		  <if test="aboCode != null">abo_code=#{aboCode,jdbcType=VARCHAR},</if>
-		  <if test="rhCode != null">rh_code=#{rhCode,jdbcType=VARCHAR},</if>
-		  <if test="idTypeCode != null">id_type_code=#{idTypeCode,jdbcType=VARCHAR},</if>
-		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
-		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
-		  <if test="marriageCode != null">marriage_code=#{marriageCode,jdbcType=VARCHAR},</if>
-		  <if test="nationalityCode != null">nationality_code=#{nationalityCode,jdbcType=VARCHAR},</if>
-		  <if test="cardTypeCode != null">card_type_code=#{cardTypeCode,jdbcType=VARCHAR},</if>
-		  <if test="cardNo != null">card_no=#{cardNo,jdbcType=VARCHAR},</if>
-		  <if test="drugAllergyMark != null">drug_allergy_mark=#{drugAllergyMark,jdbcType=CHAR},</if>
-		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into user_info (
+		user_id,
+		org_code,
+		patient_id,
+		name,
+		sex_code,
+		birth_date,
+		abo_code,
+		rh_code,
+		id_type_code,
+		id_no,
+		mobile_phone,
+		marriage_code,
+		nationality_code,
+		card_type_code,
+		card_no,
+		drug_allergy_mark,
+		last_update_dtime
+		)
+		values(
+		#{userId,jdbcType=INTEGER},
+		#{orgCode,jdbcType=VARCHAR},
+		#{patientId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{sexCode,jdbcType=VARCHAR},
+		#{birthDate,jdbcType=TIMESTAMP},
+		#{aboCode,jdbcType=VARCHAR},
+		#{rhCode,jdbcType=VARCHAR},
+		#{idTypeCode,jdbcType=VARCHAR},
+		#{idNo,jdbcType=VARCHAR},
+		#{mobilePhone,jdbcType=VARCHAR},
+		#{marriageCode,jdbcType=VARCHAR},
+		#{nationalityCode,jdbcType=VARCHAR},
+		#{cardTypeCode,jdbcType=VARCHAR},
+		#{cardNo,jdbcType=VARCHAR},
+		#{drugAllergyMark,jdbcType=CHAR},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo">

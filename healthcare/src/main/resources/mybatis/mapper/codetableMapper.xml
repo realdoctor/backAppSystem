@@ -53,31 +53,20 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
-		insert into codetable
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="section != null">
-		    section,
-		  </if>
-		  <if test="name != null">
-		    name,
-		  </if>
-		  <if test="code != null">
-		    code,
-		  </if>
-		  <if test="description != null">
-		    description,
-		  </if>
-		  <if test="codeNotes != null">
-		    code_notes,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="section != null">section=#{section,jdbcType=VARCHAR},</if>
-		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="code != null">code=#{code,jdbcType=VARCHAR},</if>
-		  <if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
-		  <if test="codeNotes != null">code_notes=#{codeNotes,jdbcType=VARCHAR},</if>
-		</trim>
+		insert into codetable (
+		section,
+		name,
+		code,
+		description,
+		code_notes
+		)
+		values(
+		#{section,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{codeNotes,jdbcType=VARCHAR}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">

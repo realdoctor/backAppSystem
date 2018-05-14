@@ -61,31 +61,20 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_category
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="name != null">
-		    name,
-		  </if>
-		  <if test="parentId != null">
-		    parent_id,
-		  </if>
-		  <if test="iconCls != null">
-		    icon_cls,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		  <if test="remark != null">
-		    remark,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="parentId != null">parent_id=#{parentId,jdbcType=INTEGER},</if>
-		  <if test="iconCls != null">icon_cls=#{iconCls,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
-		</trim>
+		insert into goods_category (
+		name,
+		parent_id,
+		icon_cls,
+		add_time,
+		remark
+		)
+		values(
+		#{name,jdbcType=VARCHAR},
+		#{parentId,jdbcType=INTEGER},
+		#{iconCls,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsCategory">

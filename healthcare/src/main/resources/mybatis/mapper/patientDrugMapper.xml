@@ -64,35 +64,22 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
-		insert into patient_drug
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="patientDiagId != null">
-		    patient_diag_id,
-		  </if>
-		  <if test="drugName != null">
-		    drug_name,
-		  </if>
-		  <if test="drugStdName != null">
-		    drug_std_name,
-		  </if>
-		  <if test="drugStdCode != null">
-		    drug_std_code,
-		  </if>
-		  <if test="notes != null">
-		    notes,
-		  </if>
-		  <if test="lastUpdateDtime != null">
-		    last_update_dtime,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="patientDiagId != null">patient_diag_id=#{patientDiagId,jdbcType=INTEGER},</if>
-		  <if test="drugName != null">drug_name=#{drugName,jdbcType=VARCHAR},</if>
-		  <if test="drugStdName != null">drug_std_name=#{drugStdName,jdbcType=VARCHAR},</if>
-		  <if test="drugStdCode != null">drug_std_code=#{drugStdCode,jdbcType=VARCHAR},</if>
-		  <if test="notes != null">notes=#{notes,jdbcType=VARCHAR},</if>
-		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into patient_drug (
+		patient_diag_id,
+		drug_name,
+		drug_std_name,
+		drug_std_code,
+		notes,
+		last_update_dtime
+		)
+		values(
+		#{patientDiagId,jdbcType=INTEGER},
+		#{drugName,jdbcType=VARCHAR},
+		#{drugStdName,jdbcType=VARCHAR},
+		#{drugStdCode,jdbcType=VARCHAR},
+		#{notes,jdbcType=VARCHAR},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug">

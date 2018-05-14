@@ -64,35 +64,22 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" useGeneratedKeys="true" keyProperty="id">
-		insert into alipay_order_log
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">
-		    user_id,
-		  </if>
-		  <if test="orderNo != null">
-		    order_no,
-		  </if>
-		  <if test="requestParams != null">
-		    request_params,
-		  </if>
-		  <if test="responseString != null">
-		    response_string,
-		  </if>
-		  <if test="orderString != null">
-		    order_string,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
-		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
-		  <if test="requestParams != null">request_params=#{requestParams,jdbcType=LONGVARCHAR},</if>
-		  <if test="responseString != null">response_string=#{responseString,jdbcType=LONGVARCHAR},</if>
-		  <if test="orderString != null">order_string=#{orderString,jdbcType=LONGVARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into alipay_order_log (
+		user_id,
+		order_no,
+		request_params,
+		response_string,
+		order_string,
+		add_time
+		)
+		values(
+		#{userId,jdbcType=VARCHAR},
+		#{orderNo,jdbcType=VARCHAR},
+		#{requestParams,jdbcType=LONGVARCHAR},
+		#{responseString,jdbcType=LONGVARCHAR},
+		#{orderString,jdbcType=LONGVARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">

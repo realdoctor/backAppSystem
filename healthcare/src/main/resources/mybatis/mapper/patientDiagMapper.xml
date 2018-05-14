@@ -64,35 +64,22 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag" useGeneratedKeys="true" keyProperty="id">
-		insert into patient_diag
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="patientRecordId != null">
-		    patient_record_id,
-		  </if>
-		  <if test="diagCode != null">
-		    diag_code,
-		  </if>
-		  <if test="diagName != null">
-		    diag_name,
-		  </if>
-		  <if test="diagDate != null">
-		    diag_date,
-		  </if>
-		  <if test="diagTypeCode != null">
-		    diag_type_code,
-		  </if>
-		  <if test="lastUpdateDtime != null">
-		    last_update_dtime,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="patientRecordId != null">patient_record_id=#{patientRecordId,jdbcType=INTEGER},</if>
-		  <if test="diagCode != null">diag_code=#{diagCode,jdbcType=VARCHAR},</if>
-		  <if test="diagName != null">diag_name=#{diagName,jdbcType=VARCHAR},</if>
-		  <if test="diagDate != null">diag_date=#{diagDate,jdbcType=TIMESTAMP},</if>
-		  <if test="diagTypeCode != null">diag_type_code=#{diagTypeCode,jdbcType=VARCHAR},</if>
-		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into patient_diag (
+		patient_record_id,
+		diag_code,
+		diag_name,
+		diag_date,
+		diag_type_code,
+		last_update_dtime
+		)
+		values(
+		#{patientRecordId,jdbcType=INTEGER},
+		#{diagCode,jdbcType=VARCHAR},
+		#{diagName,jdbcType=VARCHAR},
+		#{diagDate,jdbcType=TIMESTAMP},
+		#{diagTypeCode,jdbcType=VARCHAR},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDiag">

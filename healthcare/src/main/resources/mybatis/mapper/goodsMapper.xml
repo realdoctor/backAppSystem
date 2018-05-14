@@ -95,71 +95,40 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
-		insert into goods
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="name != null">
-		    name,
-		  </if>
-		  <if test="store != null">
-		    store,
-		  </if>
-		  <if test="freezeStore != null">
-		    freeze_store,
-		  </if>
-		  <if test="shelvesTime != null">
-		    shelves_time,
-		  </if>
-		  <if test="categoryId != null">
-		    category_id,
-		  </if>
-		  <if test="attribute != null">
-		    attribute,
-		  </if>
-		  <if test="description != null">
-		    description,
-		  </if>
-		  <if test="detail != null">
-		    detail,
-		  </if>
-		  <if test="cost != null">
-		    cost,
-		  </if>
-		  <if test="marketPrice != null">
-		    market_price,
-		  </if>
-		  <if test="status != null">
-		    status,
-		  </if>
-		  <if test="addUser != null">
-		    add_user,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		  <if test="updateTime != null">
-		    update_time,
-		  </if>
-		  <if test="remark != null">
-		    remark,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
-		  <if test="store != null">store=#{store,jdbcType=INTEGER},</if>
-		  <if test="freezeStore != null">freeze_store=#{freezeStore,jdbcType=INTEGER},</if>
-		  <if test="shelvesTime != null">shelves_time=#{shelvesTime,jdbcType=TIMESTAMP},</if>
-		  <if test="categoryId != null">category_id=#{categoryId,jdbcType=INTEGER},</if>
-		  <if test="attribute != null">attribute=#{attribute,jdbcType=VARCHAR},</if>
-		  <if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
-		  <if test="detail != null">detail=#{detail,jdbcType=LONGVARCHAR},</if>
-		  <if test="cost != null">cost=#{cost,jdbcType=DECIMAL},</if>
-		  <if test="marketPrice != null">market_price=#{marketPrice,jdbcType=DECIMAL},</if>
-		  <if test="status != null">status=#{status,jdbcType=CHAR},</if>
-		  <if test="addUser != null">add_user=#{addUser,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		  <if test="updateTime != null">update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
-		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
-		</trim>
+		insert into goods (
+		name,
+		store,
+		freeze_store,
+		shelves_time,
+		category_id,
+		attribute,
+		description,
+		detail,
+		cost,
+		market_price,
+		status,
+		add_user,
+		add_time,
+		update_time,
+		remark
+		)
+		values(
+		#{name,jdbcType=VARCHAR},
+		#{store,jdbcType=INTEGER},
+		#{freezeStore,jdbcType=INTEGER},
+		#{shelvesTime,jdbcType=TIMESTAMP},
+		#{categoryId,jdbcType=INTEGER},
+		#{attribute,jdbcType=VARCHAR},
+		#{description,jdbcType=LONGVARCHAR},
+		#{detail,jdbcType=LONGVARCHAR},
+		#{cost,jdbcType=DECIMAL},
+		#{marketPrice,jdbcType=DECIMAL},
+		#{status,jdbcType=CHAR},
+		#{addUser,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">

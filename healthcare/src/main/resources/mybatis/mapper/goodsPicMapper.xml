@@ -58,27 +58,18 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_pic
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="goodsId != null">
-		    goods_id,
-		  </if>
-		  <if test="bigPic != null">
-		    big_pic,
-		  </if>
-		  <if test="smallPic != null">
-		    small_pic,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>
-		  <if test="bigPic != null">big_pic=#{bigPic,jdbcType=VARCHAR},</if>
-		  <if test="smallPic != null">small_pic=#{smallPic,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into goods_pic (
+		goods_id,
+		big_pic,
+		small_pic,
+		add_time
+		)
+		values(
+		#{goodsId,jdbcType=INTEGER},
+		#{bigPic,jdbcType=VARCHAR},
+		#{smallPic,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">

@@ -61,31 +61,20 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" useGeneratedKeys="true" keyProperty="id">
-		insert into goods_order_item
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="goodsOrderId != null">
-		    goods_order_id,
-		  </if>
-		  <if test="goodsId != null">
-		    goods_id,
-		  </if>
-		  <if test="goodsNum != null">
-		    goods_num,
-		  </if>
-		  <if test="goodsPrice != null">
-		    goods_price,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="goodsOrderId != null">goods_order_id=#{goodsOrderId,jdbcType=INTEGER},</if>
-		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>
-		  <if test="goodsNum != null">goods_num=#{goodsNum,jdbcType=INTEGER},</if>
-		  <if test="goodsPrice != null">goods_price=#{goodsPrice,jdbcType=DOUBLE},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into goods_order_item (
+		goods_order_id,
+		goods_id,
+		goods_num,
+		goods_price,
+		add_time
+		)
+		values(
+		#{goodsOrderId,jdbcType=INTEGER},
+		#{goodsId,jdbcType=INTEGER},
+		#{goodsNum,jdbcType=INTEGER},
+		#{goodsPrice,jdbcType=DOUBLE},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">

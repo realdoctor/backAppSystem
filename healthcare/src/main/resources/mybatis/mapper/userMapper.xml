@@ -12,6 +12,7 @@
 		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
 		<result property="sentAddress" column="sent_address" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
 	<sql id="columns"> 
@@ -24,7 +25,8 @@
 		t.mobile_phone,
 		t.id_no,
 		t.sent_address,
-		t.add_time
+		t.add_time,
+		t.last_update_dtime
 	</sql>
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
@@ -38,7 +40,8 @@
 		t.mobile_phone,
 		t.id_no,
 		t.sent_address,
-		t.add_time
+		t.add_time,
+		t.last_update_dtime
 		from user t 
 		<include refid="conditionQuery.core" />
 		order by
@@ -73,47 +76,30 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.User" useGeneratedKeys="true" keyProperty="userId">
-		insert into user
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="userName != null">
-		    user_name,
-		  </if>
-		  <if test="pwd != null">
-		    pwd,
-		  </if>
-		  <if test="payPwd != null">
-		    pay_pwd,
-		  </if>
-		  <if test="realName != null">
-		    real_name,
-		  </if>
-		  <if test="email != null">
-		    email,
-		  </if>
-		  <if test="mobilePhone != null">
-		    mobile_phone,
-		  </if>
-		  <if test="idNo != null">
-		    id_no,
-		  </if>
-		  <if test="sentAddress != null">
-		    sent_address,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR},</if>
-		  <if test="pwd != null">pwd=#{pwd,jdbcType=VARCHAR},</if>
-		  <if test="payPwd != null">pay_pwd=#{payPwd,jdbcType=VARCHAR},</if>
-		  <if test="realName != null">real_name=#{realName,jdbcType=VARCHAR},</if>
-		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
-		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
-		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
-		  <if test="sentAddress != null">sent_address=#{sentAddress,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into user (
+		user_name,
+		pwd,
+		pay_pwd,
+		real_name,
+		email,
+		mobile_phone,
+		id_no,
+		sent_address,
+		add_time,
+		last_update_dtime
+		)
+		values(
+		#{userName,jdbcType=VARCHAR},
+		#{pwd,jdbcType=VARCHAR},
+		#{payPwd,jdbcType=VARCHAR},
+		#{realName,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{mobilePhone,jdbcType=VARCHAR},
+		#{idNo,jdbcType=VARCHAR},
+		#{sentAddress,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
@@ -128,6 +114,7 @@
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
 		  <if test="sentAddress != null">sent_address=#{sentAddress,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where 1=1 and user_id = #{userId,jdbcType=BIGINT}
 	</update>

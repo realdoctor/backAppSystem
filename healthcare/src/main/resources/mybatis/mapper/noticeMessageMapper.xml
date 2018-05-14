@@ -60,27 +60,18 @@
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" useGeneratedKeys="true" keyProperty="id">
-		insert into notice_message
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="noticeTypeId != null">
-		    notice_type_id,
-		  </if>
-		  <if test="userId != null">
-		    user_id,
-		  </if>
-		  <if test="content != null">
-		    content,
-		  </if>
-		  <if test="addTime != null">
-		    add_time,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="noticeTypeId != null">notice_type_id=#{noticeTypeId,jdbcType=VARCHAR},</if>
-		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
-		  <if test="content != null">content=#{content,jdbcType=LONGVARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		</trim>
+		insert into notice_message (
+		notice_type_id,
+		user_id,
+		content,
+		add_time
+		)
+		values(
+		#{noticeTypeId,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR},
+		#{content,jdbcType=LONGVARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
