@@ -43,7 +43,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         Method method = handlerMethod.getMethod();
         // 从header中得到token
         String token = request.getHeader(Constants.AUTHORIZATION);
-        logger.debug("=================对请求进行身份验证，token="+token);
+        logger.info("=================对请求进行身份验证，token="+token);
         if (token != null && token.length() > 0) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
@@ -60,7 +60,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
                 || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
-            logger.debug("============================token已过期或未携带签名，请重新登录");
+            logger.info("============================token已过期或未携带签名，请重新登录");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");  
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -70,7 +70,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             writer.close();
             return false;
         }
-        logger.debug("============================不需要签名的请求，绿色放行");
+        logger.info("============================不需要签名的请求，绿色放行");
         // 为了防止以恶意操作直接在REQUEST_CURRENT_KEY写入key，将其设为null
         request.setAttribute(Constants.CURRENT_USER_ID, null);
         return true;
