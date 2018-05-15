@@ -65,12 +65,18 @@ public final class Constants {
     // 药物使用频率
     public final static String STD_MEDICATION_USE_FREQUENCY  = "STD_MEDICATION_USE_FREQUENCY";
 
+    /**
+     * 
+     */
     // 手机验证码位数
     public final static int    VERIFY_CODE_NUM               = 4;
 
     // 手机验证码
-    public static final String VERIFY_CODE_KEY               = "VERIFY_CODE_";
+    public static final String VERIFY_CODE_KEY_PREFIX        = "VERIFY_CODE_";
 
-    // 缓存字典码表
-    public static final String REDIS_CACHE_CODETABLE         = "INIT_CACHE_CODETABLE";
+    // 判断已缓存字典码表标识
+    public static final String MARK_CODETABLE_KEY            = "INIT_CACHE_CODETABLE";
+
+    // 判断是否在Token刷新频率范围标识
+    public static final String MARK_REFRESH_TOKEN_KEY_PREFIX = "AUTHORIZATION_REFRESH_TOKEN_";
 }

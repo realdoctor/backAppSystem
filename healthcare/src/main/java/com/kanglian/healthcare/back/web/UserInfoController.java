@@ -13,14 +13,14 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
-import com.kanglian.healthcare.util.RedisCache;
+import com.kanglian.healthcare.util.RedisCacheManager;
 
 @RestController
 @RequestMapping(value = "/userInfo")
 public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCacheManager redisCacheManager;
 
     /**
      * 用户基本信息
@@ -40,23 +40,23 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         try {
             // 民族
             jsonObject.put("nationalityName",
-                    ((Map) redisCache.getCacheObject(Constants.STD_NATIONALITY))
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_NATIONALITY))
                             .get(userInfo.getNationalityCode()));
             // 身份证类型
             jsonObject.put("idTypeName",
-                    ((Map) redisCache.getCacheObject(Constants.STD_PERSON_ID_TYPE))
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_PERSON_ID_TYPE))
                             .get(userInfo.getIdTypeCode()));
             // 婚姻状况
-            jsonObject.put("marriageName", ((Map) redisCache.getCacheObject(Constants.STD_MARRIAGE))
+            jsonObject.put("marriageName", ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
                     .get(userInfo.getMarriageCode()));
             // 性别
             jsonObject.put("sexName",
-                    ((Map) redisCache.getCacheObject(Constants.STD_SEX)).get(userInfo.getSexCode()));
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_SEX)).get(userInfo.getSexCode()));
             // 血型
-            jsonObject.put("aboName", ((Map) redisCache.getCacheObject(Constants.STD_BLOOD_TYPE))
+            jsonObject.put("aboName", ((Map) redisCacheManager.getCacheObject(Constants.STD_BLOOD_TYPE))
                     .get(userInfo.getAboCode()));
             // RH血型
-            jsonObject.put("rhName", ((Map) redisCache.getCacheObject(Constants.STD_RH_RESULT))
+            jsonObject.put("rhName", ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
                     .get(userInfo.getRhCode()));
         } catch (Exception e) {
             e.printStackTrace();

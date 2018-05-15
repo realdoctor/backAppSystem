@@ -1,29 +1,24 @@
 package com.kanglian.healthcare.authorization.token.impl;
 
 import java.util.concurrent.TimeUnit;
-import com.kanglian.healthcare.util.RedisCache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.kanglian.healthcare.authorization.Constants;
+import com.kanglian.healthcare.util.RedisCacheManager;
 
 /**
  * 使用Redis存储Token
  * 
  * @author xl.liu
  */
+@Component
 public class RedisTokenManager extends AbstractTokenManager {
 
-    /**
-     * Redis中Key的前缀
-     */
-    private static final String REDIS_KEY_PREFIX   = "AUTHORIZATION_KEY_";
+    private RedisCacheManager redisCacheManager;
 
-    /**
-     * Redis中Token的前缀
-     */
-    private static final String REDIS_TOKEN_PREFIX = "AUTHORIZATION_TOKEN_";
-
-    private RedisCache      redisCache;
-
-    public void setRedisCache(RedisCache redisCache) {
-        this.redisCache = redisCache;
+    @Autowired
+    public void setRedisCacheManager(RedisCacheManager redisCacheManager) {
+        this.redisCacheManager = redisCacheManager;
     }
 
     @Override
@@ -65,9 +60,9 @@ public class RedisTokenManager extends AbstractTokenManager {
     public String getToken(String key) {
         return get(formatKey(key));
     }
-    
+
     private String get(String key) {
-        Object obj = redisCache.getCacheObject(key);
+        Object obj = redisCacheManager.getCacheObject(key);
         if (obj == null) {
             return null;
         }
@@ -75,24 +70,24 @@ public class RedisTokenManager extends AbstractTokenManager {
     }
 
     private void set(String key, String value, int expireSeconds) {
-        redisCache.setCacheObject(key, value, Long.valueOf(expireSeconds), TimeUnit.SECONDS);
+        redisCacheManager.setCacheObject(key, value, Long.valueOf(expireSeconds), TimeUnit.SECONDS);
     }
 
     private void expire(String key, int seconds) {
-        redisCache.expire(key, seconds, TimeUnit.SECONDS);
+        redisCacheManager.expire(key, seconds, TimeUnit.SECONDS);
     }
 
     private void delete(String... keys) {
         for (String key : keys) {
-            redisCache.delete(key);
+            redisCacheManager.delete(key);
         }
     }
 
     private String formatKey(String key) {
-        return REDIS_KEY_PREFIX.concat(key);
+        return Constants.REDIS_KEY_PREFIX.concat(key);
     }
 
     private String formatToken(String token) {
-        return REDIS_TOKEN_PREFIX.concat(token);
+        return Constants.REDIS_TOKEN_PREFIX.concat(token);
     }
 }

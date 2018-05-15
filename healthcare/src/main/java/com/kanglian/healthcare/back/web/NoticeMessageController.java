@@ -12,6 +12,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.NoticeMessage;
 import com.kanglian.healthcare.back.service.NoticeMessageBo;
 import com.kanglian.healthcare.back.service.UserBo;
@@ -21,6 +22,7 @@ import com.kanglian.healthcare.back.service.UserBo;
  * 
  * @author xl.liu
  */
+@Authorization
 @RestController
 @RequestMapping(value = "/message")
 public class NoticeMessageController extends CrudController<NoticeMessage, NoticeMessageBo> {

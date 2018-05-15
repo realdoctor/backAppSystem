@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.service.CodetableBo;
-import com.kanglian.healthcare.util.RedisCache;
+import com.kanglian.healthcare.util.RedisCacheManager;
 
 @Component
 public class InitInfoListener {
@@ -18,16 +18,16 @@ public class InitInfoListener {
     @Autowired
     private CodetableBo         codetableBo;
     @Autowired
-    private RedisCache          redisCache;
+    private RedisCacheManager          redisCache;
 
     @PostConstruct
     public void init() {
         try {
-            if (redisCache.getCacheObject(Constants.REDIS_CACHE_CODETABLE) == null) {
+            if (redisCache.getCacheObject(Constants.MARK_CODETABLE_KEY) == null) {
                 logger.info("================初始化字典码表");
                 codetableBo.initCacheData();
             }
-            redisCache.setCacheObject(Constants.REDIS_CACHE_CODETABLE, "1");
+            redisCache.setCacheObject(Constants.MARK_CODETABLE_KEY, "1");
         } catch (Exception e) {
             // TODO: handle exception
         }

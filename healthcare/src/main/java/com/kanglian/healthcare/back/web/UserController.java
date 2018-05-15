@@ -29,7 +29,7 @@ import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
-import com.kanglian.healthcare.util.RedisCache;
+import com.kanglian.healthcare.util.RedisCacheManager;
 import com.kanglian.healthcare.util.SmsUtil;
 import com.kanglian.healthcare.util.ValidateUtil;
 
@@ -40,7 +40,7 @@ public class UserController extends CrudController<User, UserBo> {
     @Autowired
     private RedisTokenManager redisTokenManager;
     @Autowired
-    private RedisCache redisCache;
+    private RedisCacheManager redisCacheManager;
     
     @GetMapping
     public ResultBody list(UserQuery query) throws Exception {
@@ -137,7 +137,7 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("用户已存在！");
         }
         // 手机验证码
-        Object cacheVCode = redisCache.getCacheObject(Constants.VERIFY_CODE_KEY+mobilePhone);
+        Object cacheVCode = redisCacheManager.getCacheObject(Constants.VERIFY_CODE_KEY_PREFIX+mobilePhone);
         if (cacheVCode == null) {
             return ResultUtil.error("验证码过期，请重新获取！");
         } else {
@@ -206,7 +206,8 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("发送手机验证码失败！");
         }
         // 5分钟过期
-        redisCache.setCacheObject(Constants.VERIFY_CODE_KEY+mobilePhone, verifyCode, 5L, TimeUnit.MINUTES);
+        redisCacheManager.setCacheObject(Constants.VERIFY_CODE_KEY_PREFIX + mobilePhone, verifyCode, 5L,
+                TimeUnit.MINUTES);
         Map<String, String> retMap = new HashMap<String, String>();
         retMap.put("code", verifyCode);
         return ResultUtil.success(retMap);
@@ -239,12 +240,20 @@ public class UserController extends CrudController<User, UserBo> {
         if (user == null) {
             return ResultUtil.error("刷新token失败");
         }
-        // 重新生成Token
-        String token = JwtUtil.generToken(user.getMobilePhone(), JsonUtil.beanToJson(user),
-                JwtUtil.JWT_TTL);
+        // 重新生成Token，利用redis过期缓存，一天刷一次。
+        Object token = redisCacheManager.getCacheObject(
+                Constants.MARK_REFRESH_TOKEN_KEY_PREFIX.concat(String.valueOf(user.getUserId())));
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", token);
-        redisTokenManager.createRelationship(user.getMobilePhone(), token);
+        if (token == null) {
+            token = JwtUtil.generToken(user.getMobilePhone(), JsonUtil.beanToJson(user),
+                    JwtUtil.JWT_TTL);
+            redisTokenManager.createRelationship(user.getMobilePhone(), String.valueOf(token));
+            // 12小时过期
+            redisCacheManager.setCacheObject(Constants.MARK_REFRESH_TOKEN_KEY_PREFIX
+                    .concat(String.valueOf(user.getUserId())), token, 12L, TimeUnit.HOURS);
+            resultMap.put("token", token);
+        }
         return ResultUtil.success(resultMap);
     }
     

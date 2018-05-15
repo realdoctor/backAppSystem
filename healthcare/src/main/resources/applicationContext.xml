@@ -49,13 +49,6 @@
 		</property>
 	</bean>
     
-    <bean id="redisCache" class="com.kanglian.healthcare.util.RedisCache">
-		<property name="redisTemplate" ref="redisTemplate" />
-	</bean>
-	<bean id="redisTokenManager" class="com.kanglian.healthcare.authorization.token.impl.RedisTokenManager">
-		<property name="redisCache" ref="redisCache" />
-	</bean>
-	
     <import resource="classpath*:/spring/*.xml"/>
 </beans>
 

@@ -20,4 +20,14 @@ public class Constants {
      * 存放Authorization的header字段
      */
     public static final String AUTHORIZATION      = "Authorization";
+
+    /**
+     * Redis中Key的前缀
+     */
+    public static final String REDIS_KEY_PREFIX   = "AUTHORIZATION_KEY_";
+
+    /**
+     * Redis中Token的前缀
+     */
+    public static final String REDIS_TOKEN_PREFIX = "AUTHORIZATION_TOKEN_";
 }
