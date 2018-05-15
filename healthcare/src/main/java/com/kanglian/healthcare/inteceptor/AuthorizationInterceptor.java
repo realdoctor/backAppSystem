@@ -5,6 +5,8 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.method.HandlerMethod;
@@ -25,6 +27,9 @@ import io.jsonwebtoken.Claims;
  */
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
+    /** logger */
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationInterceptor.class);
+    
     @Autowired
     private RedisTokenManager redisTokenManager;
     
@@ -38,6 +43,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         Method method = handlerMethod.getMethod();
         // 从header中得到token
         String token = request.getHeader(Constants.AUTHORIZATION);
+        logger.debug("=================对请求进行身份验证，token="+token);
         if (token != null && token.length() > 0) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
@@ -49,6 +55,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     return true;
                 }
             }
+            logger.debug("=================token已过期，请重新登录");
         }
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
