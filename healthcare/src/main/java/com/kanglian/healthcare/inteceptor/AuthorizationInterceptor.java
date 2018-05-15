@@ -60,7 +60,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
                 || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
-            logger.debug("============================token已过期，请重新登录");
+            logger.debug("============================token已过期或未携带签名，请重新登录");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");  
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
