@@ -70,7 +70,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             writer.close();
             return false;
         }
-        logger.debug("============================需要签名的请求，绿色放行");
+        logger.debug("============================不需要签名的请求，绿色放行");
         // 为了防止以恶意操作直接在REQUEST_CURRENT_KEY写入key，将其设为null
         request.setAttribute(Constants.CURRENT_USER_ID, null);
         return true;
