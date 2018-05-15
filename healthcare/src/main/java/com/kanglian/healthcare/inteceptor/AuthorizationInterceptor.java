@@ -51,6 +51,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
+                logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
                 if (user.isRefreshToken() || redisTokenManager.getKey(token) != null) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
