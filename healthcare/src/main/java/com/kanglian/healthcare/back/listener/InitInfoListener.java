@@ -18,16 +18,16 @@ public class InitInfoListener {
     @Autowired
     private CodetableBo         codetableBo;
     @Autowired
-    private RedisCacheManager          redisCache;
+    private RedisCacheManager   redisCacheManager;
 
     @PostConstruct
     public void init() {
         try {
-            if (redisCache.getCacheObject(Constants.MARK_CODETABLE_KEY) == null) {
+            if (redisCacheManager.getCacheObject(Constants.MARK_CODETABLE_KEY) == null) {
                 logger.info("================初始化字典码表");
                 codetableBo.initCacheData();
             }
-            redisCache.setCacheObject(Constants.MARK_CODETABLE_KEY, "1");
+            redisCacheManager.setCacheObject(Constants.MARK_CODETABLE_KEY, "1");
         } catch (Exception e) {
             // TODO: handle exception
         }
