@@ -8,6 +8,7 @@ import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.PatientDrug;
 import com.kanglian.healthcare.back.service.PatientDrugBo;
 
@@ -16,6 +17,7 @@ import com.kanglian.healthcare.back.service.PatientDrugBo;
  * 
  * @author xl.liu
  */
+@Authorization
 @RestController
 @RequestMapping(value = "/drug")
 public class PatientDrugController extends CrudController<PatientDrug, PatientDrugBo> {
