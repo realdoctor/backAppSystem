@@ -52,7 +52,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 if (user.isRefreshToken() || redisTokenManager.getKey(token) != null) {
-                    logger.debug("============================客户端自动刷新token，直接放行");
+                    logger.info("============================token验证通过，直接放行");
                     return true;
                 }
             }
