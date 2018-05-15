@@ -10,13 +10,13 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.dao.CodetableDao;
 import com.kanglian.healthcare.back.dal.pojo.Codetable;
 import com.kanglian.healthcare.exception.DBException;
-import com.kanglian.healthcare.util.RedisCache;
+import com.kanglian.healthcare.util.RedisCacheManager;
 
 @Service
 public class CodetableBo extends CrudBo<Codetable, CodetableDao> {
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCacheManager redisCacheManager;
 
     public List<Codetable> findSectionList(String name) {
         try {
@@ -121,7 +121,7 @@ public class CodetableBo extends CrudBo<Codetable, CodetableDao> {
     }
 
     private void set(String key, Object value) {
-        redisCache.setCacheObject(key, value);
+        redisCacheManager.setCacheObject(key, value);
     }
 
     private Map<String, Object> convertList2Map(List<Codetable> mapList) {
