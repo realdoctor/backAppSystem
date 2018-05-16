@@ -1,6 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,11 +11,9 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
-import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.NoticeMessage;
 import com.kanglian.healthcare.back.service.NoticeMessageBo;
-import com.kanglian.healthcare.back.service.UserBo;
 
 /**
  * 消息提醒
@@ -27,9 +25,6 @@ import com.kanglian.healthcare.back.service.UserBo;
 @RequestMapping(value = "/message")
 public class NoticeMessageController extends CrudController<NoticeMessage, NoticeMessageBo> {
 
-    @Autowired
-    private UserBo userBo;
-    
     /**
      * 最近消息提醒一览
      * 
@@ -39,13 +34,26 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      */
     @GetMapping
     public ResultBody list(NoticeMessageQuery query) throws Exception {
-        if (StringUtil.isEmpty(query.getUserId())) {
-            return ResultUtil.error("用户未登录！");
-        }
-        if (!userBo.ifExist(Long.valueOf(query.getUserId()))) {
-            return ResultUtil.error("用户不存在");
-        }
-        return ResultUtil.success(this.bo.query(query));
+        final List<NoticeMessage> dataList = this.bo.query(query);
+        List<JSONObject> resultList = ResultUtil.wearCloth(dataList, new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                NoticeMessage message = (NoticeMessage) pojo;
+                JSONObject newJsonObject = new JSONObject();
+                try {
+                    newJsonObject.put("noticeTypeId", message.getNoticeTypeId());
+                    newJsonObject.put("noticeType", message.getNoticeType());
+                    newJsonObject.put("content", message.getContent());
+                    newJsonObject.put("addTime", message.getAddTime());
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return newJsonObject;
+            }
+
+        });
+        return ResultUtil.success(resultList);
     }
 
     /**
