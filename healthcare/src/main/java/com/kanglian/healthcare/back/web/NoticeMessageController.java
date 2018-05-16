@@ -55,23 +55,14 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
                     // 就诊用药提醒
                     if ("1".equals(message.getNoticeTypeId())) {
                         jsonObject.put("dataList", message.getNoticeDiagDrugList());
-                        jsonObject.remove("noticeDiagList");
-                        jsonObject.remove("noticeDiagDrugList");
-                        jsonObject.remove("noticeCommentList");
-                    } 
+                    }
                     // 病历更新
                     else if ("2".equals(message.getNoticeTypeId())) {
                         jsonObject.put("dataList", message.getNoticeDiagList());
-                        jsonObject.remove("noticeDiagList");
-                        jsonObject.remove("noticeDiagDrugList");
-                        jsonObject.remove("noticeCommentList");
                     }
                     // 新的回复消息
                     else if ("3".equals(message.getNoticeTypeId())) {
                         jsonObject.put("dataList", message.getNoticeCommentList());
-                        jsonObject.remove("noticeDiagList");
-                        jsonObject.remove("noticeDiagDrugList");
-                        jsonObject.remove("noticeCommentList");
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
