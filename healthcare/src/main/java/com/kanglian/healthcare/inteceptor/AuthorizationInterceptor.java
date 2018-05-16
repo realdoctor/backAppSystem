@@ -43,7 +43,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         Method method = handlerMethod.getMethod();
         // 从header中得到token
         String token = request.getHeader(Constants.AUTHORIZATION);
-        logger.debug("============进入请求方法：{}", method.getName());
+        String name = method.getDeclaringClass().getName() + "." + method.getName();
+        logger.debug("============进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token="+token);
         if (token != null && token.length() > 0) {
             // 验证token
