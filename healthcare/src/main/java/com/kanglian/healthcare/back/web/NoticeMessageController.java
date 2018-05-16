@@ -1,6 +1,5 @@
 package com.kanglian.healthcare.back.web;
 
-import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,26 +33,7 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      */
     @GetMapping
     public ResultBody list(NoticeMessageQuery query) throws Exception {
-        final List<NoticeMessage> dataList = this.bo.query(query);
-        List<JSONObject> resultList = ResultUtil.wearCloth(dataList, new JsonClothProcessor() {
-
-            @Override
-            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
-                NoticeMessage message = (NoticeMessage) pojo;
-                JSONObject newJsonObject = new JSONObject();
-                try {
-                    newJsonObject.put("noticeTypeId", message.getNoticeTypeId());
-                    newJsonObject.put("noticeType", message.getNoticeType());
-                    newJsonObject.put("content", message.getContent());
-                    newJsonObject.put("addTime", message.getAddTime());
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                return newJsonObject;
-            }
-
-        });
-        return ResultUtil.success(resultList);
+        return ResultUtil.success(this.bo.query(query));
     }
 
     /**
