@@ -27,9 +27,10 @@
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeComment" id="NoticeCommentResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
-		<result property="sentUser" column="sent_user" jdbcType="INTEGER"/>
-		<result property="receiveUser" column="receive_user" jdbcType="INTEGER"/>
+		<result property="sentUser" column="sent_user" jdbcType="VARCHAR"/>
+		<result property="receiveUser" column="receive_user" jdbcType="VARCHAR"/>
 		<result property="content" column="content" jdbcType="LONGVARCHAR"/>
+		<result property="replyContent" column="reply_content" jdbcType="LONGVARCHAR"/>
 	</resultMap>
 	
 	<!-- 消息提醒列表 -->
@@ -88,14 +89,21 @@
 	
 	<!-- 消息评论列表 -->
 	<select id="getNoticeComment" resultMap="NoticeCommentResultMap" parameterType="java.lang.Long">
-		select
+		SELECT
 			t.id,
 			t.notice_message_id,
-			t.sent_user,
-			t.receive_user,
-			t.content
-		from notice_comment t
-		where t.notice_message_id = #{id,jdbcType=INTEGER}
-		order by t.id desc
+			t.content,
+			concat(t1.sent_user,'回复',t1.receive_user,'：',t1.content) AS reply_content,
+			t1.sent_user AS sent_user,
+			t1.receive_user AS receive_user
+		FROM
+			notice_question_publish t
+		LEFT JOIN notice_question_reply t1 ON t.id = t1.notice_question_publish_id
+		LEFT JOIN `user` t2 ON t2.user_id = t1.sent_user
+		LEFT JOIN `user` t3 ON t3.user_id = t1.receive_user
+		WHERE
+			t.notice_message_id = #{id,jdbcType=INTEGER}
+		ORDER BY
+			t.id DESC
 	</select>
 </mapper>

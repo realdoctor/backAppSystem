@@ -86,6 +86,13 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
                         jsonObject.remove("noticeDiagDrugList");
                         jsonObject.remove("noticeCommentList");
                     }
+                    // 新的回复消息
+                    else if ("3".equals(message.getNoticeTypeId())) {
+                        jsonObject.put("dataList", message.getNoticeCommentList());
+                        jsonObject.remove("noticeDiagList");
+                        jsonObject.remove("noticeDiagDrugList");
+                        jsonObject.remove("noticeCommentList");
+                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }

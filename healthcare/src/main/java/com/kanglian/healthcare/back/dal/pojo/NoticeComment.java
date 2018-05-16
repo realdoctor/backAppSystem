@@ -8,10 +8,13 @@ public class NoticeComment extends BasePojo {
 	@JSONField(name="noticeCommentId")
 	private Long id;
 	private String noticeMessageId;
-	private Integer sentUser;
-	private Integer receiveUser;
+	private String sentUser;
+	private String receiveUser;
+	@JSONField(name="stdCode")
 	private String content;
-	public Long getId() {
+	@JSONField(name="stdName")
+	private String replyContent;
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -23,16 +26,16 @@ public class NoticeComment extends BasePojo {
 	public void setNoticeMessageId(String noticeMessageId) {
 		this.noticeMessageId = noticeMessageId;
 	}
-	public Integer getSentUser() {
+	public String getSentUser() {
 		return sentUser;
 	}
-	public void setSentUser(Integer sentUser) {
+	public void setSentUser(String sentUser) {
 		this.sentUser = sentUser;
 	}
-	public Integer getReceiveUser() {
+	public String getReceiveUser() {
 		return receiveUser;
 	}
-	public void setReceiveUser(Integer receiveUser) {
+	public void setReceiveUser(String receiveUser) {
 		this.receiveUser = receiveUser;
 	}
 	public String getContent() {
@@ -41,4 +44,10 @@ public class NoticeComment extends BasePojo {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public String getReplyContent() {
+        return replyContent;
+    }
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
+    }
 }
