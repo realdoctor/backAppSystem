@@ -16,8 +16,11 @@ public class NoticeMessage extends BasePojo {
     private String               content;
     private Date                 addTime;
     // 一对多映射
+    @JSONField(serialize=false)
     private List<NoticeDiag>     noticeDiagList;
+    @JSONField(serialize=false)
     private List<NoticeDiagDrug> noticeDiagDrugList;
+    @JSONField(serialize=false)
     private List<NoticeComment>  noticeCommentList;
 
     public List<NoticeDiag> getNoticeDiagList() {

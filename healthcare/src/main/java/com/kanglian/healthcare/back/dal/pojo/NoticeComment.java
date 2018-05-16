@@ -8,7 +8,9 @@ public class NoticeComment extends BasePojo {
 	@JSONField(name="noticeCommentId")
 	private Long id;
 	private String noticeMessageId;
+	@JSONField(serialize=false)
 	private String sentUser;
+	@JSONField(serialize=false)
 	private String receiveUser;
 	@JSONField(name="stdCode")
 	private String content;
