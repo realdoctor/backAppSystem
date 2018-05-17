@@ -1,5 +1,8 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +12,7 @@ import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondit
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
 import com.kanglian.healthcare.back.service.HospitalAddressBo;
@@ -35,8 +39,65 @@ public class HospitalGuahaoController
         return super.list(query);
     }
 
-    public static class HospitalGuahaoQuery extends Grid {
+    /**
+     * 按医院、医生、科室、疾病等
+     * @param searchstr
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/search")
+    public ResultBody search(GuahaoSearchQuery query) throws Exception {
+        ConditionQuery conditionQuery1 = query.buildConditionQuery();
+        // 按医院查
+        List<HospitalAddress> hospitalList = this.bo.queryForList(conditionQuery1);
+        // 按医生查
+        query.appendQueryParam("searchNew", "doctor");
+        ConditionQuery conditionQuery2 = query.buildConditionQuery();
+        List<HospitalAddress> doctorList = this.bo.queryForList(conditionQuery2);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("hospitalList", hospitalList);
+        resultMap.put("doctorList", doctorList);
+        return ResultUtil.success(resultMap);
+    }
+    
+    public static class GuahaoSearchQuery extends HospitalGuahaoQuery {
+        private String searchstr;
+        // 医生职称
+        private String positional;
 
+        public String getSearchstr() {
+            return searchstr;
+        }
+
+        public void setSearchstr(String searchstr) {
+            this.searchstr = searchstr;
+        }
+        
+        @SingleValue(tableAlias="t2", column = "positional", equal = "=")
+        public String getPositional() {
+            return positional;
+        }
+        public void setPositional(String positional) {
+            this.positional = positional;
+        }
+        
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            if (StringUtil.isNotBlank(searchstr)) {
+                if (query.getParamMap().get("searchNew") != null) {// 按医生查
+                    String queryStringSql = " (instr('" + searchstr + "', t2.doctor_name) > 0) ";
+                    query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
+                } else {// 按医院查
+                    String queryStringSql = " (instr('" + searchstr + "', t1.hospital_name) > 0) ";
+                    query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
+                }
+            }
+            return query;
+        }
+    }
+    
+    public static class HospitalGuahaoQuery extends Grid {
         /**
          * 1）综合排序
          * 3）预约量排序
@@ -45,23 +106,11 @@ public class HospitalGuahaoController
         /**
          * 筛选字段
          */
-        // 按医院、医生、科室、疾病等
-        private String searchstr;
         // 三级甲等
         private String hospitalLevel;
         // 城市名称
         private String cityName;
         
-        public String getSearchstr() {
-            return searchstr;
-        }
-        public void setSearchstr(String searchstr) {
-            this.searchstr = searchstr;
-        }
-//        @SingleValue(tableAlias="t1", column = "hospital_name", equal = "like")
-//        public String getHospitalName() {
-//            return StringUtil.isNotBlank(hospitalName) ? ("%" + hospitalName + "%") : null;
-//        }
         @SingleValue(tableAlias="t1", column = "hospital_level", equal = "=")
         public String getHospitalLevel() {
             return hospitalLevel;
@@ -94,10 +143,6 @@ public class HospitalGuahaoController
                 }
             }
             ConditionQuery query = super.buildConditionQuery();
-            if(StringUtil.isNotBlank(searchstr)) {
-                String queryStringSql = " (instr('"+searchstr+"', t1.hospital_name) > 0) or (instr('"+searchstr+"', t1.dept_name) > 0) or (instr('"+searchstr+"', t2.doctor_name) > 0) or (instr('"+searchstr+"', t2.field) > 0) ";
-                query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
-            }
             if(StringUtil.isNotBlank(cityName)) {
                 query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }

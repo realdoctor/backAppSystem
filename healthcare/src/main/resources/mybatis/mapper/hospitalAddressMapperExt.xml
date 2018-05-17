@@ -1,4 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalAddressDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalAddress" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
+		<result property="field" column="field" jdbcType="VARCHAR"/>
+		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 按医院、医生、科室名、疾病等 -->
+	<select id="queryForList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			DISTINCT t.hospital_id,
+			t.province,
+			t.city,
+			t1.hospital_name,
+			t1.hospital_level,
+			<choose>
+			<when test="paramMap.searchNew!=null">
+				t2.doctor_name,
+				t2.doctor_intro,
+				t2.field,
+				t2.positional,
+				(SELECT count(1) FROM hospital_guahao_log t2 WHERE t1.dept_code = t2.doctor_code) mark_num
+			</when>
+			<otherwise>
+				(SELECT count(1) FROM hospital_guahao_log t2 WHERE t.hospital_id=t2.hospital_id) mark_num
+			</otherwise>
+			</choose>
+		FROM
+			hospital_address t
+		LEFT JOIN hospital_dept t1 ON t.hospital_id = t1.hospital_id
+		LEFT JOIN hospital_register_doctor t2 ON t1.dept_id = t2.dept_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		hospital_id desc
+		</otherwise>
+		</choose>
+	</select>
 </mapper>
