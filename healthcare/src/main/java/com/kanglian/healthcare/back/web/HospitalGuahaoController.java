@@ -45,20 +45,23 @@ public class HospitalGuahaoController
         /**
          * 筛选字段
          */
-        // 医院
-        private String hospitalName;
+        // 按医院、医生、科室、疾病等
+        private String searchstr;
         // 三级甲等
         private String hospitalLevel;
         // 城市名称
         private String cityName;
         
-        @SingleValue(tableAlias="t1", column = "hospital_name", equal = "like")
-        public String getHospitalName() {
-            return StringUtil.isNotBlank(hospitalName) ? ("%" + hospitalName + "%") : null;
+        public String getSearchstr() {
+            return searchstr;
         }
-        public void setHospitalName(String hospitalName) {
-            this.hospitalName = hospitalName;
+        public void setSearchstr(String searchstr) {
+            this.searchstr = searchstr;
         }
+//        @SingleValue(tableAlias="t1", column = "hospital_name", equal = "like")
+//        public String getHospitalName() {
+//            return StringUtil.isNotBlank(hospitalName) ? ("%" + hospitalName + "%") : null;
+//        }
         @SingleValue(tableAlias="t1", column = "hospital_level", equal = "=")
         public String getHospitalLevel() {
             return hospitalLevel;
@@ -91,6 +94,10 @@ public class HospitalGuahaoController
                 }
             }
             ConditionQuery query = super.buildConditionQuery();
+            if(StringUtil.isNotBlank(searchstr)) {
+                String queryStringSql = " (instr('"+searchstr+"', t1.hospital_name) > 0) or (instr('"+searchstr+"', t1.dept_name) > 0) or (instr('"+searchstr+"', t2.doctor_name) > 0) or (instr('"+searchstr+"', t2.field) > 0) ";
+                query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
+            }
             if(StringUtil.isNotBlank(cityName)) {
                 query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }
