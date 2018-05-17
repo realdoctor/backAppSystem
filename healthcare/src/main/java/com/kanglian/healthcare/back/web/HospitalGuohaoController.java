@@ -10,7 +10,6 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
 import com.kanglian.healthcare.back.service.HospitalAddressBo;
 
@@ -19,7 +18,6 @@ import com.kanglian.healthcare.back.service.HospitalAddressBo;
  * 
  * @author xl.liu
  */
-@Authorization
 @RestController
 @RequestMapping(value = "/guahao")
 public class HospitalGuohaoController
