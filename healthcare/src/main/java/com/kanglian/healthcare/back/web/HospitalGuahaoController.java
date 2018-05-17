@@ -20,7 +20,7 @@ import com.kanglian.healthcare.back.service.HospitalAddressBo;
  */
 @RestController
 @RequestMapping(value = "/guahao")
-public class HospitalGuohaoController
+public class HospitalGuahaoController
         extends CrudController<HospitalAddress, HospitalAddressBo> {
 
     /**
@@ -31,11 +31,11 @@ public class HospitalGuohaoController
      * @throws Exception
      */
     @GetMapping("/hospital")
-    public ResultBody list(HospitalGuohaoQuery query) throws Exception {
+    public ResultBody list(HospitalGuahaoQuery query) throws Exception {
         return super.list(query);
     }
 
-    public static class HospitalGuohaoQuery extends Grid {
+    public static class HospitalGuahaoQuery extends Grid {
 
         /**
          * 1）综合排序
