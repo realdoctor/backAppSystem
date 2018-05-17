@@ -10,7 +10,9 @@ public class HospitalAddress extends BasePojo {
 	private String province;
 	@JSONField(serialize=false)
 	private String city;
-	private String hospitalName;
+	private String lng;
+	private String lat;
+    private String hospitalName;
 	private String hospitalLevel;
 	private String doctorName;
     @JSONField(name="goodAt")
@@ -36,6 +38,18 @@ public class HospitalAddress extends BasePojo {
 	public void setCity(String city) {
 		this.city = city;
 	}
+    public String getLng() {
+        return lng;
+    }
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+    public String getLat() {
+        return lat;
+    }
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 	public String getHospitalName() {
 		return hospitalName;
 	}

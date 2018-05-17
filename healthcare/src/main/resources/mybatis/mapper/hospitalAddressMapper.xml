@@ -5,6 +5,8 @@
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="province" column="province" jdbcType="VARCHAR"/>
 		<result property="city" column="city" jdbcType="VARCHAR"/>
+		<result property="lng" column="lng" jdbcType="VARCHAR"/>
+		<result property="lat" column="lat" jdbcType="VARCHAR"/>
 		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
 		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
 		<result property="markNum" column="mark_num" jdbcType="VARCHAR"/>
@@ -15,6 +17,8 @@
 		t.province,
 		t.city,
 		t.hospital_name
+		t.lng,
+		t.lat
 	</sql>
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
@@ -22,6 +26,8 @@
 			DISTINCT t.hospital_id,
 			t.province,
 			t.city,
+			t.lng,
+			t.lat,
 			t1.hospital_name,
 			t1.hospital_level,
 		    (SELECT count(1) FROM hospital_guahao_log t2 WHERE t.hospital_id=t2.hospital_id) mark_num
