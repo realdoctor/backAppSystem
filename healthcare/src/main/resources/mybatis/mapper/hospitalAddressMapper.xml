@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalAddressDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalAddress" id="BaseResultMap">
+		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
+		<result property="province" column="province" jdbcType="VARCHAR"/>
+		<result property="city" column="city" jdbcType="VARCHAR"/>
+		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
+		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
+		<result property="markNum" column="mark_num" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.hospital_id,
+		t.province,
+		t.city,
+		t.hospital_name
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			DISTINCT t.hospital_id,
+			t.province,
+			t.city,
+			t1.hospital_name,
+			t1.hospital_level,
+		    (SELECT count(1) FROM hospital_guahao_log t2 WHERE t.hospital_id=t2.hospital_id) mark_num
+		FROM
+			hospital_address t
+		LEFT JOIN hospital_dept t1 ON t.hospital_id = t1.hospital_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		hospital_id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM
+			hospital_address t
+		LEFT JOIN hospital_dept t1 ON t.hospital_id = t1.hospital_id
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from hospital_address t 
+		where t.hospital_id = #{hospitalId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalAddress">
+		delete from hospital_address where 1=1 
+		and hospital_id=#{hospitalId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalAddress">
+		insert into hospital_address (
+		hospital_id,
+		province,
+		city,
+		hospital_name
+		)
+		values(
+		#{hospitalId,jdbcType=INTEGER},
+		#{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{hospitalName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalAddress">
+		update hospital_address 
+		<set>
+		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=INTEGER},</if>
+		  <if test="province != null">province=#{province,jdbcType=VARCHAR},</if>
+		  <if test="city != null">city=#{city,jdbcType=VARCHAR},</if>
+		  <if test="hospitalName != null">hospital_name=#{hospitalName,jdbcType=VARCHAR},</if>
+		</set>
+		where 1=1 and hospital_id = #{hospitalId,jdbcType=INTEGER}
+	</update>
+</mapper>

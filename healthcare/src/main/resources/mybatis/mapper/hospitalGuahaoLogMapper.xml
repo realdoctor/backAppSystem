@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="hospitalId" column="hospital_id" jdbcType="VARCHAR"/>
+		<result property="deptId" column="dept_id" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns"> 
+		t.id,
+		t.user_id,
+		t.hospital_id,
+		t.dept_id,
+		t.doctor_code,
+		t.add_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.user_id,
+		t.hospital_id,
+		t.dept_id,
+		t.doctor_code,
+		t.add_time
+		from hospital_guahao_log t 
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from hospital_guahao_log t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="columns"/>
+		from hospital_guahao_log t 
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog">
+		delete from hospital_guahao_log where 1=1 
+		and id=#{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog" useGeneratedKeys="true" keyProperty="id">
+		insert into hospital_guahao_log (
+		user_id,
+		hospital_id,
+		dept_id,
+		doctor_code,
+		add_time
+		)
+		values(
+		#{userId,jdbcType=VARCHAR},
+		#{hospitalId,jdbcType=VARCHAR},
+		#{deptId,jdbcType=VARCHAR},
+		#{doctorCode,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog">
+		update hospital_guahao_log 
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=VARCHAR},</if>
+		  <if test="deptId != null">dept_id=#{deptId,jdbcType=VARCHAR},</if>
+		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where 1=1 and id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
