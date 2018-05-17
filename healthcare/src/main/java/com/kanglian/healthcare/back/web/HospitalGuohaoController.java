@@ -52,8 +52,9 @@ public class HospitalGuohaoController
         // 城市名称
         private String cityName;
         
+        @SingleValue(tableAlias="t1", column = "hospital_name", equal = "like")
         public String getHospitalName() {
-            return hospitalName;
+            return StringUtil.isNotBlank(hospitalName) ? ("%" + hospitalName + "%") : null;
         }
         public void setHospitalName(String hospitalName) {
             this.hospitalName = hospitalName;

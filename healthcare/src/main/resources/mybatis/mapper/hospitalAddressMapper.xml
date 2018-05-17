@@ -45,7 +45,7 @@
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
 		SELECT
-			count(*)
+			COUNT(DISTINCT t.hospital_id)
 		FROM
 			hospital_address t
 		LEFT JOIN hospital_dept t1 ON t.hospital_id = t1.hospital_id
