@@ -21,7 +21,7 @@ import com.kanglian.healthcare.back.service.NoticeMessageBo;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/message")
+@RequestMapping(value = "/user/message")
 public class NoticeMessageController extends CrudController<NoticeMessage, NoticeMessageBo> {
 
     /**
@@ -43,7 +43,7 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      * @return
      * @throws Exception
      */
-    @GetMapping("/frontList")
+    @GetMapping("/noticeList")
     public ResultBody noticeMessageList(NoticeMessageQuery query) throws Exception {
         final Grid grid = this.bo.queryFrontList(query);
         return ResultUtil.success(grid, new JsonClothProcessor() {
