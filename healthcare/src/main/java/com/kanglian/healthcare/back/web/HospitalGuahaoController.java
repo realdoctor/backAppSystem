@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
@@ -34,6 +35,7 @@ public class HospitalGuahaoController
      * @return
      * @throws Exception
      */
+    @PerformanceClass
     @GetMapping("/hospital")
     public ResultBody list(HospitalGuahaoQuery query) throws Exception {
         return super.list(query);
@@ -45,6 +47,7 @@ public class HospitalGuahaoController
      * @return
      * @throws Exception
      */
+    @PerformanceClass
     @GetMapping("/search")
     public ResultBody search(GuahaoSearchQuery query) throws Exception {
         ConditionQuery conditionQuery1 = query.buildConditionQuery();
