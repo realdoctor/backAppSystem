@@ -91,8 +91,8 @@ public class HospitalGuahaoController
                 }
             }
             ConditionQuery query = super.buildConditionQuery();
-            if(StringUtil.isNotEmpty(cityName)) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" (instr("+cityName+", t.province) > 0) or (instr("+cityName+", t.city) > 0) "));
+            if(StringUtil.isNotBlank(cityName)) {
+                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }
             return query;
         }
