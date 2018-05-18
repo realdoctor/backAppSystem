@@ -12,13 +12,13 @@ import com.kanglian.healthcare.exception.DBException;
 public class HospitalAddressBo extends CrudBo<HospitalAddress, HospitalAddressDao> {
 
     /**
-     * 按条件查询
+     * 搜索医院、医生、科室、疾病
      * 
-     * @return
+     * @return 医院 | 医生
      */
-    public List<HospitalAddress> queryForList(ConditionQuery query) {
+    public List<HospitalAddress> queryForHospitalAndDoctor(ConditionQuery query) {
         try {
-            return dao.queryForList(query);
+            return dao.queryForHospitalAndDoctor(query);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

@@ -7,9 +7,9 @@ import com.easyway.business.framework.mybatis.query.ConditionQuery;
 
 public interface HospitalAddressDao extends CrudDao<HospitalAddress> {
     /**
-     * 按条件查询
+     * 搜索医院、医生、科室、疾病
      * 
-     * @return
+     * @return 医院 | 医生
      */
-    public List<HospitalAddress> queryForList(ConditionQuery query);
+    public List<HospitalAddress> queryForHospitalAndDoctor(ConditionQuery query);
 }

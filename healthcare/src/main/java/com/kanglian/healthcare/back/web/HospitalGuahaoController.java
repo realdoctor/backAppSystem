@@ -32,9 +32,9 @@ public class HospitalGuahaoController
 
     @Autowired
     private HospitalDeptCategoryBo hospitalDeptCategoryBo;
-    
+        
     /**
-     * 医院列表
+     * 医院一览
      * 
      * @param query
      * @return
@@ -47,10 +47,10 @@ public class HospitalGuahaoController
     }
 
     /**
-     * 按医院、医生、科室、疾病等
+     * 搜索医院、医生、科室、疾病
      * 
      * @param searchstr
-     * @return
+     * @return 医院 | 医生
      * @throws Exception
      */
     @PerformanceClass
@@ -58,11 +58,11 @@ public class HospitalGuahaoController
     public ResultBody search(GuahaoSearchQuery query) throws Exception {
         ConditionQuery conditionQuery1 = query.buildConditionQuery();
         // 按医院查
-        List<HospitalAddress> hospitalList = this.bo.queryForList(conditionQuery1);
+        List<HospitalAddress> hospitalList = this.bo.queryForHospitalAndDoctor(conditionQuery1);
         // 按医生查
-        query.appendQueryParam("searchNew", "doctor");
+        query.appendQueryParam("searchOpt", "doctor");
         ConditionQuery conditionQuery2 = query.buildConditionQuery();
-        List<HospitalAddress> doctorList = this.bo.queryForList(conditionQuery2);
+        List<HospitalAddress> doctorList = this.bo.queryForHospitalAndDoctor(conditionQuery2);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("hospitalList", hospitalList);
         resultMap.put("doctorList", doctorList);
@@ -70,7 +70,7 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 医疗结构科室分类列表
+     * 医疗机构科室分类列表
      * 
      * @return
      * @throws Exception
@@ -105,12 +105,16 @@ public class HospitalGuahaoController
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
-                if (query.getParamMap().get("searchNew") != null) {// 按医生查
-                    String queryStringSql = " (t2.doctor_name LIKE '%"+searchstr+"%') ";
-                    query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
+                StringBuffer buff = new StringBuffer();
+                buff.append(" (t1.dept_name LIKE '%"+searchstr+"%') or (t2.field LIKE '%"+searchstr+"%') ");
+                if (query.getParamMap().get("searchOpt") != null) {// 按医生查
+                    buff.append(" or ");
+                    buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
+                    query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
                 } else {// 按医院查
-                    String queryStringSql = " (t1.hospital_name LIKE '%"+searchstr+"%') ";
-                    query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
+                    buff.append(" or ");
+                    buff.append(" (t1.hospital_name LIKE '%"+searchstr+"%') ");
+                    query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
                 }
             }
             return query;

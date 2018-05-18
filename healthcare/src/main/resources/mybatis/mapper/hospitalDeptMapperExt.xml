@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDeptDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDept" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="field" column="field" jdbcType="VARCHAR"/>
+		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
+		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 按医院、科室、疾病获取本院医生 -->
+	<select id="findDeptDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t.hospital_id,
+			t.dept_id,
+			t1.doctor_name,
+			t1.field,
+			t1.doctor_intro,
+			t1.positional
+		FROM
+			hospital_dept t
+		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		dept_id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
 </mapper>

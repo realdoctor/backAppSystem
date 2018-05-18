@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class HospitalDept extends BasePojo {
@@ -11,7 +12,12 @@ public class HospitalDept extends BasePojo {
 	private String hospitalName;
 	private String hospitalCode;
 	private String hospitalLevel;
-	public Integer getDeptId() {
+    private String doctorName;
+    @JSONField(name="goodAt")
+    private String field;
+    private String doctorIntro;
+    private String positional;
+    public Integer getDeptId() {
 		return deptId;
 	}
 	public void setDeptId(Integer deptId) {
@@ -53,4 +59,28 @@ public class HospitalDept extends BasePojo {
 	public void setHospitalLevel(String hospitalLevel) {
 		this.hospitalLevel = hospitalLevel;
 	}
+	public String getDoctorName() {
+        return doctorName;
+    }
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+    public String getField() {
+        return field;
+    }
+    public void setField(String field) {
+        this.field = field;
+    }
+    public String getDoctorIntro() {
+        return doctorIntro;
+    }
+    public void setDoctorIntro(String doctorIntro) {
+        this.doctorIntro = doctorIntro;
+    }
+    public String getPositional() {
+        return positional;
+    }
+    public void setPositional(String positional) {
+        this.positional = positional;
+    }
 }

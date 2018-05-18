@@ -8,8 +8,8 @@
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<!-- 按医院、医生、科室名、疾病等 -->
-	<select id="queryForList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<!-- 搜索医院、医生、科室、疾病 -->
+	<select id="queryForHospitalAndDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			DISTINCT t.hospital_id,
 			t.province,
@@ -17,7 +17,7 @@
 			t1.hospital_name,
 			t1.hospital_level,
 			<choose>
-			<when test="paramMap.searchNew!=null">
+			<when test="paramMap.searchOpt!=null">
 				t2.doctor_name,
 				t2.doctor_intro,
 				t2.field,
