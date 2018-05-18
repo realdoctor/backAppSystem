@@ -106,10 +106,10 @@ public class HospitalGuahaoController
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
                 if (query.getParamMap().get("searchNew") != null) {// 按医生查
-                    String queryStringSql = " (instr('" + searchstr + "', t2.doctor_name) > 0) ";
+                    String queryStringSql = " (t2.doctor_name LIKE '%"+searchstr+"%') ";
                     query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
                 } else {// 按医院查
-                    String queryStringSql = " (instr('" + searchstr + "', t1.hospital_name) > 0) ";
+                    String queryStringSql = " (t1.hospital_name LIKE '%"+searchstr+"%') ";
                     query.addWithoutValueCondition(new WithoutValueCondition(queryStringSql));
                 }
             }
