@@ -27,8 +27,8 @@ public class RedisTokenManager extends AbstractTokenManager {
         if (oldToken != null) {
             delete(formatToken(oldToken));
         }
-        set(formatToken(token), key, tokenExpireSeconds);
-        set(formatKey(key), token, tokenExpireSeconds);
+        set(formatToken(token), key, Constants.TOKEN_EXPIRES_SECONDS);
+        set(formatKey(key), token, Constants.TOKEN_EXPIRES_SECONDS);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class RedisTokenManager extends AbstractTokenManager {
 
     @Override
     protected void flushExpireAfterOperation(String key, String token) {
-        expire(formatKey(key), tokenExpireSeconds);
-        expire(formatToken(token), tokenExpireSeconds);
+        expire(formatKey(key), Constants.TOKEN_EXPIRES_SECONDS);
+        expire(formatToken(token), Constants.TOKEN_EXPIRES_SECONDS);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class RedisTokenManager extends AbstractTokenManager {
         return get(formatKey(key));
     }
 
-    private String get(String key) {
+    public String get(String key) {
         Object obj = redisCacheManager.getCacheObject(key);
         if (obj == null) {
             return null;
@@ -69,7 +69,7 @@ public class RedisTokenManager extends AbstractTokenManager {
         return String.valueOf(obj);
     }
 
-    private void set(String key, String value, int expireSeconds) {
+    public void set(String key, String value, int expireSeconds) {
         redisCacheManager.setCacheObject(key, value, Long.valueOf(expireSeconds), TimeUnit.SECONDS);
     }
 
@@ -83,11 +83,11 @@ public class RedisTokenManager extends AbstractTokenManager {
         }
     }
 
-    private String formatKey(String key) {
-        return Constants.REDIS_KEY_PREFIX.concat(key);
+    public String formatKey(String key) {
+        return Constants.formatKey(key);
     }
 
-    private String formatToken(String token) {
-        return Constants.REDIS_TOKEN_PREFIX.concat(token);
+    public String formatToken(String token) {
+        return Constants.formatToken(token);
     }
 }

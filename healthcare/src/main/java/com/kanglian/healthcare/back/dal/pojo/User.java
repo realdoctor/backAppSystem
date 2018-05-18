@@ -26,19 +26,19 @@ public class User extends BasePojo {
      * 扩展字段
      */
     private transient String verifyCode;
-    private boolean refreshToken;
+    private String tokenFlag;
+    public String getTokenFlag() {
+        return tokenFlag;
+    }
+    public void setTokenFlag(String tokenFlag) {
+        this.tokenFlag = tokenFlag;
+    }
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;
     }
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
-    }
-    public boolean isRefreshToken() {
-        return refreshToken;
-    }
-    public void setRefreshToken(boolean refreshToken) {
-        this.refreshToken = refreshToken;
     }
 	public Long getUserId() {
 		return userId;

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
@@ -46,6 +47,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("============进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token="+token);
+        String sessionId = null;
         if (token != null && token.length() > 0) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
@@ -54,16 +56,31 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
-                if (user.isRefreshToken() || redisTokenManager.getKey(token) != null) {
-                    logger.info("============================token验证通过，直接放行");
-                    return true;
+                if (StringUtil.isNotEmpty(user.getTokenFlag())) {// 客户端刷新token
+                    String accessToken = redisTokenManager.getToken(user.getMobilePhone());
+                    logger.info("========================>>>>客户端自动刷新，accessToken="+accessToken);
+                    if(accessToken != null) {
+                        logger.info("============================refreshToken验证通过，直接放行");
+                        return true;
+                    }
+                } else {
+                    sessionId = redisTokenManager.getKey(token);
+                    logger.debug("=============>>>>SessionId="+sessionId);
+                    if (StringUtil.isNotEmpty(sessionId)) {
+                        logger.info("============================token验证通过，直接放行");
+                        return true;
+                    }
                 }
             }
         }
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
                 || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
-            logger.info("============================token已过期或未携带签名，请重新登录");
+            if (StringUtil.isNotEmpty(token) && StringUtil.isEmpty(sessionId)) {
+                logger.info("============================session已过期，请重新登录");
+            } else {
+                logger.info("============================未携带签名，请重新登录");
+            }
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");  
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

@@ -26,6 +26,7 @@ import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
@@ -85,24 +86,24 @@ public class UserController extends CrudController<User, UserBo> {
         }
         
         // 一个用户只能绑定一个Token，单点登录。用户退出，令牌失效
-        String token = redisTokenManager.getToken(mobilePhone);
-        if (token == null) {
+        String accessToken = redisTokenManager.getToken(mobilePhone);
+        if (accessToken == null) {
             // 生成Token
-            token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
-            redisTokenManager.createRelationship(mobilePhone, token);
+            accessToken = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
+            redisTokenManager.createRelationship(mobilePhone, accessToken);
         } else {
-            logger.info("========手机号{}，已登录另外一台客户端。token={}", new Object[] {mobilePhone, token});
+            logger.info("========手机号{}，登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
         }
         User userT = new User();
         BeanUtils.copyProperties(user, userT);
-        userT.setRefreshToken(true);// 客户端自动刷新token
+        userT.setTokenFlag("q");// 客户端自动刷新token
         userT.setLastUpdateDtime(DateUtil.currentDate());// 判断客户端刷新token频率
         String refreshToken =
                 JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(userT), JwtUtil.JWT_REFRESH_TTL);
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("token", token);
+        resultMap.put("token", accessToken);
         resultMap.put("refreshToken", refreshToken);
-        resultMap.put("user", userT);
+        resultMap.put("user", user);
         return ResultUtil.success(resultMap);
     }
 
@@ -223,6 +224,9 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @PostMapping("/logout")
     public ResultBody logout(@CurrentUser User user) throws Exception {
+        if (user == null) {
+            throw new InvalidOperationException();
+        }
         redisTokenManager.delRelationshipByKey(user.getMobilePhone());
         return ResultUtil.success();
     }
@@ -238,7 +242,7 @@ public class UserController extends CrudController<User, UserBo> {
     @GetMapping("/refreshToken")
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
         if (user == null) {
-            return ResultUtil.error("刷新token失败");
+            throw new InvalidOperationException();
         }
         final String mobilePhone = user.getMobilePhone();
         // 重新生成Token，利用redis过期缓存，一天刷一次。
@@ -249,6 +253,7 @@ public class UserController extends CrudController<User, UserBo> {
         logger.debug("================12小时前已刷过token="+token);
         if (token == null) {
             token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
+            // 重新建立关系
             redisTokenManager.createRelationship(mobilePhone, String.valueOf(token));
             // 12小时过期
             redisCacheManager.setCacheObject(Constants.MARK_REFRESH_TOKEN_KEY_PREFIX

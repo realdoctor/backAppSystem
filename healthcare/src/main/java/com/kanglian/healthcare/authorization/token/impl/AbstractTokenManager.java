@@ -9,13 +9,7 @@ import com.kanglian.healthcare.authorization.token.TokenManager;
  */
 public abstract class AbstractTokenManager implements TokenManager {
 
-    protected int     tokenExpireSeconds        = 7 * 24 * 3600;
-
     protected boolean flushExpireAfterOperation = true;
-
-    public void setTokenExpireSeconds(int tokenExpireSeconds) {
-        this.tokenExpireSeconds = tokenExpireSeconds;
-    }
 
     public void setFlushExpireAfterOperation(boolean flushExpireAfterOperation) {
         this.flushExpireAfterOperation = flushExpireAfterOperation;
