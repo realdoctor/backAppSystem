@@ -3,6 +3,7 @@ package com.kanglian.healthcare.back.web;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
 import com.kanglian.healthcare.back.service.HospitalAddressBo;
+import com.kanglian.healthcare.back.service.HospitalDeptCategoryBo;
 
 /**
  * 医院挂号
@@ -28,6 +30,9 @@ import com.kanglian.healthcare.back.service.HospitalAddressBo;
 public class HospitalGuahaoController
         extends CrudController<HospitalAddress, HospitalAddressBo> {
 
+    @Autowired
+    private HospitalDeptCategoryBo hospitalDeptCategoryBo;
+    
     /**
      * 医院列表
      * 
@@ -43,6 +48,7 @@ public class HospitalGuahaoController
 
     /**
      * 按医院、医生、科室、疾病等
+     * 
      * @param searchstr
      * @return
      * @throws Exception
@@ -61,6 +67,17 @@ public class HospitalGuahaoController
         resultMap.put("hospitalList", hospitalList);
         resultMap.put("doctorList", doctorList);
         return ResultUtil.success(resultMap);
+    }
+    
+    /**
+     * 医疗结构科室分类列表
+     * 
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/hospital/deptCategory")
+    public ResultBody hospitalDeptCategory() throws Exception {
+        return ResultUtil.success(hospitalDeptCategoryBo.getHospitalDeptList());
     }
     
     public static class GuahaoSearchQuery extends HospitalGuahaoQuery {

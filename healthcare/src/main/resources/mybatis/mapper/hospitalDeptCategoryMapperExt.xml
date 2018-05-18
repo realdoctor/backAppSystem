@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDeptCategoryDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory" id="BaseResultMapExt" extends="BaseResultMap">
+		<collection property="deptList" ofType="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory" select="getHospitalDeptCategory" column="id">
+		</collection>
+	</resultMap>
+	
+	<!-- 查询医疗机构各科室分类表 -->  
+    <select id="getHospitalDeptList" resultMap="BaseResultMapExt">
+    	SELECT
+    	<include refid="columns"/>
+		FROM hospital_dept_category t WHERE t.parent_id=0 ORDER BY t.dept_code ASC
+    </select>
+    
+    <select id="getHospitalDeptCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    	SELECT
+    	<include refid="columns"/>
+		FROM hospital_dept_category t WHERE t.parent_id=#{id,jdbcType=INTEGER}
+    </select>
+</mapper>
