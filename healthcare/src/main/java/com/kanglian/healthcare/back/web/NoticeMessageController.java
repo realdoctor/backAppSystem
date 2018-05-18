@@ -11,7 +11,9 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.NoticeMessage;
+import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.NoticeMessageBo;
 
 /**
@@ -32,7 +34,8 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      * @throws Exception
      */
     @GetMapping
-    public ResultBody list(NoticeMessageQuery query) throws Exception {
+    public ResultBody list(NoticeMessageQuery query, @CurrentUser User user) throws Exception {
+        query.setUserId(String.valueOf(user.getUserId()));
         return ResultUtil.success(this.bo.query(query));
     }
 
@@ -44,7 +47,8 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
      * @throws Exception
      */
     @GetMapping("/noticeList")
-    public ResultBody noticeMessageList(NoticeMessageQuery query) throws Exception {
+    public ResultBody noticeMessageList(NoticeMessageQuery query, @CurrentUser User user) throws Exception {
+        query.setUserId(String.valueOf(user.getUserId()));
         final Grid grid = this.bo.queryFrontList(query);
         return ResultUtil.success(grid, new JsonClothProcessor() {
 
