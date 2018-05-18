@@ -47,8 +47,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("============进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token="+token);
-        String sessionId = null;
-        if ((!"null".equals(token) && StringUtil.isNotEmpty(token))) {
+        if (StringUtil.isNotEmpty(token)) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
             if (claims != null) {
@@ -57,14 +56,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
                 if (StringUtil.isNotEmpty(user.getTokenFlag())) {// 客户端刷新token
-                    String accessToken = redisTokenManager.getToken(user.getMobilePhone());
-                    logger.info("========================>>>>客户端自动刷新，accessToken="+accessToken);
-                    if(accessToken != null) {
-                        logger.info("============================refreshToken验证通过，直接放行");
-                        return true;
-                    }
+                    logger.info("============================refreshToken验证通过，直接放行");
+                    return true;
                 } else {
-                    sessionId = redisTokenManager.getKey(token);
+                    String sessionId = redisTokenManager.getKey(token);
                     logger.debug("=============>>>>SessionId="+sessionId);
                     if (StringUtil.isNotEmpty(sessionId)) {
                         logger.info("============================token验证通过，直接放行");
@@ -76,12 +71,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
                 || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
-            if ((!"null".equals(token) && StringUtil.isNotEmpty(token))
-                    && StringUtil.isEmpty(sessionId)) {
-                logger.info("============================session已过期，请重新登录");
-            } else {
-                logger.info("============================未携带签名，请重新登录");
-            }
+            logger.info("============================session已过期，请重新登录");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

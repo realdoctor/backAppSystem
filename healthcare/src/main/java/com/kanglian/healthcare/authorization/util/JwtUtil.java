@@ -15,12 +15,11 @@ public class JwtUtil {
     /**
      * jwt
      */
-    public static final String JWT_ID               = "jwt";
-    public static final String JWT_SECRET           = "9ff28bfa80b1beaca18e167df071db6e";
-    public static final int    JWT_TTL              = 604800000; // token有效时间7t,单位毫秒
-    public static final int    JWT_REFRESH_INTERVAL = 60*60*1000;
-    public static final int    JWT_REFRESH_TTL      = 30*24*60*60*1000;
-
+    public static final String JWT_ID          = "jwt";
+    public static final String JWT_SECRET      = "9ff28bfa80b1beaca18e167df071db6e";
+    public static final int    JWT_TTL         = 2 * 60 * 60 * 1000; // token有效时间2h，单位毫秒
+    public static final int    JWT_REFRESH_TTL = 30 * 24 * 60 * 60 * 1000;
+    
     /**
      * 签发JWT
      * 

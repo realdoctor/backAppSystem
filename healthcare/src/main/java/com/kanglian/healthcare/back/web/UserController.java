@@ -244,23 +244,14 @@ public class UserController extends CrudController<User, UserBo> {
         if (user == null) {
             throw new InvalidOperationException();
         }
-        final String mobilePhone = user.getMobilePhone();
-        // 重新生成Token，利用redis过期缓存，一天刷一次。
-        Object token = redisCacheManager.getCacheObject(
-                Constants.MARK_REFRESH_TOKEN_KEY_PREFIX.concat(String.valueOf(user.getUserId())));
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        final String mobilePhone = user.getMobilePhone();
+        // 重新生成token
+        String token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
+        // 重新建立关系
+        redisTokenManager.createRelationship(mobilePhone, String.valueOf(token));
         resultMap.put("token", token);
-        logger.debug("================12小时前已刷过token="+token);
-        if (token == null) {
-            token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
-            // 重新建立关系
-            redisTokenManager.createRelationship(mobilePhone, String.valueOf(token));
-            // 12小时过期
-            redisCacheManager.setCacheObject(Constants.MARK_REFRESH_TOKEN_KEY_PREFIX
-                    .concat(String.valueOf(user.getUserId())), token, 12L, TimeUnit.HOURS);
-            resultMap.put("token", token);
-            logger.info("================手机号{}，重新生成token={}", new Object[] {mobilePhone, token});
-        }
+        logger.info("================手机号{}，重新生成token={}", new Object[] {mobilePhone, token});
         return ResultUtil.success(resultMap);
     }
     
