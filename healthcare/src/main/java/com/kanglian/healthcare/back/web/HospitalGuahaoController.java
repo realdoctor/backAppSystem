@@ -168,7 +168,7 @@ public class HospitalGuahaoController
             }
             ConditionQuery query = super.buildConditionQuery();
             if(StringUtil.isNotBlank(cityName)) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" (instr(t.province, '"+cityName+"') > 0) or (instr(t.city, '"+cityName+"') > 0) "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }
             return query;
         }
