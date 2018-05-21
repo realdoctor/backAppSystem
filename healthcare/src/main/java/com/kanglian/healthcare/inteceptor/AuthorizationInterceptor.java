@@ -55,16 +55,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
-                if (StringUtil.isNotEmpty(user.getTokenFlag())) {// 客户端刷新token
-                    logger.info("============================refreshToken验证通过，直接放行");
+                String sessionId = redisTokenManager.getKey(token);
+                logger.debug("=============>>>>SessionId="+sessionId);
+                if (StringUtil.isNotEmpty(sessionId)) {
+                    logger.info("============================token验证通过，直接放行");
                     return true;
-                } else {
-                    String sessionId = redisTokenManager.getKey(token);
-                    logger.debug("=============>>>>SessionId="+sessionId);
-                    if (StringUtil.isNotEmpty(sessionId)) {
-                        logger.info("============================token验证通过，直接放行");
-                        return true;
-                    }
                 }
             }
         }

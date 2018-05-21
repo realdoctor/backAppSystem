@@ -26,13 +26,6 @@ public class User extends BasePojo {
      * 扩展字段
      */
     private transient String verifyCode;
-    private String tokenFlag;
-    public String getTokenFlag() {
-        return tokenFlag;
-    }
-    public void setTokenFlag(String tokenFlag) {
-        this.tokenFlag = tokenFlag;
-    }
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;

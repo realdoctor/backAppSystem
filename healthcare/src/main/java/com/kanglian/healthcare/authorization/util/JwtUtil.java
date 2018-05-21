@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import com.kanglian.healthcare.authorization.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -16,10 +17,10 @@ public class JwtUtil {
      * jwt
      */
     public static final String JWT_ID          = "jwt";
-    public static final String JWT_SECRET      = "9ff28bfa80b1beaca18e167df071db6e";
-    public static final int    JWT_TTL         = 2 * 60 * 60 * 1000; // token有效时间2h，单位毫秒
-    public static final int    JWT_REFRESH_TTL = 30 * 24 * 60 * 60 * 1000;
-    
+    public static final String JWT_SECRET      = Constants.JWT_SECRET;
+    public static final int    JWT_TTL         = Constants.TOKEN_EXPIRES_SECONDS * 1000; // token有效时间7t，单位毫秒
+    public static final int    JWT_REFRESH_TTL = Constants.TOKEN_REFRESH_EXPIRES_SECONDS * 1000;
+
     /**
      * 签发JWT
      * 
@@ -66,7 +67,8 @@ public class JwtUtil {
     public static Claims verifyToken(String token) {
         try {
             Claims claims =
-                    Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET)).parseClaimsJws(token).getBody();
+                    Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET))
+                            .parseClaimsJws(token).getBody();
             return claims;
         } catch (Exception ex) {
             return null;

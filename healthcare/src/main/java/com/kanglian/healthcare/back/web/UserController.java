@@ -3,7 +3,6 @@ package com.kanglian.healthcare.back.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,15 +93,9 @@ public class UserController extends CrudController<User, UserBo> {
         } else {
             logger.info("========手机号{}，登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
         }
-        User userT = new User();
-        BeanUtils.copyProperties(user, userT);
-        userT.setTokenFlag("q");// 客户端自动刷新token
-        userT.setLastUpdateDtime(DateUtil.currentDate());// 判断客户端刷新token频率
-        String refreshToken =
-                JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(userT), JwtUtil.JWT_REFRESH_TTL);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", accessToken);
-        resultMap.put("refreshToken", refreshToken);
         resultMap.put("user", user);
         return ResultUtil.success(resultMap);
     }
