@@ -106,7 +106,7 @@ public class HospitalGuahaoController
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
                 StringBuffer buff = new StringBuffer();
-                buff.append(" (t1.dept_name LIKE '%"+searchstr+"%') or (t2.field LIKE '%"+searchstr+"%') ");
+                buff.append(" (instr(t1.dept_name, '"+searchstr+"') > 0) or (instr(t2.field, '"+searchstr+"') > 0) ");
                 if (query.getParamMap().get("searchOpt") != null) {// 按医生查
                     buff.append(" or ");
                     buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
@@ -168,7 +168,7 @@ public class HospitalGuahaoController
             }
             ConditionQuery query = super.buildConditionQuery();
             if(StringUtil.isNotBlank(cityName)) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" (instr(t.province, '"+cityName+"') > 0) or (instr(t.city, '"+cityName+"') > 0) "));
             }
             return query;
         }
