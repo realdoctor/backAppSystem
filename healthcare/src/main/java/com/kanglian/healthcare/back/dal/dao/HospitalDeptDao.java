@@ -8,11 +8,17 @@ import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
 public interface HospitalDeptDao extends CrudDao<HospitalDept> {
 
     /**
-     * 按医院、科室、疾病获取本院医生
+     * 按医院、科室、疾病获取本院医生[按专家预约]
      * 
-     * @param hospitalId
-     * @param deptName
      * @return
      */
     public List<HospitalDept> findDeptDoctor(ConditionQuery query);
+
+    /**
+     * 按医院、科室、疾病获取本院医生[按日期预约]
+     * 
+     * @param query
+     * @return
+     */
+    public List<HospitalDept> findDateDeptDoctor(ConditionQuery query);
 }

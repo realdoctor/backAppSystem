@@ -17,6 +17,12 @@ public class HospitalDept extends BasePojo {
     private String field;
     private String doctorIntro;
     private String positional;
+    // 接诊量
+    private Integer receiveNum;
+    // 星期几
+    private String week;
+    // 日常计划
+    private String plan;
     public Integer getDeptId() {
 		return deptId;
 	}
@@ -82,5 +88,23 @@ public class HospitalDept extends BasePojo {
     }
     public void setPositional(String positional) {
         this.positional = positional;
+    }
+    public Integer getReceiveNum() {
+        return receiveNum;
+    }
+    public void setReceiveNum(Integer receiveNum) {
+        this.receiveNum = receiveNum;
+    }
+    public String getWeek() {
+        return week;
+    }
+    public void setWeek(String week) {
+        this.week = week;
+    }
+    public String getPlan() {
+        return plan;
+    }
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 }

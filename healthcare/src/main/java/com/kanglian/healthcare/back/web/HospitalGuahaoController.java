@@ -17,8 +17,11 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
+import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
 import com.kanglian.healthcare.back.service.HospitalAddressBo;
+import com.kanglian.healthcare.back.service.HospitalDeptBo;
 import com.kanglian.healthcare.back.service.HospitalDeptCategoryBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
  * 医院挂号
@@ -32,7 +35,9 @@ public class HospitalGuahaoController
 
     @Autowired
     private HospitalDeptCategoryBo hospitalDeptCategoryBo;
-        
+    @Autowired
+    private HospitalDeptBo hospitalDeptBo;
+    
     /**
      * 医院一览
      * 
@@ -46,6 +51,17 @@ public class HospitalGuahaoController
         return super.list(query);
     }
 
+    /**
+     * 医疗机构科室分类列表
+     * 
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/hospital/deptCategory")
+    public ResultBody hospitalDeptCategory() throws Exception {
+        return ResultUtil.success(hospitalDeptCategoryBo.getHospitalDeptList());
+    }
+    
     /**
      * 搜索医院、医生、科室、疾病
      * 
@@ -70,14 +86,71 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 医疗机构科室分类列表
+     * 按医院、科室、获取本院医生-按专家预约
      * 
+     * @param query
      * @return
      * @throws Exception
      */
-    @GetMapping("/hospital/deptCategory")
-    public ResultBody hospitalDeptCategory() throws Exception {
-        return ResultUtil.success(hospitalDeptCategoryBo.getHospitalDeptList());
+    @PerformanceClass
+    @GetMapping("/hospital/orderExpert")
+    public ResultBody orderExpert(HospitalZhuanjiaQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getHospitalId())) {
+            throw new InvalidParamException("hospitalId");
+        }
+        if (StringUtil.isEmpty(query.getDeptName())) {
+            throw new InvalidParamException("deptName");
+        }
+        ConditionQuery conditionQuery = query.buildConditionQuery();
+        List<HospitalDept> orderZhuanjiaList = hospitalDeptBo.findDeptDoctor(conditionQuery);
+        return ResultUtil.success(orderZhuanjiaList);
+    }
+    
+    /**
+     * 按医院、科室、获取本院医生-按日期预约
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @GetMapping("/hospital/orderDateExpert")
+    public ResultBody orderDateExpert(HospitalZhuanjiaQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getHospitalId())) {
+            throw new InvalidParamException("hospitalId");
+        }
+        if (StringUtil.isEmpty(query.getDeptName())) {
+            throw new InvalidParamException("deptName");
+        }
+        ConditionQuery conditionQuery = query.buildConditionQuery();
+        List<HospitalDept> orderDateList = hospitalDeptBo.findDateDeptDoctor(conditionQuery);
+        return ResultUtil.success(orderDateList);
+    }
+    
+    public static class HospitalZhuanjiaQuery extends Grid {
+        // 医院id
+        private String hospitalId;
+        // 科室名称
+        private String deptName;
+
+        @SingleValue(tableAlias = "t", column = "hospital_id", equal = "=")
+        public String getHospitalId() {
+            return hospitalId;
+        }
+
+        public void setHospitalId(String hospitalId) {
+            this.hospitalId = hospitalId;
+        }
+
+        @SingleValue(tableAlias = "t", column = "dept_name", equal = "like")
+        public String getDeptName() {
+            return StringUtil.isNotBlank(deptName) ? ("%" + deptName + "%") : null;
+        }
+
+        public void setDeptName(String deptName) {
+            this.deptName = deptName;
+        }
+
     }
     
     public static class GuahaoSearchQuery extends HospitalGuahaoQuery {

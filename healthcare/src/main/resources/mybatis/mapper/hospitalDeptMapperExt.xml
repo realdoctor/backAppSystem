@@ -6,9 +6,12 @@
 		<result property="field" column="field" jdbcType="VARCHAR"/>
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+		<result property="receiveNum" column="receive_num" jdbcType="INTEGER"/>
+		<result property="week" column="week" jdbcType="VARCHAR"/>
+		<result property="plan" column="plan" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<!-- 按医院、科室、疾病获取本院医生 -->
+	<!-- 按医院、科室、疾病获取本院医生[按专家预约] -->
 	<select id="findDeptDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.hospital_id,
@@ -16,10 +19,12 @@
 			t1.doctor_name,
 			t1.field,
 			t1.doctor_intro,
-			t1.positional
+			t1.positional,
+			t2.receive_num
 		FROM
 			hospital_dept t
 		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
+		LEFT JOIN hospital_receive_log t2 ON (t.hospital_id = t2.hospital_id AND t1.doctor_code=t2.doctor_code)
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -30,8 +35,32 @@
 		dept_id desc
 		</otherwise>
 		</choose>
-		<if test="paramMap.pageSize > 0">
-		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
-		</if>
+	</select>
+	
+	<!-- 按医院、科室、疾病获取本院医生[按日期预约] -->
+	<select id="findDateDeptDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t.hospital_id,
+			t.dept_id,
+			t1.doctor_name,
+			t1.field,
+			t1.doctor_intro,
+			t1.positional,
+			t2.week,
+			t2.plan
+		FROM
+			hospital_dept t
+		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
+		LEFT JOIN hospital_doctor_duty t2 ON (t.hospital_id = t2.hospital_id AND t.dept_id = t2.dept_id AND t1.doctor_code=t2.doctor_code)
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		week ASC, plan ASC
+		</otherwise>
+		</choose>
 	</select>
 </mapper>
