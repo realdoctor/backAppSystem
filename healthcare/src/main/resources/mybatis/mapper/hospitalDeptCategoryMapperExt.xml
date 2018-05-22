@@ -9,8 +9,26 @@
 	<!-- 查询医疗机构各科室分类表 -->  
     <select id="getHospitalDeptList" resultMap="BaseResultMapExt">
     	SELECT
-    	<include refid="columns"/>
-		FROM hospital_dept_category t WHERE t.parent_id=0 ORDER BY t.dept_code ASC
+			<include refid="columns"/>
+		FROM
+			hospital_dept_category t
+		WHERE
+			t.parent_id = 0
+		AND EXISTS (
+			SELECT
+				p.id
+			FROM
+				hospital_dept_category p
+			LEFT JOIN hospital_dept_category c ON c.parent_id = p.id
+			WHERE t.id = p.id
+			GROUP BY
+				p.id, p.dept_name
+			HAVING count(c.dept_name) > 0
+			ORDER BY
+				p.id
+		)
+		ORDER BY
+			t.dept_code ASC
     </select>
     
     <select id="getHospitalDeptCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer">
