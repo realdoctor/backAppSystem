@@ -151,6 +151,9 @@ public class HospitalGuahaoController
         if (StringUtil.isEmpty(query.getDeptName())) {
             throw new InvalidParamException("deptName");
         }
+        if (StringUtil.isEmpty(query.getOrderDay())) {
+            throw new InvalidParamException("orderDay");
+        }
         ConditionQuery conditionQuery = query.buildConditionQuery();
         List<HospitalDept> orderDateExpertList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
         return ResultUtil.success(orderDateExpertList);
