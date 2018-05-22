@@ -36,6 +36,7 @@ public class RedisCacheManager {
 
     /**
      * 删除key值的所有数据，包括列表，键值对，hash等
+     * 
      * @param key
      */
     public void delete(final String key) {
@@ -45,7 +46,7 @@ public class RedisCacheManager {
     public void delete(Collection<String> keys) {
         redisTemplate.delete(keys);
     }
-    
+
     /**
      * 设置过期时间
      * 
