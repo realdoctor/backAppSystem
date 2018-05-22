@@ -51,7 +51,17 @@
 			t2.week,
 			t2.plan,
 			t2.last_update_dtime,
-			CONCAT(date_format(t2.last_update_dtime, '%m-%d'),'|',t2.week) as worktimeWeek
+			CONCAT(date_format(t2.last_update_dtime, '%m-%d'),'|',
+				case t2.week 
+				when 1 then '周一'
+				when 2 then '周二'
+				when 3 then '周三'
+				when 4 then '周四'
+				when 5 then '周五'
+				when 6 then '周六'
+				when 6 then '周日'
+				else '未知'
+				end) as worktimeWeek
 		FROM
 			hospital_dept t
 		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
