@@ -210,7 +210,6 @@ public class HospitalGuahaoController
             this.deptName = deptName;
         }
         
-        @SingleValue(tableAlias = "t2", column = "week", equal = "=")
         public String getOrderDay() {
             return orderDay;
         }
@@ -219,6 +218,17 @@ public class HospitalGuahaoController
             this.orderDay = orderDay;
         }
 
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            if (StringUtil.isNotBlank(orderDay)) {
+                StringBuffer buff = new StringBuffer();
+                buff.append(" date_format(t2.last_update_dtime, '%m-%d')='"+orderDay+"' ");
+                query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
+            }
+            return query;
+        }
+        
     }
     
     public static class GuahaoSearchQuery extends HospitalGuahaoQuery {
