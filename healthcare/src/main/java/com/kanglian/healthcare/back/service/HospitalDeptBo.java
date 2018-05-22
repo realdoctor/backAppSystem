@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.service;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
@@ -35,6 +36,20 @@ public class HospitalDeptBo extends CrudBo<HospitalDept, HospitalDeptDao> {
     public List<HospitalDept> findRoutineWorkDoctor(ConditionQuery query) {
         try {
             return this.dao.findRoutineWorkDoctor(query);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
+     * 按医院、科室、疾病获取本院医生[按日期预约]
+     * 
+     * @param query
+     * @return
+     */
+    public List<Map<String, String>> findWorkingDay(ConditionQuery query) {
+        try {
+            return this.dao.findWorkingDay(query);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

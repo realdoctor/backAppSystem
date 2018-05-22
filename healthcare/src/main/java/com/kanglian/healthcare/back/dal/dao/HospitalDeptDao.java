@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.dao;
 
 import java.util.List;
+import java.util.Map;
 import com.easyway.business.framework.dao.CrudDao;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
@@ -22,4 +23,13 @@ public interface HospitalDeptDao extends CrudDao<HospitalDept> {
      * @return
      */
     public List<HospitalDept> findRoutineWorkDoctor(ConditionQuery query);
+    
+    /**
+     * 工作日列表[按日期预约]
+     * 
+     * @param query
+     * @return
+     */
+    public List<Map<String, String>> findWorkingDay(ConditionQuery query);
+    
 }

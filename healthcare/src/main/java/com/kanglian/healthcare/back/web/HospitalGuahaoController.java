@@ -115,6 +115,27 @@ public class HospitalGuahaoController
     }
     
     /**
+     * 工作日列表-按日期预约
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @GetMapping("/hospital/orderDate")
+    public ResultBody orderDate(HospitalZhuanjiaQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getHospitalId())) {
+            throw new InvalidParamException("hospitalId");
+        }
+        if (StringUtil.isEmpty(query.getDeptName())) {
+            throw new InvalidParamException("deptName");
+        }
+        ConditionQuery conditionQuery = query.buildConditionQuery();
+        List<Map<String, String>> orderDateList = hospitalDeptBo.findWorkingDay(conditionQuery);
+        return ResultUtil.success(orderDateList);
+    }
+    
+    /**
      * 按医院、科室、获取本院医生-按日期预约
      * 
      * @param query
@@ -131,8 +152,8 @@ public class HospitalGuahaoController
             throw new InvalidParamException("deptName");
         }
         ConditionQuery conditionQuery = query.buildConditionQuery();
-        List<HospitalDept> orderDateList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
-        return ResultUtil.success(orderDateList);
+        List<HospitalDept> orderDateExpertList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
+        return ResultUtil.success(orderDateExpertList);
     }
     
     /**
@@ -168,6 +189,8 @@ public class HospitalGuahaoController
         private String hospitalId;
         // 科室名称
         private String deptName;
+        // 预约日
+        private String orderDay;
 
         @SingleValue(tableAlias = "t", column = "hospital_id", equal = "=")
         public String getHospitalId() {
@@ -185,6 +208,15 @@ public class HospitalGuahaoController
 
         public void setDeptName(String deptName) {
             this.deptName = deptName;
+        }
+        
+        @SingleValue(tableAlias = "t2", column = "week", equal = "=")
+        public String getOrderDay() {
+            return orderDay;
+        }
+
+        public void setOrderDay(String orderDay) {
+            this.orderDay = orderDay;
         }
 
     }
