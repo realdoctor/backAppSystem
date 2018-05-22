@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
+import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
@@ -23,6 +24,9 @@ public class HospitalDept extends BasePojo {
     private String week;
     // 日常计划
     private String plan;
+    @JSONField(name="worktime")
+    private Date lastUpdateDtime;
+    private String worktimeWeek;
     public Integer getDeptId() {
 		return deptId;
 	}
@@ -106,5 +110,17 @@ public class HospitalDept extends BasePojo {
     }
     public void setPlan(String plan) {
         this.plan = plan;
+    }
+    public Date getLastUpdateDtime() {
+        return lastUpdateDtime;
+    }
+    public void setLastUpdateDtime(Date lastUpdateDtime) {
+        this.lastUpdateDtime = lastUpdateDtime;
+    }
+    public String getWorktimeWeek() {
+        return worktimeWeek;
+    }
+    public void setWorktimeWeek(String worktimeWeek) {
+        this.worktimeWeek = worktimeWeek;
     }
 }

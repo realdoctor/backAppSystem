@@ -9,6 +9,8 @@
 		<result property="receiveNum" column="receive_num" jdbcType="INTEGER"/>
 		<result property="week" column="week" jdbcType="VARCHAR"/>
 		<result property="plan" column="plan" jdbcType="VARCHAR"/>
+		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+		<result property="worktimeWeek" column="worktimeWeek" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<!-- 按医院、科室、疾病获取本院医生[按专家预约] -->
@@ -47,7 +49,9 @@
 			t1.doctor_intro,
 			t1.positional,
 			t2.week,
-			t2.plan
+			t2.plan,
+			t2.last_update_dtime,
+			CONCAT(date_format(t2.last_update_dtime, '%m-%d'),'|',t2.week) as worktimeWeek
 		FROM
 			hospital_dept t
 		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
