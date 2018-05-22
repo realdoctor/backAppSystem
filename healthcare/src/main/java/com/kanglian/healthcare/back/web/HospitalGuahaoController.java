@@ -19,6 +19,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
 import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
@@ -141,6 +142,7 @@ public class HospitalGuahaoController
      * @return
      * @throws Exception
      */
+    @Authorization
     @PerformanceClass
     @PostMapping("/fastorder")
     public ResultBody fastorder(@RequestBody HospitalGuahaoLog hospitalGuahaoLog) throws Exception {
