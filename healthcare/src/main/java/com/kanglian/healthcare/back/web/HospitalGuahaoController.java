@@ -123,7 +123,7 @@ public class HospitalGuahaoController
             throw new InvalidParamException("deptName");
         }
         ConditionQuery conditionQuery = query.buildConditionQuery();
-        List<HospitalDept> orderDateList = hospitalDeptBo.findDateDeptDoctor(conditionQuery);
+        List<HospitalDept> orderDateList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
         return ResultUtil.success(orderDateList);
     }
     
