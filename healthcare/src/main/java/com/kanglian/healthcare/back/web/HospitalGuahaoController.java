@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.common.annotation.PerformanceClass;
@@ -15,12 +17,15 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
+import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
 import com.kanglian.healthcare.back.service.HospitalAddressBo;
 import com.kanglian.healthcare.back.service.HospitalDeptBo;
 import com.kanglian.healthcare.back.service.HospitalDeptCategoryBo;
+import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -37,6 +42,8 @@ public class HospitalGuahaoController
     private HospitalDeptCategoryBo hospitalDeptCategoryBo;
     @Autowired
     private HospitalDeptBo hospitalDeptBo;
+    @Autowired
+    private HospitalGuahaoLogBo hospitalGuahaoLogBo;
     
     /**
      * 医院一览
@@ -125,6 +132,33 @@ public class HospitalGuahaoController
         ConditionQuery conditionQuery = query.buildConditionQuery();
         List<HospitalDept> orderDateList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
         return ResultUtil.success(orderDateList);
+    }
+    
+    /**
+     * 预约挂号
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @PerformanceClass
+    @PostMapping("/fastorder")
+    public ResultBody fastorder(@RequestBody HospitalGuahaoLog hospitalGuahaoLog) throws Exception {
+        if (StringUtil.isEmpty(hospitalGuahaoLog.getUserId())) {
+            throw new InvalidParamException("userId");
+        }
+        if (StringUtil.isEmpty(hospitalGuahaoLog.getHospitalId())) {
+            throw new InvalidParamException("hospitalId");
+        }
+        if (StringUtil.isEmpty(hospitalGuahaoLog.getDeptId())) {
+            throw new InvalidParamException("deptId");
+        }
+        if (StringUtil.isEmpty(hospitalGuahaoLog.getDoctorCode())) {
+            throw new InvalidParamException("doctorCode");
+        }
+        hospitalGuahaoLog.setAddTime(DateUtil.currentDate());
+        hospitalGuahaoLogBo.save(hospitalGuahaoLog);
+        return ResultUtil.success();
     }
     
     public static class HospitalZhuanjiaQuery extends Grid {

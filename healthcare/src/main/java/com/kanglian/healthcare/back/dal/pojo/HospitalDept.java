@@ -13,6 +13,7 @@ public class HospitalDept extends BasePojo {
 	private String hospitalName;
 	private String hospitalCode;
 	private String hospitalLevel;
+	private String doctorCode;
     private String doctorName;
     @JSONField(name="goodAt")
     private String field;
@@ -74,6 +75,12 @@ public class HospitalDept extends BasePojo {
     }
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+    public String getDoctorCode() {
+        return doctorCode;
+    }
+    public void setDoctorCode(String doctorCode) {
+        this.doctorCode = doctorCode;
     }
     public String getField() {
         return field;

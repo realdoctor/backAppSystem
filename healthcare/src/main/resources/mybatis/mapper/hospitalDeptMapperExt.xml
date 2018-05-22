@@ -3,6 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDeptDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDept" id="BaseResultMapExt" extends="BaseResultMap">
 		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
 		<result property="field" column="field" jdbcType="VARCHAR"/>
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
@@ -19,6 +20,7 @@
 			t.hospital_id,
 			t.dept_id,
 			t1.doctor_name,
+			t1.doctor_code,
 			t1.field,
 			t1.doctor_intro,
 			t1.positional,
@@ -45,6 +47,7 @@
 			t.hospital_id,
 			t.dept_id,
 			t1.doctor_name,
+			t1.doctor_code,
 			t1.field,
 			t1.doctor_intro,
 			t1.positional,
