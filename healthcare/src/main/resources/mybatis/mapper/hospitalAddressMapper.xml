@@ -12,7 +12,7 @@
 		<result property="markNum" column="mark_num" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.hospital_id,
 		t.province,
 		t.city,

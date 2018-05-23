@@ -9,7 +9,7 @@
 		<result property="codeNotes" column="code_notes" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.section,
 		t.name,
 		t.code,

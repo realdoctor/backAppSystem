@@ -10,7 +10,7 @@
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.goods_order_id,
 		t.goods_id,

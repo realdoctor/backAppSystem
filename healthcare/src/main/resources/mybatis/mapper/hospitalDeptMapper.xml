@@ -11,7 +11,7 @@
 		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.dept_id,
 		t.dept_name,
 		t.dept_code,

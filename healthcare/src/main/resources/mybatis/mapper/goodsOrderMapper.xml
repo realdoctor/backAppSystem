@@ -18,7 +18,7 @@
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.order_no,
 		t.user_id,

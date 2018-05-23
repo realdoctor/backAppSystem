@@ -10,7 +10,7 @@
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.name,
 		t.parent_id,

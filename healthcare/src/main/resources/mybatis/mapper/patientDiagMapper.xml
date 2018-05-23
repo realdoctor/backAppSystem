@@ -11,7 +11,7 @@
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.patient_record_id,
 		t.diag_code,

@@ -12,7 +12,7 @@
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.doctor_license,
 		t.doctor_name,
 		t.doctor_code,

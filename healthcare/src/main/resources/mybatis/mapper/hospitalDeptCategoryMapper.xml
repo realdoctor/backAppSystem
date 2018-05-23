@@ -8,7 +8,7 @@
 		<result property="parentId" column="parent_id" jdbcType="INTEGER"/>
 	</resultMap>
 
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.dept_name,
 		t.dept_code,

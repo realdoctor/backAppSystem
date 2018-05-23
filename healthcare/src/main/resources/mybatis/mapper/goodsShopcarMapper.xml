@@ -19,7 +19,7 @@
 		<result property="smallPic" column="small_pic" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<sql id="columns"> 
+	<sql id="columns">
 		t.id,
 		t.user_id,
 		t.goods_id,
