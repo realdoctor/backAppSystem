@@ -73,8 +73,8 @@
 	<!-- 复诊患者诊断列表 -->
 	<select id="findDiagList" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
-			DISTINCT t0.diag_code,
-			t0.diag_name
+			DISTINCT t0.diag_code AS diagCode,
+			t0.diag_name AS diagName
 		FROM
 			user_info t
 		INNER JOIN (
