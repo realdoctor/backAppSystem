@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.RevisitPatientRecordDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientRecord" id="BaseResultMapExt">
+		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
+		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
+		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
+		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
+		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
+		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
+		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="Revisit_Patient_Select_Query">
+		SELECT
+			t0.*
+		FROM
+			user_info t
+		INNER JOIN (
+			SELECT
+				a.org_code,
+				a.patient_id,
+				a.visit_org_name,
+				a.visit_dept_name,
+				a.visit_dtime,
+				a.visit_way,
+				a.resp_doctor_name,
+				b.diag_code,
+				b.diag_name
+			FROM
+				patient_record a
+			LEFT JOIN patient_diag b ON (
+				a.id = b.patient_record_id
+			)
+		) t0 ON (
+			t.org_code = t0.org_code
+			AND t.patient_id = t0.patient_id
+		)
+	</sql>
+	
+	<!-- 复诊患者病历列表 -->
+	<select id="frontList" resultMap="BaseResultMapExt"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		<include refid="Revisit_Patient_Select_Query" />
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+			<when test="paramMap.orderCol!=null">
+				${paramMap.orderCol}
+			</when>
+			<otherwise>
+				visit_dtime desc
+			</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+			limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="frontListCnt"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery"
+		resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM (
+			<include refid="Revisit_Patient_Select_Query" />
+			<include refid="conditionQuery.core" />
+		) t
+	</select>
+	
+	<!-- 复诊患者诊断列表 -->
+	<select id="findDiagList" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			DISTINCT t0.diag_code,
+			t0.diag_name
+		FROM
+			user_info t
+		INNER JOIN (
+			SELECT
+				a.org_code,
+				a.patient_id,
+				b.diag_code,
+				b.diag_name
+			FROM
+				patient_record a
+			LEFT JOIN patient_diag b ON (a.id = b.patient_record_id)
+			ORDER BY a.visit_dtime DESC
+		) t0 ON (
+			t.org_code = t0.org_code
+			AND t.patient_id = t0.patient_id
+		)
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		diag_code ASC
+		</otherwise>
+		</choose>
+	</select>
+</mapper>
