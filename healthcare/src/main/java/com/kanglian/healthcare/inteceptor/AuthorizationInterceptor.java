@@ -47,9 +47,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("============进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token="+token);
-        if (StringUtil.isNotEmpty(token) && "test".equals(token)) {
-            return true;
-        }
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
