@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.common.annotation.PerformanceClass;
+import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
@@ -155,8 +157,30 @@ public class HospitalGuahaoController
             throw new InvalidParamException("orderDay");
         }
         ConditionQuery conditionQuery = query.buildConditionQuery();
-        List<HospitalDept> orderDateExpertList = hospitalDeptBo.findRoutineWorkDoctor(conditionQuery);
-        return ResultUtil.success(orderDateExpertList);
+        List<HospitalDept> orderDateExpertList = hospitalDeptBo.findOrderDateDoctor(conditionQuery);
+        List<JSONObject> resultList = ResultUtil.wearCloth(orderDateExpertList, new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                HospitalDept hospitalDept = (HospitalDept)pojo;
+                try {
+                    HospitalGuahaoLog hospitalGuahaoLog = new HospitalGuahaoLog();
+                    hospitalGuahaoLog.setHospitalId(hospitalDept.getHospitalId()+"");
+                    hospitalGuahaoLog.setDeptId(hospitalDept.getDeptId()+"");
+                    hospitalGuahaoLog.setDoctorCode(hospitalDept.getDoctorCode());
+                    List<HospitalGuahaoLog> guahaoOrderList = hospitalGuahaoLogBo.getGuahaoLog(hospitalGuahaoLog);
+                    if (guahaoOrderList != null
+                            && (guahaoOrderList.size() >= hospitalDept.getOrderNum())) {
+                        jsonObject.put("orderFlag", "约满");
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+            
+        });
+        return ResultUtil.success(resultList);
     }
     
     /**
@@ -181,6 +205,9 @@ public class HospitalGuahaoController
         }
         if (StringUtil.isEmpty(hospitalGuahaoLog.getDoctorCode())) {
             throw new InvalidParamException("doctorCode");
+        }
+        if (StringUtil.isEmpty(hospitalGuahaoLog.getOrderDay())) {
+            throw new InvalidParamException("orderDay");
         }
         hospitalGuahaoLog.setAddTime(DateUtil.currentDate());
         hospitalGuahaoLogBo.save(hospitalGuahaoLog);
@@ -226,7 +253,7 @@ public class HospitalGuahaoController
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(orderDay)) {
                 StringBuffer buff = new StringBuffer();
-                buff.append(" date_format(t2.last_update_dtime, '%m-%d')='"+orderDay+"' ");
+                buff.append(" date_format(t2.duty_dtime, '%m-%d')='"+orderDay+"' ");
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
             }
             return query;

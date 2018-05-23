@@ -7,6 +7,8 @@
 		<result property="hospitalId" column="hospital_id" jdbcType="VARCHAR"/>
 		<result property="deptId" column="dept_id" jdbcType="VARCHAR"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="orderDay" column="order_day" jdbcType="VARCHAR"/>
+		<result property="hospitalDoctorDutyId" column="hospital_doctor_duty_id" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
@@ -16,6 +18,8 @@
 		t.hospital_id,
 		t.dept_id,
 		t.doctor_code,
+		t.order_day,
+		t.hospital_doctor_duty_id,
 		t.add_time
 	</sql>
 
@@ -26,6 +30,8 @@
 		t.hospital_id,
 		t.dept_id,
 		t.doctor_code,
+		t.order_day,
+		t.hospital_doctor_duty_id,
 		t.add_time
 		from hospital_guahao_log t 
 		<include refid="conditionQuery.core" />
@@ -66,6 +72,8 @@
 		hospital_id,
 		dept_id,
 		doctor_code,
+		order_day,
+		hospital_doctor_duty_id,
 		add_time
 		)
 		values(
@@ -73,6 +81,8 @@
 		#{hospitalId,jdbcType=VARCHAR},
 		#{deptId,jdbcType=VARCHAR},
 		#{doctorCode,jdbcType=VARCHAR},
+		#{orderDay,jdbcType=VARCHAR},
+		#{hospitalDoctorDutyId,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -84,6 +94,8 @@
 		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=VARCHAR},</if>
 		  <if test="deptId != null">dept_id=#{deptId,jdbcType=VARCHAR},</if>
 		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
+		  <if test="orderDay != null">order_day=#{orderDay,jdbcType=VARCHAR},</if>
+		  <if test="hospitalDoctorDutyId != null">hospital_doctor_duty_id=#{hospitalDoctorDutyId,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where 1=1 and id = #{id,jdbcType=INTEGER}

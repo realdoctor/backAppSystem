@@ -22,7 +22,7 @@ public interface HospitalDeptDao extends CrudDao<HospitalDept> {
      * @param query
      * @return
      */
-    public List<HospitalDept> findRoutineWorkDoctor(ConditionQuery query);
+    public List<HospitalDept> findOrderDateDoctor(ConditionQuery query);
     
     /**
      * 工作日列表[按日期预约]

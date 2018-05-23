@@ -10,6 +10,8 @@ public class HospitalGuahaoLog extends BasePojo {
 	private String hospitalId;
 	private String deptId;
 	private String doctorCode;
+	private String orderDay;
+	private String hospitalDoctorDutyId;
 	private Date addTime;
 	public Long getId() {
 		return id;
@@ -40,6 +42,18 @@ public class HospitalGuahaoLog extends BasePojo {
 	}
 	public void setDoctorCode(String doctorCode) {
 		this.doctorCode = doctorCode;
+	}
+	public String getOrderDay() {
+		return orderDay;
+	}
+	public void setOrderDay(String orderDay) {
+		this.orderDay = orderDay;
+	}
+	public String getHospitalDoctorDutyId() {
+		return hospitalDoctorDutyId;
+	}
+	public void setHospitalDoctorDutyId(String hospitalDoctorDutyId) {
+		this.hospitalDoctorDutyId = hospitalDoctorDutyId;
 	}
 	public Date getAddTime() {
 		return addTime;

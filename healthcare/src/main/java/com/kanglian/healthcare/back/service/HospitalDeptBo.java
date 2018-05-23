@@ -33,9 +33,9 @@ public class HospitalDeptBo extends CrudBo<HospitalDept, HospitalDeptDao> {
      * @param query
      * @return
      */
-    public List<HospitalDept> findRoutineWorkDoctor(ConditionQuery query) {
+    public List<HospitalDept> findOrderDateDoctor(ConditionQuery query) {
         try {
-            return this.dao.findRoutineWorkDoctor(query);
+            return this.dao.findOrderDateDoctor(query);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

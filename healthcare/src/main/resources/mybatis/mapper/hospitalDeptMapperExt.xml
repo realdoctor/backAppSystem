@@ -8,9 +8,11 @@
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
 		<result property="receiveNum" column="receive_num" jdbcType="INTEGER"/>
+		<result property="hospitalDoctorDutyId" column="hospital_doctor_duty_id" jdbcType="INTEGER"/>
 		<result property="week" column="week" jdbcType="VARCHAR"/>
 		<result property="plan" column="plan" jdbcType="VARCHAR"/>
-		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+		<result property="dutyDtime" column="duty_dtime" jdbcType="TIMESTAMP"/>
+		<result property="orderNum" column="order_num" jdbcType="INTEGER"/>
 		<result property="worktimeWeek" column="worktimeWeek" jdbcType="VARCHAR"/>
 	</resultMap>
 	
@@ -45,7 +47,7 @@
 	<select id="findWorkingDay" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			DISTINCT t2.week,
-			CONCAT(date_format(t2.last_update_dtime, '%m-%d'),'|',
+			CONCAT(date_format(t2.duty_dtime, '%m-%d'),'|',
 				case t2.week 
 				when 1 then '周一'
 				when 2 then '周二'
@@ -73,7 +75,7 @@
 	</select>
 	
 	<!-- 按医院、科室、疾病获取本院医生[按日期预约] -->
-	<select id="findRoutineWorkDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<select id="findOrderDateDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.hospital_id,
 			t.dept_id,
@@ -82,9 +84,11 @@
 			t1.field,
 			t1.doctor_intro,
 			t1.positional,
+			t2.id as hospital_doctor_duty_id,
 			t2.week,
 			t2.plan,
-			t2.last_update_dtime
+			t2.order_num,
+			t2.duty_dtime
 		FROM
 			hospital_dept t
 		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id

@@ -21,12 +21,14 @@ public class HospitalDept extends BasePojo {
     private String positional;
     // 接诊量
     private Integer receiveNum;
+    private Integer hospitalDoctorDutyId;
     // 星期几
     private String week;
     // 日常计划
     private String plan;
-    @JSONField(name="worktime")
-    private Date lastUpdateDtime;
+    // 预约数量
+    private Integer orderNum;
+    private Date dutyDtime;
     private String worktimeWeek;
     public Integer getDeptId() {
 		return deptId;
@@ -106,6 +108,12 @@ public class HospitalDept extends BasePojo {
     public void setReceiveNum(Integer receiveNum) {
         this.receiveNum = receiveNum;
     }
+    public Integer getHospitalDoctorDutyId() {
+        return hospitalDoctorDutyId;
+    }
+    public void setHospitalDoctorDutyId(Integer hospitalDoctorDutyId) {
+        this.hospitalDoctorDutyId = hospitalDoctorDutyId;
+    }
     public String getWeek() {
         return week;
     }
@@ -118,11 +126,17 @@ public class HospitalDept extends BasePojo {
     public void setPlan(String plan) {
         this.plan = plan;
     }
-    public Date getLastUpdateDtime() {
-        return lastUpdateDtime;
+    public Integer getOrderNum() {
+        return orderNum;
     }
-    public void setLastUpdateDtime(Date lastUpdateDtime) {
-        this.lastUpdateDtime = lastUpdateDtime;
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
+    public Date getDutyDtime() {
+        return dutyDtime;
+    }
+    public void setDutyDtime(Date dutyDtime) {
+        this.dutyDtime = dutyDtime;
     }
     public String getWorktimeWeek() {
         return worktimeWeek;
