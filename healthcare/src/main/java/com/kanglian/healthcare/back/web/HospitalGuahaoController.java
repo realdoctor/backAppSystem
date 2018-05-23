@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,8 +207,8 @@ public class HospitalGuahaoController
         if (StringUtil.isEmpty(hospitalGuahaoLog.getDoctorCode())) {
             throw new InvalidParamException("doctorCode");
         }
-        if (StringUtil.isEmpty(hospitalGuahaoLog.getOrderDay())) {
-            throw new InvalidParamException("orderDay");
+        if (StringUtil.isNotEmpty(hospitalGuahaoLog.getOrderDay())) {
+            hospitalGuahaoLog.setOrderDay(DateUtil.ymdFormat(new Date(Long.valueOf(hospitalGuahaoLog.getOrderDay()))));
         }
         hospitalGuahaoLog.setAddTime(DateUtil.currentDate());
         hospitalGuahaoLogBo.save(hospitalGuahaoLog);
