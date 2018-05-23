@@ -171,7 +171,7 @@ public class HospitalGuahaoController
                     List<HospitalGuahaoLog> guahaoOrderList = hospitalGuahaoLogBo.getGuahaoLog(hospitalGuahaoLog);
                     if (guahaoOrderList != null
                             && (guahaoOrderList.size() >= hospitalDept.getOrderNum())) {
-                        jsonObject.put("orderFlag", "约满");
+                        jsonObject.put("orderFlag", "1");
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
