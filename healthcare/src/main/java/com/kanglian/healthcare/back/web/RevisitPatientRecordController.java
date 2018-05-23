@@ -1,7 +1,5 @@
 package com.kanglian.healthcare.back.web;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +37,7 @@ public class RevisitPatientRecordController
         if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
-        query.setPageSize(0);// 不分页
-        Grid grid = this.bo.queryFrontList(query);
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("list", grid.getList());
-        return ResultUtil.success(resultMap);
+        return ResultUtil.success(this.bo.queryFrontList(query));
     }
 
     /**
@@ -74,6 +68,7 @@ public class RevisitPatientRecordController
         private String diagCode;
         private String beginDate;
         private String endDate;
+        private String sortstr;
 
         @SingleValue(column = "mobile_phone", equal = "=")
         public String getMobilePhone() {
@@ -118,6 +113,25 @@ public class RevisitPatientRecordController
 
         public void setEndDate(String endDate) {
             this.endDate = endDate;
+        }
+
+        public String getSortstr() {
+            return sortstr;
+        }
+
+        public void setSortstr(String sortstr) {
+            this.sortstr = sortstr;
+        }
+
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            if (StringUtil.isNotEmpty(sortstr)) {
+                if ("1".equals(sortstr)) {
+                    this.setSortname("t0.visit_dtime");
+                    this.setSortorder("asc");
+                }
+            }
+            return super.buildConditionQuery();
         }
 
     }
