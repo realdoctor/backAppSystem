@@ -43,7 +43,6 @@
 		t.author_profer,
 		t.author_hos,
 		t.author_dept,
-		t.article,
 		t.put_on,
 		t.commend,
 		t.create_date,
@@ -59,7 +58,7 @@
 		${paramMap.orderCol}
 		</when>
 		<otherwise>
-		 news_id desc
+		news_id desc
 		</otherwise>
 		</choose>
 		<if test="paramMap.pageSize > 0">
@@ -72,21 +71,18 @@
 		<include refid="conditionQuery.core" />
 	</select>
 
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		,t1.news_type
+		from health_news t
+		LEFT JOIN health_news_type t1 ON t.news_type_id=t1.news_type_id
+		where t.news_id = #{newsId,jdbcType=INTEGER}
+	</select>
+
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
-		delete from health_news where 1=1 
-			and news_id=#{newsId,jdbcType=INTEGER}
-			and news_name=#{newsName,jdbcType=VARCHAR}
-			and news_type_id=#{newsTypeId,jdbcType=INTEGER}
-			and news_author=#{newsAuthor,jdbcType=VARCHAR}
-			and author_profer=#{authorProfer,jdbcType=VARCHAR}
-			and author_hos=#{authorHos,jdbcType=VARCHAR}
-			and author_dept=#{authorDept,jdbcType=VARCHAR}
-			and article=#{article,jdbcType=LONGVARCHAR}
-			and put_on=#{putOn,jdbcType=INTEGER}
-			and commend=#{commend,jdbcType=INTEGER}
-			and create_date=#{createDate,jdbcType=TIMESTAMP}
-			and photo_address=#{photoAddress,jdbcType=VARCHAR}
-			and viewed_time=#{viewedTime,jdbcType=INTEGER}
+		delete from health_news where 1=1
+		and news_id=#{newsId,jdbcType=INTEGER}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
@@ -139,6 +135,6 @@
 		  <if test="photoAddress != null">photo_address=#{photoAddress,jdbcType=VARCHAR},</if>
 		  <if test="viewedTime != null">viewed_time=#{viewedTime,jdbcType=INTEGER},</if>
 		</set>
-		where 1=1
+		where 1=1 and news_id = #{newsId,jdbcType=INTEGER}
 	</update>
 </mapper>
