@@ -66,12 +66,12 @@
 	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="columns"/>
-		from patient_record t 
+		from patient_record t
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
-		delete from patient_record where 1=1 
+		delete from patient_record where 1=1
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
@@ -103,7 +103,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
-		update patient_record 
+		update patient_record
 		<set>
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>
 		  <if test="patientId != null">patient_id=#{patientId,jdbcType=VARCHAR},</if>

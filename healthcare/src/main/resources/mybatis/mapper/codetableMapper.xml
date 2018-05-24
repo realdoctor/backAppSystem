@@ -46,7 +46,7 @@
 	</select>
 
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
-		delete from codetable where 1=1 
+		delete from codetable where 1=1
 		and code=#{code,jdbcType=VARCHAR}
 		and name=#{name,jdbcType=VARCHAR}
 		and section=#{section,jdbcType=VARCHAR}
@@ -70,7 +70,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Codetable">
-		update codetable 
+		update codetable
 		<set>
 		  <if test="section != null">section=#{section,jdbcType=VARCHAR},</if>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>

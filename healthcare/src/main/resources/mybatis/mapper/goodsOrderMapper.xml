@@ -75,13 +75,12 @@
 	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="columns"/>
-		from goods_order t 
+		from goods_order t
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">
-		delete from goods_order where 1=1 
-		and id=#{id,jdbcType=INTEGER}
+		delete from goods_order where 1=1 and id=#{id,jdbcType=INTEGER}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
@@ -118,7 +117,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">
-		update goods_order 
+		update goods_order
 		<set>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
