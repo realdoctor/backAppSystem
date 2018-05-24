@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNews" id="BaseResultMap">
+		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
+		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
+		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
+		<result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
+		<result property="authorProfer" column="author_profer" jdbcType="VARCHAR"/>
+		<result property="authorHos" column="author_hos" jdbcType="VARCHAR"/>
+		<result property="authorDept" column="author_dept" jdbcType="VARCHAR"/>
+		<result property="article" column="article" jdbcType="LONGVARCHAR"/>
+		<result property="putOn" column="put_on" jdbcType="INTEGER"/>
+		<result property="commend" column="commend" jdbcType="INTEGER"/>
+		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
+		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
+		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.news_id,
+		t.news_name,
+		t.news_type_id,
+		t.news_author,
+		t.author_profer,
+		t.author_hos,
+		t.author_dept,
+		t.article,
+		t.put_on,
+		t.commend,
+		t.create_date,
+		t.photo_address,
+		t.viewed_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.news_id,
+		t.news_name,
+		t.news_type_id,
+		t.news_author,
+		t.author_profer,
+		t.author_hos,
+		t.author_dept,
+		t.article,
+		t.put_on,
+		t.commend,
+		t.create_date,
+		t.photo_address,
+		t.viewed_time,
+		t1.news_type
+		from health_news t
+		LEFT JOIN health_news_type t1 ON t.news_type_id=t1.news_type_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		 news_id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from health_news t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
+		delete from health_news where 1=1 
+			and news_id=#{newsId,jdbcType=INTEGER}
+			and news_name=#{newsName,jdbcType=VARCHAR}
+			and news_type_id=#{newsTypeId,jdbcType=INTEGER}
+			and news_author=#{newsAuthor,jdbcType=VARCHAR}
+			and author_profer=#{authorProfer,jdbcType=VARCHAR}
+			and author_hos=#{authorHos,jdbcType=VARCHAR}
+			and author_dept=#{authorDept,jdbcType=VARCHAR}
+			and article=#{article,jdbcType=LONGVARCHAR}
+			and put_on=#{putOn,jdbcType=INTEGER}
+			and commend=#{commend,jdbcType=INTEGER}
+			and create_date=#{createDate,jdbcType=TIMESTAMP}
+			and photo_address=#{photoAddress,jdbcType=VARCHAR}
+			and viewed_time=#{viewedTime,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
+		insert into health_news (
+		news_id,
+		news_name,
+		news_type_id,
+		news_author,
+		author_profer,
+		author_hos,
+		author_dept,
+		article,
+		put_on,
+		commend,
+		create_date,
+		photo_address,
+		viewed_time
+		)
+		values(
+		#{newsId,jdbcType=INTEGER},
+		#{newsName,jdbcType=VARCHAR},
+		#{newsTypeId,jdbcType=INTEGER},
+		#{newsAuthor,jdbcType=VARCHAR},
+		#{authorProfer,jdbcType=VARCHAR},
+		#{authorHos,jdbcType=VARCHAR},
+		#{authorDept,jdbcType=VARCHAR},
+		#{article,jdbcType=LONGVARCHAR},
+		#{putOn,jdbcType=INTEGER},
+		#{commend,jdbcType=INTEGER},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{photoAddress,jdbcType=VARCHAR},
+		#{viewedTime,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
+		update health_news
+		<set>
+		  <if test="newsId != null">news_id=#{newsId,jdbcType=INTEGER},</if>
+		  <if test="newsName != null">news_name=#{newsName,jdbcType=VARCHAR},</if>
+		  <if test="newsTypeId != null">news_type_id=#{newsTypeId,jdbcType=INTEGER},</if>
+		  <if test="newsAuthor != null">news_author=#{newsAuthor,jdbcType=VARCHAR},</if>
+		  <if test="authorProfer != null">author_profer=#{authorProfer,jdbcType=VARCHAR},</if>
+		  <if test="authorHos != null">author_hos=#{authorHos,jdbcType=VARCHAR},</if>
+		  <if test="authorDept != null">author_dept=#{authorDept,jdbcType=VARCHAR},</if>
+		  <if test="article != null">article=#{article,jdbcType=LONGVARCHAR},</if>
+		  <if test="putOn != null">put_on=#{putOn,jdbcType=INTEGER},</if>
+		  <if test="commend != null">commend=#{commend,jdbcType=INTEGER},</if>
+		  <if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
+		  <if test="photoAddress != null">photo_address=#{photoAddress,jdbcType=VARCHAR},</if>
+		  <if test="viewedTime != null">viewed_time=#{viewedTime,jdbcType=INTEGER},</if>
+		</set>
+		where 1=1
+	</update>
+</mapper>
