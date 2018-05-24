@@ -9,7 +9,6 @@ public class User extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long userId;
 	private String userName;
-	@JSONField(serialize=false)
 	private String pwd;
 	@JSONField(serialize=false)
 	private String payPwd;
@@ -45,7 +44,6 @@ public class User extends BasePojo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	@NotJsonData
 	public String getPwd() {
 		return pwd;
 	}
