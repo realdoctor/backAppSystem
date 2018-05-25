@@ -31,6 +31,7 @@
                 <property name="features">
                     <list>
                         <value>WriteMapNullValue</value>
+                        <value>WriteNullListAsEmpty</value>
                         <value>QuoteFieldNames</value>
                     </list>
                 </property>
