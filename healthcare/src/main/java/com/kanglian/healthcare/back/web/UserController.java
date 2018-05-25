@@ -235,9 +235,6 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/refreshToken")
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException();
-        }
         final String userId = String.valueOf(user.getUserId());
         final String mobilePhone = user.getMobilePhone();
         // 重新生成token，利用redis过期缓存，一天刷一次。

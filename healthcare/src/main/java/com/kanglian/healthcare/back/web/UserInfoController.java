@@ -9,18 +9,25 @@ import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
+import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.RedisCacheManager;
 
+@Authorization
 @RestController
-@RequestMapping(value = "/userInfo")
+@RequestMapping(value = "/user")
 public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
     @Autowired
     private RedisCacheManager redisCacheManager;
+    @Autowired
+    private HospitalGuahaoLogBo hospitalGuahaoLogBo;
 
     /**
      * 用户基本信息
@@ -29,12 +36,12 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/info")
     @SuppressWarnings("rawtypes")
-    public ResultBody fetchUserInfo(User user) throws Exception {
+    public ResultBody getUserInfo(User user) throws Exception {
         final UserInfo userInfo = this.bo.getUserInfo(user);
         if (userInfo == null) {
-            return ResultUtil.error("获取用户基本信息失败");
+            return ResultUtil.error("获取用户信息失败");
         }
         JSONObject jsonObject = userInfo.toJSONObject();
         try {
@@ -64,4 +71,19 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         return ResultUtil.success(jsonObject);
     }
 
+    /**
+     * 我的预约
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/myGuahaoOrder")
+    public ResultBody myGuahaoOrder(@CurrentUser User user) throws Exception {
+        if (user.getUserId() == null) {
+            throw new InvalidParamException("userId");
+        }
+        final String userId = String.valueOf(user.getUserId());
+        return ResultUtil.success(hospitalGuahaoLogBo.myGuahaoOrder(userId));
+    }
 }

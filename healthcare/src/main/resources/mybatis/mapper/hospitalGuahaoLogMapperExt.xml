@@ -10,4 +10,27 @@
 		t.dept_id=#{deptId,jdbcType=VARCHAR} AND
 		t.doctor_code=#{doctorCode,jdbcType=VARCHAR}
 	</select>
+	
+	<!-- 我的预约 -->
+	<select id="myGuahaoOrder" resultType="map" parameterType="string">
+		SELECT
+			t1.hospital_name AS hospitalName,
+			t1.dept_name AS deptName,
+			t1.hospital_level AS hospitalLevel,
+			t2.doctor_name AS doctorName,
+			t2.positional AS positional,
+			t2.doctor_intro AS doctorIntro,
+			t.order_day AS orderDay,
+			t3.plan AS plan
+		FROM
+			hospital_guahao_log t
+		LEFT JOIN hospital_dept t1 ON (
+			t.hospital_id = t1.hospital_id
+			AND t.dept_id = t1.dept_id
+		)
+		LEFT JOIN hospital_register_doctor t2 ON t.dept_id = t2.dept_id
+		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.hospital_id
+		WHERE
+			t.user_id = #{userId,jdbcType=VARCHAR}
+	</select>
 </mapper>
