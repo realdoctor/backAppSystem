@@ -22,7 +22,7 @@
 			user_info t
 		INNER JOIN (
 			SELECT
-				a.id AS patient_diag_id,
+				a.id,
 				a.org_code,
 				a.patient_id,
 				a.visit_org_name,
@@ -30,6 +30,7 @@
 				a.visit_dtime,
 				a.visit_way,
 				a.resp_doctor_name,
+				b.id AS patient_diag_id,
 				b.diag_code,
 				b.diag_name
 			FROM

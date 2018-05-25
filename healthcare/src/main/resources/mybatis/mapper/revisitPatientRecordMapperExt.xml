@@ -27,13 +27,21 @@
 				a.visit_dtime,
 				a.visit_way,
 				a.resp_doctor_name,
-				b.diag_code,
-				b.diag_name
+				c.diag_code,
+				c.diag_name
 			FROM
 				patient_record a
-			LEFT JOIN patient_diag b ON (
-				a.id = b.patient_record_id
-			)
+			INNER JOIN (
+				SELECT
+					MAX(t.id) AS id,
+					t.doctor_code,
+					MAX(t.visit_dtime) AS visit_dtime
+				FROM
+					patient_record t
+				GROUP BY
+					t.doctor_code
+			) b ON a.id = b.id
+			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
@@ -81,11 +89,21 @@
 			SELECT
 				a.org_code,
 				a.patient_id,
-				b.diag_code,
-				b.diag_name
+				c.diag_code,
+				c.diag_name
 			FROM
 				patient_record a
-			LEFT JOIN patient_diag b ON (a.id = b.patient_record_id)
+			INNER JOIN (
+				SELECT
+					MAX(t.id) AS id,
+					t.doctor_code,
+					MAX(t.visit_dtime) AS visit_dtime
+				FROM
+					patient_record t
+				GROUP BY
+					t.doctor_code
+			) b ON a.id = b.id
+			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
 			ORDER BY a.visit_dtime DESC
 		) t0 ON (
 			t.org_code = t0.org_code
