@@ -244,13 +244,13 @@ public class UserController extends CrudController<User, UserBo> {
                 .getCacheObject(Constants.MARK_REFRESH_TOKEN_KEY_PREFIX.concat(userId));
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", token);
-        logger.debug("================12小时前已刷过token=" + token);
+        logger.debug("================3小时前已刷过token=" + token);
         if (token == null) {
             token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
             redisTokenManager.createRelationship(mobilePhone, String.valueOf(token));
-            // 12小时过期
+            // 3小时过期
             redisCacheManager.setCacheObject(Constants.MARK_REFRESH_TOKEN_KEY_PREFIX.concat(userId),
-                    token, 12L, TimeUnit.HOURS);
+                    token, 3L, TimeUnit.HOURS);
             resultMap.put("token", token);
             logger.info("================手机号{}，重新生成token={}", new Object[] {mobilePhone, token});
         }
