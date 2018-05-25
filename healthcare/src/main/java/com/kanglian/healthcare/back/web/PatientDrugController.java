@@ -19,7 +19,7 @@ import com.kanglian.healthcare.back.service.PatientDrugBo;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/drug")
+@RequestMapping(value = "/patient/drug")
 public class PatientDrugController extends CrudController<PatientDrug, PatientDrugBo> {
 
     /**
