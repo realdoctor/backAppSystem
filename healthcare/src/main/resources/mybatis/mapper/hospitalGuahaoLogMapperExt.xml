@@ -20,8 +20,10 @@
 			t2.doctor_name AS doctorName,
 			t2.positional AS positional,
 			t2.doctor_intro AS doctorIntro,
+			t2.field AS goodAt,
 			t.order_day AS orderDay,
-			t3.plan AS plan
+			t3.plan AS plan,
+			t4.receive_num AS receiveNum
 		FROM
 			hospital_guahao_log t
 		LEFT JOIN hospital_dept t1 ON (
@@ -30,6 +32,7 @@
 		)
 		LEFT JOIN hospital_register_doctor t2 ON t.dept_id = t2.dept_id
 		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.hospital_id
+		LEFT JOIN hospital_receive_log t4 ON (t.hospital_id=t4.hospital_id AND t.doctor_code=t4.doctor_code)
 		WHERE
 			t.user_id = #{userId,jdbcType=VARCHAR}
 	</select>
