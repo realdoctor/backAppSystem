@@ -26,6 +26,7 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.exception.InvalidOperationException;
+import com.kanglian.healthcare.util.IdCardUtil;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
@@ -257,6 +258,34 @@ public class UserController extends CrudController<User, UserBo> {
         return ResultUtil.success(resultMap);
     }
     
+    /**
+     * 实名认证
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @PostMapping("/certification")
+    public ResultBody certification(@RequestBody User user) throws Exception {
+        String mobilePhone = user.getMobilePhone();
+        String idNumber = user.getIdNo();
+        if (StringUtil.isEmpty(mobilePhone)) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (StringUtil.isEmpty(idNumber)) {
+            return ResultUtil.error("身份证不能为空！");
+        }
+        if (!IdCardUtil.isIdcard(idNumber)) {
+            return ResultUtil.error("身份证不合法！");
+        }
+        boolean identifyOk = this.bo.certification(user);
+        if (!identifyOk) {
+            return ResultUtil.error("实名认证失败");
+        }
+        return ResultUtil.success();
+    }
+    
     public static class UserQuery extends Grid {
 
         private String userId;
@@ -279,5 +308,6 @@ public class UserController extends CrudController<User, UserBo> {
         public void setMobilePhone(String mobilePhone) {
             this.mobilePhone = mobilePhone;
         }
+        
     }
 }
