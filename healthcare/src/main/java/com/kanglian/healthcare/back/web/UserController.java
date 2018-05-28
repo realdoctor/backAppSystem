@@ -87,12 +87,12 @@ public class UserController extends CrudController<User, UserBo> {
         
         // 一个用户只能绑定一个Token，单点登录。用户退出，令牌失效
         String accessToken = redisTokenManager.getToken(mobilePhone);
-        if (accessToken == null) {
+        if (StringUtil.isNotEmpty(accessToken) && JwtUtil.verifyToken(accessToken) != null) {
+            logger.info("========手机号{}，已登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
+        } else {
             // 生成Token
             accessToken = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
             redisTokenManager.createRelationship(mobilePhone, accessToken);
-        } else {
-            logger.info("========手机号{}，登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -281,6 +281,21 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("实名认证失败");
         }
         return ResultUtil.success();
+    }
+    
+    /**
+     * 实名认证审核
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @PostMapping("/certification/check")
+    public ResultBody verify(@CurrentUser User user) throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("verifyFlag", StringUtil.isBlank(user.getIdNo()));
+        return ResultUtil.success(resultMap);
     }
     
     public static class UserQuery extends Grid {
