@@ -16,9 +16,23 @@ public class GoodsOrderItemBo extends CrudBo<GoodsOrderItem, GoodsOrderItemDao> 
      * @param orderNo
      * @return
      */
-    public List<GoodsOrderItem> findGoodsOrderItem(String orderNo) {
+    public List<GoodsOrderItem> getGoodsOrderDetailByOrderNo(String orderNo) {
         try {
-            return this.dao.findGoodsOrderItem(orderNo);
+            return this.dao.getGoodsOrderDetailByOrderNo(orderNo);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
+     * 订单id获取订单明细
+     * 
+     * @param goodsOrderId
+     * @return
+     */
+    public List<GoodsOrderItem> getGoodsOrderDetail(String goodsOrderId){
+        try {
+            return this.dao.getGoodsOrderDetail(Integer.valueOf(goodsOrderId));
         } catch (Exception ex) {
             throw new DBException(ex);
         }

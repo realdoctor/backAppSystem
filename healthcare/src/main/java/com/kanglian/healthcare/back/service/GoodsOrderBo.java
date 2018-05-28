@@ -119,7 +119,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
         updateOrderStatus(order);
         // 减冻结库存
         List<GoodsOrderItem> orderItemList =
-                goodsOrderItemDao.findGoodsOrderItem(order.getOrderNo());
+                goodsOrderItemDao.getGoodsOrderDetailByOrderNo(order.getOrderNo());
         for (GoodsOrderItem orderItem : orderItemList) {
             Integer goodsId = orderItem.getGoodsId();
             Goods goods = goodsDao.get(Long.valueOf(goodsId));
@@ -156,9 +156,29 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
         }
     }
 
+    /**
+     * 订单号找订单
+     * 
+     * @param orderNo
+     * @return
+     */
     public GoodsOrder findGoodsOrder(String orderNo) {
         try {
             return this.dao.findGoodsOrder(orderNo);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
+     * 我的订单列表
+     * 
+     * @param userId
+     * @return
+     */
+    public List<GoodsOrder> myGoodsOrderList(String userId){
+        try {
+            return this.dao.myGoodsOrderList(Integer.valueOf(userId));
         } catch (Exception ex) {
             throw new DBException(ex);
         }

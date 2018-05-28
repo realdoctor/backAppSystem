@@ -14,6 +14,40 @@ public class GoodsOrderItem extends BasePojo {
 	private Integer goodsNum;
 	private Double goodsPrice;
 	private Date addTime;
+	
+	/**
+     * 扩展字段
+     */
+	private String name;
+	@JSONField(name="goodsDescription")
+    private String description;
+    private String bigPic;
+    private String smallPic;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getBigPic() {
+        return bigPic;
+    }
+    public void setBigPic(String bigPic) {
+        this.bigPic = bigPic;
+    }
+    public String getSmallPic() {
+        return smallPic;
+    }
+    public void setSmallPic(String smallPic) {
+        this.smallPic = smallPic;
+    }
+    
 	@JsonData(field="goodsOrderItemId")
 	public Long getId() {
 		return id;

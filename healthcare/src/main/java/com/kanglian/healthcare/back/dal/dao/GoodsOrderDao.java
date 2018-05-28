@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.dal.dao;
 
+import java.util.List;
 import com.easyway.business.framework.dao.CrudDao;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 
@@ -19,4 +20,12 @@ public interface GoodsOrderDao extends CrudDao<GoodsOrder> {
      * @return
      */
     public GoodsOrder findGoodsOrder(String orderNo);
+    
+    /**
+     * 我的订单列表
+     * 
+     * @param userId
+     * @return
+     */
+    public List<GoodsOrder> myGoodsOrderList(Integer userId);
 }

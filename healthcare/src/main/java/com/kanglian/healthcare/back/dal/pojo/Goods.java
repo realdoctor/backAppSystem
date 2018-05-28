@@ -25,6 +25,25 @@ public class Goods extends BasePojo {
     private Date addTime;
     private Date updateTime;
     private String remark;
+    
+    /**
+     * 扩展字段
+     */
+    private String bigPic;
+    private String smallPic;
+    public String getBigPic() {
+        return bigPic;
+    }
+    public void setBigPic(String bigPic) {
+        this.bigPic = bigPic;
+    }
+    public String getSmallPic() {
+        return smallPic;
+    }
+    public void setSmallPic(String smallPic) {
+        this.smallPic = smallPic;
+    }
+    
     @JsonData(field="goodsId")
     public Long getId() {
         return id;
@@ -122,23 +141,5 @@ public class Goods extends BasePojo {
     }
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-	    
-	/**
-	 * 扩展字段
-	 */
-	private String bigPic;
-	private String smallPic;
-    public String getBigPic() {
-        return bigPic;
-    }
-    public void setBigPic(String bigPic) {
-        this.bigPic = bigPic;
-    }
-    public String getSmallPic() {
-        return smallPic;
-    }
-    public void setSmallPic(String smallPic) {
-        this.smallPic = smallPic;
     }
 }

@@ -12,5 +12,13 @@ public interface GoodsOrderItemDao extends CrudDao<GoodsOrderItem> {
      * @param orderNo
      * @return
      */
-    public List<GoodsOrderItem> findGoodsOrderItem(String orderNo);
+    public List<GoodsOrderItem> getGoodsOrderDetailByOrderNo(String orderNo);
+
+    /**
+     * 订单id获取订单明细
+     * 
+     * @param goodsOrderId
+     * @return
+     */
+    public List<GoodsOrderItem> getGoodsOrderDetail(Integer goodsOrderId);
 }
