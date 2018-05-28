@@ -37,6 +37,9 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
         if (StringUtil.isEmpty(query.getUserId())) {
             return ResultUtil.error("用户未登录！");
         }
+        if (StringUtil.isEmpty(query.getTradeStatus())) {
+            return ResultUtil.error("交易状态未指定！");
+        }
         return super.list(query);
     }
     
@@ -59,6 +62,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
     public static class GoodsOrderQuery extends Grid {
 
         private String userId;
+        private String tradeStatus;
 
         @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
@@ -67,6 +71,15 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
 
         public void setUserId(String userId) {
             this.userId = userId;
+        }
+        
+        @SingleValue(column = "trade_status", equal = "=")
+        public String getTradeStatus() {
+            return tradeStatus;
+        }
+
+        public void setTradeStatus(String tradeStatus) {
+            this.tradeStatus = tradeStatus;
         }
     }
 }
