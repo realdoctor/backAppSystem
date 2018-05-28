@@ -16,6 +16,8 @@
 		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+		<collection property="orderList" ofType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" select="com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao.getGoodsOrderDetail" column="id">
+		</collection>
 	</resultMap>
 
 	<sql id="columns">

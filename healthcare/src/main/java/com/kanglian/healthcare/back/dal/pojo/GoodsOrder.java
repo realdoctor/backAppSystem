@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.json.annotion.JsonData;
 import com.easyway.business.framework.pojo.BasePojo;
@@ -22,7 +23,8 @@ public class GoodsOrder extends BasePojo {
 	private Date closeTime;
 	private Date addTime;
 	private Date updateTime;
-	@JsonData(field="goodsOrderId")
+	private List<GoodsOrderItem> orderList;
+    @JsonData(field="goodsOrderId")
 	public Integer getId() {
 		return id;
 	}
@@ -107,4 +109,10 @@ public class GoodsOrder extends BasePojo {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	public List<GoodsOrderItem> getOrderList() {
+        return orderList;
+    }
+    public void setOrderList(List<GoodsOrderItem> orderList) {
+        this.orderList = orderList;
+    }
 }
