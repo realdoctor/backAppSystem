@@ -88,6 +88,7 @@ public class UserController extends CrudController<User, UserBo> {
         // 一个用户只能绑定一个Token，单点登录。用户退出，令牌失效
         String accessToken = redisTokenManager.getToken(mobilePhone);
         if (StringUtil.isNotEmpty(accessToken) && JwtUtil.verifyToken(accessToken) != null) {
+            redisTokenManager.get(accessToken);// 延长令牌时间
             logger.info("========手机号{}，已登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
         } else {
             // 生成Token

@@ -56,17 +56,21 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
                 String sessionId = redisTokenManager.getKey(token);
-                logger.debug("=============>>>>SessionId="+sessionId);
+                logger.debug("=============>>>SessionId="+sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
+                } else {
+                    logger.info("============================session已过期，请重新登录");
                 }
+            } else {
+                logger.info("============================token已过期，请重新登录");
             }
         }
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
         if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
                 || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
-            logger.info("============================session已过期，请重新登录");
+            logger.info("============================返回客户端，请重新登录");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
