@@ -292,7 +292,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @PostMapping("/certification/check")
+    @GetMapping("/certification/check")
     public ResultBody verify(@CurrentUser User user) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("verifyFlag", StringUtil.isBlank(user.getIdNo()));
