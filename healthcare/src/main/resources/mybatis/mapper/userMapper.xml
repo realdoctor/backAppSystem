@@ -10,7 +10,6 @@
 		<result property="email" column="email" jdbcType="VARCHAR"/>
 		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
-		<result property="sentAddress" column="sent_address" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 	</resultMap>
@@ -24,7 +23,6 @@
 		t.email,
 		t.mobile_phone,
 		t.id_no,
-		t.sent_address,
 		t.add_time,
 		t.last_update_dtime
 	</sql>
@@ -39,7 +37,6 @@
 		t.email,
 		t.mobile_phone,
 		t.id_no,
-		t.sent_address,
 		t.add_time,
 		t.last_update_dtime
 		from user t 
@@ -84,7 +81,6 @@
 		email,
 		mobile_phone,
 		id_no,
-		sent_address,
 		add_time,
 		last_update_dtime
 		)
@@ -96,7 +92,6 @@
 		#{email,jdbcType=VARCHAR},
 		#{mobilePhone,jdbcType=VARCHAR},
 		#{idNo,jdbcType=VARCHAR},
-		#{sentAddress,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
@@ -112,7 +107,6 @@
 		  <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
-		  <if test="sentAddress != null">sent_address=#{sentAddress,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>

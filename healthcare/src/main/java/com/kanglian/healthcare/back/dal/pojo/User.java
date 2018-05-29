@@ -17,7 +17,6 @@ public class User extends BasePojo {
 	private String mobilePhone;
 	@JSONField(serialize=false)
 	private String idNo;
-	private String sentAddress;
 	@JSONField(serialize=false)
 	private Date addTime;
 	private Date lastUpdateDtime;
@@ -80,12 +79,6 @@ public class User extends BasePojo {
     }
     public void setIdNo(String idNo) {
         this.idNo = idNo;
-    }
-    public String getSentAddress() {
-        return sentAddress;
-    }
-    public void setSentAddress(String sentAddress) {
-        this.sentAddress = sentAddress;
     }
 	public Date getAddTime() {
 		return addTime;
