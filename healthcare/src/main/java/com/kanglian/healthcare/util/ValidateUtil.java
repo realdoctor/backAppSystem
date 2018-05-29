@@ -74,4 +74,29 @@ public final class ValidateUtil {
         return null;
     }
 
+    /**
+     * 隐藏手机号中间几位（保密）
+     * 
+     * @param phone
+     * @return
+     */
+    public static String hidePhone(String phone) {
+        if (StringUtil.isBlank(phone)) {
+            return null;
+        }
+        return phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+    }
+    
+    /**
+     * 隐藏身份证中间几位（保密）
+     * 
+     * @param phone
+     * @return
+     */
+    public static String hideIdCard(String idCard) {
+        if (StringUtil.isBlank(idCard)) {
+            return null;
+        }
+        return idCard.replaceAll("(\\d{4})\\d{10}(\\d{4})","$1****$2");
+    }
 }
