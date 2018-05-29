@@ -39,7 +39,7 @@
 				FROM
 					patient_record t
 				GROUP BY
-					t.doctor_code
+					t.org_code, t.patient_id, t.doctor_code
 			) b ON a.id = b.id
 			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
 		) t0 ON (
@@ -101,7 +101,7 @@
 				FROM
 					patient_record t
 				GROUP BY
-					t.doctor_code
+					t.org_code, t.patient_id, t.doctor_code
 			) b ON a.id = b.id
 			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
 			ORDER BY a.visit_dtime DESC
