@@ -79,6 +79,10 @@ public class UploadController {
                 thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
                 Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
                         .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
+                if (pathRoot != null 
+                        && pathRoot.startsWith("/")) {
+                    Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + thumbnailPath));
+                }
             } catch (Exception e) {
                 // TODO: handle exception
             }
