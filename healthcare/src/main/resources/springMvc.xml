@@ -54,6 +54,15 @@
 		<property name="suffix" value=".html"></property>
 	</bean>
 	
+	<!-- 上传文件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="defaultEncoding" value="utf-8"/>
+	    <!-- 最大内存大小 -->
+	    <property name="maxInMemorySize" value="10240"/>
+	    <!-- 最大文件大小，-1为不限制大小 -->
+	    <property name="maxUploadSize" value="-1"/>
+	</bean>
+
 	<mvc:cors>
         <mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,OPTIONS"/>
     </mvc:cors>
