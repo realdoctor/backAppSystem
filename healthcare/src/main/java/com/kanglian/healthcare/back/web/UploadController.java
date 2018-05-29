@@ -25,6 +25,7 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
 import com.kanglian.healthcare.back.service.UserPicBo;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.PropConfig;
@@ -42,11 +43,15 @@ public class UploadController {
     
     @ResponseBody
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-    private ResultBody fildUpload(@CurrentUser User user,
+    private ResultBody uploadImg(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
         logger.debug("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
 
+        if(imageFile == null) {
+            throw new InvalidOperationException("attach");
+        }
+        
         if (imageFile.isEmpty()) {
             return ResultUtil.error("不能上传空文件");
         }
@@ -81,6 +86,7 @@ public class UploadController {
                         .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
                 if (pathRoot != null 
                         && pathRoot.startsWith("/")) {
+                    Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + originalPath));
                     Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + thumbnailPath));
                 }
             } catch (Exception e) {
