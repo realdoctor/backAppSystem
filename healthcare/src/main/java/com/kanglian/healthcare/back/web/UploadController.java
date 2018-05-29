@@ -56,10 +56,10 @@ public class UploadController {
             return ResultUtil.error("不能上传空文件");
         }
 
-        long fileSize = 1 * 1024 * 1024;
+        long fileSize = 10 * 1024 * 1024;
         // 如果文件大小大于限制
         if (imageFile.getSize() > fileSize) {
-            return ResultUtil.error("图片过大，请选择小于1M的图片");
+            return ResultUtil.error("图片过大，请选择小于10M的图片");
         }
 
         // 文件名
