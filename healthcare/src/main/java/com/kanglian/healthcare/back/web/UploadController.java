@@ -70,12 +70,12 @@ public class UploadController {
         pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_IMAGE_PATH);
         String thumbnailPath = "";
         if (!imageFile.isEmpty()) {
-            String originalPath = "/static/images".concat(FileUtil.randomPathname(extension));
+            String originalPath = "/images".concat(FileUtil.randomPathname(extension));
             originalPath = originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
             File uploadedFile = new File(pathRoot + originalPath);
             FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
             try {
-                thumbnailPath = "/static/images".concat(FileUtil.randomPathname(extension));
+                thumbnailPath = "/images".concat(FileUtil.randomPathname(extension));
                 thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
                 Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
                         .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
@@ -109,7 +109,7 @@ public class UploadController {
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("imagePath", PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL).concat(thumbnailPath));
+        resultMap.put("imagePath", PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL).concat("/static").concat(thumbnailPath));
         return ResultUtil.success(resultMap);
     }
 }
