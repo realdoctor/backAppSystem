@@ -17,7 +17,9 @@ import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
+import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
+import com.kanglian.healthcare.util.ValidateUtil;
 
 @Authorization
 @RestController
@@ -54,17 +56,25 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_PERSON_ID_TYPE))
                             .get(userInfo.getIdTypeCode()));
             // 婚姻状况
-            jsonObject.put("marriageName", ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
-                    .get(userInfo.getMarriageCode()));
+            jsonObject.put("marriageName",
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
+                            .get(userInfo.getMarriageCode()));
             // 性别
-            jsonObject.put("sexName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_SEX)).get(userInfo.getSexCode()));
+            jsonObject.put("sexName", ((Map) redisCacheManager.getCacheObject(Constants.STD_SEX))
+                    .get(userInfo.getSexCode()));
             // 血型
-            jsonObject.put("aboName", ((Map) redisCacheManager.getCacheObject(Constants.STD_BLOOD_TYPE))
-                    .get(userInfo.getAboCode()));
+            jsonObject.put("aboName",
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_BLOOD_TYPE))
+                            .get(userInfo.getAboCode()));
             // RH血型
-            jsonObject.put("rhName", ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
-                    .get(userInfo.getRhCode()));
+            jsonObject.put("rhName",
+                    ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
+                            .get(userInfo.getRhCode()));
+            jsonObject.put("mobilePhone", ValidateUtil.hidePhone(userInfo.getMobilePhone()));
+            jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
+            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL);
+            jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
+            jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UserInfoDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserInfo" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="realName" column="real_name" jdbcType="VARCHAR"/>
+		<result property="originalImageUrl" column="pic" jdbcType="VARCHAR"/>
+		<result property="imageUrl" column="thumbnail_pic" jdbcType="VARCHAR"/>
+	</resultMap>
+	
 	<!-- 用户基本信息 -->
-	<select id="getUserInfo" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+	<select id="getUserInfo" resultMap="BaseResultMapExt" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
 		select
-		<include refid="columns"/>
+		t.id,
+		t.user_id,
+		t.org_code,
+		t.patient_id,
+		t.name,
+		t.sex_code,
+		t.birth_date,
+		t.abo_code,
+		t.rh_code,
+		t.id_type_code,
+		t.mobile_phone,
+		t.marriage_code,
+		t.nationality_code,
+		t.card_type_code,
+		t.card_no,
+		t.drug_allergy_mark,
+		t.last_update_dtime
+		,t1.real_name
+		,t1.id_no
+		,t2.pic
+		,t2.thumbnail_pic
 		from user_info t
+		LEFT JOIN `user` t1 ON t.user_id=t1.user_id
+		LEFT JOIN user_pic t2 ON t.user_id=t2.user_id
 		<trim prefix="where" prefixOverrides="and|or">
 			<choose>
 				<when test="userId!=null">
