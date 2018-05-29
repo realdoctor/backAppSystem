@@ -109,7 +109,7 @@ public class UploadController {
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("imagePath", PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL).concat("/static").concat(thumbnailPath));
+        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL).concat("/static").concat(thumbnailPath));
         return ResultUtil.success(resultMap);
     }
 }
