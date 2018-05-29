@@ -12,6 +12,7 @@ public class UserInfo extends BasePojo {
 	private Integer userId;
 	private String orgCode;
 	private String patientId;
+	@JSONField(serialize=false)
 	private String name;
 	private String sexCode;
 	private Date birthDate;
@@ -26,7 +27,30 @@ public class UserInfo extends BasePojo {
 	private String cardNo;
 	private String drugAllergyMark;
 	private Date lastUpdateDtime;
-	public Long getId() {
+	private String realName;
+    // 头像原图
+	private String originalImageUrl;
+	// 头像缩略图200x200
+    private String imageUrl;
+    public String getRealName() {
+        return realName;
+    }
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+    public String getOriginalImageUrl() {
+        return originalImageUrl;
+    }
+    public void setOriginalImageUrl(String originalImageUrl) {
+        this.originalImageUrl = originalImageUrl;
+    }
+	public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
