@@ -195,7 +195,7 @@ public class HospitalGuahaoController
     @PerformanceClass
     @PostMapping("/fastorder")
     public ResultBody fastorder(@RequestBody HospitalGuahaoLog hospitalGuahaoLog) throws Exception {
-        if (StringUtil.isEmpty(hospitalGuahaoLog.getUserId())) {
+        if (hospitalGuahaoLog.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
         if (StringUtil.isEmpty(hospitalGuahaoLog.getHospitalId())) {
