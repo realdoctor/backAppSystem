@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsFocusDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus" id="BaseResultMap">
+		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<sql id="columns">
+		t.news_id,
+		t.user_id,
+		t.add_time
+	</sql>
+
+	<select id="query" resultMap="com.kanglian.healthcare.back.dal.dao.HealthNewsDao.BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t.news_id,
+			t.user_id,
+			t.add_time,
+			t1.news_name,
+			t1.news_type_id,
+			t1.news_author,
+			t1.author_profer,
+			t1.author_hos,
+			t1.author_dept,
+			t1.put_on,
+			t1.commend,
+			t1.create_date,
+			t1.photo_address,
+			t1.viewed_time,
+			t2.news_type
+		FROM
+			health_news_focus t
+		LEFT JOIN health_news t1 ON t.news_id = t1.news_id
+		LEFT JOIN health_news_type t2 ON t1.news_type_id = t2.news_type_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		add_time desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from health_news_focus t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus">
+		select
+		<include refid="columns"/>
+		from health_news_focus t where news_id=#{newsId,jdbcType=INTEGER}
+		and user_id=#{userId,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus">
+		delete from health_news_focus where 1=1
+		and news_id=#{newsId,jdbcType=INTEGER}
+		and user_id=#{userId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus">
+		insert into health_news_focus (
+		news_id,
+		user_id,
+		add_time
+		)
+		values(
+		#{newsId,jdbcType=INTEGER},
+		#{userId,jdbcType=INTEGER},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus">
+		update health_news_focus
+		<set>
+		  <if test="newsId != null">news_id=#{newsId,jdbcType=INTEGER},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where 1=1 and news_id = #{newsId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>

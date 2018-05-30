@@ -16,6 +16,7 @@
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -36,19 +37,19 @@
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
-		t.news_id,
-		t.news_name,
-		t.news_type_id,
-		t.news_author,
-		t.author_profer,
-		t.author_hos,
-		t.author_dept,
-		t.put_on,
-		t.commend,
-		t.create_date,
-		t.photo_address,
-		t.viewed_time,
-		t1.news_type
+			t.news_id,
+			t.news_name,
+			t.news_type_id,
+			t.news_author,
+			t.author_profer,
+			t.author_hos,
+			t.author_dept,
+			t.put_on,
+			t.commend,
+			t.create_date,
+			t.photo_address,
+			t.viewed_time,
+			t1.news_type
 		from health_news t
 		LEFT JOIN health_news_type t1 ON t.news_type_id=t1.news_type_id
 		<include refid="conditionQuery.core" />

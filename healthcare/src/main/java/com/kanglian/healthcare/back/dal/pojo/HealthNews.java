@@ -19,6 +19,13 @@ public class HealthNews extends BasePojo {
 	private String photoAddress;
 	private Integer viewedTime;
 	private String newsType;
+	private Integer userId;
+    public Integer getUserId() {
+        return userId;
+    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
     public Integer getNewsId() {
 		return newsId;
 	}

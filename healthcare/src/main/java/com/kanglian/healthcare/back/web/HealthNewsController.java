@@ -21,11 +21,25 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RequestMapping(value = "/healthnews")
 public class HealthNewsController extends CrudController<HealthNews, HealthNewsBo> {
 
+    /**
+     * 资讯一览
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping
     public ResultBody list(BaseQuery query) throws Exception {
         return super.list(query);
     }
-    
+
+    /**
+     * 资讯详情
+     * 
+     * @param newsId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/info")
     public ResultBody newsInfo(String newsId) throws Exception {
         if (StringUtil.isEmpty(newsId)) {
@@ -33,8 +47,8 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
         }
         return ResultUtil.success(this.bo.get(Integer.valueOf(newsId)));
     }
-    
+
     public static class BaseQuery extends Grid {
-        
+
     }
 }
