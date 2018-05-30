@@ -74,6 +74,7 @@ public class GoodsController extends CrudController<Goods, GoodsBo> {
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
+                searchstr = searchstr.replaceAll("['\"<>#&]", "");
                 StringBuffer buff = new StringBuffer();
                 buff.append(" (instr(t.name, '"+searchstr+"') > 0) or (instr(t.description, '"+searchstr+"') > 0) ");
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));

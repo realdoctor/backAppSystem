@@ -287,6 +287,7 @@ public class HospitalGuahaoController
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
+                searchstr = searchstr.replaceAll("['\"<>#&]", "");
                 StringBuffer buff = new StringBuffer();
                 buff.append(" (instr(t1.dept_name, '"+searchstr+"') > 0) or (instr(t2.field, '"+searchstr+"') > 0) ");
                 if (query.getParamMap().get("searchOpt") != null) {// 按医生查
