@@ -84,11 +84,12 @@ public class UploadController {
                 thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
                 Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
                         .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
-                if (pathRoot != null 
+                // 找到tomcat的bin目录下的catalina.sh文件，大概260行附近，修改UMASK的值为0022，即UMASK="0027" 改为 UMASK="0022"
+                /*if (pathRoot != null 
                         && pathRoot.startsWith("/")) {
                     Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + originalPath));
                     Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + thumbnailPath));
-                }
+                }*/
             } catch (Exception e) {
                 // TODO: handle exception
             }
