@@ -292,12 +292,11 @@ public class HospitalGuahaoController
                 if (query.getParamMap().get("searchOpt") != null) {// 按医生查
                     buff.append(" or ");
                     buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
-                    query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
                 } else {// 按医院查
                     buff.append(" or ");
                     buff.append(" (t1.hospital_name LIKE '%"+searchstr+"%') ");
-                    query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
                 }
+                query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
             }
             return query;
         }
