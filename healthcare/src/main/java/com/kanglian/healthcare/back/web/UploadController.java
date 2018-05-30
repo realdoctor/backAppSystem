@@ -48,7 +48,7 @@ public class UploadController {
             HttpServletRequest request) throws Exception {
         logger.debug("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
 
-        if(imageFile == null) {
+        if (imageFile == null) {
             throw new InvalidOperationException("attach");
         }
         
@@ -84,25 +84,18 @@ public class UploadController {
                 thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
                 Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
                         .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
-                // 找到tomcat的bin目录下的catalina.sh文件，大概260行附近，修改UMASK的值为0022，即UMASK="0027" 改为 UMASK="0022"
-                /*if (pathRoot != null 
-                        && pathRoot.startsWith("/")) {
-                    Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + originalPath));
-                    Runtime.getRuntime().exec("chmod 777 -R " + (pathRoot + thumbnailPath));
-                }*/
             } catch (Exception e) {
                 // TODO: handle exception
             }
-//            FileUtils.forceDelete(uploadedFile);
             logger.info("===============原始图路径" + originalPath);
             logger.info("======================生成缩略图路径" + thumbnailPath);
             UserPic userPic = userPicBo.get(user.getUserId());
             if (userPic != null) {
-                // 更新头像，删除原来上传的
                 try {
+                    // 更新头像，删除原来上传的
                     FileUtils.forceDelete(new File(pathRoot.concat(userPic.getPic())));
                     FileUtils.forceDelete(new File(pathRoot.concat(userPic.getThumbnailPic())));
-                } catch (Exception e) {
+                } catch (Exception ex) {
                     // TODO: handle exception
                 }
                 userPic.setPic(originalPath);
