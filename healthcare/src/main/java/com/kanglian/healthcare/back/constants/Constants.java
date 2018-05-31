@@ -81,10 +81,10 @@ public final class Constants {
     public static final String MARK_REFRESH_TOKEN_KEY_PREFIX = "AUTHORIZATION_REFRESH_TOKEN_";
 
     /**
-     * 上传文件图片
+     * 上传文件
      */
-    // 图片上传路径
-    public static final String UPLOAD_IMAGE_PATH             = "upload_image_path";
-    // 图片访问路径
-    public static final String DOMAIN_URL                    = "domain_url";
+    // 上传路径
+    public static final String UPLOAD_PATH             = "upload_path";
+    // 访问路径
+    public static final String STATIC_URL                    = "static_url";
 }

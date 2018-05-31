@@ -72,7 +72,7 @@ public class UploadController {
 
         // 获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");
-        pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_IMAGE_PATH);
+        pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         String thumbnailPath = "";
         if (!imageFile.isEmpty()) {
             String originalPath = "/images".concat(FileUtil.randomPathname(extension));
@@ -113,7 +113,7 @@ public class UploadController {
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL).concat("/static").concat(thumbnailPath));
+        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(thumbnailPath));
         return ResultUtil.success(resultMap);
     }
 }
