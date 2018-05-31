@@ -8,7 +8,8 @@ public class PatientDrug extends BasePojo {
 	private Long id;
 	private Integer patientDiagId;
 	private String drugName;
-	private String drugStdName;
+	private String drugCode;
+    private String drugStdName;
 	private String drugStdCode;
 	private String notes;
 	private Date lastUpdateDtime;
@@ -30,6 +31,12 @@ public class PatientDrug extends BasePojo {
 	public void setDrugName(String drugName) {
 		this.drugName = drugName;
 	}
+	public String getDrugCode() {
+        return drugCode;
+    }
+    public void setDrugCode(String drugCode) {
+        this.drugCode = drugCode;
+    }
 	public String getDrugStdName() {
 		return drugStdName;
 	}

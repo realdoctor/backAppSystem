@@ -5,6 +5,7 @@
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="patientDiagId" column="patient_diag_id" jdbcType="INTEGER"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
+		<result property="drugCode" column="drug_code" jdbcType="VARCHAR"/>
 		<result property="drugStdName" column="drug_std_name" jdbcType="VARCHAR"/>
 		<result property="drugStdCode" column="drug_std_code" jdbcType="VARCHAR"/>
 		<result property="notes" column="notes" jdbcType="VARCHAR"/>
@@ -15,6 +16,7 @@
 		t.id,
 		t.patient_diag_id,
 		t.drug_name,
+		t.drug_code,
 		t.drug_std_name,
 		t.drug_std_code,
 		t.notes,
@@ -26,6 +28,7 @@
 		t.id,
 		t.patient_diag_id,
 		t.drug_name,
+		t.drug_code,
 		t.drug_std_name,
 		t.drug_std_code,
 		t.notes,
@@ -58,15 +61,15 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug">
-		delete from patient_drug where 1=1
-		and id=#{id,jdbcType=BIGINT}
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from patient_drug where id=#{id,jdbcType=BIGINT}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
 		insert into patient_drug (
 		patient_diag_id,
 		drug_name,
+		drug_code,
 		drug_std_name,
 		drug_std_code,
 		notes,
@@ -75,6 +78,7 @@
 		values(
 		#{patientDiagId,jdbcType=INTEGER},
 		#{drugName,jdbcType=VARCHAR},
+		#{drugCode,jdbcType=VARCHAR},
 		#{drugStdName,jdbcType=VARCHAR},
 		#{drugStdCode,jdbcType=VARCHAR},
 		#{notes,jdbcType=VARCHAR},
@@ -87,6 +91,7 @@
 		<set>
 		  <if test="patientDiagId != null">patient_diag_id=#{patientDiagId,jdbcType=INTEGER},</if>
 		  <if test="drugName != null">drug_name=#{drugName,jdbcType=VARCHAR},</if>
+		  <if test="drugName != null">drug_code=#{drugCode,jdbcType=VARCHAR},</if>
 		  <if test="drugStdName != null">drug_std_name=#{drugStdName,jdbcType=VARCHAR},</if>
 		  <if test="drugStdCode != null">drug_std_code=#{drugStdCode,jdbcType=VARCHAR},</if>
 		  <if test="notes != null">notes=#{notes,jdbcType=VARCHAR},</if>
