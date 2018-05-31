@@ -13,4 +13,12 @@ public interface UserInfoDao extends CrudDao<UserInfo> {
      * @return
      */
     public UserInfo getUserInfo(User user);
+    
+    /**
+     * 同步用户关联，挂关系
+     * 
+     * @param user
+     * @return
+     */
+    public int updateRelationship(User user);
 }

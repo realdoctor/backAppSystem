@@ -48,4 +48,20 @@
 			</choose>
 		</trim>
 	</select>
+	
+	<!-- 同步用户关联，挂关系 -->
+	<update id="updateRelationship" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+		UPDATE user_info
+		SET user_id = #{userId,jdbcType=INTEGER}, last_update_dtime = NOW()
+		<trim prefix="where" prefixOverrides="and|or">
+			<choose>
+				<when test="idNo!=null and idNo !=''">
+					and id_no = #{idNo,jdbcType=VARCHAR}
+				</when>
+				<otherwise>
+					and mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+				</otherwise>
+			</choose>
+		</trim>
+	</update>
 </mapper>

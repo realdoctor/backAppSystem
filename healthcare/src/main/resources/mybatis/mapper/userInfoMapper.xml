@@ -92,8 +92,7 @@
 	</select>
 
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo">
-		delete from user_info where 1=1
-		and id=#{id,jdbcType=BIGINT}
+		delete from user_info where id=#{id,jdbcType=BIGINT}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserInfo" useGeneratedKeys="true" keyProperty="id">
@@ -158,6 +157,6 @@
 		  <if test="drugAllergyMark != null">drug_allergy_mark=#{drugAllergyMark,jdbcType=CHAR},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
-		where 1=1 and id = #{id,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
 	</update>
 </mapper>
