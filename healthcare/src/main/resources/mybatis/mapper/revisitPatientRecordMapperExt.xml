@@ -15,7 +15,16 @@
 	
 	<sql id="Revisit_Patient_Select_Query">
 		SELECT
-			t0.*
+			t0.org_code,
+			t0.patient_id,
+			t0.visit_org_name,
+			t0.visit_dept_name,
+			max(t0.visit_dtime) AS visit_dtime,
+			t0.visit_way,
+			t0.doctor_code,
+			t0.resp_doctor_name,
+			t0.diag_code,
+			t0.diag_name
 		FROM
 			user_info t
 		INNER JOIN (
@@ -32,16 +41,6 @@
 				c.diag_name
 			FROM
 				patient_record a
-			INNER JOIN (
-				SELECT
-					MAX(t.id) AS id,
-					t.doctor_code,
-					MAX(t.visit_dtime) AS visit_dtime
-				FROM
-					patient_record t
-				GROUP BY
-					t.org_code, t.patient_id, t.doctor_code
-			) b ON a.id = b.id
 			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
 		) t0 ON (
 			t.org_code = t0.org_code
@@ -54,6 +53,7 @@
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		<include refid="Revisit_Patient_Select_Query" />
 		<include refid="conditionQuery.core" />
+		group by org_code, patient_id, doctor_code
 		order by
 		<choose>
 			<when test="paramMap.orderCol!=null">
@@ -90,34 +90,30 @@
 			SELECT
 				a.org_code,
 				a.patient_id,
+				a.visit_org_name,
+				a.visit_dept_name,
+				a.visit_dtime,
+				a.visit_way,
+				a.doctor_code,
+				a.resp_doctor_name,
 				c.diag_code,
 				c.diag_name
 			FROM
 				patient_record a
-			INNER JOIN (
-				SELECT
-					MAX(t.id) AS id,
-					t.doctor_code,
-					MAX(t.visit_dtime) AS visit_dtime
-				FROM
-					patient_record t
-				GROUP BY
-					t.org_code, t.patient_id, t.doctor_code
-			) b ON a.id = b.id
 			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
-			ORDER BY a.visit_dtime DESC
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
 		)
 		<include refid="conditionQuery.core" />
+		group by t0.org_code, t0.patient_id, t0.doctor_code
 		order by
 		<choose>
 		<when test="paramMap.orderCol!=null">
 		${paramMap.orderCol}
 		</when>
 		<otherwise>
-		diag_code ASC
+		t0.visit_dtime desc
 		</otherwise>
 		</choose>
 	</select>
