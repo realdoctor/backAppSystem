@@ -70,7 +70,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("rhName",
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
                             .get(userInfo.getRhCode()));
-            jsonObject.put("mobilePhone", ValidateUtil.hidePhone(userInfo.getMobilePhone()));
+            jsonObject.put("mobilePhone", userInfo.getMobilePhone());
             jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.DOMAIN_URL);
             jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
