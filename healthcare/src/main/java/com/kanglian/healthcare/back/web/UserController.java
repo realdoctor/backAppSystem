@@ -170,7 +170,7 @@ public class UserController extends CrudController<User, UserBo> {
         }
         userT.setPwd(MD5Util.encrypt(pwd));
         userT.setLastUpdateDtime(DateUtil.currentDate());
-//        this.bo.update(userT);
+        this.bo.update(userT);
         return ResultUtil.success();
     }
 
@@ -215,7 +215,6 @@ public class UserController extends CrudController<User, UserBo> {
         if (user == null) {
             throw new InvalidOperationException();
         }
-        redisTokenManager.delRelationshipByKey(user.getMobilePhone());
         return ResultUtil.success();
     }
 

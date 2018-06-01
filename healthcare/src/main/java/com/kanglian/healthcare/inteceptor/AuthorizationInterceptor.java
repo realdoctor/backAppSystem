@@ -61,12 +61,15 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     logger.info("============================token验证通过，直接放行");
                     if ("updatePwd".equals(method.getName())) {
                         redisTokenManager.delRelationshipByToken(token);
-                        logger.info("============================手机用户{}，退出登录。token={}",
-                                new Object[] {sessionId, token});
-                    } else if ("refreshToken".equals(method.getName())) {
+                        logger.info("====================================手机用户{}，修改密码。", sessionId);
+                    } 
+                    else if ("refreshToken".equals(method.getName())) {
                         redisTokenManager.delRelationshipByToken(token);
-                        logger.info("============================手机用户{}，客户端自动刷新。token={}",
-                                new Object[] {sessionId, token});
+                        logger.info("====================================手机用户{}，客户端自动刷新token。", sessionId);
+                    }
+                    else if ("logout".equals(method.getName())) {
+                        redisTokenManager.delRelationshipByToken(token);
+                        logger.info("====================================手机用户{}，退出登录。", sessionId);
                     }
                     return true;
                 } else {
