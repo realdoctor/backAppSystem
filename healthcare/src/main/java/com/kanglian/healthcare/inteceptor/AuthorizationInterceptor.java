@@ -17,7 +17,7 @@ import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.service.RedisTokenBo;
+import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import io.jsonwebtoken.Claims;
 
@@ -30,10 +30,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
     /** logger */
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationInterceptor.class);
-    
+
     @Autowired
-    private RedisTokenBo redisTokenBo;
-    
+    private UserBo              userBo;
+
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
         // 如果不是映射到方法直接通过
@@ -46,7 +46,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String token = request.getHeader(Constants.AUTHORIZATION);
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("============进入请求方法：{}", name);
-        logger.info("=================对请求进行身份验证，token="+token);
+        logger.info("=================对请求进行身份验证，token=" + token);
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
@@ -54,9 +54,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
-                logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
-                String sessionId = redisTokenBo.getKey(user.getUserId(), token);
-                logger.debug("=============>>>SessionId="+sessionId);
+                logger.debug("=================身份已验证，user=" + JsonUtil.beanToJson(user));
+                String sessionId = userBo.getKey(user.getUserId(), token);
+                logger.debug("=============>>>SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
                     delRelationshipByToken(method.getName(), sessionId, user.getUserId(), token);
@@ -86,7 +86,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute(Constants.CURRENT_USER_ID, null);
         return true;
     }
-    
+
     private void delRelationshipByToken(String methodName, String mobilePhone, Long userId,
             String token) {
         boolean isDel = false;
@@ -101,7 +101,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             isDel = true;
         }
         if (isDel) {
-            redisTokenBo.delRelationshipByToken(userId, token);
+            userBo.delRelationshipByToken(userId, token);
         }
     }
 }
