@@ -59,6 +59,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 logger.debug("=============>>>SessionId="+sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
+                    if ("updatePwd".equals(method.getName())) {
+                        redisTokenManager.delRelationshipByToken(token);
+                        logger.info("============================手机用户{}，退出登录token={}",
+                                new Object[] {sessionId, token});
+                    }
                     return true;
                 } else {
                     logger.info("============================session已过期，请重新登录");

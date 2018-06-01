@@ -10,7 +10,6 @@ public interface TokenManager {
     /**
      * 通过key删除关联关系
      * 
-     * @desc 一个用户只能绑定一个Token时通过Key删除关联关系
      * @param key
      */
     void delRelationshipByKey(String key);
@@ -25,7 +24,6 @@ public interface TokenManager {
     /**
      * 创建关联关系
      * 
-     * @desc 一个用户只能绑定一个Token时创建关联关系
      * @param key
      * @param token
      */

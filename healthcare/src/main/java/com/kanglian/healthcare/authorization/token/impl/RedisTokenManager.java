@@ -22,7 +22,7 @@ public class RedisTokenManager extends AbstractTokenManager {
     }
 
     @Override
-    public void createRelationship(String key, String token) {
+    protected void createSingleRelationship(String key, String token) {
         String oldToken = get(formatKey(key));
         if (oldToken != null) {
             delete(formatToken(oldToken));
@@ -32,7 +32,12 @@ public class RedisTokenManager extends AbstractTokenManager {
     }
 
     @Override
-    public void delRelationshipByKey(String key) {
+    protected void createMultipleRelationship(String key, String token) {
+        set(formatToken(token), key, Constants.TOKEN_EXPIRES_SECONDS);
+    }
+
+    @Override
+    protected void delSingleRelationshipByKey(String key) {
         String token = getToken(key);
         if (token != null) {
             delete(formatKey(key), formatToken(token));
@@ -52,16 +57,17 @@ public class RedisTokenManager extends AbstractTokenManager {
 
     @Override
     protected void flushExpireAfterOperation(String key, String token) {
-        expire(formatKey(key), Constants.TOKEN_EXPIRES_SECONDS);
+        if (singleToken) {
+            expire(formatKey(key), Constants.TOKEN_EXPIRES_SECONDS);
+        }
         expire(formatToken(token), Constants.TOKEN_EXPIRES_SECONDS);
     }
 
-    @Override
-    public String getToken(String key) {
-        return get(formatKey(key));
-    }
-
-    public String get(String key) {
+    /**
+     * @param key
+     * @return
+     */
+    private String get(String key) {
         Object obj = redisCacheManager.getCacheObject(key);
         if (obj == null) {
             return null;
@@ -69,7 +75,7 @@ public class RedisTokenManager extends AbstractTokenManager {
         return String.valueOf(obj);
     }
 
-    public void set(String key, String value, int expireSeconds) {
+    private void set(String key, String value, int expireSeconds) {
         redisCacheManager.setCacheObject(key, value, Long.valueOf(expireSeconds), TimeUnit.SECONDS);
     }
 
@@ -83,6 +89,10 @@ public class RedisTokenManager extends AbstractTokenManager {
         }
     }
 
+    public String getToken(String key) {
+        return get(formatKey(key));
+    }
+
     public String formatKey(String key) {
         return Constants.formatKey(key);
     }
@@ -90,4 +100,5 @@ public class RedisTokenManager extends AbstractTokenManager {
     public String formatToken(String token) {
         return Constants.formatToken(token);
     }
+
 }

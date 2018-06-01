@@ -85,16 +85,10 @@ public class UserController extends CrudController<User, UserBo> {
             }
         }
         
-        // 一个用户只能绑定一个Token，单点登录。用户退出，令牌失效
-        String accessToken = redisTokenManager.getToken(mobilePhone);
-        if (StringUtil.isNotEmpty(accessToken) && JwtUtil.verifyToken(accessToken) != null) {
-            redisTokenManager.get(accessToken);// 延长令牌时间
-            logger.info("========手机号{}，已登录另外一台客户端。token={}", new Object[] {mobilePhone, accessToken});
-        } else {
-            // 生成Token
-            accessToken = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
-            redisTokenManager.createRelationship(mobilePhone, accessToken);
-        }
+        // 生成token
+        String accessToken = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
+        redisTokenManager.createRelationship(mobilePhone, accessToken);
+        logger.info("========手机号{}，登录客户端。token={}", new Object[] {mobilePhone, accessToken});
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", accessToken);
@@ -176,8 +170,7 @@ public class UserController extends CrudController<User, UserBo> {
         }
         userT.setPwd(MD5Util.encrypt(pwd));
         userT.setLastUpdateDtime(DateUtil.currentDate());
-        this.bo.update(userT);
-        redisTokenManager.delRelationshipByKey(mobilePhone);
+//        this.bo.update(userT);
         return ResultUtil.success();
     }
 
