@@ -84,7 +84,7 @@ public final class Constants {
      * 上传文件
      */
     // 上传路径
-    public static final String UPLOAD_PATH             = "upload_path";
+    public static final String UPLOAD_PATH                   = "upload_path";
     // 访问路径
     public static final String STATIC_URL                    = "static_url";
 }
