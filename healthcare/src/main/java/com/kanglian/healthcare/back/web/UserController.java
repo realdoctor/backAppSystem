@@ -20,10 +20,10 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
 import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.service.RedisTokenBo;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.IdCardUtil;
@@ -39,9 +39,9 @@ import com.kanglian.healthcare.util.ValidateUtil;
 public class UserController extends CrudController<User, UserBo> {
 
     @Autowired
-    private RedisTokenManager redisTokenManager;
-    @Autowired
     private RedisCacheManager redisCacheManager;
+    @Autowired
+    private RedisTokenBo redisTokenBo;
     
     @GetMapping
     public ResultBody list(UserQuery query) throws Exception {
@@ -87,7 +87,7 @@ public class UserController extends CrudController<User, UserBo> {
         
         // 生成token
         String accessToken = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
-        redisTokenManager.createRelationship(mobilePhone, accessToken);
+        redisTokenBo.createRelationship(mobilePhone, user.getUserId(), accessToken);
         logger.info("========手机号{}，登录客户端。token={}", new Object[] {mobilePhone, accessToken});
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -231,7 +231,7 @@ public class UserController extends CrudController<User, UserBo> {
         final String mobilePhone = user.getMobilePhone();
         // 重新生成token
         String token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);
-        redisTokenManager.createRelationship(mobilePhone, token);
+        redisTokenBo.createRelationship(mobilePhone, user.getUserId(), token);
         logger.info("================手机号{}，重新生成token={}", new Object[] {mobilePhone, token});
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", token);

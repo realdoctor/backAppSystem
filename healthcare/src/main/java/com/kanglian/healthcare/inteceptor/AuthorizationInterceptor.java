@@ -15,9 +15,9 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
 import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.service.RedisTokenBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import io.jsonwebtoken.Claims;
 
@@ -32,7 +32,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationInterceptor.class);
     
     @Autowired
-    private RedisTokenManager redisTokenManager;
+    private RedisTokenBo redisTokenBo;
     
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
@@ -55,22 +55,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user="+JsonUtil.beanToJson(user));
-                String sessionId = redisTokenManager.getKey(token);
+                String sessionId = redisTokenBo.getKey(user.getUserId(), token);
                 logger.debug("=============>>>SessionId="+sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
-                    if ("updatePwd".equals(method.getName())) {
-                        redisTokenManager.delRelationshipByToken(token);
-                        logger.info("====================================手机用户{}，修改密码。", sessionId);
-                    } 
-                    else if ("refreshToken".equals(method.getName())) {
-                        redisTokenManager.delRelationshipByToken(token);
-                        logger.info("====================================手机用户{}，客户端自动刷新token。", sessionId);
-                    }
-                    else if ("logout".equals(method.getName())) {
-                        redisTokenManager.delRelationshipByToken(token);
-                        logger.info("====================================手机用户{}，退出登录。", sessionId);
-                    }
+                    delRelationshipByToken(method.getName(), sessionId, user.getUserId(), token);
                     return true;
                 } else {
                     logger.info("============================session已过期，请重新登录");
@@ -96,5 +85,23 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 为了防止以恶意操作直接在REQUEST_CURRENT_KEY写入key，将其设为null
         request.setAttribute(Constants.CURRENT_USER_ID, null);
         return true;
+    }
+    
+    private void delRelationshipByToken(String methodName, String mobilePhone, Long userId,
+            String token) {
+        boolean isDel = false;
+        if ("updatePwd".equals(methodName)) {
+            logger.info("====================================手机用户{}，修改密码。", mobilePhone);
+            isDel = true;
+        } else if ("refreshToken".equals(methodName)) {
+            logger.info("====================================手机用户{}，客户端自动刷新token。", mobilePhone);
+            isDel = true;
+        } else if ("logout".equals(methodName)) {
+            logger.info("====================================手机用户{}，退出登录。", mobilePhone);
+            isDel = true;
+        }
+        if (isDel) {
+            redisTokenBo.delRelationshipByToken(userId, token);
+        }
     }
 }
