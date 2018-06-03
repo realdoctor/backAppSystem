@@ -27,7 +27,7 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
         try {
             PageHelper.startPage(grid.getPageNum(), grid.getPageSize());
             ConditionQuery query = grid.buildConditionQuery();
-            query.addParam("pageSize", 0);// 取消掉分页，采用分页插件
+            query.addParam("pageSize", 0);// 取消分页，采用分页插件
             List<T> newsList = dao.frontList(query);
             PageInfo<T> page = new PageInfo<T>(newsList);
             grid.setPageNum(page.getPageNum());
@@ -64,9 +64,9 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
      * @DESC PageHelper的优点是，分页和Mapper.xml完全解耦。实现方式是以插件的形式，对Mybatis执行的流程进行了强化，添加了总数count和limit查询
      */
     @Override
-    public Page queryAndSetPage(final Page page, final ConditionQuery query) {
+    protected Page queryAndSetPage(final Page page, final ConditionQuery query) {
         final Dao dao = this.dao;
-        com.github.pagehelper.Page<T> page1 = PageHelper
+        com.github.pagehelper.Page<T> list = PageHelper
                 .startPage(page.getPageNum(), page.getPageSize()).doSelectPage(new ISelect() {
                     @Override
                     public void doSelect() {
@@ -75,11 +75,11 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
                     }
                 });
         final Grid grid = new Grid();
-        grid.setPageNum(page1.getPageNum());
-        grid.setPageSize(page1.getPageSize());
-        grid.setPages(page1.getPages());
-        grid.setTotal((int) page1.getTotal());
-        grid.setList(page1.getResult());
+        grid.setPageNum(list.getPageNum());
+        grid.setPageSize(list.getPageSize());
+        grid.setPages(list.getPages());
+        grid.setTotal((int) list.getTotal());
+        grid.setList(list.getResult());
         return grid;
     }
 }
