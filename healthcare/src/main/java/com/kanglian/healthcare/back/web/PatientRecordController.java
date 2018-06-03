@@ -1,11 +1,13 @@
 package com.kanglian.healthcare.back.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -38,9 +40,9 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
         if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
-        query.setPageSize(0);// 不分页
-        Grid grid = this.bo.queryFrontList(query);
-        int cnt = grid.getTotal();
+        ConditionQuery conditionQuery = query.buildConditionQuery();
+        List<PatientRecord> newsList = bo.frontList(conditionQuery);
+        int cnt = newsList.size();
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("refresh", true);
@@ -49,7 +51,7 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
         if (clientNum != null && clientNum >= cnt) {
             resultMap.put("refresh", false);
         }
-        resultMap.put("list", grid.getList());
+        resultMap.put("list", newsList);
         return ResultUtil.success(resultMap);
     }
 

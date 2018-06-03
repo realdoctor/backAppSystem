@@ -6,7 +6,8 @@ import com.easyway.business.framework.dao.CrudDao;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.BasePojo;
 
-public interface Crud2Dao<T extends BasePojo> extends CrudDao<T> {
+public interface NewCrudDao<T extends BasePojo> extends CrudDao<T> {
+
 
     /**
      * 根据条件查询数据库记录列表

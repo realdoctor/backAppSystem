@@ -36,11 +36,11 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
     @GetMapping
     public ResultBody list(NoticeMessageQuery query, @CurrentUser User user) throws Exception {
         query.setUserId(String.valueOf(user.getUserId()));
-        return ResultUtil.success(this.bo.query(query));
+        return ResultUtil.success(this.bo.queryList(query));
     }
 
     /**
-     * 消息提醒列表
+     * 消息提醒详情
      * 
      * @param query
      * @return
@@ -49,7 +49,7 @@ public class NoticeMessageController extends CrudController<NoticeMessage, Notic
     @GetMapping("/noticeList")
     public ResultBody noticeMessageList(NoticeMessageQuery query, @CurrentUser User user) throws Exception {
         query.setUserId(String.valueOf(user.getUserId()));
-        final Grid grid = this.bo.queryFrontList(query);
+        final Grid grid = this.bo.frontList(query);
         return ResultUtil.success(grid, new JsonClothProcessor() {
 
             @Override

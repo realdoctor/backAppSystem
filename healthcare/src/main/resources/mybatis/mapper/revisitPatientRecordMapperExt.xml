@@ -63,22 +63,8 @@
 				visit_dtime desc
 			</otherwise>
 		</choose>
-		<if test="paramMap.pageSize > 0">
-			limit #{paramMap.pageOffset},#{paramMap.pageSize}
-		</if>
 	</select>
 
-	<select id="frontListCnt"
-		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery"
-		resultType="java.lang.Integer">
-		SELECT
-			COUNT(1)
-		FROM (
-			<include refid="Revisit_Patient_Select_Query" />
-			<include refid="conditionQuery.core" />
-		) t
-	</select>
-	
 	<!-- 复诊患者诊断列表 -->
 	<select id="findDiagList" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT

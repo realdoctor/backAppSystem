@@ -3,7 +3,7 @@ package com.kanglian.healthcare.back.dal.dao;
 import java.util.List;
 import java.util.Map;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.kanglian.healthcare.back.common.Crud2Dao;
+import com.kanglian.healthcare.back.common.NewCrudDao;
 import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 
 /**
@@ -11,7 +11,7 @@ import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
  * 
  * @author xl.liu
  */
-public interface RevisitPatientRecordDao extends Crud2Dao<PatientRecord> {
+public interface RevisitPatientRecordDao extends NewCrudDao<PatientRecord> {
 
     /**
      * 复诊患者诊断列表

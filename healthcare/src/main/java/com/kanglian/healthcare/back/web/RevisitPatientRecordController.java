@@ -37,7 +37,7 @@ public class RevisitPatientRecordController
         if (!ValidateUtil.isPhone(mobilePhone)) {
             return ResultUtil.error("请输入正确的11位手机号！");
         }
-        return ResultUtil.success(this.bo.queryFrontList(query));
+        return ResultUtil.success(this.bo.frontList(query));
     }
 
     /**

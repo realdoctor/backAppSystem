@@ -10,4 +10,14 @@
 		<setting name="callSettersOnNulls" value="true"/>
 		<setting name="defaultStatementTimeout" value="25000"/>
 	</settings>
+	<plugins>
+	    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+	        <property name="helperDialect" value="Mysql"/>
+	        <property name="offsetAsPageNum" value="false"/>
+	        <property name="rowBoundsWithCount" value="false"/>
+	        <property name="pageSizeZero" value="true"/>
+	        <property name="reasonable" value="false"/>
+	        <property name="supportMethodsArguments" value="false"/>
+	    </plugin>
+	</plugins>
 </configuration>

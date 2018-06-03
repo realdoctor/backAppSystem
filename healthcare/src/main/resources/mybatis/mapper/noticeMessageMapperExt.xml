@@ -53,16 +53,8 @@
 		notice_type_id asc, id desc
 		</otherwise>
 		</choose>
-		<if test="paramMap.pageSize > 0">
-		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
-		</if>
 	</select>
 
-	<select id="frontListCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from notice_message t
-		<include refid="conditionQuery.core" />
-	</select>
-	
 	<!-- 病历更新列表 -->
 	<select id="getNoticeDiag" resultMap="NoticeDiagResultMap" parameterType="java.lang.Long">
 		select

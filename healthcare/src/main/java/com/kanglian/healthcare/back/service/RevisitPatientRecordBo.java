@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.kanglian.healthcare.back.common.Crud2Bo;
+import com.kanglian.healthcare.back.common.NewCrudBo;
 import com.kanglian.healthcare.back.dal.dao.RevisitPatientRecordDao;
 import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 import com.kanglian.healthcare.exception.DBException;
@@ -15,7 +15,7 @@ import com.kanglian.healthcare.exception.DBException;
  * @author xl.liu
  */
 @Service
-public class RevisitPatientRecordBo extends Crud2Bo<PatientRecord, RevisitPatientRecordDao> {
+public class RevisitPatientRecordBo extends NewCrudBo<PatientRecord, RevisitPatientRecordDao> {
     /**
      * 复诊患者诊断列表
      * 
