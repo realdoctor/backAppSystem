@@ -59,20 +59,6 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
     }
 
     /**
-     * 根据条件查询数据库记录条数
-     * 
-     * @param query
-     * @return
-     */
-    public int frontListCnt(ConditionQuery query) {
-        try {
-            return this.dao.frontListCnt(query);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
-    }
-    
-    /**
      * 重写原来的分页，采用分页插件
      * 
      * @DESC PageHelper的优点是，分页和Mapper.xml完全解耦。实现方式是以插件的形式，对Mybatis执行的流程进行了强化，添加了总数count和limit查询
