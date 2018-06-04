@@ -141,37 +141,6 @@ public class UserController extends CrudController<User, UserBo> {
     }
 
     /**
-     * 修改密码
-     * 
-     * @param user
-     * @return
-     * @throws Exception
-     */
-    @Authorization
-    @PostMapping("/updatePwd")
-    public ResultBody updatePwd(@RequestBody User user) throws Exception {
-        String mobilePhone = user.getMobilePhone();
-        String pwd = user.getPwd();
-        if (StringUtil.isEmpty(mobilePhone)) {
-            return ResultUtil.error("手机号不能为空！");
-        }
-        if (StringUtil.isEmpty(pwd)) {
-            return ResultUtil.error("密码不能为空！");
-        }
-        if (!ValidateUtil.isPhone(mobilePhone)) {
-            return ResultUtil.error("请输入正确的11位手机号！");
-        }
-        User userT = this.bo.login(user);
-        if (userT == null) {
-            return ResultUtil.error("用户不存在！");
-        }
-        userT.setPwd(MD5Util.encrypt(pwd));
-        userT.setLastUpdateDtime(DateUtil.currentDate());
-        this.bo.update(userT);
-        return ResultUtil.success();
-    }
-
-    /**
      * 发送短信验证码
      * 
      * @return
@@ -200,6 +169,42 @@ public class UserController extends CrudController<User, UserBo> {
     }
     
     /**
+     * 修改密码
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @PostMapping("/updatePwd")
+    public ResultBody updatePwd(@RequestBody User user) throws Exception {
+        if (user == null) {
+            throw new InvalidOperationException();
+        }
+        String mobilePhone = user.getMobilePhone();
+        String pwd = user.getPwd();
+        if (StringUtil.isEmpty(mobilePhone)) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (StringUtil.isEmpty(pwd)) {
+            return ResultUtil.error("密码不能为空！");
+        }
+        if (!ValidateUtil.isPhone(mobilePhone)) {
+            return ResultUtil.error("请输入正确的11位手机号！");
+        }
+        User userT = this.bo.login(user);
+        if (userT == null) {
+            return ResultUtil.error("用户不存在！");
+        }
+        userT.setPwd(MD5Util.encrypt(pwd));
+        userT.setLastUpdateDtime(DateUtil.currentDate());
+        this.bo.update(userT);
+        logger.info("====================================手机用户{}，修改密码。", userT.getMobilePhone());
+        return ResultUtil.success();
+    }
+
+    
+    /**
      * 用户退出
      * 
      * @param user
@@ -212,6 +217,7 @@ public class UserController extends CrudController<User, UserBo> {
         if (user == null) {
             throw new InvalidOperationException();
         }
+        logger.info("====================================手机用户{}，退出登录。", user.getMobilePhone());
         return ResultUtil.success();
     }
 
@@ -225,6 +231,10 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/refreshToken")
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
+        if (user == null) {
+            throw new InvalidOperationException();
+        }
+        logger.info("====================================手机用户{}，客户端自动刷新token。", user.getMobilePhone());
         final String mobilePhone = user.getMobilePhone();
         // 重新生成token
         String token = JwtUtil.generToken(mobilePhone, JsonUtil.beanToJson(user), JwtUtil.JWT_TTL);

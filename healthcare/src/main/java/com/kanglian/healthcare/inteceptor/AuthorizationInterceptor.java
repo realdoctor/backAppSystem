@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
@@ -59,7 +60,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 logger.debug("=============>>>SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
-                    delRelationshipByToken(method.getName(), sessionId, user.getUserId(), token);
                     return true;
                 } else {
                     logger.info("============================session已过期，请重新登录");
@@ -87,20 +87,19 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-    private void delRelationshipByToken(String methodName, String mobilePhone, Long userId,
-            String token) {
-        boolean isDel = false;
-        if ("updatePwd".equals(methodName)) {
-            logger.info("====================================手机用户{}，修改密码。", mobilePhone);
-            isDel = true;
-        } else if ("refreshToken".equals(methodName)) {
-            logger.info("====================================手机用户{}，客户端自动刷新token。", mobilePhone);
-            isDel = true;
-        } else if ("logout".equals(methodName)) {
-            logger.info("====================================手机用户{}，退出登录。", mobilePhone);
-            isDel = true;
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
+        if (!(handler instanceof HandlerMethod)) {
+            return;
         }
-        if (isDel) {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        String methodName = method.getName();
+        if ("updatePwd".equals(methodName) || "logout".equals(methodName)
+                || "refreshToken".equals(methodName)) {
+            Long userId = (Long) request.getAttribute(Constants.CURRENT_USER_ID);
+            String token = request.getHeader(Constants.AUTHORIZATION);
             userBo.delRelationshipByToken(userId, token);
         }
     }
