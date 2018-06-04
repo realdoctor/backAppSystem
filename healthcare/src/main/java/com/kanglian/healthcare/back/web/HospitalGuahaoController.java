@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
-import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
@@ -56,7 +55,6 @@ public class HospitalGuahaoController
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @GetMapping("/hospital")
     public ResultBody list(HospitalGuahaoQuery query) throws Exception {
         return super.list(query);
@@ -80,7 +78,6 @@ public class HospitalGuahaoController
      * @return 医院 | 医生
      * @throws Exception
      */
-    @PerformanceClass
     @GetMapping("/search")
     public ResultBody search(GuahaoSearchQuery query) throws Exception {
         ConditionQuery conditionQuery1 = query.buildConditionQuery();
@@ -97,13 +94,12 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 按医院、科室、获取本院医生-按专家预约
+     * 按医院、科室、获取本院医生-按专家预约列表
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @GetMapping("/hospital/orderExpert")
     public ResultBody orderExpert(HospitalZhuanjiaQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
@@ -124,7 +120,6 @@ public class HospitalGuahaoController
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @GetMapping("/hospital/orderDate")
     public ResultBody orderDate(HospitalZhuanjiaQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
@@ -139,13 +134,12 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 按医院、科室、获取本院医生-按日期预约
+     * 按医院、科室、获取本院医生-按日期预约列表
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @GetMapping("/hospital/orderDateExpert")
     public ResultBody orderDateExpert(HospitalZhuanjiaQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
@@ -172,7 +166,7 @@ public class HospitalGuahaoController
                     List<HospitalGuahaoLog> guahaoOrderList = hospitalGuahaoLogBo.getGuahaoLog(hospitalGuahaoLog);
                     if (guahaoOrderList != null
                             && (guahaoOrderList.size() >= hospitalDept.getOrderNum())) {
-                        jsonObject.put("orderFlag", "1");
+                        jsonObject.put("orderFlag", "1");// 约满标识（0|正常，1|约满）
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -192,7 +186,6 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @Authorization
-    @PerformanceClass
     @PostMapping("/fastorder")
     public ResultBody fastorder(@RequestBody HospitalGuahaoLog hospitalGuahaoLog) throws Exception {
         if (hospitalGuahaoLog.getUserId() == null) {
@@ -211,7 +204,7 @@ public class HospitalGuahaoController
             hospitalGuahaoLog.setOrderDay(DateUtil.ymdFormat(new Date(Long.valueOf(hospitalGuahaoLog.getOrderDay()))));
         }
         hospitalGuahaoLog.setAddTime(DateUtil.currentDate());
-        hospitalGuahaoLogBo.save(hospitalGuahaoLog);
+        hospitalGuahaoLogBo.fastorder(hospitalGuahaoLog);
         return ResultUtil.success();
     }
     
@@ -344,7 +337,7 @@ public class HospitalGuahaoController
                     this.setSortname("city");
                     this.setSortorder("desc");
                 } else if ("3".equals(sortstr)) {// 预约量排序
-                    this.setSortname("mark_num");
+                    this.setSortname("appointment_num");
                     this.setSortorder("desc");
                 }
             }
