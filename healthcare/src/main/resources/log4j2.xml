@@ -46,6 +46,7 @@
 	<loggers>
 		<logger name="org.springframework" level="INFO"></logger>
 		<logger name="org.mybatis" level="INFO"></logger>
+		<logger name="org.quartz" level="INFO"></logger>
 		
 		<logger name="com.kanglian.healthcare.quartz" level="DEBUG" additivity="false">
 			<appender-ref ref="STDOUT"/>
