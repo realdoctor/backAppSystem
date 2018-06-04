@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
@@ -58,7 +57,6 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @PostMapping("/login")
     public ResultBody login(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
@@ -100,7 +98,6 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @PostMapping("/regist")
     public ResultBody regist(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
@@ -146,7 +143,6 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @RequestMapping(method = RequestMethod.GET, value = "/sendCode")
     public ResultBody sendCode(String mobilePhone) throws Exception {
         if (StringUtil.isBlank(mobilePhone)) {
