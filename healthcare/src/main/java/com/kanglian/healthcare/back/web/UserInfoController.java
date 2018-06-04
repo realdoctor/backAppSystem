@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.github.pagehelper.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
@@ -73,8 +74,14 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
             jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
-            jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
+            jsonObject.put("originalImageUrl", null);
+            jsonObject.put("imageUrl", null);
+            if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
+                jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
+            }
+            if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
+                jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
