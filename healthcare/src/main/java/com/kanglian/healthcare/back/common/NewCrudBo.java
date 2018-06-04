@@ -18,27 +18,50 @@ import com.kanglian.healthcare.exception.DBException;
 public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends CrudBo<T, Dao> {
 
     /**
+     * Dao执行模板
+     */
+    private DaoTemplate daoTemplate;
+
+    /**
+     * 构造器
+     */
+    public NewCrudBo() {
+        daoTemplate = new DaoTemplate();
+    }
+
+    /**
+     * 获取Dao
+     * 
+     * @return
+     */
+    public Dao getDao() {
+        return this.dao;
+    }
+
+    /**
+     * 获取Dao执行模板对象
+     * 
+     * @return
+     */
+    public DaoTemplate getDaoTemplate() {
+        return this.daoTemplate;
+    }
+
+    /**
      * 分页列表
      * 
      * @param grid
      * @return
      */
     public Grid frontList(final Grid grid) {
-        try {
-            PageHelper.startPage(grid.getPageNum(), grid.getPageSize());
-            ConditionQuery query = grid.buildConditionQuery();
-            query.addParam("pageSize", 0);// 取消分页，采用分页插件
-            List<T> newsList = dao.frontList(query);
-            PageInfo<T> page = new PageInfo<T>(newsList);
-            grid.setPageNum(page.getPageNum());
-            grid.setPageSize(page.getPageSize());
-            grid.setPages(page.getPages());
-            grid.setTotal((int) page.getTotal());
-            grid.setList(page.getList());
-            return new Grid(grid);// 防止脏数据入侵
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
+        return getDaoTemplate().pagingList(grid, new IDaoExecutor<T>() {
+
+            @Override
+            public List<T> execute(ConditionQuery query) throws Exception {
+                return getDao().frontList(query);
+            }
+
+        });
     }
 
     /**
@@ -81,5 +104,45 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
         grid.setTotal((int) list.getTotal());
         grid.setList(list.getResult());
         return grid;
+    }
+
+    public interface IDaoExecutor<T> {
+        /**
+         * 执行操作
+         * 
+         * @throws Exception
+         */
+        List<T> execute(ConditionQuery query) throws Exception;
+    }
+
+    /**
+     * DAO执行模板类
+     * 
+     * @author xl.liu
+     */
+    public class DaoTemplate {
+        /**
+         * 执行DAO
+         * 
+         * @param executor
+         * @throws DBException
+         */
+        public Grid pagingList(final Grid grid, IDaoExecutor<T> executor) throws DBException {
+            try {
+                PageHelper.startPage(grid.getPageNum(), grid.getPageSize());
+                ConditionQuery query = grid.buildConditionQuery();
+                query.addParam("pageSize", 0);// 取消分页，采用分页插件
+                List<T> newsList = executor.execute(query);
+                PageInfo<T> page = new PageInfo<T>(newsList);
+                grid.setPageNum(page.getPageNum());
+                grid.setPageSize(page.getPageSize());
+                grid.setPages(page.getPages());
+                grid.setTotal((int) page.getTotal());
+                grid.setList(page.getList());
+                return new Grid(grid);// 防止脏数据入侵
+            } catch (Exception ex) {
+                throw new DBException(ex);
+            }
+        }
     }
 }
