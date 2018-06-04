@@ -15,6 +15,10 @@ public class NoticeMessage extends BasePojo {
     private String               userId;
     private String               content;
     private Date                 addTime;
+    private Date                 lastUpdateDtime;
+    // 多少分钟、小时前
+    private String               beforeTimeStr;
+
     // 一对多映射
     @JSONField(serialize=false)
     private List<NoticeDiag>     noticeDiagList;
@@ -94,5 +98,21 @@ public class NoticeMessage extends BasePojo {
 
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
+    }
+    
+    public Date getLastUpdateDtime() {
+        return lastUpdateDtime;
+    }
+
+    public void setLastUpdateDtime(Date lastUpdateDtime) {
+        this.lastUpdateDtime = lastUpdateDtime;
+    }
+    
+    public String getBeforeTimeStr() {
+        return beforeTimeStr;
+    }
+
+    public void setBeforeTimeStr(String beforeTimeStr) {
+        this.beforeTimeStr = beforeTimeStr;
     }
 }
