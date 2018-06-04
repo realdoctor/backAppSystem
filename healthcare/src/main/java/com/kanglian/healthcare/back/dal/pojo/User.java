@@ -20,16 +20,23 @@ public class User extends BasePojo {
 	@JSONField(serialize=false)
 	private Date addTime;
 	private Date lastUpdateDtime;
-	/**
+    /**
      * 扩展字段
      */
     private transient String verifyCode;
+    private Integer roleId;
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;
     }
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
+    }
+    public Integer getRoleId() {
+        return roleId;
+    }
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 	public Long getUserId() {
 		return userId;

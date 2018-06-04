@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDao">
-	<select id="login" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.User" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="roleId" column="role_id" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="login" resultMap="BaseResultMapExt" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
 		select
 			t.user_id,
 			t.user_name,
@@ -10,8 +14,10 @@
 			t.real_name,
 			t.email,
 			t.mobile_phone,
-			t.id_no
+			t.id_no,
+			t1.role_id
 		from user t
+		left join user_role t1 on t.user_id=t1.user_id
 		where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
 	</select>
 	
