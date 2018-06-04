@@ -129,11 +129,8 @@ public class UserController extends CrudController<User, UserBo> {
                 return ResultUtil.error("手机验证码不正确！");
             }
         }
-        // 密码加密
-        user.setPwd(MD5Util.encrypt(pwd));
-        user.setAddTime(DateUtil.currentDate());
         // 保存
-        this.bo.save(user);
+        this.bo.regist(user);
         return ResultUtil.success();
     }
 

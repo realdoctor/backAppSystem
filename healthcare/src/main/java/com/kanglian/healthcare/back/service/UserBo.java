@@ -10,15 +10,20 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
 import com.kanglian.healthcare.back.dal.dao.UserDao;
 import com.kanglian.healthcare.back.dal.dao.UserInfoDao;
+import com.kanglian.healthcare.back.dal.dao.UserRoleDao;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserRole;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.exception.InvalidOperationException;
+import com.kanglian.healthcare.util.MD5Util;
 
 @Service
 public class UserBo extends CrudBo<User, UserDao> {
 
     @Autowired
     private UserInfoDao userInfoDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
     
     public User login(User user) {
         try {
@@ -28,6 +33,25 @@ public class UserBo extends CrudBo<User, UserDao> {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void regist(User user) {
+        if (user == null) {
+            throw new InvalidOperationException("user");
+        }
+        try {
+            // 密码加密
+            user.setPwd(MD5Util.encrypt(user.getPwd()));
+            user.setAddTime(DateUtil.currentDate());
+            this.dao.save(user);
+            UserRole rserRole = new UserRole();
+            rserRole.setUserId(user.getUserId().intValue());
+            rserRole.setRoleId(0);
+            userRoleDao.save(rserRole);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
     public boolean ifExist(String mobilePhone) {
         try {
             User user = this.dao.queryUser(mobilePhone);
