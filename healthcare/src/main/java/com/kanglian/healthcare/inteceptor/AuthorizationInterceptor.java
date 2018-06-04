@@ -46,7 +46,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 从header中得到token
         String token = request.getHeader(Constants.AUTHORIZATION);
         String name = method.getDeclaringClass().getName() + "." + method.getName();
-        logger.debug("============进入请求方法：{}", name);
+        logger.debug("=========>>>进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token=" + token);
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
@@ -57,7 +57,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user=" + JsonUtil.beanToJson(user));
                 String sessionId = userBo.getKey(user.getUserId(), token);
-                logger.debug("=============>>>SessionId=" + sessionId);
+                logger.debug("=================SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
