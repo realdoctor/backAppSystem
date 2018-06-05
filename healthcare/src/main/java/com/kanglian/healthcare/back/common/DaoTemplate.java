@@ -75,13 +75,13 @@ public final class DaoTemplate<T> {
             PageHelper.startPage(pageNum, pageSize);
             List newsList = executor.selectList();
             PageInfo page = new PageInfo(newsList);
-            Grid grid = new Grid();
+            final Grid grid = new Grid();
             grid.setPageNum(page.getPageNum());
             grid.setPageSize(page.getPageSize());
             grid.setPages(page.getPages());
             grid.setTotal((int) page.getTotal());
             grid.setList(page.getList());
-            return new Grid(grid);// 防止脏数据入侵
+            return grid;
         } catch (Exception ex) {
             throw new DBException(ex);
         }
