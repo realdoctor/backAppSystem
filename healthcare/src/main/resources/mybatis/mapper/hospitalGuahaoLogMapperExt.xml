@@ -48,6 +48,7 @@
 			t1.doctorCode,
 			t1.orderDay,
 			t1.realName,
+			t1.imageUrl,
 			t1.hospitalName,
 			t1.deptName,
 			t1.week AS week,
@@ -67,6 +68,7 @@
 				t.doctor_code AS doctorCode,
 				t.order_day AS orderDay,
 				t1.real_name AS realName,
+				t6.thumbnail_pic AS imageUrl,
 				t2.hospital_name AS hospitalName,
 				t2.dept_name AS deptName,
 				t3. WEEK AS WEEK,
@@ -74,6 +76,7 @@
 			FROM
 				hospital_guahao_log t
 			LEFT JOIN `user` t1 ON t.user_id = t1.user_id
+			LEFT JOIN user_pic t6 ON t1.user_id = t6.user_id
 			LEFT JOIN hospital_dept t2 ON t.dept_id = t2.dept_id
 			LEFT JOIN hospital_doctor_duty t3 ON (
 				t.hospital_doctor_duty_id = t3.id
