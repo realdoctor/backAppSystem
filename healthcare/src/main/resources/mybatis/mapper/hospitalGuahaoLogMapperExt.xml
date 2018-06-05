@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao">
-	<!-- 获取挂号单列表 -->
+	<!-- 获取某医院科室医生挂号单列表 -->
 	<select id="getGuahaoLog" resultMap="BaseResultMap"
 		parameterType="com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao">
 		select
@@ -13,7 +13,7 @@
 	</select>
 	
 	<!-- 我的预约 -->
-	<select id="myGuahaoOrder" resultType="map" parameterType="string">
+	<select id="myGuahaoOrder" resultType="map" parameterType="int">
 		SELECT
 			t1.hospital_name AS hospitalName,
 			t1.dept_name AS deptName,
@@ -35,6 +35,59 @@
 		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.hospital_id
 		LEFT JOIN hospital_receive_log t4 ON (t.hospital_id=t4.hospital_id AND t.doctor_code=t4.doctor_code)
 		WHERE
-			t.user_id = #{userId,jdbcType=VARCHAR}
+			t.user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 医生的病人预约一览 -->
+	<select id="myPatientOrder" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t1.hospitalGuahaoId,
+			t1.userId,
+			t1.hospitalId,
+			t1.deptId,
+			t1.doctorCode,
+			t1.orderDay,
+			t1.realName,
+			t1.hospitalName,
+			t1.deptName,
+			t1.week AS week,
+			t1.plan AS plan
+		FROM
+			user_doctor t
+		INNER JOIN user_role t1 ON (
+			t.user_id = t1.user_id
+			AND t1.role_id = 1
+		)
+		LEFT JOIN (
+			SELECT
+				t.id AS hospitalGuahaoId,
+				t.user_id AS userId,
+				t.hospital_id AS hospitalId,
+				t.dept_id AS deptId,
+				t.doctor_code AS doctorCode,
+				t.order_day AS orderDay,
+				t1.real_name AS realName,
+				t2.hospital_name AS hospitalName,
+				t2.dept_name AS deptName,
+				t3. WEEK AS WEEK,
+				t3.plan AS plan
+			FROM
+				hospital_guahao_log t
+			LEFT JOIN `user` t1 ON t.user_id = t1.user_id
+			LEFT JOIN hospital_dept t2 ON t.dept_id = t2.dept_id
+			LEFT JOIN hospital_doctor_duty t3 ON (
+				t.hospital_doctor_duty_id = t3.id
+			)
+		) t1 ON t.doctor_code = t1.doctorCode
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		t1.orderDay desc
+		</otherwise>
+		</choose>
 	</select>
 </mapper>

@@ -100,7 +100,6 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
-        final String userId = String.valueOf(user.getUserId());
-        return ResultUtil.success(hospitalGuahaoLogBo.myGuahaoOrder(userId));
+        return ResultUtil.success(hospitalGuahaoLogBo.myDoctorOrder(user.getUserId().intValue()));
     }
 }
