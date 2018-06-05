@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDoctorDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserDoctor" id="BaseResultMap">
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.user_id,
+		t.doctor_code
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.user_id,
+		t.doctor_code
+		from user_doctor t
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		user_id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from user_doctor t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from user_doctor t
+		where t.user_id = #{userId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from user_doctor where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserDoctor">
+		insert into user_doctor (
+		user_id,
+		doctor_code
+		)
+		values(
+		#{userId,jdbcType=INTEGER},
+		#{doctorCode,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserDoctor">
+		update user_doctor
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>
