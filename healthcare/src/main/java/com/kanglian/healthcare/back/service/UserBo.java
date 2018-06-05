@@ -52,6 +52,14 @@ public class UserBo extends CrudBo<User, UserDao> {
         }
     }
     
+    public User queryUser(String mobilePhone) {
+        try {
+            return this.dao.queryUser(mobilePhone);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
     public boolean ifExist(String mobilePhone) {
         try {
             User user = this.dao.queryUser(mobilePhone);

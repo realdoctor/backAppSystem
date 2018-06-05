@@ -195,7 +195,6 @@ public class UserController extends CrudController<User, UserBo> {
         logger.info("====================================手机用户{}，修改密码。", userT.getMobilePhone());
         return ResultUtil.success();
     }
-
     
     /**
      * 用户退出
@@ -258,6 +257,10 @@ public class UserController extends CrudController<User, UserBo> {
         }
         if (!IdCardUtil.isIdcard(idNumber)) {
             return ResultUtil.error("身份证不合法！");
+        }
+        if (!this.bo.ifExist(mobilePhone)) {
+            logger.info("手机号{}，用户不存在！", mobilePhone);
+            return ResultUtil.error("用户不存在！");
         }
         boolean identifyOk = this.bo.certification(user);
         if (!identifyOk) {
