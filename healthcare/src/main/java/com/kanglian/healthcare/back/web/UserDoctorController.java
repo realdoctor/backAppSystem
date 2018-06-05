@@ -30,7 +30,7 @@ public class UserDoctorController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @GetMapping("/myPatientOrder")
-    public ResultBody myGuahaoOrder(@CurrentUser User user, GuahaoLogQuery query) throws Exception {
+    public ResultBody myPatientOrder(@CurrentUser User user, GuahaoLogQuery query) throws Exception {
         if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
