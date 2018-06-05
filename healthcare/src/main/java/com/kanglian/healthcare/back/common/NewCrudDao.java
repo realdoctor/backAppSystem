@@ -8,7 +8,6 @@ import com.easyway.business.framework.pojo.BasePojo;
 
 public interface NewCrudDao<T extends BasePojo> extends CrudDao<T> {
 
-
     /**
      * 根据条件查询数据库记录列表
      * 
