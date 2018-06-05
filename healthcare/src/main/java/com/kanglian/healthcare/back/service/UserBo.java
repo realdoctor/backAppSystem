@@ -86,6 +86,9 @@ public class UserBo extends CrudBo<User, UserDao> {
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public boolean certification(User user) {
+        if (user == null) {
+            throw new InvalidOperationException("user");
+        }
         try {
             User userT = this.dao.queryUser(user.getMobilePhone());
             if(userT != null) {
