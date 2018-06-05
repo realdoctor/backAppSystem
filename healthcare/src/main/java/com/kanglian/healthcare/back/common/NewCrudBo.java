@@ -27,11 +27,13 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
 
             @Override
             @SuppressWarnings("unchecked")
-            public List<T> pagingList(ConditionQuery query) throws Exception {
+            public List<T> selectList() throws Exception {
+                ConditionQuery query = grid.buildConditionQuery();
+                query.addParam("pageSize", 0);// 采用分页插件
                 return getDao().frontList(query);
             }
 
-        }, grid);
+        }, grid.getPageNum(), grid.getPageSize());
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.common;
 
 import java.util.List;
-import com.easyway.business.framework.mybatis.query.ConditionQuery;
 
 /**
  * DAO执行器接口
@@ -31,13 +30,4 @@ public interface IDaoExecutor {
      * @throws Exception
      */
     <T> List<T> selectList() throws Exception;
-    
-    /**
-     * 查询分页列表
-     * 
-     * @param query
-     * @return
-     * @throws Exception
-     */
-    <T> List<T> pagingList(ConditionQuery query) throws Exception;
 }

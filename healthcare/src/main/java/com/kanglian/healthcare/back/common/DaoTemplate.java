@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.common;
 
 import java.util.List;
-import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.Grid;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -70,13 +69,13 @@ public final class DaoTemplate<T> {
      * @throws DBException
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Grid pagingList(IDaoExecutor executor, final Grid grid) throws DBException {
+    public static Grid pagingList(IDaoExecutor executor, int pageNum, int pageSize)
+            throws DBException {
         try {
-            PageHelper.startPage(grid.getPageNum(), grid.getPageSize());
-            ConditionQuery query = grid.buildConditionQuery();
-            query.addParam("pageSize", 0);// 取消分页，采用分页插件
-            List newsList = executor.pagingList(query);
+            PageHelper.startPage(pageNum, pageSize);
+            List newsList = executor.selectList();
             PageInfo page = new PageInfo(newsList);
+            Grid grid = new Grid();
             grid.setPageNum(page.getPageNum());
             grid.setPageSize(page.getPageSize());
             grid.setPages(page.getPages());

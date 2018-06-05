@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.common;
 
 import java.util.List;
-import com.easyway.business.framework.mybatis.query.ConditionQuery;
 
 /**
  * Dao执行适配器
@@ -28,17 +27,6 @@ public abstract class DaoExecutorAdapter implements IDaoExecutor {
      */
     @Override
     public <T> List<T> selectList() throws Exception {
-        return null;
-    }
-
-    /**
-     * 查询分页列表
-     * 
-     * @param query
-     * @return
-     * @throws Exception
-     */
-    public <T> List<T> pagingList(ConditionQuery query) throws Exception {
         return null;
     }
 }

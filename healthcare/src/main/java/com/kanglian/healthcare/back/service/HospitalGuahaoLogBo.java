@@ -1,20 +1,19 @@
 package com.kanglian.healthcare.back.service;
 
-import com.easyway.business.framework.bo.CrudBo;
-import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.easyway.business.framework.pojo.Grid;
-import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
-import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
-import com.kanglian.healthcare.exception.DBException;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.easyway.business.framework.bo.CrudBo;
+import com.easyway.business.framework.pojo.Grid;
 import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
 import com.kanglian.healthcare.back.common.DaoTemplate;
 import com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao;
+import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
+import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
+import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuahaoLogDao> {
@@ -51,21 +50,21 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
     }
     
     /**
-     * 医生的预约
+     * 医生的被预约
      * 
      * @param userId
      * @return
      */
-    public Grid myPatientOrder(final Grid grid){
+    public Grid myPatientOrder(final Grid grid) {
         return DaoTemplate.pagingList(new DaoExecutorAdapter() {
 
             @Override
             @SuppressWarnings("unchecked")
-            public List<Map<String, String>> pagingList(ConditionQuery query) throws Exception {
-                return getDao().myPatientOrder(query);
+            public List<Map<String, String>> selectList() throws Exception {
+                return getDao().myPatientOrder(grid.buildConditionQuery());
             }
 
-        }, grid);
+        }, grid.getPageNum(), grid.getPageSize());
     }
     
     /**
