@@ -43,7 +43,7 @@ public class UploadController {
     
     @ResponseBody
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-    private ResultBody uploadPic(@CurrentUser User user,
+    public ResultBody uploadPic(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
         logger.debug("===========进入上传图片，user=" + JsonUtil.beanToJson(user));

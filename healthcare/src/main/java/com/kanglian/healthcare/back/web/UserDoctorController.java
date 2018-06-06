@@ -26,7 +26,7 @@ public class UserDoctorController extends CrudController<User, UserBo> {
 
     @Autowired
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
-
+    
     /**
      * 医生的预约（病人一览）
      * 
