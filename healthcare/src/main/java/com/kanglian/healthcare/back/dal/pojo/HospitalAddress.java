@@ -20,7 +20,7 @@ public class HospitalAddress extends BasePojo {
     private String doctorIntro;
     private String positional;
     @JSONField(name="markNum")
-    private String appointmentNum;
+    private Integer appointmentNum;
     public Integer getHospitalId() {
 		return hospitalId;
 	}
@@ -87,10 +87,10 @@ public class HospitalAddress extends BasePojo {
     public void setPositional(String positional) {
         this.positional = positional;
     }
-    public String getAppointmentNum() {
+    public Integer getAppointmentNum() {
         return appointmentNum;
     }
-    public void setAppointmentNum(String appointmentNum) {
+    public void setAppointmentNum(Integer appointmentNum) {
         this.appointmentNum = appointmentNum;
     }
 }
