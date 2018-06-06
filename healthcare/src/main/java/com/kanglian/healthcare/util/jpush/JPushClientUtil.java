@@ -12,10 +12,10 @@ import cn.jpush.api.push.model.PushPayload;
 
 /**
  * <p>
- * <li>[tags推送]为安装了应用程序的用户，打上标签。其目的主要是方便开发者根据标签，来批量下发 Push 消息。</li>
- * <li>[别名alias推送]为安装了应用程序的用户，取个别名来标识。一般用userId，每个用户只能指定一个别名</li>
- * <li>[registrationId推送]应用程序在第一次成功注册到 JPush 服务器时，JPush 服务器会给客户端返回一个唯一的该设备的标识。将Registration ID上传PC服务器</li>
- * <li>registrationID、tag、alias几个类型同时存在时，是取交集的。</li>
+ *  <li>[tags推送]为安装了应用程序的用户，打上标签。其目的主要是方便开发者根据标签，来批量下发 Push 消息。</li>
+ *  <li>[别名alias推送]为安装了应用程序的用户，取个别名来标识。一般用userId，每个用户只能指定一个别名</li>
+ *  <li>[registrationId推送]应用程序在第一次成功注册到 JPush 服务器时，JPush 服务器会给客户端返回一个唯一的该设备的标识。将Registration ID上传PC服务器</li>
+ *  <li>registrationID、tag、alias几个类型同时存在时，是取交集的。</li>
  * </p>
  * 
  * @author xl.liu
@@ -118,6 +118,7 @@ public class JPushClientUtil {
 
             });
         } else {
+            // 开发环境分发
             int s1 = sendToAllAndroid(pushData);
             int s2 = sendToAllIos(pushData);
             if ((s1 + s2) > 0) {
@@ -139,7 +140,7 @@ public class JPushClientUtil {
             for (int i = 1; i <= 1; i++) {
                 pushData.setTitle("康链健康");
                 pushData.setContent("test");
-                if (JPushClientUtil.sendToAllAndroid(pushData) == 1) {//sendToAllIos
+                if (JPushClientUtil.sendToAllAndroid(pushData) == 1) {// sendToAllIos
                     System.out.println("success");
                 }
             }

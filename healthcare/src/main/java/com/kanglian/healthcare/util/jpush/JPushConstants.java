@@ -11,7 +11,6 @@ public final class JPushConstants {
     public final static boolean APNS_PRODUCTION = JPushConstants.getApnsProduction();
     public final static long    TIME_TO_LIVE    = JPushConstants.getTimeToLive();
     public final static int     RETRY_NUM       = JPushConfig.RETRY_NUM;
-    public final static String  RUN_MODE        = "Dev";
     
     static class JPushConfig {
 
