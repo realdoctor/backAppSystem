@@ -18,6 +18,7 @@ import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.listener.InitInfoListener;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import io.jsonwebtoken.Claims;
@@ -41,6 +42,12 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
+        
+        String urlStr = request.getRequestURI().trim();
+        if (InitInfoListener.noFilter(urlStr)) {
+            return true;
+        }
+        
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         // 从header中得到token

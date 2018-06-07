@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filters filter="true">
+	<actionWirteNames>
+		<!-- 可直接访问的action -->
+		<filter><![CDATA[/user/login]]></filter>
+		<filter><![CDATA[/user/regist]]></filter>
+		<filter><![CDATA[/user/sendCode]]></filter>
+		<filter><![CDATA[/goods]]></filter>
+		<filter><![CDATA[/goods/search]]></filter>
+		<filter><![CDATA[/healthnews]]></filter>
+		<filter><![CDATA[/guahao/hospital]]></filter>
+		<filter><![CDATA[/guahao/hospital/deptCategory]]></filter>
+		<filter><![CDATA[/guahao/hospital/search]]></filter>
+		<filter><![CDATA[/guahao/hospital/orderExpert]]></filter>
+		<filter><![CDATA[/guahao/hospital/orderDate]]></filter>
+		<filter><![CDATA[/guahao/hospital/orderDateExpert]]></filter>
+	</actionWirteNames>
+</filters>
