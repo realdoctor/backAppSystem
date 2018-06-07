@@ -172,7 +172,7 @@ public class UserController extends CrudController<User, UserBo> {
     @PostMapping("/updatePwd")
     public ResultBody updatePwd(@RequestBody User user) throws Exception {
         if (user == null) {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("user");
         }
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
@@ -207,7 +207,7 @@ public class UserController extends CrudController<User, UserBo> {
     @PostMapping("/logout")
     public ResultBody logout(@CurrentUser User user) throws Exception {
         if (user == null) {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("user");
         }
         logger.info("====================================手机用户{}，退出登录。", user.getMobilePhone());
         return ResultUtil.success();
@@ -224,7 +224,7 @@ public class UserController extends CrudController<User, UserBo> {
     @GetMapping("/refreshToken")
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
         if (user == null) {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("user");
         }
         logger.info("====================================手机用户{}，客户端自动刷新token。", user.getMobilePhone());
         final String mobilePhone = user.getMobilePhone();
@@ -279,6 +279,9 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/certification/check")
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
+        if (user == null) {
+            throw new InvalidOperationException("user");
+        }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if (StringUtil.isBlank(user.getIdNo())) {
             resultMap.put("verifyFlag", "0");// 未认证
