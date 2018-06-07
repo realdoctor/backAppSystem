@@ -103,4 +103,5 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             userBo.delRelationshipByToken(userId, token);
         }
     }
+    
 }
