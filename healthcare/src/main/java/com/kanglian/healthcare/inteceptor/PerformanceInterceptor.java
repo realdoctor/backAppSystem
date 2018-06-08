@@ -37,7 +37,7 @@ public class PerformanceInterceptor {
     /**
      * 定义拦截规则：拦截com.realdoctor.**.web.controller包下面的所有类中，有@RequestMapping注解的方法。
      */
-    @Pointcut("execution(* com.kanglian.healthcare.back..web..*(..)) || @annotation(org.springframework.web.bind.annotation.Mapping)")
+    @Pointcut("execution(* com.kanglian.healthcare.back..web..*(..)) || @annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void controllerMethodPointcut() {}
 
     /**
