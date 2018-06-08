@@ -31,8 +31,8 @@
 			t.add_time,
 			t.last_update_dtime,
 			CASE
-				WHEN before_time_str BETWEEN 3 AND 60 THEN CONCAT(before_time_str,'分钟前')
-				WHEN before_time_str > 60 THEN CONCAT(CEIL(before_time_str/60),'小时前')
+				WHEN before_time_str BETWEEN 3 AND 59 THEN CONCAT(before_time_str,'分钟前')
+				WHEN before_time_str BETWEEN 60 AND 1440 THEN CONCAT(CEIL(before_time_str/60),'小时前')
 				WHEN before_time_str > 1440 THEN CONCAT(CEIL(before_time_str/1440),'天前')
 			ELSE '刚刚'
 			END AS before_time_str
