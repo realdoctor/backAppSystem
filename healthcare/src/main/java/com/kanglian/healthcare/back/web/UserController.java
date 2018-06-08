@@ -23,7 +23,6 @@ import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.IdCardUtil;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
@@ -171,9 +170,6 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @PostMapping("/updatePwd")
     public ResultBody updatePwd(@RequestBody User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
         if (StringUtil.isEmpty(mobilePhone)) {
@@ -206,9 +202,6 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @PostMapping("/logout")
     public ResultBody logout(@CurrentUser User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
         logger.info("====================================手机用户{}，退出登录。", user.getMobilePhone());
         return ResultUtil.success();
     }
@@ -223,9 +216,6 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/refreshToken")
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
         logger.info("====================================手机用户{}，客户端自动刷新token。", user.getMobilePhone());
         final String mobilePhone = user.getMobilePhone();
         // 重新生成token
@@ -279,9 +269,6 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/certification/check")
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if (StringUtil.isBlank(user.getIdNo())) {
             resultMap.put("verifyFlag", "0");// 未认证

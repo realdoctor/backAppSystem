@@ -25,7 +25,7 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
 import com.kanglian.healthcare.back.service.UserPicBo;
-import com.kanglian.healthcare.exception.InvalidOperationException;
+import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.PropConfig;
@@ -49,7 +49,7 @@ public class UploadController {
         logger.debug("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
 
         if (imageFile == null) {
-            throw new InvalidOperationException("attach");
+            throw new InvalidParamException("attach");
         }
         
         if (imageFile.isEmpty()) {

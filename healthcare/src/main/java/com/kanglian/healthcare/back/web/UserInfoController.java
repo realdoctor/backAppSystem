@@ -17,7 +17,6 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
-import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
 import com.kanglian.healthcare.util.ValidateUtil;
@@ -97,9 +96,6 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      */
     @GetMapping("/myGuahaoOrder")
     public ResultBody myGuahaoOrder(@CurrentUser User user) throws Exception {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
         return ResultUtil.success(hospitalGuahaoLogBo.myDoctorOrder(user.getUserId().intValue()));
     }
 }
