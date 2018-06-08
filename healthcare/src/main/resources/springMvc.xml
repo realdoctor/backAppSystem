@@ -30,9 +30,9 @@
                 </property>
                 <property name="features">
                     <list>
-                    	<value>WriteNullNumberAsZero</value>
                         <value>WriteMapNullValue</value>
                         <value>WriteNullListAsEmpty</value>
+                        <value>WriteNullNumberAsZero</value>
                         <value>QuoteFieldNames</value>
                     </list>
                 </property>
