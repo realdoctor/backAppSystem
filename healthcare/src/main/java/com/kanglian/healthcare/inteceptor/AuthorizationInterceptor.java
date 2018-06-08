@@ -55,7 +55,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("=========>>>进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token=" + token);
-        boolean validFlag = false;
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
             Claims claims = JwtUtil.verifyToken(token);
@@ -71,17 +70,15 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     return true;
                 } else {
                     logger.info("============================session已过期，请重新登录");
-                    validFlag = true;
                 }
             } else {
                 logger.info("============================token已过期，请重新登录");
-                validFlag = true;
             }
         }
         
         // 如果验证token失败，并且方法注明了Authorization，返回401错误
-        if (validFlag && (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
-                || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null)) { // 查看方法所在的Controller是否有注解
+        if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
+                || handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) { // 查看方法所在的Controller是否有注解
             logger.info("============================返回客户端，请重新登录");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");
