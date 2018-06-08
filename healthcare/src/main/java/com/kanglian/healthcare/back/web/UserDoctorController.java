@@ -17,7 +17,7 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.exception.InvalidParamException;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.PropConfig;
 
 @RestController
@@ -36,8 +36,8 @@ public class UserDoctorController extends CrudController<User, UserBo> {
      */
     @GetMapping("/myPatientOrder")
     public ResultBody myPatientOrder(@CurrentUser User user, GuahaoLogQuery query) throws Exception {
-        if (user.getUserId() == null) {
-            throw new InvalidParamException("userId");
+        if (user == null) {
+            throw new InvalidOperationException("user");
         }
         return ResultUtil.success(hospitalGuahaoLogBo.myPatientOrder(query),
                 new JsonClothProcessor() {

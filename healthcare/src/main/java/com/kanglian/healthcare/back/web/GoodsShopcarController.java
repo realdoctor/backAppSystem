@@ -18,6 +18,7 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.cond.IdsParm;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
  * 购物车
@@ -39,7 +40,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
     @GetMapping
     public ResultBody list(ShopcarQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
-            return ResultUtil.error("用户未登录！");
+            throw new InvalidParamException("userId");
         }
         return ResultUtil.success(this.bo.query(query));
     }
@@ -57,10 +58,10 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
         Integer goodsId = cart.getGoodsId();
         Integer num = cart.getNum();
         if (userId == null) {
-            return ResultUtil.error("用户未登录！");
+            throw new InvalidParamException("userId");
         }
         if (goodsId == null) {
-            return ResultUtil.error("未选择商品！");
+            throw new InvalidParamException("goodsId");
         }
         if (num == null) {
             cart.setNum(1);
@@ -102,7 +103,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
     @PostMapping("/clearCart")
     public ResultBody clearCartItems(@RequestParam String userId) throws Exception {
         if (userId == null) {
-            return ResultUtil.error("用户不存在！");
+            throw new InvalidParamException("userId");
         }
         this.bo.clearCart(Integer.valueOf(userId));
         return ResultUtil.success();

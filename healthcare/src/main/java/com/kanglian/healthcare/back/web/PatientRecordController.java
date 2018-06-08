@@ -16,7 +16,7 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.PatientRecordBo;
-import com.kanglian.healthcare.util.ValidateUtil;
+import com.kanglian.healthcare.exception.InvalidParamException;
 
 @Authorization
 @RestController
@@ -35,10 +35,7 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
         String mobilePhone = query.getMobilePhone();
         Integer clientNum = query.getClientNum();
         if (StringUtil.isBlank(mobilePhone)) {
-            return ResultUtil.error("手机号不能为空！");
-        }
-        if (!ValidateUtil.isPhone(mobilePhone)) {
-            return ResultUtil.error("请输入正确的11位手机号！");
+            throw new InvalidParamException("mobilePhone");
         }
         ConditionQuery conditionQuery = query.buildConditionQuery();
         List<PatientRecord> newsList = bo.frontList(conditionQuery);

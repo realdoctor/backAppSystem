@@ -35,10 +35,10 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
     @GetMapping("/orderList")
     public ResultBody list(GoodsOrderQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
-            return ResultUtil.error("用户未登录！");
+            throw new InvalidParamException("userId");
         }
         if (StringUtil.isEmpty(query.getTradeStatus())) {
-            return ResultUtil.error("交易状态未指定！");
+            throw new InvalidParamException("tradeStatus");
         }
         return super.list(query);
     }
