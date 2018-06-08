@@ -12,6 +12,7 @@ import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 
 /**
  * 增加方法注入，将含有CurrentUser注解的方法参数注入当前登录用户
@@ -49,6 +50,6 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
             throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
         }
         // 没有key就直接返回null
-        return null;
+        throw new InvalidOperationException();
     }
 }
