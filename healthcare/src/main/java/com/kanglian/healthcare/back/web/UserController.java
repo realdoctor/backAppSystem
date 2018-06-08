@@ -140,7 +140,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/sendCode")
+    @RequestMapping(value = "/sendCode", method = RequestMethod.GET)
     public ResultBody sendCode(String mobilePhone) throws Exception {
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
