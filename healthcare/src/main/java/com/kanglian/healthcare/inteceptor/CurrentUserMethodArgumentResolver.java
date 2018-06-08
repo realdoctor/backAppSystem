@@ -10,9 +10,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.authorization.util.JwtUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.exception.InvalidOperationException;
+import com.kanglian.healthcare.util.JsonUtil;
+import io.jsonwebtoken.Claims;
 
 /**
  * 增加方法注入，将含有CurrentUser注解的方法参数注入当前登录用户
@@ -37,17 +40,25 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        // 取出鉴权时存入的登录用户Id
-        Long currentUserId = (Long) webRequest.getAttribute(Constants.CURRENT_USER_ID,
-                RequestAttributes.SCOPE_REQUEST);
-        if (currentUserId != null) {
-            // 从数据库中查询并返回
-            User user = userBo.get(currentUserId);
-            if (user != null) {
-                return user;
+        String accessToken = webRequest.getHeader(Constants.AUTHORIZATION);
+        Claims claims = JwtUtil.verifyToken(accessToken);
+        if (claims != null) {
+            // 从token取出用户
+            User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
+            return user;
+        } else {
+            // 取出鉴权时存入的登录用户Id
+            Long currentUserId = (Long) webRequest.getAttribute(Constants.CURRENT_USER_ID,
+                    RequestAttributes.SCOPE_REQUEST);
+            if (currentUserId != null) {
+                // 从数据库中查询并返回
+                User user = userBo.get(currentUserId);
+                if (user != null) {
+                    return user;
+                }
+                // 有key但是得不到用户，抛出异常
+                throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
             }
-            // 有key但是得不到用户，抛出异常
-            throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
         }
         // 没有key就直接返回null
         throw new InvalidOperationException();
