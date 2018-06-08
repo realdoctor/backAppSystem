@@ -69,10 +69,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     logger.info("============================token验证通过，直接放行");
                     return true;
                 } else {
-                    logger.info("============================session已过期，请重新登录");
+                    logger.info("============================session已过期");
                 }
             } else {
-                logger.info("============================token已过期，请重新登录");
+                logger.info("============================token已过期");
             }
         }
         
