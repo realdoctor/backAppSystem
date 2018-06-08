@@ -11,7 +11,9 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
+import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
@@ -27,10 +29,8 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @GetMapping("/myFocusList")
-    public ResultBody myNewsFocusList(NewsFocusQuery query) throws Exception {
-        if (query.getUserId() == null) {
-            throw new InvalidParamException("userId");
-        }
+    public ResultBody newsGuanzhuList(@CurrentUser User user, NewsGuanzhuQuery query) throws Exception {
+        query.setUserId(String.valueOf(user.getUserId()));
         return super.list(query);
     }
 
@@ -42,7 +42,8 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @PostMapping("/focus")
-    public ResultBody newsFocus(@RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+    public ResultBody newsGuanzhu(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+        healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
@@ -64,7 +65,8 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @PostMapping("/focus/off")
-    public ResultBody newsFocusOff(@RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+    public ResultBody newsGuanzhuOff(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+        healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
@@ -75,7 +77,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
         return ResultUtil.success();
     }
     
-    public static class NewsFocusQuery extends Grid {
+    public static class NewsGuanzhuQuery extends Grid {
         private String userId;
 
         @SingleValue(column = "user_id", equal = "=")
