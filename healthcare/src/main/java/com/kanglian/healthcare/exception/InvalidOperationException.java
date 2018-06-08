@@ -6,7 +6,7 @@ import com.easyway.business.framework.common.exception.BaseRuntimeException;
 /**
  * 不正确的操作异常
  * 
- * @author xl.liu
+ * @author liuxl
  */
 public class InvalidOperationException extends BaseRuntimeException {
 
@@ -15,15 +15,15 @@ public class InvalidOperationException extends BaseRuntimeException {
      */
     private static final long serialVersionUID = 5413189051917512242L;
 
-    public InvalidOperationException(){
+    public InvalidOperationException() {
         super(BaseResultCodeEnum.ILLEGAL_OPERATION);
     }
 
-    public InvalidOperationException(Throwable cause){
+    public InvalidOperationException(Throwable cause) {
         super(BaseResultCodeEnum.ILLEGAL_OPERATION, cause);
     }
 
-    public InvalidOperationException(String operation){
+    public InvalidOperationException(String operation) {
         super(BaseResultCodeEnum.ILLEGAL_OPERATION, "Invalid operation: " + operation);
     }
 }

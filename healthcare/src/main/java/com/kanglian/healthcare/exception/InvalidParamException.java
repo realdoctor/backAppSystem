@@ -15,11 +15,11 @@ public class InvalidParamException extends BaseRuntimeException {
      */
     private static final long serialVersionUID = 2165592324950355554L;
 
-    public InvalidParamException(){
+    public InvalidParamException() {
         super(BaseResultCodeEnum.ILLEGAL_ARGUMENT);
     }
 
-    public InvalidParamException(Throwable cause){
+    public InvalidParamException(Throwable cause) {
         super(BaseResultCodeEnum.ILLEGAL_ARGUMENT, cause);
     }
 
@@ -28,7 +28,7 @@ public class InvalidParamException extends BaseRuntimeException {
      * 
      * @param paramName 错误参数名称
      */
-    public InvalidParamException(String paramName){
+    public InvalidParamException(String paramName) {
         super(BaseResultCodeEnum.ILLEGAL_ARGUMENT, "Invalid param: " + paramName);
     }
 

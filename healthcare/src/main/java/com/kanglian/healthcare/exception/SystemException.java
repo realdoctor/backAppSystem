@@ -15,11 +15,11 @@ public class SystemException extends BaseRuntimeException {
      */
     private static final long serialVersionUID = 3961857029730354375L;
 
-    public SystemException(){
+    public SystemException() {
         super(BaseResultCodeEnum.SYSTEM_ERROR);
     }
 
-    public SystemException(String message){
+    public SystemException(String message) {
         super(BaseResultCodeEnum.SYSTEM_ERROR, message);
     }
 }

@@ -48,7 +48,7 @@ public class GlobalHandlerExceptionResolver {
         EnumBase errorInfo = exception.getErrorEnum();
         if (errorInfo != null) {
             logger.error(errorInfo.message(), exception);
-            return ResultUtil.error(errorInfo.message());
+            return ResultUtil.error(exception.getMessage());
         }
         logger.error(exception.getMessage(), exception);
         return ResultUtil.error(exception.getCode(), exception.getMessage());
