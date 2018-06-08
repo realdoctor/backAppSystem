@@ -44,9 +44,6 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
     @PostMapping("/focus")
     public ResultBody newsGuanzhu(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
-        if (healthNewsFocus.getUserId() == null) {
-            throw new InvalidParamException("userId");
-        }
         if (healthNewsFocus.getNewsId() == null) {
             throw new InvalidParamException("newsId");
         }
@@ -67,9 +64,6 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
     @PostMapping("/focus/off")
     public ResultBody newsGuanzhuOff(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
-        if (healthNewsFocus.getUserId() == null) {
-            throw new InvalidParamException("userId");
-        }
         if (healthNewsFocus.getNewsId() == null) {
             throw new InvalidParamException("newsId");
         }
