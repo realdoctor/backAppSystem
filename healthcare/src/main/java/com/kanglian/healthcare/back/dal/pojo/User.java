@@ -20,7 +20,6 @@ public class User extends BasePojo {
 	private String idNo;
 	@JSONField(serialize=false)
 	private Date addTime;
-	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
     /**
      * 扩展字段
