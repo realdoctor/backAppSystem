@@ -13,9 +13,6 @@ import io.jsonwebtoken.impl.Base64Codec;
 
 public class JwtUtil {
 
-    /**
-     * jwt
-     */
     public static final String JWT_ID          = "jwt";
     public static final String JWT_SECRET      = Constants.JWT_SECRET;
     public static final int    JWT_TTL         = Constants.TOKEN_EXPIRES_SECONDS * 1000; // token有效时间7t，单位毫秒
@@ -29,7 +26,6 @@ public class JwtUtil {
      * @param subject jwt所面向的用户
      * @param ttlMillis 有效期，单位毫秒
      * @return token
-     * @throws Exception
      */
     public static String generToken(String id, String subject, long TTLMillis) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -64,7 +60,7 @@ public class JwtUtil {
      * @param token
      * @return
      */
-    public static Claims verifyToken(String token) {
+    public static Claims parseToken(String token) {
         try {
             Claims claims =
                     Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(JWT_SECRET))

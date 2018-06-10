@@ -16,12 +16,11 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.Constants;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.authorization.util.JwtUtil;
+import com.kanglian.healthcare.authorization.util.TokenUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.listener.InitInfoListener;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.JsonUtil;
-import io.jsonwebtoken.Claims;
 
 /**
  * 对请求进行身份验证
@@ -57,10 +56,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         logger.info("=================对请求进行身份验证，token=" + token);
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
-            Claims claims = JwtUtil.verifyToken(token);
-            if (claims != null) {
+            String userJsonString = TokenUtil.parseToken(token);
+            if (userJsonString != null) {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
-                User user = (User) JsonUtil.jsonToBean(claims.getSubject(), User.class);
+                User user = (User) JsonUtil.jsonToBean(userJsonString, User.class);
                 request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user=" + JsonUtil.beanToJson(user));
                 String sessionId = userBo.getKey(user.getUserId(), token);
@@ -72,7 +71,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     logger.info("============================session已过期");
                 }
             } else {
-                logger.info("============================token已过期");
+                logger.info("============================token验证失败");
             }
         }
         

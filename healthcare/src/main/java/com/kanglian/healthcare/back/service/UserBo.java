@@ -8,6 +8,7 @@ import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
+import com.kanglian.healthcare.authorization.util.TokenUtil;
 import com.kanglian.healthcare.back.dal.dao.UserDao;
 import com.kanglian.healthcare.back.dal.dao.UserInfoDao;
 import com.kanglian.healthcare.back.dal.dao.UserRoleDao;
@@ -15,6 +16,7 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserRole;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.exception.InvalidOperationException;
+import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.MD5Util;
 
 @Service
@@ -113,10 +115,13 @@ public class UserBo extends CrudBo<User, UserDao> {
     private RedisTokenManager   redisTokenManager;
     private final static String UNDERLINE = "_";
 
-    public void createRelationship(String mobilePhone, Long userId, String token) {
+    public String createRelationship(User user) {
         try {
-            redisTokenManager.createRelationship(mobilePhone,
-                    StringUtil.join(new Object[] {userId, token}, UNDERLINE));
+            // 生成TOKEN
+            String accessToken = TokenUtil.generToken(JsonUtil.beanToJson(user));
+            redisTokenManager.createRelationship(user.getMobilePhone(),
+                    StringUtil.join(new Object[] {user.getUserId(), accessToken}, UNDERLINE));
+            return accessToken;
         } catch (Exception ex) {
             throw new InvalidOperationException(ex);
         }
