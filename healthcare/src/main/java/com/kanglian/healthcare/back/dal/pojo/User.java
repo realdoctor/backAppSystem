@@ -4,6 +4,7 @@ import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.json.annotion.NotJsonData;
 import com.easyway.business.framework.pojo.BasePojo;
+import com.easyway.business.framework.util.DateUtil;
 
 public class User extends BasePojo {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +21,9 @@ public class User extends BasePojo {
 	private String idNo;
 	@JSONField(serialize=false)
 	private Date addTime;
+	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
+	private Date lastLoginDtime;
     /**
      * 扩展字段
      */
@@ -99,5 +102,13 @@ public class User extends BasePojo {
     }
     public void setLastUpdateDtime(Date lastUpdateDtime) {
         this.lastUpdateDtime = lastUpdateDtime;
+    }
+    public Date getLastLoginDtime() {
+        if(lastLoginDtime == null)
+            lastLoginDtime = DateUtil.currentDate();
+        return lastLoginDtime;
+    }
+    public void setLastLoginDtime(Date lastLoginDtime) {
+        this.lastLoginDtime = lastLoginDtime;
     }
 }
