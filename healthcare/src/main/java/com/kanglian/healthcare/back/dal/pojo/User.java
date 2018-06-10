@@ -9,6 +9,7 @@ public class User extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long userId;
 	private String userName;
+	@JSONField(serialize=false)
 	private String pwd;
 	@JSONField(serialize=false)
 	private String payPwd;
@@ -19,6 +20,7 @@ public class User extends BasePojo {
 	private String idNo;
 	@JSONField(serialize=false)
 	private Date addTime;
+	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
     /**
      * 扩展字段
