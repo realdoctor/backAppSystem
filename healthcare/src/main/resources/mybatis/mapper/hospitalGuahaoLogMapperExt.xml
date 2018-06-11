@@ -31,8 +31,8 @@
 			t.hospital_id = t1.hospital_id
 			AND t.dept_id = t1.dept_id
 		)
-		LEFT JOIN hospital_register_doctor t2 ON t.dept_id = t2.dept_id
-		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.hospital_id
+		LEFT JOIN hospital_register_doctor t2  ON (t.dept_id = t2.dept_id and t.doctor_code = t2.doctor_code)
+		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.id
 		LEFT JOIN hospital_receive_log t4 ON (t.hospital_id=t4.hospital_id AND t.doctor_code=t4.doctor_code)
 		WHERE
 			t.user_id = #{userId,jdbcType=INTEGER}
