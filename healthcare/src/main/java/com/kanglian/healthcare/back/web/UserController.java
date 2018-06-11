@@ -116,7 +116,7 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("用户已存在！");
         }
         // 手机验证码
-        Object cacheVCode = redisCacheManager.getCacheObject(Constants.VERIFY_CODE_KEY_PREFIX+mobilePhone);
+        Object cacheVCode = redisCacheManager.getCacheObject(Constants.VERIFY_CODE_KEY_PREFIX + mobilePhone);
         if (cacheVCode == null) {
             return ResultUtil.error("验证码过期，请重新获取！");
         } else {
@@ -185,6 +185,47 @@ public class UserController extends CrudController<User, UserBo> {
         userT.setLastUpdateDtime(DateUtil.currentDate());
         this.bo.update(userT);
         logger.info("====================================手机用户{}，修改密码。", userT.getMobilePhone());
+        return ResultUtil.success();
+    }
+    
+    /**
+     * 密码重置（忘记密码）
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/resetPwd")
+    public ResultBody resetPwd(@RequestBody User user) throws Exception {
+        String mobilePhone = user.getMobilePhone();
+        String pwd = user.getPwd();
+        String verifyCode = user.getVerifyCode();
+        if (StringUtil.isEmpty(mobilePhone)) {
+            return ResultUtil.error("手机号不能为空！");
+        }
+        if (StringUtil.isEmpty(pwd)) {
+            return ResultUtil.error("密码不能为空！");
+        }
+        if (StringUtil.isEmpty(verifyCode)) {
+            return ResultUtil.error("验证码不能为空！");
+        }
+        // 手机验证码
+        Object cacheVCode = redisCacheManager.getCacheObject(Constants.VERIFY_CODE_KEY_PREFIX + mobilePhone);
+        if (cacheVCode == null) {
+            return ResultUtil.error("验证码过期，请重新获取！");
+        } else {
+            if (!cacheVCode.equals(verifyCode)) {
+                return ResultUtil.error("手机验证码不正确！");
+            }
+        }
+        User userT = this.bo.login(user);
+        if (userT == null) {
+            return ResultUtil.error("用户不存在！");
+        }
+        userT.setPwd(MD5Util.encrypt(pwd));
+        userT.setLastUpdateDtime(DateUtil.currentDate());
+        this.bo.update(userT);
+        logger.info("====================================手机用户{}，找回密码。", userT.getMobilePhone());
         return ResultUtil.success();
     }
     
