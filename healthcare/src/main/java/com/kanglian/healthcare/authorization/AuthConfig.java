@@ -5,7 +5,7 @@ package com.kanglian.healthcare.authorization;
  * 
  * @author xl.liu
  */
-public class Constants {
+public class AuthConfig {
 
     /**
      * 存储当前登录用户id的字段名
@@ -35,10 +35,10 @@ public class Constants {
     public static final String REDIS_TOKEN_PREFIX            = "AUTHORIZATION_TOKEN_";
 
     public static String formatKey(String key) {
-        return Constants.REDIS_KEY_PREFIX.concat(key);
+        return AuthConfig.REDIS_KEY_PREFIX.concat(key);
     }
 
     public static String formatToken(String token) {
-        return Constants.REDIS_TOKEN_PREFIX.concat(token);
+        return AuthConfig.REDIS_TOKEN_PREFIX.concat(token);
     }
 }

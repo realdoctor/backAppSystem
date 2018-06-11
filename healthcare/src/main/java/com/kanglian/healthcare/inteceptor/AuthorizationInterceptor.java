@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.authorization.Constants;
+import com.kanglian.healthcare.authorization.AuthConfig;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.util.TokenUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
@@ -50,7 +50,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         // 从header中得到token
-        String token = request.getHeader(Constants.AUTHORIZATION);
+        String token = request.getHeader(AuthConfig.AUTHORIZATION);
         String name = method.getDeclaringClass().getName() + "." + method.getName();
         logger.debug("=========>>>进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token=" + token);
@@ -60,7 +60,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             if (userJsonString != null) {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
                 User user = (User) JsonUtil.jsonToBean(userJsonString, User.class);
-                request.setAttribute(Constants.CURRENT_USER_ID, user.getUserId());
+                request.setAttribute(AuthConfig.CURRENT_USER_ID, user.getUserId());
                 logger.debug("=================身份已验证，user=" + JsonUtil.beanToJson(user));
                 String sessionId = userBo.getKey(user.getUserId(), token);
                 logger.debug("=================SessionId=" + sessionId);
@@ -91,7 +91,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         
         logger.info("============================不需要签名的请求，绿色放行");
         // 为了防止以恶意操作直接在REQUEST_CURRENT_KEY写入key，将其设为null
-        request.setAttribute(Constants.CURRENT_USER_ID, null);
+        request.setAttribute(AuthConfig.CURRENT_USER_ID, null);
         return true;
     }
 
@@ -106,8 +106,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         String methodName = method.getName();
         if ("updatePwd".equals(methodName) || "logout".equals(methodName)
                 || "refreshToken".equals(methodName)) {
-            Long userId = (Long) request.getAttribute(Constants.CURRENT_USER_ID);
-            String token = request.getHeader(Constants.AUTHORIZATION);
+            Long userId = (Long) request.getAttribute(AuthConfig.CURRENT_USER_ID);
+            String token = request.getHeader(AuthConfig.AUTHORIZATION);
             userBo.delRelationshipByToken(userId, token);
         }
     }

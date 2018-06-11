@@ -3,7 +3,7 @@ package com.kanglian.healthcare.authorization.token.impl;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.kanglian.healthcare.authorization.Constants;
+import com.kanglian.healthcare.authorization.AuthConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
 
 /**
@@ -27,13 +27,13 @@ public class RedisTokenManager extends AbstractTokenManager {
         if (oldToken != null) {
             delete(formatToken(oldToken));
         }
-        set(formatToken(token), key, Constants.TOKEN_EXPIRES_SECONDS);
-        set(formatKey(key), token, Constants.TOKEN_EXPIRES_SECONDS);
+        set(formatToken(token), key, AuthConfig.TOKEN_EXPIRES_SECONDS);
+        set(formatKey(key), token, AuthConfig.TOKEN_EXPIRES_SECONDS);
     }
 
     @Override
     protected void createMultipleRelationship(String key, String token) {
-        set(formatToken(token), key, Constants.TOKEN_EXPIRES_SECONDS);
+        set(formatToken(token), key, AuthConfig.TOKEN_EXPIRES_SECONDS);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class RedisTokenManager extends AbstractTokenManager {
     @Override
     protected void flushExpireAfterOperation(String key, String token) {
         if (singleToken) {
-            expire(formatKey(key), Constants.TOKEN_EXPIRES_SECONDS);
+            expire(formatKey(key), AuthConfig.TOKEN_EXPIRES_SECONDS);
         }
-        expire(formatToken(token), Constants.TOKEN_EXPIRES_SECONDS);
+        expire(formatToken(token), AuthConfig.TOKEN_EXPIRES_SECONDS);
     }
 
     /**
@@ -94,11 +94,11 @@ public class RedisTokenManager extends AbstractTokenManager {
     }
 
     public String formatKey(String key) {
-        return Constants.formatKey(key);
+        return AuthConfig.formatKey(key);
     }
 
     public String formatToken(String token) {
-        return Constants.formatToken(token);
+        return AuthConfig.formatToken(token);
     }
 
 }

@@ -8,7 +8,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
-import com.kanglian.healthcare.authorization.Constants;
+import com.kanglian.healthcare.authorization.AuthConfig;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.authorization.util.TokenUtil;
 import com.kanglian.healthcare.back.dal.pojo.User;
@@ -39,7 +39,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String accessToken = webRequest.getHeader(Constants.AUTHORIZATION);
+        String accessToken = webRequest.getHeader(AuthConfig.AUTHORIZATION);
         String userJsonString = TokenUtil.parseToken(accessToken);
         if (userJsonString != null) {
             // 从token取出用户
@@ -47,7 +47,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
             return user;
         } else {
             // 取出鉴权时存入的登录用户Id
-            Long currentUserId = (Long) webRequest.getAttribute(Constants.CURRENT_USER_ID,
+            Long currentUserId = (Long) webRequest.getAttribute(AuthConfig.CURRENT_USER_ID,
                     RequestAttributes.SCOPE_REQUEST);
             if (currentUserId != null) {
                 // 从数据库中查询并返回
@@ -56,7 +56,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
                     return user;
                 }
                 // 有key但是得不到用户，抛出异常
-                throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
+                throw new MissingServletRequestPartException(AuthConfig.CURRENT_USER_ID);
             }
         }
         // 没有key就直接返回null

@@ -4,7 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import com.kanglian.healthcare.authorization.Constants;
+import com.kanglian.healthcare.authorization.AuthConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -14,9 +14,9 @@ import io.jsonwebtoken.impl.Base64Codec;
 public class JwtUtil {
 
     public static final String JWT_ID          = "jwt";
-    public static final String JWT_SECRET      = Constants.JWT_SECRET;
-    public static final int    JWT_TTL         = Constants.TOKEN_EXPIRES_SECONDS * 1000; // token有效时间7t，单位毫秒
-    public static final int    JWT_REFRESH_TTL = Constants.TOKEN_REFRESH_EXPIRES_SECONDS * 1000;
+    public static final String JWT_SECRET      = AuthConfig.JWT_SECRET;
+    public static final int    JWT_TTL         = AuthConfig.TOKEN_EXPIRES_SECONDS * 1000; // token有效时间7t，单位毫秒
+    public static final int    JWT_REFRESH_TTL = AuthConfig.TOKEN_REFRESH_EXPIRES_SECONDS * 1000;
 
     /**
      * 签发JWT
