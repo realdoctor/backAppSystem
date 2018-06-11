@@ -24,7 +24,7 @@
 			t2.field AS goodAt,
 			t.order_day AS orderDay,
 			t3.plan AS plan,
-			t4.receive_num AS receiveNum
+			IFNULL(t4.receive_num,0) AS receiveNum
 		FROM
 			hospital_guahao_log t
 		LEFT JOIN hospital_dept t1 ON (
