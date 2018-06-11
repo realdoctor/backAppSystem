@@ -4,19 +4,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
-import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.back.dal.cond.IdsParm;
+import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.dal.cond.ApList;
 import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
+import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
@@ -38,10 +37,11 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @GetMapping
-    public ResultBody list(ShopcarQuery query) throws Exception {
-        if (StringUtil.isEmpty(query.getUserId())) {
+    public ResultBody list(@CurrentUser User user, ShopcarQuery query) throws Exception {
+        if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
+        query.setUserId(String.valueOf(user.getUserId()));
         return ResultUtil.success(this.bo.query(query));
     }
 
@@ -53,11 +53,10 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/addCartItem")
-    public ResultBody addCartItem(@RequestBody GoodsShopcar cart) throws Exception {
-        Integer userId = cart.getUserId();
+    public ResultBody addCartItem(@CurrentUser User user, @RequestBody GoodsShopcar cart) throws Exception {
         Integer goodsId = cart.getGoodsId();
         Integer num = cart.getNum();
-        if (userId == null) {
+        if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
         if (goodsId == null) {
@@ -66,6 +65,8 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
         if (num == null) {
             cart.setNum(1);
         }
+        Integer userId = user.getUserId().intValue();
+        cart.setUserId(userId);
         cart.setAddTime(DateUtil.currentDate());
         // 判断是否同一样商品
         GoodsShopcar goodsShopcar = this.bo.findGoodsShopcar(userId, goodsId);
@@ -88,7 +89,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/deleteCartItem")
-    public ResultBody deleteCartItem(@RequestBody IdsParm cond) throws Exception {
+    public ResultBody deleteCartItem(@RequestBody ApList cond) throws Exception {
         this.bo.deleteByIds(cond.getIds());
         return ResultUtil.success();
     }
@@ -101,11 +102,11 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/clearCart")
-    public ResultBody clearCartItems(@RequestParam String userId) throws Exception {
-        if (userId == null) {
+    public ResultBody clearCartItems(@CurrentUser User user) throws Exception {
+        if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
         }
-        this.bo.clearCart(Integer.valueOf(userId));
+        this.bo.clearCart(user.getUserId().intValue());
         return ResultUtil.success();
     }
 

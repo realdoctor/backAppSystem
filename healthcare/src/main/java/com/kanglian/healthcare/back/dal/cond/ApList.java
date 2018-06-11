@@ -1,6 +1,6 @@
 package com.kanglian.healthcare.back.dal.cond;
 
-public class IdsParm {
+public class ApList {
 
     private String[] ids;
 
