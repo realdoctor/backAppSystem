@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.common;
 
 import java.util.List;
+import com.easyway.business.framework.common.exception.BaseRuntimeException;
 import com.easyway.business.framework.pojo.Grid;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,13 +19,11 @@ public final class DaoTemplate<T> {
      * @param executor
      * @throws Exception
      */
-    public static void execute(IDaoExecutor executor) throws Exception {
+    public static void execute(IDaoExecutor executor) throws BaseRuntimeException {
         try {
             executor.execute();
-        } catch (DBException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw ex;
+            throw new DBException(ex);
         }
     }
 
@@ -35,13 +34,11 @@ public final class DaoTemplate<T> {
      * @return
      * @throws Exception
      */
-    public static <T> T selectOne(IDaoExecutor executor) throws Exception {
+    public static <T> T selectOne(IDaoExecutor executor) throws BaseRuntimeException {
         try {
             return executor.<T>selectOne();
-        } catch (DBException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw ex;
+            throw new DBException(ex);
         }
     }
 
@@ -52,13 +49,11 @@ public final class DaoTemplate<T> {
      * @return
      * @throws Exception
      */
-    public static <T> List<T> selectList(IDaoExecutor executor) throws Exception {
+    public static <T> List<T> selectList(IDaoExecutor executor) throws BaseRuntimeException {
         try {
             return executor.<T>selectList();
-        } catch (DBException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw ex;
+            throw new DBException(ex);
         }
     }
 
@@ -70,7 +65,7 @@ public final class DaoTemplate<T> {
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Grid pagingList(IDaoExecutor executor, int pageNum, int pageSize)
-            throws DBException {
+            throws BaseRuntimeException {
         try {
             PageHelper.startPage(pageNum, pageSize);
             List newsList = executor.selectList();
