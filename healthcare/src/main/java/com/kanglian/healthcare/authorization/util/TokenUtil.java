@@ -3,10 +3,10 @@ package com.kanglian.healthcare.authorization.util;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.UUID;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.RandomStringUtils;
 import io.jsonwebtoken.Claims;
 
 public class TokenUtil {
@@ -18,8 +18,7 @@ public class TokenUtil {
      * @return
      */
     public static String generToken(String str) {
-        return JwtUtil.generToken(getUUID(), str, JwtUtil.JWT_TTL);
-//        return DESUtil.encode(str);
+        return JwtUtil.generToken(RandomStringUtils.randomNumeric(6), str, JwtUtil.JWT_TTL);
     }
 
     /**
@@ -34,13 +33,8 @@ public class TokenUtil {
             return claims.getSubject();
         }
         return null;
-//        return DESUtil.decode(token);
     }
 
-    public static String getUUID() {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-    
     static class DESUtil {
         public static final String SECRET_KEY  = "1qaz2wsx3edc4rfv5tgb^YHN&UJM*IK<(OL>)P:?";
         public static final String DES         = "DES";
