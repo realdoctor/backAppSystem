@@ -22,7 +22,7 @@ public interface HospitalGuahaoLogDao extends CrudDao<HospitalGuahaoLog> {
      * @param userId
      * @return
      */
-    public List<Map<String, String>> myGuahaoOrder(Integer userId);
+    public List<Map<String, Object>> myGuahaoOrder(Integer userId);
     
     /**
      * 医生的被预约
@@ -30,5 +30,5 @@ public interface HospitalGuahaoLogDao extends CrudDao<HospitalGuahaoLog> {
      * @param userId
      * @return
      */
-    public List<Map<String, String>> myPatientOrder(ConditionQuery query);
+    public List<Map<String, Object>> myPatientOrder(ConditionQuery query);
 }

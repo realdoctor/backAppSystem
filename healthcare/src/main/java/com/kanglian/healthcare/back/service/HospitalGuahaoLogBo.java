@@ -41,7 +41,7 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
      * @param userId
      * @return
      */
-    public List<Map<String, String>> myDoctorOrder(final Integer userId) {
+    public List<Map<String, Object>> myDoctorOrder(final Integer userId) {
         try {
             return this.dao.myGuahaoOrder(userId);
         } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
 
             @Override
             @SuppressWarnings("unchecked")
-            public List<Map<String, String>> selectList() throws Exception {
+            public List<Map<String, Object>> selectList() throws Exception {
                 return getDao().myPatientOrder(grid.buildConditionQuery());
             }
 
