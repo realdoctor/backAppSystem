@@ -37,7 +37,6 @@ public class InitInfoListener {
                 codetableBo.initCacheData();
             }
             redisCacheManager.setCacheObject(Constants.MARK_CODETABLE_KEY, "1");
-            redisCacheManager.setCacheObject("filterPolicy", notNeedtoFilterList);
             logger.debug("================"+JsonUtil.object2Json(notNeedtoFilterList));
         } catch (Exception e) {
             // TODO: handle exception
