@@ -5,6 +5,7 @@
 		<filter><![CDATA[/user/login]]></filter>
 		<filter><![CDATA[/user/regist]]></filter>
 		<filter><![CDATA[/user/sendCode]]></filter>
+		<filter><![CDATA[/user/resetPwd]]></filter>
 		<filter><![CDATA[/goods]]></filter>
 		<filter><![CDATA[/goods/search]]></filter>
 		<filter><![CDATA[/healthnews]]></filter>
