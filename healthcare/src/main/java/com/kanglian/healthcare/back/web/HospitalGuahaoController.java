@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,17 +79,7 @@ public class HospitalGuahaoController
      */
     @GetMapping("/search")
     public ResultBody search(GuahaoSearchQuery query) throws Exception {
-        ConditionQuery conditionQuery1 = query.buildConditionQuery();
-        // 按医院查
-        List<HospitalAddress> hospitalList = this.bo.queryForHospitalAndDoctor(conditionQuery1);
-        // 按医生查
-        query.appendQueryParam("searchOpt", "doctor");
-        ConditionQuery conditionQuery2 = query.buildConditionQuery();
-        List<HospitalAddress> doctorList = this.bo.queryForHospitalAndDoctor(conditionQuery2);
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("hospitalList", hospitalList);
-        resultMap.put("doctorList", doctorList);
-        return ResultUtil.success(resultMap);
+        return ResultUtil.success(this.bo.queryForHospitalAndDoctor(query));
     }
     
     /**
@@ -255,10 +244,19 @@ public class HospitalGuahaoController
         
     }
     
+    /**
+     * @author xl.liu
+     */
     public static class GuahaoSearchQuery extends HospitalGuahaoQuery {
         private String searchstr;
+        // 1按医院、医生、科室、疾病搜索医院
+        // 2按医院、医生、科室、疾病搜索医生
+        // 3按医院、医生、科室、搜索医生
+        private String tag;
         // 医生职称
         private String positional;
+        // 科室
+        private String deptName;
 
         public String getSearchstr() {
             return searchstr;
@@ -266,6 +264,23 @@ public class HospitalGuahaoController
 
         public void setSearchstr(String searchstr) {
             this.searchstr = searchstr;
+        }
+        
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+        
+        @SingleValue(tableAlias="t1", column = "dept_name", equal = "=")
+        public String getDeptName() {
+            return deptName;
+        }
+
+        public void setDeptName(String deptName) {
+            this.deptName = deptName;
         }
         
         @SingleValue(tableAlias="t2", column = "positional", equal = "=")
@@ -283,12 +298,13 @@ public class HospitalGuahaoController
                 searchstr = searchstr.replaceAll("['\"<>#&]", "");
                 StringBuffer buff = new StringBuffer();
                 buff.append(" (instr(t1.dept_name, '"+searchstr+"') > 0) or (instr(t2.field, '"+searchstr+"') > 0) ");
-                if (query.getParamMap().get("searchOpt") != null) {// 按医生查
-                    buff.append(" or ");
-                    buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
-                } else {// 按医院查
+                if ("1".equals(getTag())) {// 按医院查
+                    query.addParam("tag", "1");
                     buff.append(" or ");
                     buff.append(" (t1.hospital_name LIKE '%"+searchstr+"%') ");
+                } else if("2".equals(getTag()) || "3".equals(getTag())) {// 按医生查
+                    buff.append(" or ");
+                    buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
                 }
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
             }

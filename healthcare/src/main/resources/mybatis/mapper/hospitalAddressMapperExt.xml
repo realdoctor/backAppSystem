@@ -6,6 +6,7 @@
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="field" column="field" jdbcType="VARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<!-- 搜索医院、医生、科室、疾病 -->
@@ -14,20 +15,21 @@
 			DISTINCT t.hospital_id,
 			t.province,
 			t.city,
+			t.lng,
+			t.lat,
 			t1.hospital_name,
 			t1.hospital_level,
+			t1.dept_name,
+			t2.doctor_name,
+			t2.doctor_intro,
+			t2.field,
+			t2.positional,
 			<choose>
-			<when test="paramMap.searchOpt!=null">
-				t2.doctor_name,
-				t2.doctor_intro,
-				t2.field,
-				t2.positional,
-				(SELECT count(1) FROM hospital_guahao_log t2 WHERE t1.dept_code = t2.doctor_code) mark_num
+			<when test="paramMap.tag!=null">
+				(SELECT count(1) FROM hospital_guahao_log t3 WHERE t.hospital_id=t3.hospital_id) appointment_num
 			</when>
 			<otherwise>
-				t.lng,
-				t.lat,
-				(SELECT count(1) FROM hospital_guahao_log t2 WHERE t.hospital_id=t2.hospital_id) mark_num
+				(SELECT count(1) FROM hospital_guahao_log t3 WHERE t2.doctor_code = t3.doctor_code) appointment_num
 			</otherwise>
 			</choose>
 		FROM
