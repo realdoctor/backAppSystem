@@ -1,7 +1,10 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +60,22 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
             throw new InvalidParamException("goodsOrderId");
         }
         return ResultUtil.success(goodsOrderItemBo.getGoodsOrderDetail(goodsOrderId));
+    }
+    
+    /**
+     * 取消订单
+     * @param goodsOrderId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/cancelOrder")
+    public ResultBody cancelOrder(@RequestBody Map<String, String> paramMap) throws Exception {
+        String goodsOrderId = paramMap.get("goodsOrderId");
+        if (StringUtil.isEmpty(goodsOrderId)) {
+            throw new InvalidParamException("goodsOrderId");
+        }
+        this.bo.cancelOrder(goodsOrderId);
+        return ResultUtil.success();
     }
     
     public static class GoodsOrderQuery extends Grid {

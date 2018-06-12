@@ -183,4 +183,34 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             throw new DBException(ex);
         }
     }
+    
+    /**
+     * 取消订单
+     * 
+     * @param goodsOrderId
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void cancelOrder(final String goodsOrderId) {
+        try {
+            GoodsOrder goodsOrder = this.dao.get(Integer.valueOf(goodsOrderId));
+            if (goodsOrder != null) {
+                goodsOrder.setTradeStatus(PaymentStatus.PAYMENT_TRADE_CLOSE);
+                goodsOrder.setUpdateTime(DateUtil.currentDate());
+                this.dao.update(goodsOrder);
+                // 商品库存返库
+                List<GoodsOrderItem> orderItemList =
+                        goodsOrderItemDao.getGoodsOrderDetailByOrderNo(goodsOrder.getOrderNo());
+                for (GoodsOrderItem orderItem : orderItemList) {
+                    Integer goodsId = orderItem.getGoodsId();
+                    Goods goods = goodsDao.get(goodsId.longValue());
+                    goods.setStore(goods.getStore() + orderItem.getGoodsNum());
+                    goods.setFreezeStore(goods.getFreezeStore() - orderItem.getGoodsNum());
+                    goods.setUpdateTime(DateUtil.currentDate());
+                    goodsDao.update(goods);
+                }
+            }
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
