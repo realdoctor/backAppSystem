@@ -92,7 +92,7 @@
 			AND t.patient_id = t0.patient_id
 		)
 		<include refid="conditionQuery.core" />
-		group by t0.org_code, t0.patient_id, t0.doctor_code
+		group by t0.org_code, t0.patient_id, t0.doctor_code, t0.diag_code
 		order by
 		<choose>
 		<when test="paramMap.orderCol!=null">
