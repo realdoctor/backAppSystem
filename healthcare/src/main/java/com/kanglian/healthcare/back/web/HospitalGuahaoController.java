@@ -257,7 +257,9 @@ public class HospitalGuahaoController
         private String positional;
         // 科室
         private String deptName;
-
+        // 城市名称
+        private String cityName;
+        
         public String getSearchstr() {
             return searchstr;
         }
@@ -287,8 +289,17 @@ public class HospitalGuahaoController
         public String getPositional() {
             return positional;
         }
+        
         public void setPositional(String positional) {
             this.positional = positional;
+        }
+        
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
         }
         
         @Override
@@ -307,6 +318,9 @@ public class HospitalGuahaoController
                     buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
                 }
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
+            }
+            if(StringUtil.isNotBlank(cityName)) {
+                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }
             return query;
         }
