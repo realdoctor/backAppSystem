@@ -257,8 +257,6 @@ public class HospitalGuahaoController
         private String positional;
         // 科室
         private String deptName;
-        // 城市名称
-        private String cityName;
         
         public String getSearchstr() {
             return searchstr;
@@ -294,20 +292,13 @@ public class HospitalGuahaoController
             this.positional = positional;
         }
         
-        public String getCityName() {
-            return cityName;
-        }
-
-        public void setCityName(String cityName) {
-            this.cityName = cityName;
-        }
-        
         @Override
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
             if (StringUtil.isNotBlank(searchstr)) {
                 searchstr = searchstr.replaceAll("['\"<>#&]", "");
                 StringBuffer buff = new StringBuffer();
+                buff.append("(");
                 buff.append(" (instr(t1.dept_name, '"+searchstr+"') > 0) or (instr(t2.field, '"+searchstr+"') > 0) ");
                 if ("1".equals(getTag())) {// 按医院查
                     query.addParam("tag", "1");
@@ -317,10 +308,8 @@ public class HospitalGuahaoController
                     buff.append(" or ");
                     buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
                 }
+                buff.append(")");
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
-            }
-            if(StringUtil.isNotBlank(cityName)) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
             }
             return query;
         }
