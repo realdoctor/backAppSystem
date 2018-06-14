@@ -84,7 +84,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             BufferedWriter writer =
                     new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
-            writer.write(JsonUtil.beanToJson(ResultUtil.error("令牌失效，请重新登录")));
+            writer.write(JsonUtil.beanToJson(ResultUtil.error("-2", "令牌失效，请重新登录")));
             writer.close();
             return false;
         }
