@@ -12,6 +12,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.github.pagehelper.util.StringUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
@@ -19,6 +20,7 @@ import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.util.PropConfig;
 
+@Authorization
 @RestController
 @RequestMapping(value = "/user/doctor")
 public class UserDoctorController extends CrudController<User, UserBo> {

@@ -60,6 +60,6 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
             }
         }
         // 没有key就直接返回null
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("token");
     }
 }
