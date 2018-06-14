@@ -301,12 +301,13 @@ public class HospitalGuahaoController
                 buff.append("(");
                 buff.append(" (instr(t1.dept_name, '"+searchstr+"') > 0) or (instr(t2.field, '"+searchstr+"') > 0) ");
                 if ("1".equals(getTag())) {// 按医院查
-                    query.addParam("tag", "1");
                     buff.append(" or ");
                     buff.append(" (t1.hospital_name LIKE '%"+searchstr+"%') ");
+                    query.addParam("tag", "1");
                 } else if("2".equals(getTag()) || "3".equals(getTag())) {// 按医生查
                     buff.append(" or ");
                     buff.append(" (t2.doctor_name LIKE '%"+searchstr+"%') ");
+                    query.addParam("tag", "2");
                 }
                 buff.append(")");
                 query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));

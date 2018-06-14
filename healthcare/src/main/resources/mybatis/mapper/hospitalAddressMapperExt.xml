@@ -12,7 +12,7 @@
 	<!-- 搜索医院、医生、科室、疾病 -->
 	<select id="queryForHospitalAndDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
-			DISTINCT t.hospital_id,
+			t.hospital_id,
 			t.province,
 			t.city,
 			t.lng,
@@ -25,7 +25,7 @@
 			t2.field,
 			t2.positional,
 			<choose>
-			<when test="paramMap.tag!=null">
+			<when test="paramMap.tag!=null and paramMap.tag=='1'.toString()">
 				(SELECT count(1) FROM hospital_guahao_log t3 WHERE t.hospital_id=t3.hospital_id) appointment_num
 			</when>
 			<otherwise>
@@ -37,8 +37,8 @@
 		LEFT JOIN hospital_dept t1 ON t.hospital_id = t1.hospital_id
 		LEFT JOIN hospital_register_doctor t2 ON t1.dept_id = t2.dept_id
 		<include refid="conditionQuery.core" />
-		<if test="paramMap.tag!=null">
-			hospital_id
+		<if test="paramMap.tag!=null and paramMap.tag=='1'.toString()">
+			group by hospital_id
 		</if>
 		order by
 		<choose>
