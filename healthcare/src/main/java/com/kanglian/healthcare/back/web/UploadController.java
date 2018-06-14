@@ -46,7 +46,7 @@ public class UploadController {
     public ResultBody uploadPic(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
-        logger.debug("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
+        logger.info("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
 
         if (imageFile == null) {
             throw new InvalidParamException("attach");
@@ -56,6 +56,7 @@ public class UploadController {
             return ResultUtil.error("不能上传空文件");
         }
 
+        logger.info("===========上传图片 {} 兆", String.format("%.1f", imageFile.getSize() / (1024.0 * 1024.0)));
         long fileSize = 10 * 1024 * 1024;
         // 如果文件大小大于限制
         if (imageFile.getSize() > fileSize) {
