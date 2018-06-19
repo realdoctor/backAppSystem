@@ -19,13 +19,7 @@ public class HealthNews extends BasePojo {
 	private String photoAddress;
 	private Integer viewedTime;
 	private String newsType;
-	private Integer userId;
-    public Integer getUserId() {
-        return userId;
-    }
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	private Integer focusFlag;
     public Integer getNewsId() {
 		return newsId;
 	}
@@ -109,5 +103,11 @@ public class HealthNews extends BasePojo {
     }
     public void setNewsType(String newsType) {
         this.newsType = newsType;
+    }
+    public Integer getFocusFlag() {
+        return focusFlag;
+    }
+    public void setFocusFlag(Integer focusFlag) {
+        this.focusFlag = focusFlag;
     }
 }
