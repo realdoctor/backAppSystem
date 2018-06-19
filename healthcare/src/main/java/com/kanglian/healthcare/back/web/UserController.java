@@ -307,7 +307,7 @@ public class UserController extends CrudController<User, UserBo> {
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         user = this.bo.get(user.getUserId());
-        if (StringUtil.isBlank(user.getIdNo())) {
+        if (user == null || StringUtil.isBlank(user.getIdNo())) {
             resultMap.put("verifyFlag", "0");// 未认证
         } else {
             resultMap.put("verifyFlag", "1");// 已认证
