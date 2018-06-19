@@ -11,12 +11,14 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
+@Authorization
 @RestController
 @RequestMapping(value = "/healthnews")
 public class HealthNewsFocusController extends CrudController<HealthNewsFocus, HealthNewsFocusBo> {
