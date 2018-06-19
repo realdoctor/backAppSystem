@@ -38,7 +38,7 @@
 		LEFT JOIN hospital_register_doctor t2 ON t1.dept_id = t2.dept_id
 		<include refid="conditionQuery.core" />
 		<if test="paramMap.tag!=null and paramMap.tag=='1'.toString()">
-			group by hospital_id
+		group by hospital_id
 		</if>
 		order by
 		<choose>
