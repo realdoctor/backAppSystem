@@ -16,7 +16,6 @@
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
-		<result property="focusFlag" column="focusFlag" jdbcType="INTEGER"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -49,11 +48,9 @@
 			t.create_date,
 			t.photo_address,
 			t.viewed_time,
-			t1.news_type,
-			IF(ISNULL(t2.user_id),0,1) AS focusFlag
+			t1.news_type
 		from health_news t
 		LEFT JOIN health_news_type t1 ON t.news_type_id=t1.news_type_id
-		LEFT JOIN health_news_focus t2 ON t.news_id=t2.news_id
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
