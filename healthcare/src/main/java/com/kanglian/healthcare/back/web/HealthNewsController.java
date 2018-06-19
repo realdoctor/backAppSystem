@@ -11,6 +11,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
+import com.easyway.business.framework.util.CollectionUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HealthNews;
 import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
@@ -50,13 +51,16 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
                     } else {
                         List<HealthNewsFocus> focusNewsList = healthNewsFocusBo
                                 .getListByUserId(Integer.valueOf(query.getUserId()));
-                        jsonObject.put("focusFlag", "0");
-                        for (HealthNewsFocus newsFocus : focusNewsList) {
-                            if (newsFocus.getUserId() != null
-                                    && newsFocus.getNewsId() == healthNews.getNewsId()) {
-                                jsonObject.put("focusFlag", "1");
-                            } else {
-                                jsonObject.put("focusFlag", "0");
+                        if (CollectionUtil.isEmpty(focusNewsList)) {
+                            jsonObject.put("focusFlag", "0");
+                        } else {
+                            for (HealthNewsFocus newsFocus : focusNewsList) {
+                                if (newsFocus.getUserId() != null
+                                        && newsFocus.getNewsId() == healthNews.getNewsId()) {
+                                    jsonObject.put("focusFlag", "1");
+                                } else {
+                                    jsonObject.put("focusFlag", "0");
+                                }
                             }
                         }
                     }
