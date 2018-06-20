@@ -7,6 +7,7 @@ import com.easyway.business.framework.mybatis.query.condition.SingleValueConditi
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
+import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class HealthNewsFocusBo extends CrudBo<HealthNewsFocus, HealthNewsFocusDao> {
@@ -18,8 +19,14 @@ public class HealthNewsFocusBo extends CrudBo<HealthNewsFocus, HealthNewsFocusDa
      * @return
      */
     public List<HealthNewsFocus> getListByUserId(Integer userId) {
-        ConditionQuery query = new ConditionQuery();
-        query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
-        return this.dao.query(query);
+        if (userId == null)
+            return null;
+        try {
+            ConditionQuery query = new ConditionQuery();
+            query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
+            return this.dao.query(query);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
     }
 }

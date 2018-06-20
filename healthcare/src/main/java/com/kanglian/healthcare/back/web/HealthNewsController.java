@@ -42,21 +42,28 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
     public ResultBody list(final BaseQuery query) throws Exception {
         return super.list(query, new JsonClothProcessor() {
 
+            List<HealthNewsFocus> focusNewsList = queryUserNewsFocus(query.getUserId());
+
+            private List<HealthNewsFocus> queryUserNewsFocus(String userId) {
+                if (StringUtil.isEmpty(userId)) {
+                    return null;
+                }
+
+                return healthNewsFocusBo.getListByUserId(Integer.valueOf(query.getUserId()));
+            }
+            
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 HealthNews healthNews = (HealthNews) pojo;
                 try {
-                    if (StringUtil.isBlank(query.getUserId())) {
+                    if (StringUtil.isEmpty(query.getUserId())) {
                         jsonObject.put("focusFlag", "0");
                     } else {
-                        List<HealthNewsFocus> focusNewsList = healthNewsFocusBo
-                                .getListByUserId(Integer.valueOf(query.getUserId()));
                         if (CollectionUtil.isEmpty(focusNewsList)) {
                             jsonObject.put("focusFlag", "0");
                         } else {
                             for (HealthNewsFocus newsFocus : focusNewsList) {
-                                if (newsFocus.getUserId() != null
-                                        && newsFocus.getNewsId() == healthNews.getNewsId()) {
+                                if (newsFocus.getNewsId() == healthNews.getNewsId()) {
                                     jsonObject.put("focusFlag", "1");
                                 } else {
                                     jsonObject.put("focusFlag", "0");
