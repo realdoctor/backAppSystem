@@ -73,8 +73,8 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
             jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", null);
-            jsonObject.put("imageUrl", null);
+            jsonObject.put("originalImageUrl", "");
+            jsonObject.put("imageUrl", "");
             if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
                 jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
             }
