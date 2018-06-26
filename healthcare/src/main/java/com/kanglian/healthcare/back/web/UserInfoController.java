@@ -73,7 +73,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
             
             // 证件类型id
-            UserIdentify userIdentify = userIdentifyBo.getByUserId(userInfo.getUserId());
+            UserIdentify userIdentify = userIdentifyBo.getByUserId(user.getUserId().intValue());
             if (userIdentify != null) {
                 jsonObject.put("typeId", userIdentify.getTypeId());
                 jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
