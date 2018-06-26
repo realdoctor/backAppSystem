@@ -78,14 +78,14 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
                 jsonObject.put("typeId", userIdentify.getTypeId());
                 jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
             } else {
-                jsonObject.put("typeId", null);
-                jsonObject.put("idNo", null);
+                jsonObject.put("typeId", "");
+                jsonObject.put("idNo", "");
             }
             
             // 用户头像
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", null);
-            jsonObject.put("imageUrl", null);
+            jsonObject.put("originalImageUrl", "");
+            jsonObject.put("imageUrl", "");
             if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
                 jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
             }
