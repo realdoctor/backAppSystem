@@ -97,6 +97,6 @@ public final class ValidateUtil {
         if (StringUtil.isBlank(idCard)) {
             return null;
         }
-        return idCard.replaceAll("(\\d{4})\\d{10}(\\d{4})","$1****$2");
+        return idCard.replaceAll("(\\d{6})\\d{8}(\\d{4})","$1****$2");
     }
 }
