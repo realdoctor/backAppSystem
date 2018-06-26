@@ -7,7 +7,7 @@ public class UserIdentify extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Integer userId;
-	private Integer typeId;
+	private String typeId;
 	private String idNo;
 	private String name;
 	private Integer status;
@@ -16,7 +16,21 @@ public class UserIdentify extends BasePojo {
 	private Integer verifyUser;
 	private String verifyRemark;
 	private Date addTime;
-	public Long getId() {
+	private String realName;
+    private String mobilePhone;
+	public String getRealName() {
+        return realName;
+    }
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -28,10 +42,10 @@ public class UserIdentify extends BasePojo {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public Integer getTypeId() {
+	public String getTypeId() {
 		return typeId;
 	}
-	public void setTypeId(Integer typeId) {
+	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}
 	public String getIdNo() {

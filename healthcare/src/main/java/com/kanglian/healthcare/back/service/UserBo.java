@@ -91,25 +91,30 @@ public class UserBo extends CrudBo<User, UserDao> {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public boolean certification(User user, UserIdentify userIdentify) {
-        if (user == null) {
-            throw new InvalidOperationException("user");
-        }
+    public boolean certification(UserIdentify userIdentify) {
         if (userIdentify == null) {
             throw new InvalidOperationException("userIdentify");
         }
         try {
-            User userT = this.dao.queryUser(user.getMobilePhone());
+            User userT = this.dao.queryUser(userIdentify.getMobilePhone());
             if(userT != null) {
-                userT.setRealName(user.getRealName());
+                userT.setIdNo(userIdentify.getIdNo());
+                userT.setRealName(userIdentify.getRealName());
                 userT.setLastUpdateDtime(DateUtil.currentDate());
                 this.dao.update(userT);
                 // 记录认证信息
                 userIdentify.setUserId(userT.getUserId().intValue());
+                userIdentify.setStatus(0);
                 userIdentify.setAddTime(DateUtil.currentDate());
                 userIdentifyDao.save(userIdentify);
-                // 关联用户信息，挂载病历
-                userInfoDao.updateRelationship(userT);
+                // 关联用户信息，挂载病历。
+                // 如果证件类型挂载不上，再用手机号
+                int ss = userInfoDao.updateRelationship(userT);
+                if (ss < 1) {
+                    User userTT = new User();
+                    userTT.setMobilePhone(userT.getMobilePhone());
+                    userInfoDao.updateRelationship(userTT);
+                }
                 return true;
             }
             return false;

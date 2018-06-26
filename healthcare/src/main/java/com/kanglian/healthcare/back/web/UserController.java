@@ -275,26 +275,25 @@ public class UserController extends CrudController<User, UserBo> {
      */
     @Authorization
     @PostMapping("/certification")
-    public ResultBody certification(@RequestBody User user, @RequestBody UserIdentify userIdentify)
+    public ResultBody certification(@RequestBody UserIdentify userIdentify)
             throws Exception {
-        String mobilePhone = user.getMobilePhone();
-        String idNo = userIdentify.getIdNo();
+        String mobilePhone = userIdentify.getMobilePhone();
         if (StringUtil.isEmpty(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
         }
-        if (userIdentify.getTypeId() == null) {
+        if (StringUtil.isEmpty(userIdentify.getTypeId())) {
             return ResultUtil.error("证件类型不能为空！");
         }
-        if (StringUtil.isEmpty(idNo)) {
+        if (StringUtil.isEmpty(userIdentify.getIdNo())) {
             return ResultUtil.error("身份证件不能为空！");
         }
         if (!this.bo.ifExist(mobilePhone)) {
             logger.info("手机号{}，用户不存在！", mobilePhone);
             return ResultUtil.error("用户不存在！");
         }
-        boolean identifyOk = this.bo.certification(user, userIdentify);
+        boolean identifyOk = this.bo.certification(userIdentify);
         if (!identifyOk) {
-            return ResultUtil.error("实名认证失败");
+            return ResultUtil.error("认证失败");
         }
         return ResultUtil.success();
     }

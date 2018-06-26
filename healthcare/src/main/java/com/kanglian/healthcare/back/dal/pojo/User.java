@@ -27,6 +27,8 @@ public class User extends BasePojo {
      */
     private transient String verifyCode;
     private Integer roleId;
+    @JSONField(serialize=false)
+    private String idNo;
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;
@@ -102,5 +104,12 @@ public class User extends BasePojo {
     }
     public void setLastLoginDtime(Date lastLoginDtime) {
         this.lastLoginDtime = lastLoginDtime;
+    }
+    @NotJsonData
+    public String getIdNo() {
+        return idNo;
+    }
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 }
