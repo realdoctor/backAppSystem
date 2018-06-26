@@ -28,7 +28,6 @@
 		t.drug_allergy_mark,
 		t.last_update_dtime
 		,t1.real_name
-		,t1.id_no
 		,t2.pic
 		,t2.thumbnail_pic
 		from user_info t
@@ -43,7 +42,7 @@
 					and t.id_no = #{idNo,jdbcType=VARCHAR}
 				</when>
 				<otherwise>
-					and t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+					and t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR} 
 				</otherwise>
 			</choose>
 		</trim>

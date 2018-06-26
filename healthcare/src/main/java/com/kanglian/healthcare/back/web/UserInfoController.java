@@ -17,8 +17,10 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
+import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
 import com.kanglian.healthcare.util.ValidateUtil;
@@ -34,6 +36,8 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
     @Autowired
     private UserIdentifyBo userIdentifyBo;
+    @Autowired
+    private UserBo userBo;
     
     /**
      * 用户基本信息
@@ -45,6 +49,14 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     @GetMapping("/info")
     @SuppressWarnings("rawtypes")
     public ResultBody getUserInfo(User user) throws Exception {
+        String mobilePhone = user.getMobilePhone();
+        if (StringUtil.isEmpty(mobilePhone)) {
+            throw new InvalidParamException("mobilePhone");
+        }
+        user = userBo.queryUser(mobilePhone);
+        if (user == null) {
+            return ResultUtil.error("用户不存在");
+        }
         final UserInfo userInfo = this.bo.getUserInfo(user);
         if (userInfo == null) {
             return ResultUtil.error("获取用户信息失败");

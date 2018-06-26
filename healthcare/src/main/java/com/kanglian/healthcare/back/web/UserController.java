@@ -24,6 +24,7 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserIdentifyBo;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.RedisCacheManager;
@@ -308,6 +309,9 @@ public class UserController extends CrudController<User, UserBo> {
     @Authorization
     @GetMapping("/certification/check")
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
+        if (user == null) {
+            throw new InvalidOperationException("user");
+        }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         UserIdentify userIdentify = userIdentifyBo.getByUserId(user.getUserId().intValue());
         if (user == null || StringUtil.isBlank(userIdentify.getIdNo())) {
