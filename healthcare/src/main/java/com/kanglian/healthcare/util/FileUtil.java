@@ -9,15 +9,14 @@ import java.util.Random;
 import org.apache.commons.lang.StringUtils;
 
 public class FileUtil {
-//    private final static Logger             logger           = LoggerFactory.getLogger(FileUtil.class);
 
     public static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>();
 
     static {
         CONTENT_TYPE_MAP.put("image", "gif,jpg,jpeg,png,bmp");
         CONTENT_TYPE_MAP.put("flash", "swf,flv");
-        CONTENT_TYPE_MAP.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
-        CONTENT_TYPE_MAP.put("file", "doc,docx,xls,xlsx,ppt,pptx,htm,html,txt,dwg,pdf");
+        CONTENT_TYPE_MAP.put("media", "swf,flv,mp3,mp4,3gp,wav,wma,wmv,mid,avi,mpg,asf,mov,rm,rmvb");
+        CONTENT_TYPE_MAP.put("file", "rar,zip,doc,docx,xls,xlsx,ppt,pptx,htm,html,txt,dwg,pdf");
     }
 
     public static final String ALLCHAR =
