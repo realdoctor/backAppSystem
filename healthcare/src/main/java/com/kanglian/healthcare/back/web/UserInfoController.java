@@ -14,8 +14,10 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
+import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
@@ -30,7 +32,9 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     private RedisCacheManager redisCacheManager;
     @Autowired
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
-
+    @Autowired
+    private UserIdentifyBo userIdentifyBo;
+    
     /**
      * 用户基本信息
      * 
@@ -51,10 +55,6 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("nationalityName",
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_NATIONALITY))
                             .get(userInfo.getNationalityCode()));
-            // 身份证类型
-            jsonObject.put("idTypeName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_PERSON_ID_TYPE))
-                            .get(userInfo.getIdTypeCode()));
             // 婚姻状况
             jsonObject.put("marriageName",
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
@@ -71,7 +71,12 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
                             .get(userInfo.getRhCode()));
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
-            jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
+            
+            UserIdentify userIdentify = userIdentifyBo.getByUserId(userInfo.getUserId());
+            // 证件类型id
+            jsonObject.put("typeId", userIdentify.getTypeId());
+            jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
+            // 用户头像
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
             jsonObject.put("originalImageUrl", "");
             jsonObject.put("imageUrl", "");

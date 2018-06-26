@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.UploadContentDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UploadContent" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="type" column="type" jdbcType="INTEGER"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="path" column="path" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" jdbcType="VARCHAR"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.id,
+		t.order_id,
+		t.user_id,
+		t.type,
+		t.content,
+		t.path,
+		t.remark,
+		t.add_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.order_id,
+		t.user_id,
+		t.type,
+		t.content,
+		t.path,
+		t.remark,
+		t.add_time
+		from upload_content t
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from upload_content t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from upload_content t
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from upload_content where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent" useGeneratedKeys="true" keyProperty="id">
+		insert into upload_content (
+		order_id,
+		user_id,
+		type,
+		content,
+		path,
+		remark,
+		add_time
+		)
+		values(
+		#{orderId,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
+		update upload_content
+		<set>
+		  <if test="orderId != null">order_id=#{orderId,jdbcType=VARCHAR},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="type != null">type=#{type,jdbcType=INTEGER},</if>
+		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
+		  <if test="path != null">path=#{path,jdbcType=VARCHAR},</if>
+		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

@@ -18,8 +18,6 @@ public class User extends BasePojo {
 	private String email;
 	private String mobilePhone;
 	@JSONField(serialize=false)
-	private String idNo;
-	@JSONField(serialize=false)
 	private Date addTime;
 	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
@@ -85,12 +83,6 @@ public class User extends BasePojo {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-    public String getIdNo() {
-        return idNo;
-    }
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
-    }
 	public Date getAddTime() {
 		return addTime;
 	}

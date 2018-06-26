@@ -10,9 +10,11 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
 import com.kanglian.healthcare.authorization.util.TokenUtil;
 import com.kanglian.healthcare.back.dal.dao.UserDao;
+import com.kanglian.healthcare.back.dal.dao.UserIdentifyDao;
 import com.kanglian.healthcare.back.dal.dao.UserInfoDao;
 import com.kanglian.healthcare.back.dal.dao.UserRoleDao;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserRole;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.exception.InvalidOperationException;
@@ -26,6 +28,8 @@ public class UserBo extends CrudBo<User, UserDao> {
     private UserInfoDao userInfoDao;
     @Autowired
     private UserRoleDao userRoleDao;
+    @Autowired
+    private UserIdentifyDao userIdentifyDao;
     
     public User login(User user) {
         try {
@@ -87,18 +91,24 @@ public class UserBo extends CrudBo<User, UserDao> {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public boolean certification(User user) {
+    public boolean certification(User user, UserIdentify userIdentify) {
         if (user == null) {
             throw new InvalidOperationException("user");
+        }
+        if (userIdentify == null) {
+            throw new InvalidOperationException("userIdentify");
         }
         try {
             User userT = this.dao.queryUser(user.getMobilePhone());
             if(userT != null) {
                 userT.setRealName(user.getRealName());
-                userT.setIdNo(user.getIdNo());
                 userT.setLastUpdateDtime(DateUtil.currentDate());
                 this.dao.update(userT);
-                // 关联用户信息
+                // 记录认证信息
+                userIdentify.setUserId(userT.getUserId().intValue());
+                userIdentify.setAddTime(DateUtil.currentDate());
+                userIdentifyDao.save(userIdentify);
+                // 关联用户信息，挂载病历
                 userInfoDao.updateRelationship(userT);
                 return true;
             }

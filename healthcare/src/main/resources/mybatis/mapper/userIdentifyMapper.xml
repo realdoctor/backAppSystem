@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.UserIdentifyDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserIdentify" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="typeId" column="type_id" jdbcType="INTEGER"/>
+		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="INTEGER"/>
+		<result property="litpic" column="litpic" jdbcType="VARCHAR"/>
+		<result property="verifyTime" column="verify_time" jdbcType="TIMESTAMP"/>
+		<result property="verifyUser" column="verify_user" jdbcType="INTEGER"/>
+		<result property="verifyRemark" column="verify_remark" jdbcType="VARCHAR"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.id,
+		t.user_id,
+		t.type_id,
+		t.id_no,
+		t.name,
+		t.status,
+		t.litpic,
+		t.verify_time,
+		t.verify_user,
+		t.verify_remark,
+		t.add_time
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.user_id,
+		t.type_id,
+		t.id_no,
+		t.name,
+		t.status,
+		t.litpic,
+		t.verify_time,
+		t.verify_user,
+		t.verify_remark,
+		t.add_time
+		from user_identify t
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from user_identify t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="columns"/>
+		from user_identify t
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from user_identify where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserIdentify" useGeneratedKeys="true" keyProperty="id">
+		insert into user_identify (
+		user_id,
+		type_id,
+		id_no,
+		name,
+		status,
+		litpic,
+		verify_time,
+		verify_user,
+		verify_remark,
+		add_time
+		)
+		values(
+		#{userId,jdbcType=INTEGER},
+		#{typeId,jdbcType=INTEGER},
+		#{idNo,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{litpic,jdbcType=VARCHAR},
+		#{verifyTime,jdbcType=TIMESTAMP},
+		#{verifyUser,jdbcType=INTEGER},
+		#{verifyRemark,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserIdentify">
+		update user_identify
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="typeId != null">type_id=#{typeId,jdbcType=INTEGER},</if>
+		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
+		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+		  <if test="status != null">status=#{status,jdbcType=INTEGER},</if>
+		  <if test="litpic != null">litpic=#{litpic,jdbcType=VARCHAR},</if>
+		  <if test="verifyTime != null">verify_time=#{verifyTime,jdbcType=TIMESTAMP},</if>
+		  <if test="verifyUser != null">verify_user=#{verifyUser,jdbcType=INTEGER},</if>
+		  <if test="verifyRemark != null">verify_remark=#{verifyRemark,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

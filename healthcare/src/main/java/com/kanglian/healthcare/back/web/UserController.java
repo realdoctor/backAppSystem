@@ -21,8 +21,9 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.util.IdCardUtil;
+import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.RedisCacheManager;
@@ -35,6 +36,8 @@ public class UserController extends CrudController<User, UserBo> {
 
     @Autowired
     private RedisCacheManager redisCacheManager;
+    @Autowired
+    private UserIdentifyBo userIdentifyBo;
     
     @GetMapping
     public ResultBody list(UserQuery query) throws Exception {
@@ -272,23 +275,24 @@ public class UserController extends CrudController<User, UserBo> {
      */
     @Authorization
     @PostMapping("/certification")
-    public ResultBody certification(@RequestBody User user) throws Exception {
+    public ResultBody certification(@RequestBody User user, @RequestBody UserIdentify userIdentify)
+            throws Exception {
         String mobilePhone = user.getMobilePhone();
-        String idNumber = user.getIdNo();
+        String idNo = userIdentify.getIdNo();
         if (StringUtil.isEmpty(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
         }
-        if (StringUtil.isEmpty(idNumber)) {
-            return ResultUtil.error("身份证不能为空！");
+        if (userIdentify.getTypeId() == null) {
+            return ResultUtil.error("证件类型不能为空！");
         }
-        if (!IdCardUtil.isIdcard(idNumber)) {
-            return ResultUtil.error("身份证不合法！");
+        if (StringUtil.isEmpty(idNo)) {
+            return ResultUtil.error("身份证件不能为空！");
         }
         if (!this.bo.ifExist(mobilePhone)) {
             logger.info("手机号{}，用户不存在！", mobilePhone);
             return ResultUtil.error("用户不存在！");
         }
-        boolean identifyOk = this.bo.certification(user);
+        boolean identifyOk = this.bo.certification(user, userIdentify);
         if (!identifyOk) {
             return ResultUtil.error("实名认证失败");
         }
@@ -306,8 +310,8 @@ public class UserController extends CrudController<User, UserBo> {
     @GetMapping("/certification/check")
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        user = this.bo.get(user.getUserId());
-        if (user == null || StringUtil.isBlank(user.getIdNo())) {
+        UserIdentify userIdentify = userIdentifyBo.getByUserId(user.getUserId().intValue());
+        if (user == null || StringUtil.isBlank(userIdentify.getIdNo())) {
             resultMap.put("verifyFlag", "0");// 未认证
         } else {
             resultMap.put("verifyFlag", "1");// 已认证
