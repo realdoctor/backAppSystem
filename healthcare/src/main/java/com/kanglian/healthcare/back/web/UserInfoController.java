@@ -72,14 +72,20 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
                             .get(userInfo.getRhCode()));
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
             
-            UserIdentify userIdentify = userIdentifyBo.getByUserId(userInfo.getUserId());
             // 证件类型id
-            jsonObject.put("typeId", userIdentify.getTypeId());
-            jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
+            UserIdentify userIdentify = userIdentifyBo.getByUserId(userInfo.getUserId());
+            if (userIdentify != null) {
+                jsonObject.put("typeId", userIdentify.getTypeId());
+                jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
+            } else {
+                jsonObject.put("typeId", null);
+                jsonObject.put("idNo", null);
+            }
+            
             // 用户头像
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", "");
-            jsonObject.put("imageUrl", "");
+            jsonObject.put("originalImageUrl", null);
+            jsonObject.put("imageUrl", null);
             if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
                 jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
             }
