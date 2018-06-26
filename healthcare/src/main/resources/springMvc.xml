@@ -33,6 +33,7 @@
                         <value>WriteMapNullValue</value>
                         <value>WriteNullListAsEmpty</value>
                         <value>WriteNullNumberAsZero</value>
+                        <value>WriteNullStringAsEmpty</value>
                         <value>QuoteFieldNames</value>
                     </list>
                 </property>
