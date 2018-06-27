@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
-import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
@@ -155,11 +154,9 @@ public class UploadController {
         if (files == null) {
             throw new InvalidParamException("files");
         }
-
+        
+        // 发说说内容
         String content = request.getParameter("content");
-        if (StringUtil.isEmpty(content)) {
-            throw new InvalidParamException("content");
-        }
 
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         // 判断file数组不能为空并且长度大于0
@@ -167,6 +164,7 @@ public class UploadController {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
             String contentId = RandomStringUtils.randomAlphanumeric(20);
+            Integer userId = user.getUserId().intValue();
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];
@@ -179,13 +177,17 @@ public class UploadController {
                     int type = 0;
                     // 上传视频
                     if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("media").split(","))
-                            .contains(extension)) {
+                            .contains(extension)) {// 上传视频
                         filePath = "/files/video".concat(FileUtil.randomPathname(extension));
                         type = 2;
                     } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("image").split(","))
                             .contains(extension)) {// 上传图片
                         filePath = "/files/images".concat(FileUtil.randomPathname(extension));
                         type = 1;
+                    } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
+                            .contains(extension)) {// 上传文件
+                        filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
+                        type = 3;
                     } else {
                         return ResultUtil.error("上传格式不符合");
                     }
@@ -193,20 +195,22 @@ public class UploadController {
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     // 保存
                     UploadContent uploadContent = new UploadContent();
-                    uploadContent.setUserId(user.getUserId().intValue());
+                    uploadContent.setUserId(userId);
                     uploadContent.setPubId(contentId);
                     uploadContent.setType(type);
                     uploadContent.setContent(content);
                     uploadContent.setPath(PropConfig.getInstance()
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
                     uploadContent.setAddTime(DateUtil.currentDate());
+                    if (3 == type) {
+                        uploadContent.setRemark(userId + "存档病历");
+                    }
                     uploadContentBo.save(uploadContent);
                     Map<String, String> urlMap = new HashMap<String, String>();
                     urlMap.put("url", uploadContent.getPath());
                     pathList.add(urlMap);
                 }
             }
-
             resultMap.put("pubId", contentId);
             resultMap.put("list", pathList);
             return ResultUtil.success(resultMap);
