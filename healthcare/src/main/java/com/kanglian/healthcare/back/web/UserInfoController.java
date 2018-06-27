@@ -14,11 +14,9 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
@@ -31,14 +29,12 @@ import com.kanglian.healthcare.util.ValidateUtil;
 public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
     @Autowired
-    private RedisCacheManager redisCacheManager;
+    private RedisCacheManager   redisCacheManager;
     @Autowired
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
     @Autowired
-    private UserIdentifyBo userIdentifyBo;
-    @Autowired
-    private UserBo userBo;
-    
+    private UserBo              userBo;
+
     /**
      * 用户基本信息
      * 
@@ -57,12 +53,33 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         if (user == null) {
             return ResultUtil.error("用户不存在");
         }
-        final UserInfo userInfo = this.bo.getUserInfo(user);
+        UserInfo userInfo = this.bo.getUserInfo(user);
         if (userInfo == null) {
-            return ResultUtil.error("获取用户信息失败");
-        }
-        JSONObject jsonObject = userInfo.toJSONObject();
-        try {
+            userInfo = new UserInfo();
+            userInfo.setUserId(user.getUserId().intValue());
+            userInfo.setName(user.getRealName());
+            userInfo.setMobilePhone(user.getMobilePhone());
+            JSONObject jsonObject = userInfo.toJSONObject();
+            // 民族
+            jsonObject.put("nationalityName", "");
+            // 婚姻状况
+            jsonObject.put("marriageName", "");
+            // 性别
+            jsonObject.put("sexName", "");
+            // 血型
+            jsonObject.put("aboName", "");
+            // RH血型
+            jsonObject.put("rhName", "");
+            jsonObject.put("mobilePhone", "");
+
+            // 证件类型id
+            jsonObject.put("typeId", "");
+            jsonObject.put("idNo", "");
+            jsonObject.put("originalImageUrl", "");
+            jsonObject.put("imageUrl", "");
+            return ResultUtil.success(jsonObject);
+        } else {
+            JSONObject jsonObject = userInfo.toJSONObject();
             // 民族
             jsonObject.put("nationalityName",
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_NATIONALITY))
@@ -83,31 +100,29 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
                     ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
                             .get(userInfo.getRhCode()));
             jsonObject.put("mobilePhone", userInfo.getMobilePhone());
-            
+
             // 证件类型id
-            UserIdentify userIdentify = userIdentifyBo.getByUserId(user.getUserId().intValue());
-            if (userIdentify != null) {
-                jsonObject.put("typeId", userIdentify.getTypeId());
-                jsonObject.put("idNo", ValidateUtil.hideIdCard(userIdentify.getIdNo()));
+            if (StringUtil.isNotEmpty(user.getIdNo())) {
+                jsonObject.put("typeId", user.getTypeId());
+                jsonObject.put("idNo", ValidateUtil.hideIdCard(user.getIdNo()));
             } else {
                 jsonObject.put("typeId", "");
                 jsonObject.put("idNo", "");
             }
-            
+
             // 用户头像
             String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
             jsonObject.put("originalImageUrl", "");
             jsonObject.put("imageUrl", "");
             if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
-                jsonObject.put("originalImageUrl", domainUrl.concat(userInfo.getOriginalImageUrl()));
+                jsonObject.put("originalImageUrl",
+                        domainUrl.concat(userInfo.getOriginalImageUrl()));
             }
             if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
                 jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return ResultUtil.success(jsonObject);
         }
-        return ResultUtil.success(jsonObject);
     }
 
     /**

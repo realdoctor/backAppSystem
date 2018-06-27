@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.User" id="BaseResultMapExt" extends="BaseResultMap">
+		<result property="typeId" column="type_id" jdbcType="VARCHAR"/>
+		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
 		<result property="roleId" column="role_id" jdbcType="INTEGER"/>
 	</resultMap>
 	
@@ -22,7 +24,19 @@
 	
 	<select id="queryUser" parameterType="string" resultMap="BaseResultMap">
         select 
-        	<include refid="columns"/> 
-        from user t where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+        	t.user_id,
+			t.user_name,
+			t.pwd,
+			t.pay_pwd,
+			t.real_name,
+			t.email,
+			t.mobile_phone,
+			t.add_time,
+			t.last_update_dtime,
+			t3.id_no,
+			t3.type_id
+        from user t 
+        LEFT JOIN user_identify t3 ON t.user_id=t3.user_id
+        where t.mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
 	</select>
 </mapper>
