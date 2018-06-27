@@ -61,11 +61,6 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             userInfo.setUserId(user.getUserId().intValue());
             userInfo.setName(user.getRealName());
             userInfo.setMobilePhone(user.getMobilePhone());
-            if (StringUtil.isNotEmpty(user.getIdNo())) {
-                userInfo.setIdNo(user.getIdNo());
-            } else {
-                userInfo.setIdNo("");
-            }
             JSONObject jsonObject = userInfo.toJSONObject();
             // 民族
             jsonObject.put("nationalityName", "");
@@ -80,10 +75,23 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             jsonObject.put("mobilePhone", "");
 
             // 证件类型id
-            jsonObject.put("typeId", "");
-            jsonObject.put("idNo", "");
+            if (StringUtil.isNotEmpty(user.getIdNo())) {
+                jsonObject.put("typeId", user.getTypeId());
+                jsonObject.put("idNo", user.getIdNo());
+            } else {
+                jsonObject.put("typeId", "");
+                jsonObject.put("idNo", "");
+            }
+            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
             jsonObject.put("originalImageUrl", "");
             jsonObject.put("imageUrl", "");
+            if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
+                jsonObject.put("originalImageUrl",
+                        domainUrl.concat(userInfo.getOriginalImageUrl()));
+            }
+            if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
+                jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
+            }
             return ResultUtil.success(jsonObject);
         } else {
             JSONObject jsonObject = userInfo.toJSONObject();

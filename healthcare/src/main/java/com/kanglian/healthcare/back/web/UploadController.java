@@ -127,7 +127,7 @@ public class UploadController {
     
     @ResponseBody
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
-    public ResultBody filesUpload(@CurrentUser User user, @RequestParam("files") MultipartFile[] files,
+    public ResultBody filesUpload(@CurrentUser User user, @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
         if (files == null) {
             throw new InvalidParamException("files");
