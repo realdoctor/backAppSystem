@@ -41,14 +41,14 @@ import net.coobird.thumbnailator.Thumbnails;
 @Controller
 @RequestMapping("/upload")
 public class UploadController {
-
+    /** logger **/
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
-    
+
     @Autowired
-    private UserPicBo userPicBo;
+    private UserPicBo           userPicBo;
     @Autowired
-    private UploadContentBo uploadContentBo;
-    
+    private UploadContentBo     uploadContentBo;
+
     /**
      * 上传头像
      * 
@@ -60,7 +60,7 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-    public ResultBody uploadPic(@CurrentUser User user,
+    public ResultBody headpicUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
         logger.info("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
@@ -68,12 +68,13 @@ public class UploadController {
         if (imageFile == null) {
             throw new InvalidParamException("attach");
         }
-        
+
         if (imageFile.isEmpty()) {
             return ResultUtil.error("不能上传空文件");
         }
 
-        logger.info("===========上传图片 {} 兆", String.format("%.1f", imageFile.getSize() / (1024.0 * 1024.0)));
+        logger.info("===========上传图片 {} 兆",
+                String.format("%.1f", imageFile.getSize() / (1024.0 * 1024.0)));
         long fileSize = 10 * 1024 * 1024;
         // 如果文件大小大于限制
         if (imageFile.getSize() > fileSize) {
@@ -91,17 +92,19 @@ public class UploadController {
         // 获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");
         pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
-        
+
         String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-        originalPath = originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
+        originalPath =
+                originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
         File uploadedFile = new File(pathRoot + originalPath);
         FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
         String thumbnailPath = "";
         try {
             thumbnailPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-            thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
-            Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
-                    .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
+            thumbnailPath =
+                    thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
+            Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200).keepAspectRatio(false)
+                    .toFile(new File(pathRoot + thumbnailPath));
             logger.info("===============原始图路径" + originalPath);
             logger.info("======================生成缩略图路径" + thumbnailPath);
             UserPic userPic = userPicBo.get(user.getUserId());
@@ -126,27 +129,38 @@ public class UploadController {
                 userPicBo.save(userPic);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            logger.info("上传头像异常", e);
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(thumbnailPath));
+        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL)
+                .concat(thumbnailPath));
         return ResultUtil.success(resultMap);
     }
-    
+
+    /**
+     * 上传视频图片
+     * 
+     * @param user
+     * @param files
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
-    public ResultBody filesUpload(@CurrentUser User user, @RequestParam(value = "attach", required = false) MultipartFile[] files,
+    public ResultBody filesUpload(@CurrentUser User user,
+            @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
         if (files == null) {
             throw new InvalidParamException("files");
         }
-        
+
         String content = request.getParameter("content");
         if (StringUtil.isEmpty(content)) {
             throw new InvalidParamException("content");
         }
-        
+
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         // 判断file数组不能为空并且长度大于0
         if (files != null && files.length > 0) {
@@ -183,7 +197,8 @@ public class UploadController {
                     uploadContent.setPubId(contentId);
                     uploadContent.setType(type);
                     uploadContent.setContent(content);
-                    uploadContent.setPath(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    uploadContent.setPath(PropConfig.getInstance()
+                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
                     uploadContent.setAddTime(DateUtil.currentDate());
                     uploadContentBo.save(uploadContent);
                     Map<String, String> urlMap = new HashMap<String, String>();
@@ -191,7 +206,7 @@ public class UploadController {
                     pathList.add(urlMap);
                 }
             }
-            
+
             resultMap.put("pubId", contentId);
             resultMap.put("list", pathList);
             return ResultUtil.success(resultMap);
