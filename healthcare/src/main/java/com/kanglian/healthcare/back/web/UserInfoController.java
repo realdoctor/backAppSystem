@@ -53,7 +53,9 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         if (user == null) {
             return ResultUtil.error("用户不存在");
         }
-        UserInfo userInfo = this.bo.getUserInfo(user);
+        User userT = new User();
+        userT.setUserId(user.getUserId());
+        UserInfo userInfo = this.bo.getUserInfo(userT);
         if (userInfo == null) {
             userInfo = new UserInfo();
             userInfo.setUserId(user.getUserId().intValue());
