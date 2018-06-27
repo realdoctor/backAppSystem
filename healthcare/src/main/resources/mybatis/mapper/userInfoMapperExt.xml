@@ -35,7 +35,7 @@
 			`user` t
 		LEFT JOIN user_info t1 ON t.user_id = t1.user_id
 		LEFT JOIN user_pic t2 ON t.user_id = t2.user_id
-		LEFT JOIN user_identify t3 ON t1.user_id = t3.user_id
+		LEFT JOIN user_identify t3 ON t.user_id = t3.user_id
 		<trim prefix="where" prefixOverrides="and|or">
 			<choose>
 				<when test="userId!=null">
