@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
@@ -131,14 +132,19 @@ public class UploadController {
         if (files == null) {
             throw new InvalidParamException("files");
         }
-
+        
+        String content = request.getParameter("content");
+        if (StringUtil.isEmpty(content)) {
+            throw new InvalidParamException("content");
+        }
+        
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         // 判断file数组不能为空并且长度大于0
         if (files != null && files.length > 0) {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
-            String orderId = NumberUtil.getOrderIdByUUId();
-            orderId = orderId.substring(2);
+            String contentId = NumberUtil.getOrderIdByUUId();
+            contentId = contentId.substring(2);
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];
@@ -164,19 +170,21 @@ public class UploadController {
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     // 保存
-                    UploadContent content = new UploadContent();
-                    content.setUserId(user.getUserId().intValue());
-                    content.setOrderId(orderId);
-                    content.setType(type);
-                    content.setPath(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                    content.setAddTime(DateUtil.currentDate());
-                    uploadContentBo.save(content);
+                    UploadContent uploadContent = new UploadContent();
+                    uploadContent.setUserId(user.getUserId().intValue());
+                    uploadContent.setPubId(contentId);
+                    uploadContent.setType(type);
+                    uploadContent.setContent(content);
+                    uploadContent.setPath(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    uploadContent.setAddTime(DateUtil.currentDate());
+                    uploadContentBo.save(uploadContent);
                     Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", content.getPath());
+                    urlMap.put("url", uploadContent.getPath());
                     pathList.add(urlMap);
                 }
             }
-            resultMap.put("orderId", orderId);
+            
+            resultMap.put("pubId", contentId);
             resultMap.put("list", pathList);
             return ResultUtil.success(resultMap);
         }

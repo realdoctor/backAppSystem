@@ -30,17 +30,17 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
     @PostMapping("/news_pub/addUploadContent")
     public ResultBody addUploadContent(@CurrentUser User user,
             @RequestBody UploadContent uploadContent) throws Exception {
-        if (StringUtil.isEmpty(uploadContent.getOrderId())) {
-            throw new InvalidParamException("orderId");
+        if (StringUtil.isEmpty(uploadContent.getPubId())) {
+            throw new InvalidParamException("pubId");
         }
         if (StringUtil.isEmpty(uploadContent.getContent())) {
             throw new InvalidParamException("content");
         }
-        final String orderId = uploadContent.getOrderId();
+        final String orderId = uploadContent.getPubId();
         List<UploadContent> list = this.bo.getByUUId(orderId);
         if (list != null) {
             UploadContent content = new UploadContent();
-            content.setOrderId(orderId);
+            content.setPubId(orderId);
             content.setContent(uploadContent.getContent());
             this.bo.updateByUUId(uploadContent);
         }
