@@ -49,6 +49,15 @@ public class UploadController {
     @Autowired
     private UploadContentBo uploadContentBo;
     
+    /**
+     * 上传头像
+     * 
+     * @param user
+     * @param imageFile
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
     public ResultBody uploadPic(@CurrentUser User user,
@@ -83,13 +92,13 @@ public class UploadController {
         String pathRoot = request.getSession().getServletContext().getRealPath("");
         pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         
-        String originalPath = "/images".concat(FileUtil.randomPathname(extension));
+        String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
         originalPath = originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
         File uploadedFile = new File(pathRoot + originalPath);
         FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
         String thumbnailPath = "";
         try {
-            thumbnailPath = "/images".concat(FileUtil.randomPathname(extension));
+            thumbnailPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
             thumbnailPath = thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
             Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200)
                     .keepAspectRatio(false).toFile(new File(pathRoot + thumbnailPath));
