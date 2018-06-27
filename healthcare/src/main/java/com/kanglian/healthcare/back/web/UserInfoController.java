@@ -61,6 +61,11 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             userInfo.setUserId(user.getUserId().intValue());
             userInfo.setName(user.getRealName());
             userInfo.setMobilePhone(user.getMobilePhone());
+            if (StringUtil.isNotEmpty(user.getIdNo())) {
+                userInfo.setIdNo(user.getIdNo());
+            } else {
+                userInfo.setIdNo("");
+            }
             JSONObject jsonObject = userInfo.toJSONObject();
             // 民族
             jsonObject.put("nationalityName", "");
