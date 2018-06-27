@@ -16,7 +16,6 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
-import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
@@ -32,8 +31,6 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     private RedisCacheManager   redisCacheManager;
     @Autowired
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
-    @Autowired
-    private UserBo              userBo;
 
     /**
      * 用户基本信息
@@ -49,95 +46,52 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
         if (StringUtil.isEmpty(mobilePhone)) {
             throw new InvalidParamException("mobilePhone");
         }
-        user = userBo.queryUser(mobilePhone);
-        if (user == null) {
-            return ResultUtil.error("用户不存在");
-        }
-        User userT = new User();
-        userT.setUserId(user.getUserId());
-        UserInfo userInfo = this.bo.getUserInfo(userT);
+        UserInfo userInfo = this.bo.getUserInfo(user);
         if (userInfo == null) {
-            userInfo = new UserInfo();
-            userInfo.setUserId(user.getUserId().intValue());
-            userInfo.setName(user.getRealName());
-            userInfo.setMobilePhone(user.getMobilePhone());
-            JSONObject jsonObject = userInfo.toJSONObject();
-            // 民族
-            jsonObject.put("nationalityName", "");
-            // 婚姻状况
-            jsonObject.put("marriageName", "");
-            // 性别
-            jsonObject.put("sexName", "");
-            // 血型
-            jsonObject.put("aboName", "");
-            // RH血型
-            jsonObject.put("rhName", "");
-            jsonObject.put("mobilePhone", "");
-
-            // 证件类型id
-            if (StringUtil.isNotEmpty(user.getIdNo())) {
-                jsonObject.put("typeId", user.getTypeId());
-                jsonObject.put("idNo", user.getIdNo());
-            } else {
-                jsonObject.put("typeId", "");
-                jsonObject.put("idNo", "");
-            }
-            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", "");
-            jsonObject.put("imageUrl", "");
-            if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
-                jsonObject.put("originalImageUrl",
-                        domainUrl.concat(userInfo.getOriginalImageUrl()));
-            }
-            if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
-                jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
-            }
-            return ResultUtil.success(jsonObject);
-        } else {
-            JSONObject jsonObject = userInfo.toJSONObject();
-            // 民族
-            jsonObject.put("nationalityName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_NATIONALITY))
-                            .get(userInfo.getNationalityCode()));
-            // 婚姻状况
-            jsonObject.put("marriageName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
-                            .get(userInfo.getMarriageCode()));
-            // 性别
-            jsonObject.put("sexName", ((Map) redisCacheManager.getCacheObject(Constants.STD_SEX))
-                    .get(userInfo.getSexCode()));
-            // 血型
-            jsonObject.put("aboName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_BLOOD_TYPE))
-                            .get(userInfo.getAboCode()));
-            // RH血型
-            jsonObject.put("rhName",
-                    ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
-                            .get(userInfo.getRhCode()));
-            jsonObject.put("mobilePhone", userInfo.getMobilePhone());
-
-            // 证件类型id
-            if (StringUtil.isNotEmpty(user.getIdNo())) {
-                jsonObject.put("typeId", user.getTypeId());
-                jsonObject.put("idNo", ValidateUtil.hideIdCard(user.getIdNo()));
-            } else {
-                jsonObject.put("typeId", "");
-                jsonObject.put("idNo", "");
-            }
-
-            // 用户头像
-            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            jsonObject.put("originalImageUrl", "");
-            jsonObject.put("imageUrl", "");
-            if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
-                jsonObject.put("originalImageUrl",
-                        domainUrl.concat(userInfo.getOriginalImageUrl()));
-            }
-            if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
-                jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
-            }
-            return ResultUtil.success(jsonObject);
+            return ResultUtil.error("获取用户信息失败");
         }
+        JSONObject jsonObject = userInfo.toJSONObject();
+        // 民族
+        jsonObject.put("nationalityName",
+                ((Map) redisCacheManager.getCacheObject(Constants.STD_NATIONALITY))
+                        .get(userInfo.getNationalityCode()));
+        // 婚姻状况
+        jsonObject.put("marriageName",
+                ((Map) redisCacheManager.getCacheObject(Constants.STD_MARRIAGE))
+                        .get(userInfo.getMarriageCode()));
+        // 性别
+        jsonObject.put("sexName", ((Map) redisCacheManager.getCacheObject(Constants.STD_SEX))
+                .get(userInfo.getSexCode()));
+        // 血型
+        jsonObject.put("aboName",
+                ((Map) redisCacheManager.getCacheObject(Constants.STD_BLOOD_TYPE))
+                        .get(userInfo.getAboCode()));
+        // RH血型
+        jsonObject.put("rhName",
+                ((Map) redisCacheManager.getCacheObject(Constants.STD_RH_RESULT))
+                        .get(userInfo.getRhCode()));
+        // 手机号
+        jsonObject.put("mobilePhone", userInfo.getMobilePhone());
+        // 证件类型id
+        if (StringUtil.isNotEmpty(userInfo.getIdNo())) {
+            jsonObject.put("typeId", userInfo.getTypeId());
+            jsonObject.put("idNo", ValidateUtil.hideIdCard(userInfo.getIdNo()));
+        } else {
+            jsonObject.put("typeId", "");
+            jsonObject.put("idNo", "");
+        }
+        // 用户头像
+        String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
+        jsonObject.put("originalImageUrl", "");
+        jsonObject.put("imageUrl", "");
+        if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
+            jsonObject.put("originalImageUrl",
+                    domainUrl.concat(userInfo.getOriginalImageUrl()));
+        }
+        if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
+            jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
+        }
+        return ResultUtil.success(jsonObject);
     }
 
     /**

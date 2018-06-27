@@ -31,10 +31,6 @@ public class User extends BasePojo {
     private String typeId;
     @JSONField(serialize=false)
     private String idNo;
-    @JSONField(serialize=false)
-    private String originalImageUrl;
-    @JSONField(serialize=false)
-    private String imageUrl;
     @NotJsonData
     public String getVerifyCode() {
         return verifyCode;
@@ -124,17 +120,5 @@ public class User extends BasePojo {
     }
     public void setTypeId(String typeId) {
         this.typeId = typeId;
-    }
-    public String getOriginalImageUrl() {
-        return originalImageUrl;
-    }
-    public void setOriginalImageUrl(String originalImageUrl) {
-        this.originalImageUrl = originalImageUrl;
-    }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }

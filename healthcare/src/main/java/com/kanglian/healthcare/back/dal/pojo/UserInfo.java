@@ -33,6 +33,7 @@ public class UserInfo extends BasePojo {
 	private String originalImageUrl;
 	// 头像缩略图200x200
     private String imageUrl;
+    private String typeId;
     public String getRealName() {
         return realName;
     }
@@ -166,4 +167,10 @@ public class UserInfo extends BasePojo {
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
+	public String getTypeId() {
+        return typeId;
+    }
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
 }
