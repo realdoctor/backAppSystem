@@ -103,15 +103,16 @@ public class UserBo extends CrudBo<User, UserDao> {
                 userT.setLastUpdateDtime(DateUtil.currentDate());
                 this.dao.update(userT);
                 
+                Integer userId = userT.getUserId().intValue();
                 // 用户认证信息
-                UserIdentify userIdentifyT = userIdentifyDao.getByUserId(userT.getUserId().intValue());
+                UserIdentify userIdentifyT = userIdentifyDao.getByUserId(userId);
                 if (userIdentifyT != null) {
-                    userIdentifyT.setUserId(userT.getUserId().intValue());
+                    userIdentifyT.setUserId(userId);
                     userIdentifyT.setStatus(0);
                     userIdentifyT.setAddTime(DateUtil.currentDate());
                     userIdentifyDao.update(userIdentifyT);
                 } else {
-                    userIdentify.setUserId(userT.getUserId().intValue());
+                    userIdentify.setUserId(userId);
                     userIdentify.setStatus(0);
                     userIdentify.setAddTime(DateUtil.currentDate());
                     userIdentifyDao.save(userIdentify);
@@ -121,9 +122,9 @@ public class UserBo extends CrudBo<User, UserDao> {
                 // 如果证件类型挂载不上，再用手机号
                 int ss = userInfoDao.updateRelationship(userT);
                 if (ss < 1) {
-                    User userTT = new User();
-                    userTT.setMobilePhone(userT.getMobilePhone());
-                    userInfoDao.updateRelationship(userTT);
+                    User newUser = new User();
+                    newUser.setMobilePhone(userT.getMobilePhone());
+                    userInfoDao.updateRelationship(newUser);
                 }
                 return true;
             }
