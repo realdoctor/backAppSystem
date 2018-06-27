@@ -6,8 +6,8 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class UploadContent extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private String orderId;
-	private Integer userId;
+	private String pubId;
+    private Integer userId;
 	private Integer type;
 	private String content;
 	private String path;
@@ -19,12 +19,12 @@ public class UploadContent extends BasePojo {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+	public String getPubId() {
+        return pubId;
+    }
+    public void setPubId(String pubId) {
+        this.pubId = pubId;
+    }
 	public Integer getUserId() {
 		return userId;
 	}
