@@ -138,6 +138,7 @@ public class UploadController {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
             String orderId = NumberUtil.getOrderIdByUUId();
+            orderId = orderId.substring(2);
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];
@@ -165,7 +166,7 @@ public class UploadController {
                     // 保存
                     UploadContent content = new UploadContent();
                     content.setUserId(user.getUserId().intValue());
-                    content.setOrderId(orderId.substring(2));
+                    content.setOrderId(orderId);
                     content.setType(type);
                     content.setPath(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL).concat(filePath));
                     content.setAddTime(DateUtil.currentDate());
