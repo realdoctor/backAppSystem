@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,6 @@ import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.JsonUtil;
-import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PropConfig;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -143,8 +143,7 @@ public class UploadController {
         if (files != null && files.length > 0) {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
-            String contentId = NumberUtil.getOrderIdByUUId();
-            contentId = contentId.substring(2);
+            String contentId = RandomStringUtils.randomAlphanumeric(20);
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];

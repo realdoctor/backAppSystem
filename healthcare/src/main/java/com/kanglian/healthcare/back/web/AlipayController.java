@@ -86,7 +86,7 @@ public class AlipayController extends BaseController {
         // 用户Id
         String userId = paymentOrder.getUserId();
         // 外部订单号
-        final String orderNo = NumberUtil.getOrderIdByUUId();
+        final String orderNo = NumberUtil.getOrderId();
         paymentOrder.setOrderNo(orderNo);
         /**
          * 用户购买商品入库明细
