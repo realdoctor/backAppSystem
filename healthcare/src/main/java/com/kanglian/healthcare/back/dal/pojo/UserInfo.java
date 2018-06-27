@@ -7,7 +7,7 @@ import com.easyway.business.framework.pojo.BasePojo;
 
 public class UserInfo extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	@JSONField(name="userInfoId")
+	@JSONField(name="userInfoId",serialize=false)
 	private Long id;
 	private Integer userId;
 	private String orgCode;
@@ -18,6 +18,7 @@ public class UserInfo extends BasePojo {
 	private Date birthDate;
 	private String aboCode;
 	private String rhCode;
+	@JSONField(serialize=false)
 	private String idTypeCode;
 	private String idNo;
 	private String mobilePhone;

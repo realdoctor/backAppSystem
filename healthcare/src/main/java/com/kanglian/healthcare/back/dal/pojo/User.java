@@ -28,6 +28,8 @@ public class User extends BasePojo {
     private transient String verifyCode;
     private Integer roleId;
     @JSONField(serialize=false)
+    private String typeId;
+    @JSONField(serialize=false)
     private String idNo;
     @NotJsonData
     public String getVerifyCode() {
@@ -111,5 +113,12 @@ public class User extends BasePojo {
     }
     public void setIdNo(String idNo) {
         this.idNo = idNo;
+    }
+    @NotJsonData
+    public String getTypeId() {
+        return typeId;
+    }
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 }
