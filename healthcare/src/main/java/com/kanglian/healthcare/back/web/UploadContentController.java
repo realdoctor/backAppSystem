@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.easyway.business.framework.mybatis.query.ConditionQuery;
+import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -88,5 +90,13 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
         public void setType(String type) {
             this.type = type;
         }
+
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            query.addSingleValueCondition(new SingleValueCondition("type", "!=", 3));
+            return query;
+        }
+        
     }
 }
