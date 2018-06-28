@@ -42,7 +42,11 @@ public final class NumberUtil {
         String time = dateFormat.format(now);
         // 获取三位随机数
         String ran = RandomStringUtils.randomNumeric(3);
-        return time + now + ran;
+        StringBuilder buff = new StringBuilder();
+        buff.append(time);
+        buff.append(now);
+        buff.append(ran);
+        return buff.toString();
     }
     
     /**
