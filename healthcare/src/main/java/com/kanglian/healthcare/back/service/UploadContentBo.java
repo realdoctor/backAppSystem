@@ -10,25 +10,25 @@ import com.kanglian.healthcare.exception.DBException;
 @Service
 public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> {
 
-    public List<UploadContent> getByUUId(String orderId) {
+    public List<UploadContent> getByPubId(String orderId) {
         try {
-            return this.dao.getByUUId(orderId);
+            return this.dao.getByPubId(orderId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
 
-    public void deleteByUUId(String orderId) {
+    public void deleteByPubId(String orderId) {
         try {
-            this.dao.deleteByUUId(orderId);
+            this.dao.deleteByPubId(orderId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
 
-    public int updateByUUId(UploadContent content) {
+    public int updateByPubId(UploadContent content) {
         try {
-            return this.dao.updateByUUId(content);
+            return this.dao.updateByPubId(content);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

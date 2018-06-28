@@ -35,6 +35,7 @@
 		t.add_time
 		from upload_content t
 		<include refid="conditionQuery.core" />
+		group by pub_id
 		order by
 		<choose>
 		<when test="paramMap.orderCol!=null">
@@ -50,7 +51,7 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from upload_content t
+		select count(*) from upload_content t group by pub_id
 		<include refid="conditionQuery.core" />
 	</select>
 

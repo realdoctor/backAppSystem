@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UploadContentDao">
-	<select id="getByUUId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="getByPubId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="columns"/>
 		from upload_content t
-		where t.id = #{id,jdbcType=INTEGER}
+		where pub_id=#{pubId,jdbcType=VARCHAR}
 	</select>
 
-	<delete id="deleteByUUId" parameterType="java.lang.String">
+	<delete id="deleteByPubId" parameterType="java.lang.String">
 		delete from upload_content where order_id=#{orderId,jdbcType=VARCHAR}
 	</delete>
 
-	<update id="updateByUUId" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
+	<update id="updateByPubId" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
 		update upload_content
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

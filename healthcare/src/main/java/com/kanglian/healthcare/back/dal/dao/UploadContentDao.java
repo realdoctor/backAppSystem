@@ -6,9 +6,9 @@ import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 
 public interface UploadContentDao extends NewCrudDao<UploadContent> {
 
-    public List<UploadContent> getByUUId(String orderId);
+    public List<UploadContent> getByPubId(String orderId);
 
-    public void deleteByUUId(String orderId);
+    public void deleteByPubId(String orderId);
 
-    public int updateByUUId(UploadContent content);
+    public int updateByPubId(UploadContent content);
 }

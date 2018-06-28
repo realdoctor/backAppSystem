@@ -21,7 +21,7 @@ import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
- * 教育平台资讯
+ * 发布视频图片
  * 
  * @author xl.liu
  */
@@ -30,7 +30,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 public class UploadContentController extends CrudController<UploadContent, UploadContentBo> {
 
     /**
-     * 患者教育列表
+     * 视频图片列表
      * 
      * @param query
      * @return
@@ -39,6 +39,18 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
     @GetMapping("/news_pub/list")
     public ResultBody list(ContentQuery query) throws Exception {
         return super.list(query);
+    }
+
+    /**
+     * 详情列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/news_pub/info")
+    public ResultBody info(String pubId) throws Exception {
+        return ResultUtil.success(this.bo.getByPubId(pubId));
     }
 
     /**
@@ -59,12 +71,12 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
             throw new InvalidParamException("content");
         }
         final String orderId = uploadContent.getPubId();
-        List<UploadContent> list = this.bo.getByUUId(orderId);
+        List<UploadContent> list = this.bo.getByPubId(orderId);
         if (list != null) {
             UploadContent content = new UploadContent();
             content.setPubId(orderId);
             content.setContent(uploadContent.getContent());
-            this.bo.updateByUUId(uploadContent);
+            this.bo.updateByPubId(uploadContent);
         }
         return ResultUtil.success();
     }
@@ -97,6 +109,6 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
             query.addSingleValueCondition(new SingleValueCondition("type", "!=", 3));
             return query;
         }
-        
+
     }
 }
