@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang.RandomStringUtils;
 
 public final class NumberUtil {
 
@@ -28,6 +29,22 @@ public final class NumberUtil {
         return str;
     }
 
+    /**
+     * 生成不重复的20位数字
+     * 
+     * @return
+     */
+    public static String getNewId() {
+        long now = System.currentTimeMillis();
+        // 获取4位年份数字
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
+        // 获取时间戳
+        String time = dateFormat.format(now);
+        // 获取三位随机数
+        String ran = RandomStringUtils.randomNumeric(3);
+        return time + now + ran;
+    }
+    
     /**
      * 生成唯一订单号
      * 
