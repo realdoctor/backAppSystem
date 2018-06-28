@@ -13,7 +13,9 @@ public class UploadContent extends BasePojo {
 	private String src;
     private String remark;
 	private Date addTime;
-	public Integer getId() {
+	private Integer num;
+	
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
@@ -61,4 +63,10 @@ public class UploadContent extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
+    public Integer getNum() {
+        return num;
+    }
+    public void setNum(Integer num) {
+        this.num = num;
+    }
 }

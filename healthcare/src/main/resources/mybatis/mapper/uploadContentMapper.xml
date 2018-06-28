@@ -32,7 +32,8 @@
 		t.content,
 		t.src,
 		t.remark,
-		t.add_time
+		t.add_time,
+		count(pub_id) num
 		from upload_content t
 		<include refid="conditionQuery.core" />
 		group by pub_id
