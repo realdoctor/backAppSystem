@@ -181,11 +181,11 @@ public class UploadController {
                     if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("media").split(","))
                             .contains(extension)) {// 上传视频
                         filePath = "/files/video".concat(FileUtil.randomPathname(extension));
-                        type = 2;
+                        type = 1;
                     } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("image").split(","))
                             .contains(extension)) {// 上传图片
                         filePath = "/files/images".concat(FileUtil.randomPathname(extension));
-                        type = 1;
+                        type = 2;
                     } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
                             .contains(extension)) {// 上传文件
                         filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
