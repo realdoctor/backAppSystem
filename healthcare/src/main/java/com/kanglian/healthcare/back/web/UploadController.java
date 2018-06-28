@@ -151,11 +151,13 @@ public class UploadController {
     public ResultBody filesUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
+        logger.info("===========进入上传视频图片，user=" + user.getMobilePhone());
+        
         if (files == null) {
             throw new InvalidParamException("files");
         }
         
-        // 发说说内容
+        // 发说说
         String content = request.getParameter("content");
 
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
@@ -199,7 +201,7 @@ public class UploadController {
                     uploadContent.setPubId(contentId);
                     uploadContent.setType(type);
                     uploadContent.setContent(content);
-                    uploadContent.setPath(PropConfig.getInstance()
+                    uploadContent.setSrc(PropConfig.getInstance()
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
                     uploadContent.setAddTime(DateUtil.currentDate());
                     if (3 == type) {
@@ -207,7 +209,7 @@ public class UploadController {
                     }
                     uploadContentBo.save(uploadContent);
                     Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", uploadContent.getPath());
+                    urlMap.put("url", uploadContent.getSrc());
                     pathList.add(urlMap);
                 }
             }

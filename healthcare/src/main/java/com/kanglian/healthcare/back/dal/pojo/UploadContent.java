@@ -10,8 +10,8 @@ public class UploadContent extends BasePojo {
     private Integer userId;
 	private Integer type;
 	private String content;
-	private String path;
-	private String remark;
+	private String src;
+    private String remark;
 	private Date addTime;
 	public Integer getId() {
 		return id;
@@ -43,12 +43,12 @@ public class UploadContent extends BasePojo {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getPath() {
-		return path;
-	}
-	public void setPath(String path) {
-		this.path = path;
-	}
+	public String getSrc() {
+        return src;
+    }
+    public void setSrc(String src) {
+        this.src = src;
+    }
 	public String getRemark() {
 		return remark;
 	}

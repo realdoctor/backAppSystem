@@ -1,10 +1,10 @@
 package com.kanglian.healthcare.back.dal.dao;
 
-import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import java.util.List;
-import com.easyway.business.framework.dao.CrudDao;
+import com.kanglian.healthcare.back.common.NewCrudDao;
+import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 
-public interface UploadContentDao extends CrudDao<UploadContent> {
+public interface UploadContentDao extends NewCrudDao<UploadContent> {
 
     public List<UploadContent> getByUUId(String orderId);
 

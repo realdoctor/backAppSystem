@@ -1,9 +1,12 @@
 package com.kanglian.healthcare.back.web;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
@@ -15,9 +18,26 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
+/**
+ * 教育平台资讯
+ * 
+ * @author xl.liu
+ */
 @Authorization
 @RestController
 public class UploadContentController extends CrudController<UploadContent, UploadContentBo> {
+
+    /**
+     * 患者教育列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/news_pub/list")
+    public ResultBody list(ContentQuery query) throws Exception {
+        return super.list(query);
+    }
 
     /**
      * 发布视频图片
@@ -45,5 +65,28 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
             this.bo.updateByUUId(uploadContent);
         }
         return ResultUtil.success();
+    }
+
+    public static class ContentQuery extends Grid {
+        private String userId;
+        private String type;
+
+        @SingleValue(column = "user_id", equal = "=")
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        @SingleValue(column = "type", equal = "=")
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
     }
 }

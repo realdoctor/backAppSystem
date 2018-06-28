@@ -7,7 +7,7 @@
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="type" column="type" jdbcType="INTEGER"/>
 		<result property="content" column="content" jdbcType="VARCHAR"/>
-		<result property="path" column="path" jdbcType="VARCHAR"/>
+		<result property="src" column="src" jdbcType="VARCHAR"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
@@ -18,7 +18,7 @@
 		t.user_id,
 		t.type,
 		t.content,
-		t.path,
+		t.src,
 		t.remark,
 		t.add_time
 	</sql>
@@ -30,7 +30,7 @@
 		t.user_id,
 		t.type,
 		t.content,
-		t.path,
+		t.src,
 		t.remark,
 		t.add_time
 		from upload_content t
@@ -71,7 +71,7 @@
 		user_id,
 		type,
 		content,
-		path,
+		src,
 		remark,
 		add_time
 		)
@@ -80,7 +80,7 @@
 		#{userId,jdbcType=INTEGER},
 		#{type,jdbcType=INTEGER},
 		#{content,jdbcType=VARCHAR},
-		#{path,jdbcType=VARCHAR},
+		#{src,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP}
 		)
@@ -93,7 +93,7 @@
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="type != null">type=#{type,jdbcType=INTEGER},</if>
 		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
-		  <if test="path != null">path=#{path,jdbcType=VARCHAR},</if>
+		  <if test="src != null">src=#{src,jdbcType=VARCHAR},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		</set>
