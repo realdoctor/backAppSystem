@@ -1,17 +1,21 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class PatientDrug extends BasePojo {
 	private static final long serialVersionUID = 1L;
+	@JSONField(serialize=false)
 	private Long id;
 	private Integer patientDiagId;
 	private String drugName;
 	private String drugCode;
     private String drugStdName;
 	private String drugStdCode;
+	@JSONField(serialize=false)
 	private String notes;
+	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
 	public Long getId() {
 		return id;

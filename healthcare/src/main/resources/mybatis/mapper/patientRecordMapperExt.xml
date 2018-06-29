@@ -13,6 +13,8 @@
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+		<collection property="drugList" ofType="com.kanglian.healthcare.back.dal.pojo.PatientDrug" select="com.kanglian.healthcare.back.dal.dao.PatientDrugDao.getByPatientDiagId" column="patient_diag_id">
+		</collection>
 	</resultMap>
 	
 	<sql id="Patient_Select_Query">

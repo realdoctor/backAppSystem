@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
@@ -18,7 +19,9 @@ public class PatientRecord extends BasePojo {
 	private String respDoctorName;
 	private String doctorCode;
 	private Date lastUpdateDtime;
-	public Long getId() {
+	private List<PatientDrug> drugList;
+	
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -114,5 +117,12 @@ public class PatientRecord extends BasePojo {
     
     public void setDiagName(String diagName) {
         this.diagName = diagName;
+    }
+    
+    public List<PatientDrug> getDrugList() {
+        return drugList;
+    }
+    public void setDrugList(List<PatientDrug> drugList) {
+        this.drugList = drugList;
     }
 }
