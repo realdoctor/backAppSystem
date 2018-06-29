@@ -279,4 +279,18 @@ public final class NumberUtil {
         Matcher m = p.matcher(value);
         return m.find();
     }
+    
+    /**
+     * 价格校验
+     * 
+     * @param price
+     * @return
+     */
+    public static boolean checkPrice(String price) {
+        String regex = "\\d\\.\\d*|[1-9]\\d*|\\d*\\.\\d*|\\d";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isNum = pattern.matcher(price);
+        boolean matches = isNum.matches();
+        return matches;
+    }
 }

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
@@ -159,7 +160,12 @@ public class UploadController {
         
         // 说说内容
         String content = request.getParameter("content");
-
+        // 说说价格
+        String price = request.getParameter("price");
+        if (StringUtil.isNotBlank(price) && !NumberUtil.checkPrice(price)) {
+            return ResultUtil.error("价格不正确");
+        }
+        
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         // 判断file数组不能为空并且长度大于0
         if (files != null && files.length > 0) {
@@ -194,6 +200,7 @@ public class UploadController {
                     }
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+                    
                     // 保存
                     UploadContent uploadContent = new UploadContent();
                     uploadContent.setUserId(user.getUserId().intValue());
@@ -202,6 +209,9 @@ public class UploadController {
                     uploadContent.setContent(content);
                     uploadContent.setSrc(PropConfig.getInstance()
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    if (StringUtil.isNotEmpty(price)) {
+                        uploadContent.setPrice(Double.valueOf(price));
+                    }
                     uploadContent.setAddTime(DateUtil.currentDate());
                     if (3 == type) {
                         StringBuilder buff = new StringBuilder();
@@ -212,8 +222,31 @@ public class UploadController {
                         uploadContent.setRemark(buff.toString());
                     }
                     uploadContentBo.save(uploadContent);
+                    
+                    String srcUrl = uploadContent.getSrc();
+                    String thumbnailUrl = "";
+//                    try {
+//                        // 上传视频，生成截图
+//                        if (1 == type) {
+//                            String outImagePath =
+//                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
+//                            VideoPictureUtil.getVideoImage(
+//                                    PropConfig.getInstance()
+//                                            .getPropertyValue(Constants.FFMPEG_PATH),
+//                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
+//                            uploadContent.setSrc(PropConfig.getInstance()
+//                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+//                            uploadContent.setRemark(fileName + "视频截图");
+//                            thumbnailUrl = uploadContent.getSrc();
+//                            uploadContentBo.save(uploadContent);
+//                        }
+//                    } catch (Exception e) {
+//                        logger.info("生成视频截图异常", e);
+//                    }
+                    
                     Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", uploadContent.getSrc());
+                    urlMap.put("url", srcUrl);
+                    urlMap.put("thumbnailUrl", thumbnailUrl);
                     pathList.add(urlMap);
                 }
             }

@@ -7,12 +7,14 @@ public class UploadContent extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String pubId;
-    private Integer userId;
+	private Integer userId;
 	private Integer type;
 	private String content;
 	private String src;
-    private String remark;
+	private Double price;
+	private String remark;
 	private Date addTime;
+	private Date lastUpdateDtime;
 	private Integer num;
     public Integer getId() {
 		return id;
@@ -21,11 +23,11 @@ public class UploadContent extends BasePojo {
 		this.id = id;
 	}
 	public String getPubId() {
-        return pubId;
-    }
-    public void setPubId(String pubId) {
-        this.pubId = pubId;
-    }
+		return pubId;
+	}
+	public void setPubId(String pubId) {
+		this.pubId = pubId;
+	}
 	public Integer getUserId() {
 		return userId;
 	}
@@ -45,11 +47,17 @@ public class UploadContent extends BasePojo {
 		this.content = content;
 	}
 	public String getSrc() {
-        return src;
-    }
-    public void setSrc(String src) {
-        this.src = src;
-    }
+		return src;
+	}
+	public void setSrc(String src) {
+		this.src = src;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	public String getRemark() {
 		return remark;
 	}
@@ -62,7 +70,13 @@ public class UploadContent extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
-    public Integer getNum() {
+	public Date getLastUpdateDtime() {
+		return lastUpdateDtime;
+	}
+	public void setLastUpdateDtime(Date lastUpdateDtime) {
+		this.lastUpdateDtime = lastUpdateDtime;
+	}
+	public Integer getNum() {
         return num;
     }
     public void setNum(Integer num) {
