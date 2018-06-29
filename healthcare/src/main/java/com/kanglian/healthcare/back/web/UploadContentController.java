@@ -1,10 +1,13 @@
 package com.kanglian.healthcare.back.web;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSONObject;
+import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
@@ -17,7 +20,9 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.UploadContentBo;
+import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -29,6 +34,9 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RestController
 public class UploadContentController extends CrudController<UploadContent, UploadContentBo> {
 
+    @Autowired
+    private UserInfoBo userInfoBo;
+    
     /**
      * 视频图片列表
      * 
@@ -37,8 +45,26 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
      * @throws Exception
      */
     @GetMapping("/news_pub/list")
-    public ResultBody list(ContentQuery query) throws Exception {
-        return super.list(query);
+    public ResultBody list(final ContentQuery query) throws Exception {
+        return super.list(query, new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                UploadContent uploadContent = (UploadContent)pojo;
+                try {
+                    if ("3".equals(query.getType())) {
+                        User user = new User();
+                        user.setUserId(Long.valueOf(uploadContent.getUserId()));
+                        UserInfo userInfo = userInfoBo.getUserInfo(user);
+                        jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+            
+        });
     }
 
     /**
