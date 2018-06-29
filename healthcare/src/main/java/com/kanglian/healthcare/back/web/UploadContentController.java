@@ -106,7 +106,9 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
         @Override
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
-            query.addSingleValueCondition(new SingleValueCondition("type", "!=", 3));
+            if (!"3".equals(getType())) {
+                query.addSingleValueCondition(new SingleValueCondition("type", "!=", 3));
+            }
             return query;
         }
 

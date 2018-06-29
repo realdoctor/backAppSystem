@@ -14,7 +14,6 @@ public class UploadContent extends BasePojo {
     private String remark;
 	private Date addTime;
 	private Integer num;
-	
     public Integer getId() {
 		return id;
 	}

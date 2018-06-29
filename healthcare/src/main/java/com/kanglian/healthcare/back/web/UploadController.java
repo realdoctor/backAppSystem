@@ -138,7 +138,7 @@ public class UploadController {
     }
 
     /**
-     * 上传视频图片
+     * 上传视频图片文件
      * 
      * @param user
      * @param files
@@ -157,7 +157,7 @@ public class UploadController {
             throw new InvalidParamException("files");
         }
         
-        // 发说说
+        // 说说内容
         String content = request.getParameter("content");
 
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
@@ -166,7 +166,6 @@ public class UploadController {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
             final String contentId = NumberUtil.getNewId();//RandomStringUtils.randomAlphanumeric(20);
-            Integer userId = user.getUserId().intValue();
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];
@@ -197,7 +196,7 @@ public class UploadController {
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     // 保存
                     UploadContent uploadContent = new UploadContent();
-                    uploadContent.setUserId(userId);
+                    uploadContent.setUserId(user.getUserId().intValue());
                     uploadContent.setPubId(contentId);
                     uploadContent.setType(type);
                     uploadContent.setContent(content);
@@ -205,7 +204,12 @@ public class UploadController {
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
                     uploadContent.setAddTime(DateUtil.currentDate());
                     if (3 == type) {
-                        uploadContent.setRemark(userId + "存档病历");
+                        StringBuilder buff = new StringBuilder();
+                        buff.append("[存档病历]");
+                        buff.append(user.getRealName());
+                        buff.append("-");
+                        buff.append(DateUtil.getLongDateStr());
+                        uploadContent.setRemark(buff.toString());
                     }
                     uploadContentBo.save(uploadContent);
                     Map<String, String> urlMap = new HashMap<String, String>();
