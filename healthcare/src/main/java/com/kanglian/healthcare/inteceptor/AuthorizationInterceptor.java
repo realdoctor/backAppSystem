@@ -43,6 +43,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
         
         String urlStr = request.getRequestURI().trim();
+        logger.debug("=========>>>拦截请求Uri：{}", urlStr);
         if (InitInfoListener.noFilter(urlStr)) {
             return true;
         }
