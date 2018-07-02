@@ -19,6 +19,8 @@ public class PatientRecord extends BasePojo {
 	private String respDoctorName;
 	private String doctorCode;
 	private Date lastUpdateDtime;
+
+    /** 处方列表 */
 	private List<PatientDrug> drugList;
 	
     public Long getId() {
@@ -91,6 +93,7 @@ public class PatientRecord extends BasePojo {
 	/**
 	 * 扩展字段
 	 */
+	private Integer doctorUserId;
     private Integer patientDiagId;
     private String  diagCode;
     private String  diagName;
@@ -117,6 +120,13 @@ public class PatientRecord extends BasePojo {
     
     public void setDiagName(String diagName) {
         this.diagName = diagName;
+    }
+    
+    public Integer getDoctorUserId() {
+        return doctorUserId;
+    }
+    public void setDoctorUserId(Integer doctorUserId) {
+        this.doctorUserId = doctorUserId;
     }
     
     public List<PatientDrug> getDrugList() {

@@ -56,7 +56,8 @@ public class RevisitPatientRecordController
     }
 
     public static class RevisitPatientQuery extends Grid {
-
+        
+        private String userId;
         private String mobilePhone;
         private String patientId;
         private String diagCode;
@@ -64,6 +65,15 @@ public class RevisitPatientRecordController
         private String endDate;
         private String sortstr;
 
+        @SingleValue(column = "user_id", equal = "=")
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+        
         @SingleValue(column = "mobile_phone", equal = "=")
         public String getMobilePhone() {
             return mobilePhone;

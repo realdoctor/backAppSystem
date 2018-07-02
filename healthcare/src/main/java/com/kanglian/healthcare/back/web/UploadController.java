@@ -26,9 +26,11 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
+import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
 import com.kanglian.healthcare.back.service.UploadContentBo;
+import com.kanglian.healthcare.back.service.UploadPatientBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
@@ -48,6 +50,8 @@ public class UploadController {
     private UserPicBo           userPicBo;
     @Autowired
     private UploadContentBo     uploadContentBo;
+    @Autowired
+    private UploadPatientBo     uploadPatientBo;
 
     /**
      * 上传头像
@@ -201,48 +205,69 @@ public class UploadController {
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     
-                    // 保存
-                    UploadContent uploadContent = new UploadContent();
-                    uploadContent.setUserId(user.getUserId().intValue());
-                    uploadContent.setPubId(contentId);
-                    uploadContent.setType(type);
-                    uploadContent.setContent(content);
-                    uploadContent.setSrc(PropConfig.getInstance()
-                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                    if (StringUtil.isNotEmpty(price)) {// 发布视频图片价格
-                        uploadContent.setPrice(Double.valueOf(price));
-                    }
-                    uploadContent.setAddTime(DateUtil.currentDate());
                     if (3 == type) {
+                        // 上传病历，接收人
+                        String receiveUserId = request.getParameter("receiveUserId");
+                        UploadPatient uploadContent = new UploadPatient();
+                        uploadContent.setPubId(contentId);
+                        uploadContent.setUserId(user.getUserId().intValue());
+                        if (StringUtil.isNotEmpty(receiveUserId)) {
+                            uploadContent.setReceiveUserId(Integer.valueOf(receiveUserId));
+                        }
+                        uploadContent.setContent(content);
+                        uploadContent.setSrc(PropConfig.getInstance()
+                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                        uploadContent.setAddTime(DateUtil.currentDate());
                         StringBuilder buff = new StringBuilder();
                         buff.append("[存档病历]");
                         buff.append(user.getRealName());
                         buff.append("-");
-                        buff.append(DateUtil.getLongDateStr());
+                        buff.append(fileName);
                         uploadContent.setRemark(buff.toString());
+                        uploadPatientBo.save(uploadContent);
+                        
+                        Map<String, String> urlMap = new HashMap<String, String>();
+                        urlMap.put("url", uploadContent.getSrc());
+                        pathList.add(urlMap);
+                    } else {
+                        // 保存
+                        UploadContent uploadContent = new UploadContent();
+                        uploadContent.setUserId(user.getUserId().intValue());
+                        uploadContent.setPubId(contentId);
+                        uploadContent.setType(type);
+                        uploadContent.setContent(content);
+                        uploadContent.setSrc(PropConfig.getInstance()
+                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                        if (StringUtil.isNotEmpty(price)) {// 发布视频图片价格
+                            uploadContent.setPrice(Double.valueOf(price));
+                        } else {
+                            uploadContent.setPrice(0d);
+                        }
+                        uploadContent.setAddTime(DateUtil.currentDate());
+                        
+                        Map<String, String> urlMap = new HashMap<String, String>();
+                        urlMap.put("url", uploadContent.getSrc());
+                        String thumbnailUrl = "";
+                        try {
+                            // 上传视频，生成截图
+                            if (1 == type) {
+                                String outImagePath =
+                                        filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
+                                VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
+                                        pathRoot.concat(filePath), pathRoot.concat(outImagePath));
+                                uploadContent.setPic(PropConfig.getInstance()
+                                        .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+                                uploadContent.setRemark(fileName + "视频截图");
+                                thumbnailUrl = uploadContent.getPic();
+                                urlMap.put("thumbnailUrl", thumbnailUrl);
+                            }
+                        } catch (Exception e) {
+                            logger.info("生成视频截图异常", e);
+                        }
+                        uploadContentBo.save(uploadContent);
+                        pathList.add(urlMap);
                     }
                     
-                    Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", uploadContent.getSrc());
-                    String thumbnailUrl = "";
-                    try {
-                        // 上传视频，生成截图
-                        if (1 == type) {
-                            String outImagePath =
-                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
-                            VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
-                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
-                            uploadContent.setPic(PropConfig.getInstance()
-                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
-                            uploadContent.setRemark(fileName + "视频截图");
-                            thumbnailUrl = uploadContent.getPic();
-                            urlMap.put("thumbnailUrl", thumbnailUrl);
-                        }
-                    } catch (Exception e) {
-                        logger.info("生成视频截图异常", e);
-                    }
-                    uploadContentBo.save(uploadContent);
-                    pathList.add(urlMap);
                 }
             }
             resultMap.put("pubId", contentId);
