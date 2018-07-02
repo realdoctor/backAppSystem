@@ -88,5 +88,5 @@ public final class Constants {
     // 访问路径
     public static final String STATIC_URL                    = "static_url";
     // 视频截图工具路径
-    public static final String FFMPEG_PATH                   = "ffmpeg_path";
+    public static final String FFMPEG_PATH                   = "ffmpeg";
 }

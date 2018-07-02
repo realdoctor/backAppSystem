@@ -32,9 +32,9 @@ import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
-import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PropConfig;
+import com.kanglian.healthcare.util.VideoPictureUtil;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Authorization
@@ -63,7 +63,7 @@ public class UploadController {
     public ResultBody headpicUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
-        logger.info("===========进入上传图片，user=" + JsonUtil.beanToJson(user));
+        logger.info("===========进入上传图片，user=" + user.getMobilePhone());
 
         if (imageFile == null) {
             throw new InvalidParamException("attach");
@@ -92,14 +92,13 @@ public class UploadController {
         // 获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");
         pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
-
-        String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-        originalPath =
-                originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
-        File uploadedFile = new File(pathRoot + originalPath);
-        FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
         String thumbnailPath = "";
         try {
+            String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
+            originalPath =
+                    originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
+            File uploadedFile = new File(pathRoot + originalPath);
+            FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
             thumbnailPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
             thumbnailPath =
                     thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
@@ -130,6 +129,7 @@ public class UploadController {
             }
         } catch (Exception e) {
             logger.info("上传头像异常", e);
+            return ResultUtil.error("上传失败");
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -209,7 +209,7 @@ public class UploadController {
                     uploadContent.setContent(content);
                     uploadContent.setSrc(PropConfig.getInstance()
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                    if (StringUtil.isNotEmpty(price)) {
+                    if (StringUtil.isNotEmpty(price)) {// 发布视频图片价格
                         uploadContent.setPrice(Double.valueOf(price));
                     }
                     uploadContent.setAddTime(DateUtil.currentDate());
@@ -221,32 +221,27 @@ public class UploadController {
                         buff.append(DateUtil.getLongDateStr());
                         uploadContent.setRemark(buff.toString());
                     }
-                    uploadContentBo.save(uploadContent);
-                    
-                    String srcUrl = uploadContent.getSrc();
-                    String thumbnailUrl = "";
-//                    try {
-//                        // 上传视频，生成截图
-//                        if (1 == type) {
-//                            String outImagePath =
-//                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
-//                            VideoPictureUtil.getVideoImage(
-//                                    PropConfig.getInstance()
-//                                            .getPropertyValue(Constants.FFMPEG_PATH),
-//                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
-//                            uploadContent.setSrc(PropConfig.getInstance()
-//                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
-//                            uploadContent.setRemark(fileName + "视频截图");
-//                            thumbnailUrl = uploadContent.getSrc();
-//                            uploadContentBo.save(uploadContent);
-//                        }
-//                    } catch (Exception e) {
-//                        logger.info("生成视频截图异常", e);
-//                    }
                     
                     Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", srcUrl);
-                    urlMap.put("thumbnailUrl", thumbnailUrl);
+                    urlMap.put("url", uploadContent.getSrc());
+                    String thumbnailUrl = "";
+                    try {
+                        // 上传视频，生成截图
+                        if (1 == type) {
+                            String outImagePath =
+                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
+                            VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
+                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
+                            uploadContent.setPic(PropConfig.getInstance()
+                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+                            uploadContent.setRemark(fileName + "视频截图");
+                            thumbnailUrl = uploadContent.getPic();
+                            urlMap.put("thumbnailUrl", thumbnailUrl);
+                        }
+                    } catch (Exception e) {
+                        logger.info("生成视频截图异常", e);
+                    }
+                    uploadContentBo.save(uploadContent);
                     pathList.add(urlMap);
                 }
             }
