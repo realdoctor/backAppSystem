@@ -15,12 +15,16 @@
 	<update id="updateByPubId" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
 		update upload_content
 		<set>
+		  <if test="pubId != null">pub_id=#{pubId,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="type != null">type=#{type,jdbcType=INTEGER},</if>
 		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
 		  <if test="src != null">src=#{src,jdbcType=VARCHAR},</if>
+		  <if test="pic != null">pic=#{pic,jdbcType=VARCHAR},</if>
+		  <if test="price != null">price=#{price,jdbcType=DECIMAL},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=NOW(),</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where pub_id=#{pubId,jdbcType=VARCHAR}
 	</update>

@@ -8,6 +8,7 @@
 		<result property="type" column="type" jdbcType="INTEGER"/>
 		<result property="content" column="content" jdbcType="VARCHAR"/>
 		<result property="src" column="src" jdbcType="VARCHAR"/>
+		<result property="pic" column="pic" jdbcType="VARCHAR"/>
 		<result property="price" column="price" jdbcType="DECIMAL"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
@@ -22,6 +23,7 @@
 		t.type,
 		t.content,
 		t.src,
+		t.pic,
 		t.price,
 		t.remark,
 		t.add_time,
@@ -36,6 +38,7 @@
 		t.type,
 		t.content,
 		t.src,
+		t.pic,
 		t.price,
 		t.remark,
 		t.add_time,
@@ -81,6 +84,7 @@
 		type,
 		content,
 		src,
+		pic,
 		price,
 		remark,
 		add_time,
@@ -92,6 +96,7 @@
 		#{type,jdbcType=INTEGER},
 		#{content,jdbcType=VARCHAR},
 		#{src,jdbcType=VARCHAR},
+		#{pic,jdbcType=VARCHAR},
 		#{price,jdbcType=DECIMAL},
 		#{remark,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
@@ -107,6 +112,7 @@
 		  <if test="type != null">type=#{type,jdbcType=INTEGER},</if>
 		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
 		  <if test="src != null">src=#{src,jdbcType=VARCHAR},</if>
+		  <if test="pic != null">pic=#{pic,jdbcType=VARCHAR},</if>
 		  <if test="price != null">price=#{price,jdbcType=DECIMAL},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
