@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.service.CodetableBo;
 import com.kanglian.healthcare.util.JsonUtil;
@@ -47,6 +48,9 @@ public class InitInfoListener {
     private String              filterPolicyFilePath = "/filterPolicy.xml";
 
     public static boolean noFilter(String url) {
+        if (StringUtils.hasText(url) && url.endsWith("/")) {
+            url = url.substring(0, url.lastIndexOf("/"));
+        }
         return notNeedtoFilterList.contains(url);
     }
 
