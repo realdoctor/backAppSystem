@@ -34,7 +34,7 @@ public class VideoPictureUtil {
         commands.add("-f");
         commands.add("image2");
         commands.add("-ss");
-        commands.add("5");// 这里设置的是要截取视频开始播放多少秒后的图，可以自己设置时间
+        commands.add("1");// 这里设置的是要截取视频开始播放多少秒后的图，可以自己设置时间
         commands.add("-t");
         commands.add("0.001");
         commands.add("-s");
