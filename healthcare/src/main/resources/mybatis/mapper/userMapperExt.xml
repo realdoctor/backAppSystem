@@ -44,8 +44,8 @@
 	<select id="getIdentifyInfo" resultType="map" parameterType="int">
         SELECT
 			t.user_id AS userId,
-			t.mobile_phone,
-			t.real_name AS mobilePhone,
+			t.mobile_phone AS mobilePhone,
+			t.real_name AS realName,
 			t1.type_id AS typeId,
 			t1.id_no AS idNo
 		FROM
