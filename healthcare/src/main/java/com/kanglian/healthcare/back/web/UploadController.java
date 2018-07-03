@@ -197,7 +197,14 @@ public class UploadController {
                         type = 2;
                     } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
                             .contains(extension)) {// 上传文件
-                        filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
+                        // filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
+                        StringBuilder buff = new StringBuilder();
+                        buff.append("/files/archive/");
+                        buff.append(DateUtil.getShortDateStr());
+                        buff.append("/");
+                        buff.append(fileName);
+                        buff.append(".").append(extension.toLowerCase());
+                        filePath = buff.toString();
                         type = 3;
                     } else {
                         return ResultUtil.error("上传格式不符合");
