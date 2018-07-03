@@ -203,7 +203,6 @@ public class UploadController {
                         buff.append(DateUtil.getShortDateStr());
                         buff.append("/");
                         buff.append(fileName);
-                        buff.append(".").append(extension.toLowerCase());
                         filePath = buff.toString();
                         type = 3;
                     } else {
