@@ -299,6 +299,19 @@ public class UserController extends CrudController<User, UserBo> {
     }
     
     /**
+     * 获取认证信息
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @GetMapping("/certification/info")
+    public ResultBody getIdentifyInfo(@CurrentUser User user, String userId) throws Exception {
+        return ResultUtil.success(this.bo.getIdentifyInfo(user.getUserId().intValue()));
+    }
+    
+    /**
      * 实名认证审核
      * 
      * @param user

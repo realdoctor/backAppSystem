@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.service;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -85,6 +86,20 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
     
     /**
+     * 获取认证信息
+     * 
+     * @param userId
+     * @return
+     */
+    public Map<String, Object> getIdentifyInfo(Integer userId) {
+        try {
+            return this.dao.getIdentifyInfo(userId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
      * 实名认证，关联用户信息
      * 
      * @param user
@@ -110,6 +125,7 @@ public class UserBo extends CrudBo<User, UserDao> {
                     userIdentifyT.setUserId(userId);
                     userIdentifyT.setStatus(0);
                     userIdentifyT.setAddTime(DateUtil.currentDate());
+                    userIdentifyT.setName("用户重新认证，时间="+DateUtil.getCurrentTime());
                     userIdentifyDao.update(userIdentifyT);
                 } else {
                     userIdentify.setUserId(userId);
