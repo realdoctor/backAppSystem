@@ -5,6 +5,18 @@
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
+		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
+		<result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
+		<result property="authorProfer" column="author_profer" jdbcType="VARCHAR"/>
+		<result property="authorHos" column="author_hos" jdbcType="VARCHAR"/>
+		<result property="authorDept" column="author_dept" jdbcType="VARCHAR"/>
+		<result property="putOn" column="put_on" jdbcType="INTEGER"/>
+		<result property="commend" column="commend" jdbcType="INTEGER"/>
+		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
+		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
+		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<sql id="columns">

@@ -1,16 +1,15 @@
 package com.kanglian.healthcare.back.service;
 
-import com.kanglian.healthcare.back.dal.dao.HealthNewsFocusDao;
-import com.easyway.business.framework.bo.CrudBo;
-import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
+import com.kanglian.healthcare.back.common.NewCrudBo;
+import com.kanglian.healthcare.back.dal.dao.HealthNewsFocusDao;
 import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
-public class HealthNewsFocusBo extends CrudBo<HealthNewsFocus, HealthNewsFocusDao> {
+public class HealthNewsFocusBo extends NewCrudBo<HealthNewsFocus, HealthNewsFocusDao> {
 
     /**
      * 根据userId获取关注列表
@@ -18,13 +17,11 @@ public class HealthNewsFocusBo extends CrudBo<HealthNewsFocus, HealthNewsFocusDa
      * @param userId
      * @return
      */
-    public List<HealthNewsFocus> getListByUserId(Integer userId) {
+    public List<Map<String, Object>> getListByUserId(Integer userId) {
         if (userId == null)
             return null;
         try {
-            ConditionQuery query = new ConditionQuery();
-            query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
-            return this.dao.query(query);
+            return this.dao.getNewsIdsByUserId(userId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

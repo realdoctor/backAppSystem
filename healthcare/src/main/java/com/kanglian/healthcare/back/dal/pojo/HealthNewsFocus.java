@@ -1,9 +1,8 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
-import com.easyway.business.framework.pojo.BasePojo;
 
-public class HealthNewsFocus extends BasePojo {
+public class HealthNewsFocus extends HealthNews {
 	private static final long serialVersionUID = 1L;
 	private Integer newsId;
 	private Integer userId;
