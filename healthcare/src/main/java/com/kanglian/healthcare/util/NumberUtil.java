@@ -287,10 +287,8 @@ public final class NumberUtil {
      * @return
      */
     public static boolean checkPrice(String price) {
-        String regex = "\\d\\.\\d*|[1-9]\\d*|\\d*\\.\\d*|\\d";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher isNum = pattern.matcher(price);
-        boolean matches = isNum.matches();
-        return matches;
+        Pattern pattern = Pattern.compile("^(\\-)?\\d+(\\.\\d{1,2})?$");
+        Matcher match = pattern.matcher(price);
+        return match.matches();
     }
 }
