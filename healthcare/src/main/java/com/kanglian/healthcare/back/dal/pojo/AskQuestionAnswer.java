@@ -6,6 +6,7 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class AskQuestionAnswer extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Long id;
+	private String messageId;
 	private Integer userId;
 	private Integer toUser;
 	private String question;
@@ -17,6 +18,12 @@ public class AskQuestionAnswer extends BasePojo {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getMessageId() {
+		return messageId;
+	}
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	}
 	public Integer getUserId() {
 		return userId;

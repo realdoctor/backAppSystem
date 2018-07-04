@@ -3,6 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.AskQuestionAnswerDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="messageId" column="message_id" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
 		<result property="question" column="question" jdbcType="VARCHAR"/>
@@ -13,6 +14,7 @@
 
 	<sql id="columns">
 		t.id,
+		t.message_id,
 		t.user_id,
 		t.to_user,
 		t.question,
@@ -24,6 +26,7 @@
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
 		t.id,
+		t.message_id,
 		t.user_id,
 		t.to_user,
 		t.question,
@@ -64,6 +67,7 @@
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" useGeneratedKeys="true" keyProperty="id">
 		insert into ask_question_answer (
+		message_id,
 		user_id,
 		to_user,
 		question,
@@ -72,6 +76,7 @@
 		last_update_dtime
 		)
 		values(
+		#{messageId,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
 		#{toUser,jdbcType=INTEGER},
 		#{question,jdbcType=VARCHAR},
@@ -84,6 +89,7 @@
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer">
 		update ask_question_answer
 		<set>
+		  <if test="messageId != null">message_id=#{messageId,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
 		  <if test="question != null">question=#{question,jdbcType=VARCHAR},</if>

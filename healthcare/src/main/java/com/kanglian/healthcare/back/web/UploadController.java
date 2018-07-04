@@ -25,6 +25,7 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
+import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
 import com.kanglian.healthcare.back.dal.pojo.User;
@@ -214,6 +215,7 @@ public class UploadController {
                     if (3 == type) {
                         // 上传病历，接收人
                         String receiveUserId = request.getParameter("receiveUserId");
+                        // 保存上传病历
                         UploadPatient uploadContent = new UploadPatient();
                         uploadContent.setPubId(contentId);
                         uploadContent.setUserId(user.getUserId().intValue());
@@ -230,7 +232,17 @@ public class UploadController {
                         buff.append("-");
                         buff.append(fileName);
                         uploadContent.setRemark(buff.toString());
-                        uploadPatientBo.save(uploadContent);
+                        
+                        // 保存资讯问题
+                        AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
+                        askQuestionAnswer.setUserId(user.getUserId().intValue());
+                        askQuestionAnswer.setMessageId(NumberUtil.getNewId());
+                        if (StringUtil.isNotEmpty(receiveUserId)) {
+                            askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+                        }
+                        askQuestionAnswer.setQuestion(content);
+                        askQuestionAnswer.setAddTime(DateUtil.currentDate());
+                        uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
                         
                         Map<String, String> urlMap = new HashMap<String, String>();
                         urlMap.put("url", uploadContent.getSrc());
