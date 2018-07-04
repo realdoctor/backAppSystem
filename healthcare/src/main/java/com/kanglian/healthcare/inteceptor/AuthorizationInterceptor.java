@@ -43,8 +43,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
         
         String urlStr = request.getRequestURI().trim();
-        logger.debug("=========>>>拦截请求Uri：{}", urlStr);
+        logger.info("=========>>>拦截请求Uri：{}", urlStr);
         if (InitInfoListener.noFilter(urlStr)) {
+            logger.info("=========>>>不需要拦截，直接放行");
             return true;
         }
         
@@ -53,7 +54,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // 从header中得到token
         String token = request.getHeader(AuthConfig.AUTHORIZATION);
         String name = method.getDeclaringClass().getName() + "." + method.getName();
-        logger.debug("=========>>>进入请求方法：{}", name);
+        logger.info("=========>>>进入请求方法：{}", name);
         logger.info("=================对请求进行身份验证，token=" + token);
         if (StringUtil.isNotEmpty(token)) {
             // 验证token
