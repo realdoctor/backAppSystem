@@ -5,7 +5,7 @@ package com.kanglian.healthcare.back.dal.cond;
  * 
  * @author xl.liu
  */
-public class Order {
+public class PaymentOrderItem {
 
     // 商品Id
     private Integer goodsId;

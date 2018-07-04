@@ -16,7 +16,7 @@ public class PaymentOrder {
     // 交易总额
     private Double      totalAmount;
     // 订单列表
-    private List<Order> goodsList;
+    private List<PaymentOrderItem> goodsList;
 
     public String getUserId() {
         return userId;
@@ -42,11 +42,11 @@ public class PaymentOrder {
         this.totalAmount = totalAmount;
     }
 
-    public List<Order> getGoodsList() {
+    public List<PaymentOrderItem> getGoodsList() {
         return goodsList;
     }
 
-    public void setGoodsList(List<Order> goodsList) {
+    public void setGoodsList(List<PaymentOrderItem> goodsList) {
         this.goodsList = goodsList;
     }
 

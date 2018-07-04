@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
-import com.kanglian.healthcare.back.dal.cond.Order;
+import com.kanglian.healthcare.back.dal.cond.PaymentOrderItem;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
 import com.kanglian.healthcare.back.dal.dao.GoodsDao;
 import com.kanglian.healthcare.back.dal.dao.GoodsOrderDao;
@@ -43,7 +43,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
     public boolean reviewPaymentOrder(final PaymentOrder paymentOrder) {
         Double totalAmount = paymentOrder.getTotalAmount();
         Double calcPayMoney = 0d;
-        for (Order order : paymentOrder.getGoodsList()) {
+        for (PaymentOrderItem order : paymentOrder.getGoodsList()) {
             Integer goodsId = order.getGoodsId();
             Integer goodsNum = order.getGoodsNum();
             if (goodsNum == null || goodsNum == 0)
@@ -80,7 +80,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             logger.info("==========订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
             logger.info("==========订单详情：{}", JsonUtil.object2Json(paymentOrder.getGoodsList()));
             // 2、订单详情
-            for (Order order : paymentOrder.getGoodsList()) {
+            for (PaymentOrderItem order : paymentOrder.getGoodsList()) {
                 GoodsOrderItem goodsItem = new GoodsOrderItem();
                 goodsItem.setGoodsOrderId(goodsOrderId);
                 goodsItem.setGoodsId(order.getGoodsId());
