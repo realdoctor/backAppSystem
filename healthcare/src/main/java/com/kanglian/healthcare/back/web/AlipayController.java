@@ -17,7 +17,6 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
-import com.easyway.business.framework.common.annotation.PerformanceClass;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
@@ -60,7 +59,6 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @RequestMapping(value = "/orderPay", method = RequestMethod.POST)
     @ResponseBody
     public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
@@ -154,10 +152,9 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @RequestMapping(value = "/reCallBack", method = RequestMethod.POST)
     @ResponseBody
-    public String orderPayNotify(@RequestBody AlipayNotifyResponse alipayResponse,
+    public String orderPayNotify(AlipayNotifyResponse alipayResponse,
             HttpServletRequest request) throws Exception {
         logger.debug("==============支付宝回调");
         // 写入支付宝回调日志
@@ -226,11 +223,9 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @RequestMapping(value = "/notifyCallBack", method = RequestMethod.POST)
     @ResponseBody
-    public String orderPayNotify2(@RequestBody AlipayNotifyResponse alipayResponse,
-            HttpServletRequest request) throws Exception {
+    public String orderPayNotify2(AlipayNotifyResponse alipayResponse, HttpServletRequest request) throws Exception {
         logger.debug("==============支付宝回调");
         // 写入支付宝回调日志
         alipayNotifyLogBo.insertNotifyLog(alipayResponse);
@@ -284,7 +279,6 @@ public class AlipayController extends BaseController {
         return "success";
     }
     
-    
     /**
      * 支付宝异步通知
      * 
@@ -293,10 +287,9 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PerformanceClass
     @RequestMapping(value = "/notifyCallBackT", method = RequestMethod.POST)
     @ResponseBody
-    public String orderPayNotify3(@RequestBody AlipayNotifyResponse alipayResponse,
+    public String orderPayNotify3(AlipayNotifyResponse alipayResponse,
             HttpServletRequest request) throws Exception {
         logger.debug("==============支付宝回调");
         // 写入支付宝回调日志
