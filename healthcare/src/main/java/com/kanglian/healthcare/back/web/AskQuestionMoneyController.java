@@ -18,7 +18,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.NumberUtil;
 
 /**
- * 寻医问诊收费配置表
+ * 寻医问诊收费配置
  * 
  * @author xl.liu
  */

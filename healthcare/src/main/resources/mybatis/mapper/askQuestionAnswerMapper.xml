@@ -35,6 +35,7 @@
 		t.last_update_dtime
 		from ask_question_answer t
 		<include refid="conditionQuery.core" />
+		group by t.message_id
 		order by
 		<choose>
 		<when test="paramMap.orderCol!=null">

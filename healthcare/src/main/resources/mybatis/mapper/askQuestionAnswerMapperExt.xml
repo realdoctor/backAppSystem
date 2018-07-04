@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.AskQuestionAnswerDao">
+	<select id="getListByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="columns"/>
+		from ask_question_answer t
+		where t.message_id = #{messageId,jdbcType=VARCHAR}
+		order by t.add_time desc
+	</select>
 </mapper>
