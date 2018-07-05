@@ -48,6 +48,7 @@
 				COUNT(t.message_id) replyNum
 			FROM
 				ask_question_answer t
+			WHERE t.answer=NULL OR t.answer=''
 			GROUP BY
 				t.message_id
 			<![CDATA[

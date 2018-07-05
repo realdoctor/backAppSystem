@@ -3,6 +3,8 @@ package com.kanglian.healthcare.back.web;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
@@ -31,6 +33,13 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RequestMapping(value = "/askQuestion")
 public class AskQuestionAnswerController extends CrudController<AskQuestionAnswer, AskQuestionAnswerBo> {
 
+    /**
+     * 回复列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/reply/list")
     public ResultBody list(UserQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
@@ -39,6 +48,62 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         return super.list(query);
     }
     
+    /**
+     * 回复内容
+     * 
+     * @param messageId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/reply")
+    public ResultBody reply(@RequestBody AskQuestionQuery query) throws Exception {
+        String userId = query.getUserId();
+        String roleId = query.getRoleId();
+        String questionId = query.getQuestionId();
+        String content = query.getContent();
+        if (StringUtil.isEmpty(userId)) {
+            throw new InvalidParamException("userId");
+        }
+        if (StringUtil.isEmpty(roleId)) {
+            throw new InvalidParamException("roleId");
+        }
+        if (StringUtil.isEmpty(content)) {
+            throw new InvalidParamException("content");
+        }
+        if (StringUtil.isEmpty(questionId)) {
+            throw new InvalidParamException("questionId");
+        }
+
+        AskQuestionAnswer askQuestionAnswer = this.bo.get(Long.valueOf(questionId));
+        if (askQuestionAnswer == null) {
+            return ResultUtil.error("请求回复非法");
+        }
+        if ("1".equals(roleId)) {// 医生回复，更新列表
+            if (askQuestionAnswer != null) {
+                askQuestionAnswer.setAnswer(content);
+                askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
+                this.bo.update(askQuestionAnswer);
+            }
+        } else {
+            // 患者回复，插入新问题
+            AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
+            newAskQuestionAnswer.setUserId(Integer.valueOf(userId));
+            newAskQuestionAnswer.setMessageId(askQuestionAnswer.getMessageId());
+            newAskQuestionAnswer.setToUser(askQuestionAnswer.getToUser());
+            newAskQuestionAnswer.setQuestion(content);
+            newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
+            this.bo.save(newAskQuestionAnswer);
+        }
+        return ResultUtil.success();
+    }
+    
+    /**
+     * 回复内容详情
+     * 
+     * @param messageId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/reply/info")
     public ResultBody info(String messageId) throws Exception {
         if (StringUtil.isEmpty(messageId)) {
@@ -80,6 +145,9 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     public static class AskQuestionQuery extends Grid {
 
         private String userId;
+        private String roleId;
+        private String questionId;
+        private String content;
 
         @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
@@ -90,5 +158,28 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             this.userId = userId;
         }
 
+        public String getRoleId() {
+            return roleId;
+        }
+
+        public void setRoleId(String roleId) {
+            this.roleId = roleId;
+        }
+
+        public String getQuestionId() {
+            return questionId;
+        }
+
+        public void setQuestionId(String questionId) {
+            this.questionId = questionId;
+        }
+        
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 }
