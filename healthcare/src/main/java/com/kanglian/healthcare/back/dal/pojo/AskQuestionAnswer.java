@@ -1,10 +1,12 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
-public class AskQuestionAnswer extends BasePojo {
+public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestionAnswer> {
 	private static final long serialVersionUID = 1L;
+	@JSONField(name="questionId")
 	private Long id;
 	private String messageId;
 	private Integer userId;
@@ -61,4 +63,9 @@ public class AskQuestionAnswer extends BasePojo {
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
+	
+    @Override
+    public int compareTo(AskQuestionAnswer o) {
+        return id.compareTo(o.getId());
+    }
 }

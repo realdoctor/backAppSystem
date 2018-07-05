@@ -1,9 +1,12 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.Collections;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSONObject;
+import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
@@ -42,7 +45,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("messageId");
         }
         
-        List<AskQuestionAnswer> resultList = this.bo.getListByUserId(messageId);
+        final List<AskQuestionAnswer> resultList = this.bo.getListByUserId(messageId);
         if (CollectionUtil.isNotEmpty(resultList)) {
             AskQuestionAnswer entity = resultList.get(0);// 获取最新一条，未回答三天后打款
             if (StringUtil.isEmpty(entity.getAnswer()) 
@@ -52,7 +55,26 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                 this.bo.update(entity);
             }
         }
-        return ResultUtil.success(resultList);
+        
+        List<JSONObject> jsonObj = ResultUtil.wearCloth(resultList, new JsonClothProcessor() {
+
+            private AskQuestionAnswer maxQuestionQuestionAnswer = Collections.max(resultList);
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                try {
+                    // 取同一，主要是为了。在回复时更新
+                    if (maxQuestionQuestionAnswer.getId() != null) {
+                        jsonObject.put("questionId", maxQuestionQuestionAnswer.getId());
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+
+        });
+        return ResultUtil.success(jsonObj);
     }
     
     public static class AskQuestionQuery extends Grid {
