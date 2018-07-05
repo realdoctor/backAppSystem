@@ -233,7 +233,7 @@ public class UploadController {
                         buff.append(fileName);
                         uploadContent.setRemark(buff.toString());
                         
-                        // 保存资讯问题
+                        // 保存咨询问题
                         AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
                         askQuestionAnswer.setUserId(user.getUserId().intValue());
                         askQuestionAnswer.setMessageId(NumberUtil.getNewId());
