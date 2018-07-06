@@ -266,6 +266,10 @@ public class UploadController {
         if (files == null) {
             throw new InvalidParamException("attach");
         }
+        // 上传病历限制一个
+        if (files.length > 1) {
+            return ResultUtil.error("上传病历不能多个");
+        }
         
         // 上传病历，接收人
         String receiveUserId = request.getParameter("receiveUserId");
