@@ -6,8 +6,8 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class UploadPatient extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private String pubId;
-	private Integer userId;
+	private String messageId;
+    private Integer userId;
 	private Integer receiveUserId;
 	private String content;
 	private String src;
@@ -19,12 +19,12 @@ public class UploadPatient extends BasePojo {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getPubId() {
-		return pubId;
-	}
-	public void setPubId(String pubId) {
-		this.pubId = pubId;
-	}
+    public String getMessageId() {
+        return messageId;
+    }
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 	public Integer getUserId() {
 		return userId;
 	}

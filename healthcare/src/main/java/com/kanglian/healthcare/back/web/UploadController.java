@@ -266,6 +266,7 @@ public class UploadController {
         if (files == null) {
             throw new InvalidParamException("attach");
         }
+        
         // 上传病历限制一个
         if (files.length > 1) {
             return ResultUtil.error("上传病历不能多个");
@@ -285,7 +286,10 @@ public class UploadController {
         if (files != null && files.length > 0) {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
-            final String contentId = NumberUtil.getNewId();
+            String messageId = request.getParameter("messageId");
+            if (StringUtil.isEmpty(messageId)) {// 判断同一问题id
+                messageId = NumberUtil.getNewId();
+            }
             // 循环获取file数组中得文件
             for (int i = 0; i < files.length; i++) {
                 MultipartFile file = files[i];
@@ -312,7 +316,7 @@ public class UploadController {
                     
                     // 保存上传病历
                     UploadPatient uploadContent = new UploadPatient();
-                    uploadContent.setPubId(contentId);
+                    uploadContent.setMessageId(messageId);
                     uploadContent.setUserId(user.getUserId().intValue());
                     if (StringUtil.isNotEmpty(receiveUserId)) {
                         uploadContent.setReceiveUserId(Integer.valueOf(receiveUserId));
@@ -331,7 +335,7 @@ public class UploadController {
                     // 保存咨询问题
                     AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
                     askQuestionAnswer.setUserId(user.getUserId().intValue());
-                    askQuestionAnswer.setMessageId(NumberUtil.getNewId());
+                    askQuestionAnswer.setMessageId(messageId);
                     if (StringUtil.isNotEmpty(receiveUserId)) {
                         askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
                     }
@@ -344,7 +348,7 @@ public class UploadController {
                     pathList.add(urlMap);
                 }
             }
-            resultMap.put("pubId", contentId);
+            resultMap.put("messageId", messageId);
             resultMap.put("list", pathList);
             return ResultUtil.success(resultMap);
         }
