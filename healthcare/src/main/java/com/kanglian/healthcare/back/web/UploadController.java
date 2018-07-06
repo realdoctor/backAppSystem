@@ -160,7 +160,7 @@ public class UploadController {
         logger.info("===========进入上传视频图片，user=" + user.getMobilePhone());
         
         if (files == null) {
-            throw new InvalidParamException("files");
+            throw new InvalidParamException("attach");
         }
         
         // 说说内容
@@ -196,7 +196,102 @@ public class UploadController {
                             .contains(extension)) {// 上传图片
                         filePath = "/files/images".concat(FileUtil.randomPathname(extension));
                         type = 2;
-                    } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
+                    } else {
+                        return ResultUtil.error("上传格式不符合");
+                    }
+                    File uploadedFile = new File(pathRoot + filePath);
+                    FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+                    
+                    // 保存
+                    UploadContent uploadContent = new UploadContent();
+                    uploadContent.setUserId(user.getUserId().intValue());
+                    uploadContent.setPubId(contentId);
+                    uploadContent.setType(type);
+                    uploadContent.setContent(content);
+                    uploadContent.setSrc(PropConfig.getInstance()
+                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    if (StringUtil.isNotEmpty(price)) {// 发布视频图片价格
+                        uploadContent.setPrice(Double.valueOf(price));
+                    } else {
+                        uploadContent.setPrice(0d);
+                    }
+                    uploadContent.setAddTime(DateUtil.currentDate());
+                    
+                    Map<String, String> urlMap = new HashMap<String, String>();
+                    urlMap.put("url", uploadContent.getSrc());
+                    String thumbnailUrl = "";
+                    try {
+                        // 上传视频，生成截图
+                        if (1 == type) {
+                            String outImagePath =
+                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
+                            VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
+                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
+                            uploadContent.setPic(PropConfig.getInstance()
+                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+                            uploadContent.setRemark(fileName + "视频截图");
+                            thumbnailUrl = uploadContent.getPic();
+                            urlMap.put("thumbnailUrl", thumbnailUrl);
+                        }
+                    } catch (Exception e) {
+                        logger.info("生成视频截图异常", e);
+                    }
+                    uploadContentBo.save(uploadContent);
+                    pathList.add(urlMap);
+                }
+            }
+            resultMap.put("pubId", contentId);
+            resultMap.put("list", pathList);
+            return ResultUtil.success(resultMap);
+        }
+        return ResultUtil.error("上传失败");
+    }
+    
+    /**
+     * 上传病历文件
+     * 
+     * @param user
+     * @param files
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/uploadPatient", method = RequestMethod.POST)
+    public ResultBody patientUpload(@CurrentUser User user,
+            @RequestParam(value = "attach", required = false) MultipartFile[] files,
+            HttpServletRequest request) throws Exception {
+        logger.info("===========进入上传病历文件，user=" + user.getMobilePhone());
+        
+        if (files == null) {
+            throw new InvalidParamException("attach");
+        }
+        
+        // 上传病历，接收人
+        String receiveUserId = request.getParameter("receiveUserId");
+        if (StringUtil.isEmpty(receiveUserId)) {
+            return ResultUtil.error("医生Id不能为空");
+        }
+        
+        // 上传病历问题
+        String content = request.getParameter("content");
+        
+        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+        // 判断file数组不能为空并且长度大于0
+        if (files != null && files.length > 0) {
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
+            final String contentId = NumberUtil.getNewId();
+            // 循环获取file数组中得文件
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                if (!file.isEmpty()) {
+                    // 文件名
+                    final String fileName = file.getOriginalFilename();
+                    // 获取文件类型
+                    String extension = FilenameUtils.getExtension(fileName).toLowerCase();
+                    String filePath = null;
+                    if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
                             .contains(extension)) {// 上传文件
                         // filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
                         StringBuilder buff = new StringBuilder();
@@ -205,87 +300,44 @@ public class UploadController {
                         buff.append("/");
                         buff.append(fileName);
                         filePath = buff.toString();
-                        type = 3;
                     } else {
                         return ResultUtil.error("上传格式不符合");
                     }
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     
-                    if (3 == type) {
-                        // 上传病历，接收人
-                        String receiveUserId = request.getParameter("receiveUserId");
-                        // 保存上传病历
-                        UploadPatient uploadContent = new UploadPatient();
-                        uploadContent.setPubId(contentId);
-                        uploadContent.setUserId(user.getUserId().intValue());
-                        if (StringUtil.isNotEmpty(receiveUserId)) {
-                            uploadContent.setReceiveUserId(Integer.valueOf(receiveUserId));
-                        }
-                        uploadContent.setContent(content);
-                        uploadContent.setSrc(PropConfig.getInstance()
-                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                        uploadContent.setAddTime(DateUtil.currentDate());
-                        StringBuilder buff = new StringBuilder();
-                        buff.append("[存档病历]");
-                        buff.append(user.getRealName());
-                        buff.append("-");
-                        buff.append(fileName);
-                        uploadContent.setRemark(buff.toString());
-                        
-                        // 保存咨询问题
-                        AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
-                        askQuestionAnswer.setUserId(user.getUserId().intValue());
-                        askQuestionAnswer.setMessageId(NumberUtil.getNewId());
-                        if (StringUtil.isNotEmpty(receiveUserId)) {
-                            askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
-                        }
-                        askQuestionAnswer.setQuestion(content);
-                        askQuestionAnswer.setAddTime(DateUtil.currentDate());
-                        uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
-                        
-                        Map<String, String> urlMap = new HashMap<String, String>();
-                        urlMap.put("url", uploadContent.getSrc());
-                        pathList.add(urlMap);
-                    } else {
-                        // 保存
-                        UploadContent uploadContent = new UploadContent();
-                        uploadContent.setUserId(user.getUserId().intValue());
-                        uploadContent.setPubId(contentId);
-                        uploadContent.setType(type);
-                        uploadContent.setContent(content);
-                        uploadContent.setSrc(PropConfig.getInstance()
-                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                        if (StringUtil.isNotEmpty(price)) {// 发布视频图片价格
-                            uploadContent.setPrice(Double.valueOf(price));
-                        } else {
-                            uploadContent.setPrice(0d);
-                        }
-                        uploadContent.setAddTime(DateUtil.currentDate());
-                        
-                        Map<String, String> urlMap = new HashMap<String, String>();
-                        urlMap.put("url", uploadContent.getSrc());
-                        String thumbnailUrl = "";
-                        try {
-                            // 上传视频，生成截图
-                            if (1 == type) {
-                                String outImagePath =
-                                        filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
-                                VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
-                                        pathRoot.concat(filePath), pathRoot.concat(outImagePath));
-                                uploadContent.setPic(PropConfig.getInstance()
-                                        .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
-                                uploadContent.setRemark(fileName + "视频截图");
-                                thumbnailUrl = uploadContent.getPic();
-                                urlMap.put("thumbnailUrl", thumbnailUrl);
-                            }
-                        } catch (Exception e) {
-                            logger.info("生成视频截图异常", e);
-                        }
-                        uploadContentBo.save(uploadContent);
-                        pathList.add(urlMap);
+                    // 保存上传病历
+                    UploadPatient uploadContent = new UploadPatient();
+                    uploadContent.setPubId(contentId);
+                    uploadContent.setUserId(user.getUserId().intValue());
+                    if (StringUtil.isNotEmpty(receiveUserId)) {
+                        uploadContent.setReceiveUserId(Integer.valueOf(receiveUserId));
                     }
+                    uploadContent.setContent(content);
+                    uploadContent.setSrc(PropConfig.getInstance()
+                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    uploadContent.setAddTime(DateUtil.currentDate());
+                    StringBuilder buff = new StringBuilder();
+                    buff.append("[存档病历]");
+                    buff.append(user.getRealName());
+                    buff.append("-");
+                    buff.append(fileName);
+                    uploadContent.setRemark(buff.toString());
                     
+                    // 保存咨询问题
+                    AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
+                    askQuestionAnswer.setUserId(user.getUserId().intValue());
+                    askQuestionAnswer.setMessageId(NumberUtil.getNewId());
+                    if (StringUtil.isNotEmpty(receiveUserId)) {
+                        askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+                    }
+                    askQuestionAnswer.setQuestion(content);
+                    askQuestionAnswer.setAddTime(DateUtil.currentDate());
+                    uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
+                    
+                    Map<String, String> urlMap = new HashMap<String, String>();
+                    urlMap.put("url", uploadContent.getSrc());
+                    pathList.add(urlMap);
                 }
             }
             resultMap.put("pubId", contentId);
