@@ -76,7 +76,7 @@
 		add_time
 		)
 		values(
-		#{pubId,jdbcType=VARCHAR},
+		#{messageId,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
 		#{receiveUserId,jdbcType=INTEGER},
 		#{content,jdbcType=VARCHAR},
@@ -89,7 +89,7 @@
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadPatient">
 		update upload_patient
 		<set>
-		  <if test="pubId != null">message_id=#{pubId,jdbcType=VARCHAR},</if>
+		  <if test="messageId != null">message_id=#{messageId,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="receiveUserId != null">receive_user_id=#{receiveUserId,jdbcType=INTEGER},</if>
 		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
