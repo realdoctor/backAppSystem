@@ -7,8 +7,8 @@ public class UploadPatient extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String messageId;
+	private Integer questionId;
     private Integer userId;
-	private Integer receiveUserId;
 	private String content;
 	private String src;
 	private String remark;
@@ -25,17 +25,17 @@ public class UploadPatient extends BasePojo {
     public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
+    public Integer getQuestionId() {
+        return questionId;
+    }
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
 	public Integer getUserId() {
 		return userId;
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-	public Integer getReceiveUserId() {
-		return receiveUserId;
-	}
-	public void setReceiveUserId(Integer receiveUserId) {
-		this.receiveUserId = receiveUserId;
 	}
 	public String getContent() {
 		return content;

@@ -6,6 +6,10 @@ import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 
 public interface AskQuestionAnswerDao extends NewCrudDao<AskQuestionAnswer> {
 
+    public AskQuestionAnswer getByMessageId(String messageId);
+    
+    public int updateByMessageId(AskQuestionAnswer askQuestionAnswer);
+    
     /**
      * 回复列表详情
      * 

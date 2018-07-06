@@ -314,13 +314,21 @@ public class UploadController {
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     
+                    // 保存咨询问题
+                    AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
+                    askQuestionAnswer.setUserId(user.getUserId().intValue());
+                    askQuestionAnswer.setMessageId(messageId);
+                    if (StringUtil.isNotEmpty(receiveUserId)) {
+                        askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+                    }
+                    askQuestionAnswer.setQuestion(content);
+                    askQuestionAnswer.setStatus("0");
+                    askQuestionAnswer.setAddTime(DateUtil.currentDate());
+                    
                     // 保存上传病历
                     UploadPatient uploadContent = new UploadPatient();
                     uploadContent.setMessageId(messageId);
                     uploadContent.setUserId(user.getUserId().intValue());
-                    if (StringUtil.isNotEmpty(receiveUserId)) {
-                        uploadContent.setReceiveUserId(Integer.valueOf(receiveUserId));
-                    }
                     uploadContent.setContent(content);
                     uploadContent.setSrc(PropConfig.getInstance()
                             .getPropertyValue(Constants.STATIC_URL).concat(filePath));
@@ -331,16 +339,6 @@ public class UploadController {
                     buff.append("-");
                     buff.append(fileName);
                     uploadContent.setRemark(buff.toString());
-                    
-                    // 保存咨询问题
-                    AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
-                    askQuestionAnswer.setUserId(user.getUserId().intValue());
-                    askQuestionAnswer.setMessageId(messageId);
-                    if (StringUtil.isNotEmpty(receiveUserId)) {
-                        askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
-                    }
-                    askQuestionAnswer.setQuestion(content);
-                    askQuestionAnswer.setAddTime(DateUtil.currentDate());
                     uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
                     
                     Map<String, String> urlMap = new HashMap<String, String>();

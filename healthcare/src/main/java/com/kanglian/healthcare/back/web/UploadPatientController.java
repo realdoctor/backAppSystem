@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.easyway.business.framework.mybatis.query.ConditionQuery;
+import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -69,7 +71,7 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
             this.userId = userId;
         }
         
-        @SingleValue(column = "receive_user_id", equal = "=")
+        @SingleValue(column = "to_user", equal = "=")
         public String getDoctorUserId() {
             return doctorUserId;
         }
@@ -77,5 +79,13 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
         public void setDoctorUserId(String doctorUserId) {
             this.doctorUserId = doctorUserId;
         }
+
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)<=3 "));
+            return query;
+        }
+        
     }
 }

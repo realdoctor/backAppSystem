@@ -13,7 +13,8 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private Integer toUser;
 	private String question;
 	private String answer;
-	private Date addTime;
+	private String status;
+    private Date addTime;
 	private Date lastUpdateDtime;
 	private String patientRealName;
     private String doctorRealName;
@@ -53,6 +54,12 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+	public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 	public Date getAddTime() {
 		return addTime;
 	}

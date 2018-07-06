@@ -8,6 +8,7 @@
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
 		<result property="question" column="question" jdbcType="VARCHAR"/>
 		<result property="answer" column="answer" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
@@ -21,6 +22,7 @@
 		t.to_user,
 		t.question,
 		t.answer,
+		t.status,
 		t.add_time,
 		t.last_update_dtime
 	</sql>
@@ -34,6 +36,7 @@
 			t.to_user,
 			t.question,
 			t.answer,
+			t.status,
 			t.add_time,
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
@@ -96,6 +99,7 @@
 		to_user,
 		question,
 		answer,
+		status,
 		add_time,
 		last_update_dtime
 		)
@@ -105,6 +109,7 @@
 		#{toUser,jdbcType=INTEGER},
 		#{question,jdbcType=VARCHAR},
 		#{answer,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
@@ -118,6 +123,7 @@
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
 		  <if test="question != null">question=#{question,jdbcType=VARCHAR},</if>
 		  <if test="answer != null">answer=#{answer,jdbcType=VARCHAR},</if>
+		  <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>

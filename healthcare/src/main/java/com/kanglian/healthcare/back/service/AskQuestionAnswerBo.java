@@ -10,6 +10,22 @@ import com.kanglian.healthcare.exception.DBException;
 @Service
 public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestionAnswerDao> {
 
+    public AskQuestionAnswer getByMessageId(String messageId) {
+        try {
+            return this.dao.getByMessageId(messageId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    public int updateByMessageId(AskQuestionAnswer askQuestionAnswer) {
+        try {
+            return this.dao.updateByMessageId(askQuestionAnswer);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
     /**
      * 回复列表详情
      * 
