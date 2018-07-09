@@ -14,7 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 
 /**
  * 一个简单的用于性能监测的拦截器.
@@ -80,8 +80,7 @@ public class PerformanceInterceptor {
                     allParams.add(arg);
                 }
             }
-            Gson gson = new Gson();
-            logger.debug("请求开始，方法：" + name + "\r\n=======>>>入参：" + gson.toJson(allParams));
+            logger.debug("请求开始，方法：" + name + "\r\n=======>>>入参：" + JSON.toJSONString(allParams));
         } catch (Exception ex) {
             // TODO: handle exception
             logger.info(ex.getMessage(), ex);
