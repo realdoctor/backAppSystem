@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.AccountCashDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AccountCash" id="BaseResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="BIT"/>
+		<result property="account" column="account" jdbcType="VARCHAR"/>
+		<result property="bank" column="bank" jdbcType="VARCHAR"/>
+		<result property="branch" column="branch" jdbcType="VARCHAR"/>
+		<result property="alipayid" column="alipayid" jdbcType="VARCHAR"/>
+		<result property="wxid" column="wxid" jdbcType="VARCHAR"/>
+		<result property="money" column="money" jdbcType="DECIMAL"/>
+		<result property="credited" column="credited" jdbcType="DECIMAL"/>
+		<result property="fee" column="fee" jdbcType="DECIMAL"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.id,
+		t.user_id,
+		t.type,
+		t.status,
+		t.account,
+		t.bank,
+		t.branch,
+		t.alipayid,
+		t.wxid,
+		t.money,
+		t.credited,
+		t.fee,
+		t.add_time,
+		t.last_update_dtime
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.id,
+		t.user_id,
+		t.type,
+		t.status,
+		t.account,
+		t.bank,
+		t.branch,
+		t.alipayid,
+		t.wxid,
+		t.money,
+		t.credited,
+		t.fee,
+		t.add_time,
+		t.last_update_dtime
+		from account_cash t
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from account_cash t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="columns"/>
+		from account_cash t
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from account_cash where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AccountCash" useGeneratedKeys="true" keyProperty="id">
+		insert into account_cash (
+		user_id,
+		type,
+		status,
+		account,
+		bank,
+		branch,
+		alipayid,
+		wxid,
+		money,
+		credited,
+		fee,
+		add_time,
+		last_update_dtime
+		)
+		values(
+		#{userId,jdbcType=INTEGER},
+		#{type,jdbcType=VARCHAR},
+		#{status,jdbcType=BIT},
+		#{account,jdbcType=VARCHAR},
+		#{bank,jdbcType=VARCHAR},
+		#{branch,jdbcType=VARCHAR},
+		#{alipayid,jdbcType=VARCHAR},
+		#{wxid,jdbcType=VARCHAR},
+		#{money,jdbcType=DECIMAL},
+		#{credited,jdbcType=DECIMAL},
+		#{fee,jdbcType=DECIMAL},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AccountCash">
+		update account_cash
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="type != null">type=#{type,jdbcType=VARCHAR},</if>
+		  <if test="status != null">status=#{status,jdbcType=BIT},</if>
+		  <if test="account != null">account=#{account,jdbcType=VARCHAR},</if>
+		  <if test="bank != null">bank=#{bank,jdbcType=VARCHAR},</if>
+		  <if test="branch != null">branch=#{branch,jdbcType=VARCHAR},</if>
+		  <if test="alipayid != null">alipayid=#{alipayid,jdbcType=VARCHAR},</if>
+		  <if test="wxid != null">wxid=#{wxid,jdbcType=VARCHAR},</if>
+		  <if test="money != null">money=#{money,jdbcType=DECIMAL},</if>
+		  <if test="credited != null">credited=#{credited,jdbcType=DECIMAL},</if>
+		  <if test="fee != null">fee=#{fee,jdbcType=DECIMAL},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
