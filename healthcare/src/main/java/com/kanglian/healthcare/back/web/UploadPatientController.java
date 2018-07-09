@@ -63,6 +63,8 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
     public static class ContentQuery extends Grid {
         private String userId;
         private String doctorUserId;
+        // 1|进行中，2|已完结
+        private String type;
 
         @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
@@ -82,10 +84,23 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
             this.doctorUserId = doctorUserId;
         }
 
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+        
         @Override
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
-            query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)<=3 "));
+            // 超过3天的问题，并且医生端已浏览或已回复的不展示
+            if ("1".equals(getType())) {
+                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)<=3 "));
+            } else if ("2".equals(getType())) {
+                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)>3 "));
+            }
             return query;
         }
         
