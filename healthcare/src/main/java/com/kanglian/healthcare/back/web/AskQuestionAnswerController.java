@@ -117,12 +117,13 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         }
         if (askQuestionAnswer != null) {
             askQuestionAnswer.setAnswer(content);
-            askQuestionAnswer.setStatus("0");
             if (StringUtil.isNotEmpty(content)) {
+                askQuestionAnswer.setStatus("2");
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
             } else {
                 if (askQuestionAnswer.getLastUpdateDtime() == null) {// 点开第一次默认算回复，未回答三天后打款
+                    askQuestionAnswer.setStatus("1");
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     this.bo.update(askQuestionAnswer);
                 }
