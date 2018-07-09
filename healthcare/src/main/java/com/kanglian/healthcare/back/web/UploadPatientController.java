@@ -32,7 +32,9 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
     
     /**
      * 用户上传病历列表
-     * 
+     *  1、患者查看上传病历
+     *  2、医生查看患者上传病历
+     *  
      * @param query
      * @return
      * @throws Exception
