@@ -13,7 +13,15 @@ public class UploadPatient extends BasePojo {
 	private String src;
 	private String remark;
 	private Date addTime;
-	public Integer getId() {
+	// 问题内容
+	private String question;
+	// 回答内容
+	private String answer;
+    // 患者名字
+	private String patientRealName;
+	// 医生名字
+	private String doctorRealName;
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
@@ -61,4 +69,32 @@ public class UploadPatient extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
+	/**
+	 * 
+	 * @return
+	 */
+	public String getQuestion() {
+        return question;
+    }
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+    public String getAnswer() {
+        return answer;
+    }
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+    public String getPatientRealName() {
+        return patientRealName;
+    }
+    public void setPatientRealName(String patientRealName) {
+        this.patientRealName = patientRealName;
+    }
+    public String getDoctorRealName() {
+        return doctorRealName;
+    }
+    public void setDoctorRealName(String doctorRealName) {
+        this.doctorRealName = doctorRealName;
+    }
 }
