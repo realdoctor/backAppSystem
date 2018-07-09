@@ -97,9 +97,9 @@ public class UploadPatientController extends CrudController<UploadPatient, Uploa
             ConditionQuery query = super.buildConditionQuery();
             // 超过3天的问题，并且医生端已浏览或已回复的不展示
             if ("1".equals(getType())) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)<=3 "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)<=3 and t.status=1 "));
             } else if ("2".equals(getType())) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)>3 "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" datediff(now(),t.add_time)>3 and t.status=2 "));
             }
             return query;
         }

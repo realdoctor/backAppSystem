@@ -322,7 +322,7 @@ public class UploadController {
                         askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
                     }
                     askQuestionAnswer.setQuestion(content);
-                    askQuestionAnswer.setStatus("0");
+                    askQuestionAnswer.setStatus("1");
                     askQuestionAnswer.setAddTime(DateUtil.currentDate());
                     
                     // 保存上传病历
