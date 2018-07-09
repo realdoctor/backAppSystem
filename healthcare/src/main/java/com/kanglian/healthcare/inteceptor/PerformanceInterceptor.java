@@ -82,7 +82,6 @@ public class PerformanceInterceptor {
             }
             logger.debug("请求开始，方法：" + name + "\r\n=======>>>入参：" + JSON.toJSONString(allParams));
         } catch (Exception ex) {
-            // TODO: handle exception
             logger.info(ex.getMessage(), ex);
         }
 
