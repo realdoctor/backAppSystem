@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.AskQuestionAnswerDao">
-	<select id="getListByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="getListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="columns"/>
 		from ask_question_answer t
-		where t.message_id = #{messageId,jdbcType=VARCHAR}
+		where t.user_id = #{userId,jdbcType=INTEGER}
 		order by t.add_time desc
 	</select>
 	
-	<select id="getByMessageId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="getListByMessageId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="columns"/>
 		from ask_question_answer t
 		where message_id=#{messageId,jdbcType=VARCHAR}
+		order by t.add_time desc
 	</select>
-
-	<update id="updateByMessageId" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer">
-		update ask_question_answer
-		<set>
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
-		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
-		  <if test="question != null">question=#{question,jdbcType=VARCHAR},</if>
-		  <if test="answer != null">answer=#{answer,jdbcType=VARCHAR},</if>
-		  <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
-		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
-		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
-		</set>
-		where message_id=#{messageId,jdbcType=VARCHAR}
-	</update>
 </mapper>

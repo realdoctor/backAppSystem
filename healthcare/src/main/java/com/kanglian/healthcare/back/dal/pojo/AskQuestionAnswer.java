@@ -16,7 +16,9 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String status;
     private Date addTime;
 	private Date lastUpdateDtime;
-	private String patientRealName;
+	private String src;
+	private String remark;
+    private String patientRealName;
     private String doctorRealName;
 	public Long getId() {
 		return id;
@@ -72,6 +74,18 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
+	public String getSrc() {
+        return src;
+    }
+    public void setSrc(String src) {
+        this.src = src;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 	public String getPatientRealName() {
         return patientRealName;
     }

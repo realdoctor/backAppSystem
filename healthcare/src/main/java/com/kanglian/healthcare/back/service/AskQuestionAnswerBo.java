@@ -10,31 +10,17 @@ import com.kanglian.healthcare.exception.DBException;
 @Service
 public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestionAnswerDao> {
 
-    public AskQuestionAnswer getByMessageId(String messageId) {
+    public List<AskQuestionAnswer> getListByUserId(Integer userId) {
         try {
-            return this.dao.getByMessageId(messageId);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
-    }
-
-    public int updateByMessageId(AskQuestionAnswer askQuestionAnswer) {
-        try {
-            return this.dao.updateByMessageId(askQuestionAnswer);
+            return this.dao.getListByUserId(userId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
     
-    /**
-     * 回复列表详情
-     * 
-     * @param messageId
-     * @return
-     */
-    public List<AskQuestionAnswer> getListByUserId(String messageId) {
+    public List<AskQuestionAnswer> getListByMessageId(String messageId) {
         try {
-            return this.dao.getListByUserId(messageId);
+            return this.dao.getListByMessageId(messageId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }

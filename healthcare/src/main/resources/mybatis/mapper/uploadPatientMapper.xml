@@ -10,6 +10,10 @@
 		<result property="src" column="src" jdbcType="VARCHAR"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="question" column="question" jdbcType="VARCHAR"/>
+		<result property="answer" column="answer" jdbcType="VARCHAR"/>
+		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
+		<result property="doctorRealName" column="doctorRealName" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -23,6 +27,7 @@
 		t.add_time
 	</sql>
 
+	<!-- 患者上传病历列表 -->
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			*
@@ -37,10 +42,16 @@
 				t.content,
 				t.src,
 				t.remark,
-				t.add_time
+				t.add_time,
+				t1.question,
+				t1.answer,
+				u1.real_name AS patientRealName,
+				u2.real_name AS doctorRealName
 			FROM
 				upload_patient t
 			LEFT JOIN ask_question_answer t1 ON t1.id = t.question_id
+			LEFT JOIN user u1 ON u1.user_id=t.user_id
+			LEFT JOIN user u2 ON u2.user_id=t1.to_user
 		) t
 		<include refid="conditionQuery.core" />
 		order by

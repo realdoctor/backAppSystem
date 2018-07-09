@@ -1,20 +1,15 @@
 package com.kanglian.healthcare.back.web;
 
-import java.util.Collections;
-import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.alibaba.fastjson.JSONObject;
-import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
-import com.easyway.business.framework.util.CollectionUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
@@ -34,7 +29,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 public class AskQuestionAnswerController extends CrudController<AskQuestionAnswer, AskQuestionAnswerBo> {
 
     /**
-     * 回复列表
+     * 显示最新一条回复列表
      * 
      * @param query
      * @return
@@ -98,7 +93,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 //    }
     
     /**
-     * 医生回复内容
+     * 医生回复问诊
      * 
      * @param messageId
      * @return
@@ -149,37 +144,53 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("messageId");
         }
         
-        final List<AskQuestionAnswer> resultList = this.bo.getListByUserId(messageId);
-        if (CollectionUtil.isNotEmpty(resultList)) {
-            AskQuestionAnswer entity = resultList.get(0);// 获取最新一条，未回答三天后打款
-            if (StringUtil.isEmpty(entity.getAnswer()) 
-                    && entity.getLastUpdateDtime() == null) {
-                // 默认点开第一次就算应答
-                entity.setLastUpdateDtime(DateUtil.currentDate());
-                this.bo.update(entity);
-            }
-        }
-        
-        List<JSONObject> jsonObj = ResultUtil.wearCloth(resultList, new JsonClothProcessor() {
-
-            private AskQuestionAnswer maxQuestionQuestionAnswer = Collections.max(resultList);
-
-            @Override
-            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
-                try {
-                    // 取同一，主要是为了。在回复时更新
-                    if (maxQuestionQuestionAnswer.getId() != null) {
-                        jsonObject.put("questionId", maxQuestionQuestionAnswer.getId());
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                return jsonObject;
-            }
-
-        });
-        return ResultUtil.success(jsonObj);
+        return ResultUtil.success(this.bo.getListByMessageId(messageId));
     }
+    
+//    /**
+//     * 回复内容详情
+//     * 
+//     * @param messageId
+//     * @return
+//     * @throws Exception
+//     */
+//    @GetMapping("/reply/info")
+//    public ResultBody info(String messageId) throws Exception {
+//        if (StringUtil.isEmpty(messageId)) {
+//            throw new InvalidParamException("messageId");
+//        }
+//        
+//        final List<AskQuestionAnswer> resultList = this.bo.getListByMessageId(messageId);
+//        if (CollectionUtil.isNotEmpty(resultList)) {
+//            AskQuestionAnswer entity = resultList.get(0);// 获取最新一条，未回答三天后打款
+//            if (StringUtil.isEmpty(entity.getAnswer()) 
+//                    && entity.getLastUpdateDtime() == null) {
+//                // 默认点开第一次就算应答
+//                entity.setLastUpdateDtime(DateUtil.currentDate());
+//                this.bo.update(entity);
+//            }
+//        }
+//        
+//        List<JSONObject> jsonObj = ResultUtil.wearCloth(resultList, new JsonClothProcessor() {
+//
+//            private AskQuestionAnswer maxQuestionQuestionAnswer = Collections.max(resultList);
+//
+//            @Override
+//            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+//                try {
+//                    // 取同一，主要是为了。在回复时更新
+//                    if (maxQuestionQuestionAnswer.getId() != null) {
+//                        jsonObject.put("questionId", maxQuestionQuestionAnswer.getId());
+//                    }
+//                } catch (Exception e) {
+//                    // TODO: handle exception
+//                }
+//                return jsonObject;
+//            }
+//
+//        });
+//        return ResultUtil.success(jsonObj);
+//    }
     
     public static class AskQuestionQuery extends Grid {
 
