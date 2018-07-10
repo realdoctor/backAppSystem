@@ -84,4 +84,30 @@
 		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
 		</if>
 	</select>
+	
+	<!-- 患者超过三天未处理已回复列表 -->
+	<select id="getListOverThreeday" resultMap="BaseResultMap">
+		SELECT
+		<include refid="columns"/>
+		FROM ask_question_answer t
+		WHERE
+			(
+			<![CDATA[
+			t.answer IS NOT NULL AND t.answer <> '' AND datediff(now(), t.last_update_dtime) > 3
+			]]>
+			)
+		ORDER BY last_update_dtime DESC
+	</select>
+	
+	<!-- 更新患者超过三天未处理，已回复列表状态 -->
+	<update id="updateStatusOverThreeday">
+		UPDATE ask_question_answer
+		SET `status` = 2
+		WHERE
+			(
+			<![CDATA[
+			answer IS NOT NULL AND answer <> '' AND datediff(now(), last_update_dtime) > 3
+			]]>
+			)
+	</update>
 </mapper>
