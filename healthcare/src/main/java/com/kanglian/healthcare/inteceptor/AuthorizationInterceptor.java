@@ -73,7 +73,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                     logger.info("============================session已过期");
                 }
             } else {
-                logger.info("============================token验证失败");
+                logger.info("============================token已过期");
             }
         }
         
