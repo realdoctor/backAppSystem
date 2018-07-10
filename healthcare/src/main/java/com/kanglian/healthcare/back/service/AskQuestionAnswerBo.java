@@ -17,10 +17,36 @@ public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestio
             throw new DBException(ex);
         }
     }
-    
+
     public List<AskQuestionAnswer> getListByMessageId(String messageId) {
         try {
             return this.dao.getListByMessageId(messageId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    /**
+     * 获取患者超过三天未处理已回复列表
+     * 
+     * @return
+     */
+    public List<AskQuestionAnswer> getListOverThreeday() {
+        try {
+            return this.dao.getListOverThreeday();
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    /**
+     * 更新患者超过三天未处理，已回复列表状态2
+     * 
+     * @return
+     */
+    public int updateStatusOverThreeday() {
+        try {
+            return this.dao.updateStatusOverThreeday();
         } catch (Exception ex) {
             throw new DBException(ex);
         }
