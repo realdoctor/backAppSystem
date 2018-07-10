@@ -30,6 +30,7 @@ import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
+import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.back.service.UploadPatientBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
@@ -53,6 +54,8 @@ public class UploadController {
     private UploadContentBo     uploadContentBo;
     @Autowired
     private UploadPatientBo     uploadPatientBo;
+    @Autowired
+    private AskQuestionAnswerBo askQuestionAnswerBo;
 
     /**
      * 上传头像
@@ -263,93 +266,115 @@ public class UploadController {
             HttpServletRequest request) throws Exception {
         logger.info("===========进入上传病历文件，user=" + user.getMobilePhone());
         
-        if (files == null) {
-            throw new InvalidParamException("attach");
-        }
-        
-        // 上传病历限制一个
-        if (files.length > 1) {
-            return ResultUtil.error("上传病历不能多个");
-        }
+        // 用户Id
+        final Long userId = user.getUserId();
+        // 询问问题Id
+        String questionId = request.getParameter("questionId");
         
         // 上传病历，接收人
         String receiveUserId = request.getParameter("receiveUserId");
         if (StringUtil.isEmpty(receiveUserId)) {
-            return ResultUtil.error("医生Id不能为空");
+            throw new InvalidParamException("receiveUserId");
         }
         
         // 上传病历问题
         String content = request.getParameter("content");
-        
-        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
-        // 判断file数组不能为空并且长度大于0
-        if (files != null && files.length > 0) {
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
-            String messageId = request.getParameter("messageId");
-            if (StringUtil.isEmpty(messageId)) {// 判断同一问题id
-                messageId = NumberUtil.getNewId();
-            }
-            // 循环获取file数组中得文件
-            for (int i = 0; i < files.length; i++) {
-                MultipartFile file = files[i];
-                if (!file.isEmpty()) {
-                    // 文件名
-                    final String fileName = file.getOriginalFilename();
-                    // 获取文件类型
-                    String extension = FilenameUtils.getExtension(fileName).toLowerCase();
-                    String filePath = null;
-                    if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
-                            .contains(extension)) {// 上传文件
-                        // filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
-                        StringBuilder buff = new StringBuilder();
-                        buff.append("/files/archive/");
-                        buff.append(DateUtil.getShortDateStr());
-                        buff.append("/");
-                        buff.append(fileName);
-                        filePath = buff.toString();
-                    } else {
-                        return ResultUtil.error("上传格式不符合");
-                    }
-                    File uploadedFile = new File(pathRoot + filePath);
-                    FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
-                    
-                    // 保存咨询问题
-                    AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
-                    askQuestionAnswer.setUserId(user.getUserId().intValue());
-                    askQuestionAnswer.setMessageId(messageId);
-                    if (StringUtil.isNotEmpty(receiveUserId)) {
-                        askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
-                    }
-                    askQuestionAnswer.setQuestion(content);
-                    askQuestionAnswer.setStatus("1");
-                    askQuestionAnswer.setAddTime(DateUtil.currentDate());
-                    
-                    // 保存上传病历
-                    UploadPatient uploadContent = new UploadPatient();
-                    uploadContent.setMessageId(messageId);
-                    uploadContent.setUserId(user.getUserId().intValue());
-                    uploadContent.setContent(content);
-                    uploadContent.setSrc(PropConfig.getInstance()
-                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                    uploadContent.setAddTime(DateUtil.currentDate());
-                    StringBuilder buff = new StringBuilder();
-                    buff.append("[存档病历]");
-                    buff.append(user.getRealName());
-                    buff.append("-");
-                    buff.append(fileName);
-                    uploadContent.setRemark(buff.toString());
-                    uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
-                    
-                    Map<String, String> urlMap = new HashMap<String, String>();
-                    urlMap.put("url", uploadContent.getSrc());
-                    pathList.add(urlMap);
-                }
-            }
-            resultMap.put("messageId", messageId);
-            resultMap.put("list", pathList);
-            return ResultUtil.success(resultMap);
+        if (StringUtil.isEmpty(content)) {
+            throw new InvalidParamException("content");
         }
+        
+        if (files == null || files.length == 0) {
+            if (StringUtil.isEmpty(questionId)) {
+                throw new InvalidParamException("questionId");
+            }
+            AskQuestionAnswer askQuestionAnswer = askQuestionAnswerBo.get(Long.valueOf(questionId));
+            if (askQuestionAnswer == null) {
+                return ResultUtil.error("问题不存在，不能继续询问");
+            }
+            // 此问题已询问过，可继续询问
+            AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
+            newAskQuestionAnswer.setUserId(userId.intValue());
+            newAskQuestionAnswer.setMessageId(askQuestionAnswer.getMessageId());
+            newAskQuestionAnswer.setToUser(askQuestionAnswer.getToUser());
+            newAskQuestionAnswer.setQuestion(content);
+            newAskQuestionAnswer.setStatus("1");
+            newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
+            askQuestionAnswerBo.save(newAskQuestionAnswer);
+            return ResultUtil.success();
+        } else {
+            // 上传病历限制一个
+            if (files.length > 1) {
+                return ResultUtil.error("上传病历不能多个");
+            }
+            
+            String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+            // 判断file数组不能为空并且长度大于0
+            if (files != null && files.length > 0) {
+                String messageId = null;
+                if (StringUtil.isNotEmpty(questionId)) {// 判断同一问题id
+                    AskQuestionAnswer askQuestionAnswer =
+                            askQuestionAnswerBo.get(Long.valueOf(questionId));
+                    if (askQuestionAnswer == null) {
+                        return ResultUtil.error("问题不存在，不能继续询问");
+                    }
+                    messageId = askQuestionAnswer.getMessageId();
+                } else {
+                    messageId = NumberUtil.getNewId();
+                }
+                // 循环获取file数组中得文件
+                for (int i = 0; i < files.length; i++) {
+                    MultipartFile file = files[i];
+                    if (!file.isEmpty()) {
+                        // 文件名
+                        final String fileName = file.getOriginalFilename();
+                        // 获取文件类型
+                        String extension = FilenameUtils.getExtension(fileName).toLowerCase();
+                        String filePath = null;
+                        if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
+                                .contains(extension)) {// 上传文件
+                            // filePath = "/files/archive".concat(FileUtil.randomPathname(extension));
+                            StringBuilder buff = new StringBuilder();
+                            buff.append("/files/archive/");
+                            buff.append(DateUtil.getShortDateStr());
+                            buff.append("/");
+                            buff.append(fileName);
+                            filePath = buff.toString();
+                        } else {
+                            return ResultUtil.error("上传格式不符合");
+                        }
+                        File uploadedFile = new File(pathRoot + filePath);
+                        FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+                        
+                        // 保存咨询问题
+                        AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
+                        askQuestionAnswer.setUserId(userId.intValue());
+                        askQuestionAnswer.setMessageId(messageId);
+                        askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+                        askQuestionAnswer.setQuestion(content);
+                        askQuestionAnswer.setStatus("1");
+                        askQuestionAnswer.setAddTime(DateUtil.currentDate());
+                        
+                        // 保存上传病历
+                        UploadPatient uploadContent = new UploadPatient();
+                        uploadContent.setMessageId(messageId);
+                        uploadContent.setUserId(userId.intValue());
+                        uploadContent.setContent(content);
+                        uploadContent.setSrc(PropConfig.getInstance()
+                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                        uploadContent.setAddTime(DateUtil.currentDate());
+                        StringBuilder buff = new StringBuilder();
+                        buff.append("[存档病历]");
+                        buff.append(user.getRealName());
+                        buff.append("-");
+                        buff.append(fileName);
+                        uploadContent.setRemark(buff.toString());
+                        uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
+                    }
+                }
+                return ResultUtil.success();
+            }
+        }
+        
         return ResultUtil.error("上传失败");
     }
 }

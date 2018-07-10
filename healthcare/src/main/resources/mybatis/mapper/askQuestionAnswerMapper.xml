@@ -29,7 +29,7 @@
 		t.last_update_dtime
 	</sql>
 
-	<!-- 分组后取出最新一条回复数据 -->
+	<!-- 获取上传病历问题列表 -->
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.id,
@@ -38,7 +38,7 @@
 			t.to_user,
 			t.question,
 			t.answer,
-			t.status,
+			t.`status`,
 			t.add_time,
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
@@ -47,25 +47,9 @@
 			t2.remark
 		FROM
 			ask_question_answer t
-		LEFT JOIN upload_patient t2 ON t2.question_id=t.id
-		LEFT JOIN user u1 ON u1.user_id=t.user_id
-		LEFT JOIN user u2 ON u2.user_id=t.to_user
-		INNER JOIN (
-			SELECT
-				max(t.id) as id,
-				COUNT(t.message_id) replyNum
-			FROM
-				ask_question_answer t
-			WHERE t.answer IS NULL OR t.answer=''
-			GROUP BY
-				t.message_id
-			<![CDATA[
-			HAVING
-				replyNum < 3
-			]]>
-			ORDER BY
-				t.add_time DESC
-		) t1 ON t.id = t1.id
+		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
+		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
+		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -82,7 +66,10 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from ask_question_answer t
+		SELECT count(*) FROM ask_question_answer t
+		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
+		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
+		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
 		<include refid="conditionQuery.core" />
 	</select>
 

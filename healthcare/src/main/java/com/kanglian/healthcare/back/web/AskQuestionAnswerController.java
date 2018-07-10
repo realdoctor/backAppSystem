@@ -1,11 +1,16 @@
 package com.kanglian.healthcare.back.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.alibaba.fastjson.JSONObject;
+import com.easyway.business.framework.json.JsonClothProcessor;
+import com.easyway.business.framework.mybatis.query.ConditionQuery;
+import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
+import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -14,8 +19,10 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
+import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
-import com.kanglian.healthcare.back.web.UserController.UserQuery;
+import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -28,19 +35,42 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RequestMapping(value = "/askQuestion")
 public class AskQuestionAnswerController extends CrudController<AskQuestionAnswer, AskQuestionAnswerBo> {
 
+    @Autowired
+    private UserInfoBo userInfoBo;
+    
     /**
-     * 显示最新一条回复列表
+     * 上传病历问题列表
      * 
      * @param query
      * @return
      * @throws Exception
      */
     @GetMapping("/reply/list")
-    public ResultBody list(UserQuery query) throws Exception {
+    public ResultBody list(AskQuestionQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
-        return super.list(query);
+        if (StringUtil.isEmpty(query.getType())) {
+            throw new InvalidParamException("type");
+        }
+        
+        return super.list(query, new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
+                try {
+                    User user = new User();
+                    user.setUserId(Long.valueOf(askQuestionAnswer.getUserId()));
+                    UserInfo userInfo = userInfoBo.getUserInfo(user);
+                    jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+            
+        });
     }
     
 //    /**
@@ -93,7 +123,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 //    }
     
     /**
-     * 医生回复问诊
+     * 患者医生回复问诊
      * 
      * @param messageId
      * @return
@@ -113,17 +143,17 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 
         AskQuestionAnswer askQuestionAnswer = this.bo.get(Long.valueOf(questionId));
         if (askQuestionAnswer == null) {
-            return ResultUtil.error("请求回复非法");
+            return ResultUtil.error("请求回复不存在");
         }
         if (askQuestionAnswer != null) {
             askQuestionAnswer.setAnswer(content);
             if (StringUtil.isNotEmpty(content)) {
-                askQuestionAnswer.setStatus("2");
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
             } else {
-                if (askQuestionAnswer.getLastUpdateDtime() == null) {// 点开第一次默认算回复，未回答三天后打款
-                    askQuestionAnswer.setStatus("1");
+                // 医生未回答三天后退款。如果医生回复了，患者发问第二次问题，上一次的问题才结束
+                if (askQuestionAnswer.getLastUpdateDtime() != null
+                        && StringUtil.isNotEmpty(askQuestionAnswer.getAnswer())) {
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     this.bo.update(askQuestionAnswer);
                 }
@@ -196,16 +226,26 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     public static class AskQuestionQuery extends Grid {
 
         private String userId;
+        private String roleId;
         private String questionId;
         private String content;
+        // 1|进行中，2|已完结
+        private String type;
 
-        @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
         }
 
         public void setUserId(String userId) {
             this.userId = userId;
+        }
+
+        public String getRoleId() {
+            return roleId;
+        }
+
+        public void setRoleId(String roleId) {
+            this.roleId = roleId;
         }
 
         public String getQuestionId() {
@@ -215,13 +255,39 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         public void setQuestionId(String questionId) {
             this.questionId = questionId;
         }
-        
+
         public String getContent() {
             return content;
         }
 
         public void setContent(String content) {
             this.content = content;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            if ("1".equals(getRoleId())) {// 医生1
+                query.addSingleValueCondition(new SingleValueCondition("to_user", getUserId()));
+            } else {// 普通用户0
+                query.addSingleValueCondition(new SingleValueCondition("user_id", getUserId()));
+            }
+            if ("1".equals(getType())) {// 进行中
+                query.addWithoutValueCondition(new WithoutValueCondition(
+                        " datediff(now(),t.add_time)<=3 and t.status=1 "));
+            } else if ("2".equals(getType())) {// 已结束
+                query.addWithoutValueCondition(
+                        new WithoutValueCondition(" datediff(now(),t.add_time)>3 and t.status=2 "));
+            }
+            return query;
         }
     }
 }
