@@ -14,6 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -75,7 +76,9 @@ public class PerformanceInterceptor {
                         allParams.add(paramMap);
                     }
                 } else if (arg instanceof HttpServletResponse) {
-                    // do nothing...
+                    // do nothing..
+                } else if (arg instanceof ServletRequestDataBinder) {
+                    // do nothing..
                 } else {
                     allParams.add(arg);
                 }
