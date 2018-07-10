@@ -56,16 +56,16 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/{typePay}/orderPay", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/orderPay", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPay(@PathVariable("typePay") String typePay, @RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
+    public ResultBody orderPay(@PathVariable("type") String type, @RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取商品预付单");
-        if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        if (PaymentType.ALIPAY.getName().equals(type)) {
             logger.info("==========================支付宝支付");
-        } else if (PaymentType.WXPAY.getName().equals(typePay)) {
+        } else if (PaymentType.WXPAY.getName().equals(type)) {
             logger.info("==========================微信支付");
-        } else if (PaymentType.SPAY.getName().equals(typePay)) {
+        } else if (PaymentType.SPAY.getName().equals(type)) {
             logger.info("==========================账户余额支付");
         } else {
             return ResultUtil.error("请选择支付方式");
@@ -99,7 +99,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取支付宝预付单
          */
-        if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]这里调试每次支付1分钱，在项目上线前应将此处改为订单的总金额格
@@ -157,14 +157,14 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        else if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
         }
         /**
          * 账户余额支付
          */
-        else if (PaymentType.SPAY.getName().equals(typePay)) {
+        else if (PaymentType.SPAY.getName().equals(type)) {
 
         }
         /**
@@ -183,16 +183,16 @@ public class PaymentController extends BaseController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-    @RequestMapping(value = "/{typePay}/orderPayT", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/orderPayT", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPayT(@PathVariable("typePay") String typePay, @RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
+    public ResultBody orderPayT(@PathVariable("type") String type, @RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取预付单");
-        if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        if (PaymentType.ALIPAY.getName().equals(type)) {
             logger.info("==========================支付宝支付");
-        } else if (PaymentType.WXPAY.getName().equals(typePay)) {
+        } else if (PaymentType.WXPAY.getName().equals(type)) {
             logger.info("==========================微信支付");
-        } else if (PaymentType.SPAY.getName().equals(typePay)) {
+        } else if (PaymentType.SPAY.getName().equals(type)) {
             logger.info("==========================账户余额支付");
         } else {
             return ResultUtil.error("请选择支付方式");
@@ -222,7 +222,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取支付宝预付单
          */
-        if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             String orderPrice = "0.01";
@@ -274,14 +274,14 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(typePay)) {
+        else if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
         }
         /**
          * 账户余额支付
          */
-        else if (PaymentType.SPAY.getName().equals(typePay)) {
+        else if (PaymentType.SPAY.getName().equals(type)) {
 
         }
         /**
