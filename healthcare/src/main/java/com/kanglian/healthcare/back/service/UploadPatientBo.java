@@ -21,8 +21,10 @@ public class UploadPatientBo extends NewCrudBo<UploadPatient, UploadPatientDao> 
             AskQuestionAnswer askQuestionAnswer) {
         try {
             askQuestionAnswerBo.save(askQuestionAnswer);
-            uploadPatient.setQuestionId(askQuestionAnswer.getId().intValue());
-            this.dao.save(uploadPatient);
+            if (uploadPatient != null) {
+                uploadPatient.setQuestionId(askQuestionAnswer.getId().intValue());
+                this.dao.save(uploadPatient);
+            }
         } catch (Exception ex) {
             throw new DBException(ex);
         }
