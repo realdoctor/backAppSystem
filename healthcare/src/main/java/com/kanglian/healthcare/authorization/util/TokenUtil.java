@@ -18,7 +18,7 @@ public class TokenUtil {
      * @return
      */
     public static String generToken(String str) {
-        return JwtUtil.generToken(RandomStringUtils.randomNumeric(6), str, JwtUtil.JWT_TTL);
+        return JwtUtil.generToken(RandomStringUtils.randomNumeric(6), str, JwtUtil.JWT_TTL * 24);
     }
 
     /**
