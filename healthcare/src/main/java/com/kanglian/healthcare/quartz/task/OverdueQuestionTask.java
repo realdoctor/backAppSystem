@@ -44,9 +44,9 @@ public class OverdueQuestionTask extends AbstractTask {
                     list.add(info.getMessageId() + "-" + info.getUserId());
                 }
                 logger.info("==============未处理回复列表如下：\r\n" + JSON.toJSONString(list));
+                int num = askQuestionAnswerBo.updateStatusOverThreeday();
+                logger.info("==============成功处理[{}]条", num);
             }
-            int num = askQuestionAnswerBo.updateStatusOverThreeday();
-            logger.info("==============成功处理[{}]条", num);
         } catch (Exception e) {
             logger.error("过期问题处理异常", e);
         }
