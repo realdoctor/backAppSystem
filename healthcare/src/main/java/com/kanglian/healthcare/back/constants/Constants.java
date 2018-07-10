@@ -88,5 +88,15 @@ public final class Constants {
     // 访问路径
     public static final String STATIC_URL                    = "static_url";
     // 视频截图工具路径
-    public static final String FFMPEG_PATH                   = "ffmpeg";
+    public static final String FFMPEG_PATH                   = "/usr/local/ffmpeg/bin/ffmpeg"; // ffmpeg
+
+    /**
+     * 支付订单标识
+     */
+    // 支付宝支付
+    public static final String ALIPAY_PREFIX                 = "ALI";
+    // 微信支付
+    public static final String WXPAY_PREFIX                  = "WX";
+    // 医保支付
+    public static final String YBPAY_PREFIX                  = "YB";
 }
