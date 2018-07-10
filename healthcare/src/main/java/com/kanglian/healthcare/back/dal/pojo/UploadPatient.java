@@ -9,7 +9,8 @@ public class UploadPatient extends BasePojo {
 	private String messageId;
 	private Integer questionId;
     private Integer userId;
-	private String content;
+    private String title;
+    private String content;
 	private String src;
 	private String remark;
 	private Date addTime;
@@ -45,6 +46,12 @@ public class UploadPatient extends BasePojo {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 	public String getContent() {
 		return content;
 	}

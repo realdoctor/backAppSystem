@@ -268,6 +268,10 @@ public class UploadController {
         
         // 用户Id
         final Long userId = user.getUserId();
+        
+        // 上传病历名
+        String title = request.getParameter("title");
+        
         // 询问问题Id
         String questionId = request.getParameter("questionId");
         
@@ -358,6 +362,7 @@ public class UploadController {
                         UploadPatient uploadContent = new UploadPatient();
                         uploadContent.setMessageId(messageId);
                         uploadContent.setUserId(userId.intValue());
+                        uploadContent.setTitle(title);
                         uploadContent.setContent(content);
                         uploadContent.setSrc(PropConfig.getInstance()
                                 .getPropertyValue(Constants.STATIC_URL).concat(filePath));

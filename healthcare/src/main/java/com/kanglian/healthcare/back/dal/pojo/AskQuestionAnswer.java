@@ -20,7 +20,8 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String remark;
     private String patientRealName;
     private String doctorRealName;
-	public Long getId() {
+    private String title;
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -97,6 +98,12 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
     }
     public void setDoctorRealName(String doctorRealName) {
         this.doctorRealName = doctorRealName;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
     @Override
     public int compareTo(AskQuestionAnswer o) {

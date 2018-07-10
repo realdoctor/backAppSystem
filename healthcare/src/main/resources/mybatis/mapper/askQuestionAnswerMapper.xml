@@ -15,6 +15,7 @@
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
 		<result property="doctorRealName" column="doctorRealName" jdbcType="VARCHAR"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -43,6 +44,7 @@
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
 			u2.real_name AS doctorRealName,
+			t2.title,
 			t2.src,
 			t2.remark
 		FROM
