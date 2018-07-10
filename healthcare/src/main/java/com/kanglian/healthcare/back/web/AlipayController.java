@@ -19,13 +19,10 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
-import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
-import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
-import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
 import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
@@ -44,16 +41,16 @@ import com.kanglian.healthcare.util.PayCommonUtil;
 public class AlipayController extends BaseController {
 
     @Autowired
-    private GoodsOrderBo        goodsOrderBo;
+    private GoodsOrderBo      goodsOrderBo;
     @Autowired
-    private AlipayOrderLogBo    alipayOrderLogBo;
+    private AlipayOrderLogBo  alipayOrderLogBo;
     @Autowired
-    private AlipayNotifyLogBo   alipayNotifyLogBo;
+    private AlipayNotifyLogBo alipayNotifyLogBo;
     @Autowired
-    private UserBo              userBo;
+    private UserBo            userBo;
     
     /**
-     * 拉取支付宝预付单
+     * 拉取预付单
      * 
      * @param request
      * @return
@@ -63,9 +60,9 @@ public class AlipayController extends BaseController {
     @ResponseBody
     public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
-        logger.info("==============进入拉取支付宝预付单");
+        logger.info("==============进入拉取商品支付宝预付单");
         if (StringUtil.isEmpty(paymentOrder.getUserId())) {
-            return ResultUtil.error("用户Id不能为空");
+            return ResultUtil.error("用户不能为空");
         }
         if (paymentOrder.getTotalAmount() == null) {
             return ResultUtil.error("支付金额不能为空");
@@ -87,17 +84,12 @@ public class AlipayController extends BaseController {
         final String orderNo = NumberUtil.getOrderId();
         paymentOrder.setOrderNo(orderNo);
         /**
-         * 用户购买商品入库明细
-         */
-        Map<String, Object> notifyParmMap = goodsOrderBo.createGoodsOrder(paymentOrder);
-        /**
          * 拉取支付宝预付单
          */
         // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]这里调试每次支付1分钱，在项目上线前应将此处改为订单的总金额格
         String orderPrice = "0.01";
         // 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
         String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
-        Map<String, String> retResultMap = new HashMap<>();
         // 实例化客户端
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
                 AlipayConfig.APPID, AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT,
@@ -107,19 +99,21 @@ public class AlipayController extends BaseController {
         // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         model.setSubject("测试支付");// 订单标题
-        model.setBody("康连健康商品");// 对交易或商品的描述
+        model.setBody("康连健康商品支付");// 对交易或商品的描述
         model.setOutTradeNo(orderNo);
         model.setTimeoutExpress("30m");// 30分钟付款超时
         model.setTotalAmount(orderPrice);
         /**
-         * 支付回调参数
+         * 支付回传参数
          */
+        Map<String, Object> notifyParmMap = new HashMap<String, Object>();
         notifyParmMap.put("userId", userId);
         notifyParmMap.put("orderNo", orderNo);
         model.setPassbackParams(PayCommonUtil.urlEncodeUTF8(JsonUtil.beanToJson(notifyParmMap)));
         alipayRequest.setBizModel(model);
         alipayRequest.setNotifyUrl(alipayNotifyUrl);
         String requestParams = JsonUtil.beanToJson(alipayRequest);
+        Map<String, String> retResultMap = new HashMap<String, String>();
         String responseString = null;
         String orderString = null;
         try {
@@ -138,6 +132,10 @@ public class AlipayController extends BaseController {
             throw new Exception("获取支付宝参数错误");
         }
         /**
+         * 写入购买商品明细
+         */
+        goodsOrderBo.createGoodsOrder(paymentOrder);
+        /**
          * 写入支付宝预付单日志
          */
         alipayOrderLogBo.insertPayOrderLog(userId, orderNo, requestParams, responseString, orderString);
@@ -152,6 +150,7 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("rawtypes")
     @RequestMapping(value = "/reCallBack", method = RequestMethod.POST)
     @ResponseBody
     public String orderPayNotify(AlipayNotifyResponse alipayResponse,
@@ -223,7 +222,8 @@ public class AlipayController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/notifyCallBack", method = RequestMethod.POST)
+    @SuppressWarnings("rawtypes")
+    @RequestMapping(value = "/notifyCallBackT", method = RequestMethod.POST)
     @ResponseBody
     public String orderPayNotify2(AlipayNotifyResponse alipayResponse, HttpServletRequest request) throws Exception {
         logger.debug("==============支付宝回调");
@@ -231,8 +231,8 @@ public class AlipayController extends BaseController {
         alipayNotifyLogBo.insertNotifyLog(alipayResponse);
         // 获取支付宝POST过来反馈信息
         Map requestParams = request.getParameterMap();
-        logger.debug("支付宝回调结果3：" + requestParams.toString());
-        logger.debug("支付宝回调结果4：" + JsonUtil.beanToJson(alipayResponse));
+        logger.debug("支付宝回调结果t1：" + requestParams.toString());
+        logger.debug("支付宝回调结果t2：" + JsonUtil.beanToJson(alipayResponse));
         Map<String, String> params = new HashMap<String, String>();
         for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
             String name = (String) iter.next();
@@ -279,59 +279,4 @@ public class AlipayController extends BaseController {
         return "success";
     }
     
-    /**
-     * 支付宝异步通知
-     * 
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/notifyCallBackT", method = RequestMethod.POST)
-    @ResponseBody
-    public String orderPayNotify3(AlipayNotifyResponse alipayResponse,
-            HttpServletRequest request) throws Exception {
-        logger.debug("==============支付宝回调");
-        // 写入支付宝回调日志
-        alipayNotifyLogBo.insertNotifyLog(alipayResponse);
-        // 获取支付宝POST过来反馈信息
-        logger.debug("====================支付宝回调结果：" + JsonUtil.beanToJson(alipayResponse));
-        Map<String, String> params = alipayResponse.getAlipay_trade_app_pay_response();
-        try {
-            // 验证签名
-            boolean signVerified = AlipaySignature.rsaCheckV1(params,
-                    AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, AlipayConfig.SIGNTYPE);
-            if (signVerified) { // 签名验证成功
-                // 商户订单号
-                String out_trade_no = params.get("out_trade_no");
-                // 支付宝交易号
-                String trade_no = params.get("trade_no");
-                // 交易状态
-                String trade_status = params.get("trade_status");
-                // 附加数据
-                String passback_params = PayCommonUtil.urlDecodeUTF8(params.get("passback_params"));
-                logger.debug("支付宝异步通知，返回附加数据==" + passback_params);
-                if (trade_status.equals("TRADE_FINISHED")) {
-                    logger.info("支付失败= 订单号:{}，支付宝交易号:{}", out_trade_no, trade_no);
-                } else if (trade_status.equals("TRADE_SUCCESS")) {
-                    logger.info("支付成功= 订单号:{}，支付宝交易号:{}", out_trade_no, trade_no);
-                    // TODO 支付成功处理业务逻辑，避免重复处理
-                    if (!goodsOrderBo.orderPayStatus(out_trade_no)) {
-                        GoodsOrder order = new GoodsOrder();
-                        order.setOrderNo(out_trade_no);
-                        order.setTradeStatus(PaymentStatus.PAYMENT_TRADE_SUCCESS);
-                        order.setUpdateTime(DateUtil.currentDate());
-                        goodsOrderBo.updateOrderStatus(order);
-                    }
-                }
-            } else {
-                logger.debug("====================签名验证失败！");
-                return "fail";
-            }
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
-
-        return "success";
-    }
 }

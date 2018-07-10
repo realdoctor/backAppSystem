@@ -10,11 +10,11 @@ import java.util.List;
 public class PaymentOrder {
 
     // 用户Id
-    private String      userId;
+    private String                 userId;
     // 订单号
-    private String      orderNo;
+    private String                 orderNo;
     // 交易总额
-    private Double      totalAmount;
+    private Double                 totalAmount;
     // 订单列表
     private List<PaymentOrderItem> goodsList;
 
