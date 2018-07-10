@@ -93,7 +93,7 @@
 		WHERE
 			(
 			<![CDATA[
-			t.answer IS NOT NULL AND t.answer <> '' AND datediff(now(), t.last_update_dtime) > 3
+			t.answer IS NOT NULL AND t.answer <> '' AND datediff(now(), t.last_update_dtime) > 3 AND `status` = 1
 			]]>
 			)
 		ORDER BY last_update_dtime DESC
