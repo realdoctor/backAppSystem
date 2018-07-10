@@ -50,9 +50,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
-        if (StringUtil.isEmpty(query.getType())) {
-            throw new InvalidParamException("type");
-        }
         
         return super.list(query, new JsonClothProcessor() {
 
@@ -280,12 +277,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             } else {// 普通用户0
                 query.addSingleValueCondition(new SingleValueCondition("user_id", getUserId()));
             }
-            if ("1".equals(getType())) {// 进行中
-                query.addWithoutValueCondition(new WithoutValueCondition(
-                        " datediff(now(),t.add_time)<=3 and t.status=1 "));
-            } else if ("2".equals(getType())) {// 已结束
+            if ("2".equals(getType())) {// 已结束
                 query.addWithoutValueCondition(
                         new WithoutValueCondition(" datediff(now(),t.add_time)>3 and t.status=2 "));
+            } else if ("1".equals(getType())) {// 进行中
+                query.addWithoutValueCondition(new WithoutValueCondition(
+                        " datediff(now(),t.add_time)<=3 and t.status=1 "));
             }
             return query;
         }
