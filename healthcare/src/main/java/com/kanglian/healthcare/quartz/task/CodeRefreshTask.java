@@ -34,7 +34,7 @@ public class CodeRefreshTask extends AbstractTask {
             logger.info("==============进入字典码表刷新");
             codetableBo.initCacheData();
         } catch (Exception e) {
-            // TODO: handle exception
+            logger.error("字典码表刷新异常", e);
         }
     }
 

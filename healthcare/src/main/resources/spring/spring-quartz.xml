@@ -33,6 +33,7 @@
 		<property name="triggers">
 			<list>
 				<ref bean="codeRefreshTaskTrigger" />
+				<ref bean="overdueQuestionTaskTrigger" />
 			</list>
 		</property>
 		<property name="taskExecutor" ref="executor" />
@@ -52,4 +53,19 @@
 		<property name="cronExpression" value="0 0 23 L * ?" />
 	</bean>
 	<!-- 字典码表刷新 end -->
+	
+	<!-- 处理要过期问题 start -->
+	<bean id="overdueQuestionTask" class="com.kanglian.healthcare.quartz.task.OverdueQuestionTask"></bean>
+	<bean id="overdueQuestionTaskDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="overdueQuestionTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="overdueQuestionTaskTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overdueQuestionTaskDetail" />
+		<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
+	<!-- 处理要过期问题 end -->
 </beans>
