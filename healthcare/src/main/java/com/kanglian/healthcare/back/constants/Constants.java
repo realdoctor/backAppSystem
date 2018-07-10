@@ -94,7 +94,7 @@ public final class Constants {
      * 支付订单标识
      */
     // 支付宝支付
-    public static final String ALIPAY_PREFIX                 = "ALI";
+    public static final String ALIPAY_PREFIX                 = "AL";
     // 微信支付
     public static final String WXPAY_PREFIX                  = "WX";
     // 医保支付
