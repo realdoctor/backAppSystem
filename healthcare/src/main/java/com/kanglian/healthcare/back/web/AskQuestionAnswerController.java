@@ -37,6 +37,8 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 
     @Autowired
     private UserInfoBo userInfoBo;
+    @Autowired
+    private AskQuestionAnswerBo askQuestionAnswerBo;
     
     /**
      * 上传病历问题列表
@@ -61,6 +63,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     user.setUserId(Long.valueOf(askQuestionAnswer.getUserId()));
                     UserInfo userInfo = userInfoBo.getUserInfo(user);
                     jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
+                    if ("0".equals(askQuestionAnswer.getRetryNum())) {
+                        // 三次问诊机会已用完，则更新为已结束。
+                        askQuestionAnswer.setStatus("2");
+                        askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
+                        askQuestionAnswerBo.update(askQuestionAnswer);
+                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }

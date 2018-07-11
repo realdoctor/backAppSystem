@@ -297,6 +297,7 @@ public class UploadController {
                 }
                 messageId = askQuestionAnswer.getMessageId();
                 askQuestionAnswer.setStatus("2");// 直接覆盖上一条为已结束
+                askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 askQuestionAnswerBo.update(askQuestionAnswer);
             } else {
                 messageId = NumberUtil.getNewId();
@@ -329,6 +330,7 @@ public class UploadController {
                     }
                     messageId = askQuestionAnswer.getMessageId();
                     askQuestionAnswer.setStatus("2");// 直接覆盖上一条为已结束
+                    askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     askQuestionAnswerBo.update(askQuestionAnswer);
                 } else {
                     messageId = NumberUtil.getNewId();
