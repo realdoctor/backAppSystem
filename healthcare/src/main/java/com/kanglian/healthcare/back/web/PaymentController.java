@@ -160,12 +160,13 @@ public class PaymentController extends BaseController {
         else if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
+            return ResultUtil.error("微信支付未开放");
         }
         /**
          * 账户余额支付
          */
         else if (PaymentType.SPAY.getName().equals(type)) {
-
+            return ResultUtil.error("余额支付未开放");
         }
         /**
          * 写入购买商品明细
@@ -277,12 +278,13 @@ public class PaymentController extends BaseController {
         else if (PaymentType.ALIPAY.getName().equals(type)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
+            return ResultUtil.error("微信支付未开放");
         }
         /**
          * 账户余额支付
          */
         else if (PaymentType.SPAY.getName().equals(type)) {
-
+            return ResultUtil.error("余额支付未开放");
         }
         /**
          * 写入用户支付订单
