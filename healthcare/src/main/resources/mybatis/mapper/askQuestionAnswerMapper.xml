@@ -16,6 +16,7 @@
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
 		<result property="doctorRealName" column="doctorRealName" jdbcType="VARCHAR"/>
+		<result property="retryNum" column="retryNum" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -48,11 +49,29 @@
 			u2.real_name AS doctorRealName,
 			t2.src,
 			t2.remark
+			<if test="paramMap.type!=null and paramMap.type=='1'.toString()">
+			,(3 - t1.replyNum) retryNum
+			</if>
 		FROM
 			ask_question_answer t
 		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
 		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
 		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
+		<if test="paramMap.type!=null and paramMap.type=='1'.toString()">
+		INNER JOIN (
+			SELECT
+				max(t.id) AS id,
+				COUNT(t.message_id) replyNum
+			FROM
+				ask_question_answer t
+			WHERE
+				t.user_id = 24
+			GROUP BY
+				t.message_id
+			ORDER BY
+				t.add_time DESC
+		) t1 ON t.id = t1.id
+		</if>
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>

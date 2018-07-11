@@ -296,6 +296,8 @@ public class UploadController {
                     return ResultUtil.error("问题不存在，不能继续询问");
                 }
                 messageId = askQuestionAnswer.getMessageId();
+                askQuestionAnswer.setStatus("2");// 直接覆盖上一条为已结束
+                askQuestionAnswerBo.update(askQuestionAnswer);
             } else {
                 messageId = NumberUtil.getNewId();
             }
@@ -326,6 +328,8 @@ public class UploadController {
                         return ResultUtil.error("问题不存在，不能继续询问");
                     }
                     messageId = askQuestionAnswer.getMessageId();
+                    askQuestionAnswer.setStatus("2");// 直接覆盖上一条为已结束
+                    askQuestionAnswerBo.update(askQuestionAnswer);
                 } else {
                     messageId = NumberUtil.getNewId();
                 }

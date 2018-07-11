@@ -21,6 +21,13 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String remark;
     private String patientRealName;
     private String doctorRealName;
+    private String retryNum;
+    public String getRetryNum() {
+        return retryNum;
+    }
+    public void setRetryNum(String retryNum) {
+        this.retryNum = retryNum;
+    }
     public Long getId() {
 		return id;
 	}
