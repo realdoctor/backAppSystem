@@ -288,18 +288,21 @@ public class UploadController {
         }
         
         if (files == null || files.length == 0) {
-            if (StringUtil.isEmpty(questionId)) {
-                throw new InvalidParamException("questionId");
+            String messageId = null;
+            if (StringUtil.isNotEmpty(questionId)) {
+                // 此问题已询问过，可继续询问
+                AskQuestionAnswer askQuestionAnswer = askQuestionAnswerBo.get(Long.valueOf(questionId));
+                if (askQuestionAnswer == null) {
+                    return ResultUtil.error("问题不存在，不能继续询问");
+                }
+                messageId = askQuestionAnswer.getMessageId();
+            } else {
+                messageId = NumberUtil.getNewId();
             }
-            AskQuestionAnswer askQuestionAnswer = askQuestionAnswerBo.get(Long.valueOf(questionId));
-            if (askQuestionAnswer == null) {
-                return ResultUtil.error("问题不存在，不能继续询问");
-            }
-            // 此问题已询问过，可继续询问
             AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
             newAskQuestionAnswer.setUserId(userId.intValue());
-            newAskQuestionAnswer.setMessageId(askQuestionAnswer.getMessageId());
-            newAskQuestionAnswer.setToUser(askQuestionAnswer.getToUser());
+            newAskQuestionAnswer.setMessageId(messageId);
+            newAskQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
             newAskQuestionAnswer.setQuestion(content);
             newAskQuestionAnswer.setStatus("1");
             newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
