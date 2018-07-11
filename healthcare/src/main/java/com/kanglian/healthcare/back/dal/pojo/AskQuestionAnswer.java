@@ -11,6 +11,7 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String messageId;
 	private Integer userId;
 	private Integer toUser;
+	private String title;
 	private String question;
 	private String answer;
 	private String status;
@@ -20,7 +21,6 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String remark;
     private String patientRealName;
     private String doctorRealName;
-    private String title;
     public Long getId() {
 		return id;
 	}
@@ -45,6 +45,12 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	public void setToUser(Integer toUser) {
 		this.toUser = toUser;
 	}
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 	public String getQuestion() {
 		return question;
 	}
@@ -98,12 +104,6 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
     }
     public void setDoctorRealName(String doctorRealName) {
         this.doctorRealName = doctorRealName;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
     }
     @Override
     public int compareTo(AskQuestionAnswer o) {

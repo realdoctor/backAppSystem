@@ -300,9 +300,10 @@ public class UploadController {
                 messageId = NumberUtil.getNewId();
             }
             AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
-            newAskQuestionAnswer.setUserId(userId.intValue());
             newAskQuestionAnswer.setMessageId(messageId);
+            newAskQuestionAnswer.setUserId(userId.intValue());
             newAskQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+            newAskQuestionAnswer.setTitle(title);
             newAskQuestionAnswer.setQuestion(content);
             newAskQuestionAnswer.setStatus("1");
             newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
@@ -357,6 +358,7 @@ public class UploadController {
                         askQuestionAnswer.setUserId(userId.intValue());
                         askQuestionAnswer.setMessageId(messageId);
                         askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
+                        askQuestionAnswer.setTitle(title);
                         askQuestionAnswer.setQuestion(content);
                         askQuestionAnswer.setStatus("1");
                         askQuestionAnswer.setAddTime(DateUtil.currentDate());
@@ -365,7 +367,6 @@ public class UploadController {
                         UploadPatient uploadContent = new UploadPatient();
                         uploadContent.setMessageId(messageId);
                         uploadContent.setUserId(userId.intValue());
-                        uploadContent.setTitle(title);
                         uploadContent.setContent(content);
                         uploadContent.setSrc(PropConfig.getInstance()
                                 .getPropertyValue(Constants.STATIC_URL).concat(filePath));

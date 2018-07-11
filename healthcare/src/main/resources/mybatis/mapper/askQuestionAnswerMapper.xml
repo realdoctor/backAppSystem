@@ -6,6 +6,7 @@
 		<result property="messageId" column="message_id" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
 		<result property="question" column="question" jdbcType="VARCHAR"/>
 		<result property="answer" column="answer" jdbcType="VARCHAR"/>
 		<result property="status" column="status" jdbcType="VARCHAR"/>
@@ -15,7 +16,6 @@
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
 		<result property="doctorRealName" column="doctorRealName" jdbcType="VARCHAR"/>
-		<result property="title" column="title" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -23,6 +23,7 @@
 		t.message_id,
 		t.user_id,
 		t.to_user,
+		t.title,
 		t.question,
 		t.answer,
 		t.status,
@@ -37,6 +38,7 @@
 			t.message_id,
 			t.user_id,
 			t.to_user,
+			t.title,
 			t.question,
 			t.answer,
 			t.`status`,
@@ -44,7 +46,6 @@
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
 			u2.real_name AS doctorRealName,
-			t2.title,
 			t2.src,
 			t2.remark
 		FROM
@@ -91,6 +92,7 @@
 		message_id,
 		user_id,
 		to_user,
+		title,
 		question,
 		answer,
 		status,
@@ -101,6 +103,7 @@
 		#{messageId,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
 		#{toUser,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR},
 		#{question,jdbcType=VARCHAR},
 		#{answer,jdbcType=VARCHAR},
 		#{status,jdbcType=VARCHAR},
@@ -115,6 +118,7 @@
 		  <if test="messageId != null">message_id=#{messageId,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
+		  <if test="title != null">question=#{title,jdbcType=VARCHAR},</if>
 		  <if test="question != null">question=#{question,jdbcType=VARCHAR},</if>
 		  <if test="answer != null">answer=#{answer,jdbcType=VARCHAR},</if>
 		  <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
