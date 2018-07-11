@@ -8,8 +8,10 @@ import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
+import com.kanglian.healthcare.back.dal.dao.PaymentIncomeLogDao;
 import com.kanglian.healthcare.back.dal.dao.PaymentOrderDao;
 import com.kanglian.healthcare.back.dal.dao.PaymentOrderItemDao;
+import com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
 import com.kanglian.healthcare.exception.DBException;
@@ -23,7 +25,9 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 //    private AccountDao          accountDao;
 //    @Autowired
 //    private AccountLogDao       accountLogDao;
-
+    @Autowired
+    private PaymentIncomeLogDao paymentIncomeLogDao;
+    
     /**
      * 写入用户支付订单
      * 
@@ -52,6 +56,18 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentOrderItem.setAddTime(DateUtil.currentDate());
             paymentOrderItemDao.save(paymentOrderItem);
 
+            // 用户支出明细
+            PaymentIncomeLog paymentIncomeLog = new PaymentIncomeLog();
+            paymentIncomeLog.setOrderNo(paymentOrder.getOrderNo());
+            paymentIncomeLog.setUserId(paymentOrder.getUserId());
+            paymentIncomeLog.setToUser(paymentOrderItem.getToUser());
+            paymentIncomeLog.setType("支付宝");
+            paymentIncomeLog.setMark("2");
+            paymentIncomeLog.setMoney(paymentOrder.getPayPrice());
+            paymentIncomeLog.setMessage(
+                    "您[" + DateUtil.getCurrentDate() + "]支出[" + paymentIncomeLog.getMoney() + "]元");
+            paymentIncomeLog.setAddTime(paymentOrder.getAddTime());
+            paymentIncomeLogDao.save(paymentIncomeLog);
 //            /**
 //             * 如果使用账户自扣费，非支付宝微信支付
 //             */

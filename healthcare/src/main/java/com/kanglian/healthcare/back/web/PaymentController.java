@@ -41,13 +41,13 @@ import com.kanglian.healthcare.util.PayCommonUtil;
 @RequestMapping(value = "/pay")
 public class PaymentController extends BaseController {
     @Autowired
-    private GoodsOrderBo      goodsOrderBo;
+    private GoodsOrderBo     goodsOrderBo;
     @Autowired
-    private AlipayOrderLogBo  alipayOrderLogBo;
+    private AlipayOrderLogBo alipayOrderLogBo;
     @Autowired
-    private UserBo            userBo;
+    private UserBo           userBo;
     @Autowired
-    private PaymentOrderBo    paymentOrderBo;
+    private PaymentOrderBo   paymentOrderBo;
 
     /**
      * 拉取商品预付单
@@ -168,15 +168,16 @@ public class PaymentController extends BaseController {
         else if (PaymentType.SPAY.getName().equals(type)) {
             return ResultUtil.error("余额支付未开放");
         }
+        
         /**
-         * 写入购买商品明细
+         * 写入购买商品订单明细
          */
         goodsOrderBo.createGoodsOrder(paymentOrder);
         return ResultUtil.success(retResultMap);
     }
 
     /**
-     * 拉取问诊预付单
+     * 拉取预付单
      * 
      * @param paymentOrder
      * @param request
@@ -286,8 +287,9 @@ public class PaymentController extends BaseController {
         else if (PaymentType.SPAY.getName().equals(type)) {
             return ResultUtil.error("余额支付未开放");
         }
+        
         /**
-         * 写入用户支付订单
+         * 写入支付订单明细
          */
         paymentOrderBo.createPaymentOrderAndLog(paymentOrder);
         return ResultUtil.success(retResultMap);
