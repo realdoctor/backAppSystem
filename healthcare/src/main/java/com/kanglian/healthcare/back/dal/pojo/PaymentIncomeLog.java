@@ -15,7 +15,12 @@ public class PaymentIncomeLog extends BasePojo {
 	private String message;
 	private Date addTime;
 	private Date lastUpdateDtime;
-	public Integer getId() {
+	private String userName;
+	private String toUserName;
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
+    public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
@@ -75,4 +80,13 @@ public class PaymentIncomeLog extends BasePojo {
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
+	public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getToUserName() {
+        return toUserName;
+    }
 }
