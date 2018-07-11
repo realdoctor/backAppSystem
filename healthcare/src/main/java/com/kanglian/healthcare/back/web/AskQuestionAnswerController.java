@@ -37,8 +37,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 
     @Autowired
     private UserInfoBo userInfoBo;
-    @Autowired
-    private AskQuestionAnswerBo askQuestionAnswerBo;
     
     /**
      * 上传病历问题列表
@@ -63,12 +61,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     user.setUserId(Long.valueOf(askQuestionAnswer.getUserId()));
                     UserInfo userInfo = userInfoBo.getUserInfo(user);
                     jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
-                    if ("0".equals(askQuestionAnswer.getRetryNum())) {
-                        // 三次问诊机会已用完，则更新为已结束。
-                        askQuestionAnswer.setStatus("2");
-                        askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
-                        askQuestionAnswerBo.update(askQuestionAnswer);
-                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
@@ -162,6 +154,13 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     this.bo.update(askQuestionAnswer);
                 }
+                
+                // 三次问诊机会已用完，则更新为已结束。
+                if (StringUtil.isNotEmpty(query.getRetryNum()) && "0".equals(query.getRetryNum())) {
+                    askQuestionAnswer.setStatus("2");
+                    askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
+                    this.bo.update(askQuestionAnswer);
+                }
             }
         }
         return ResultUtil.success();
@@ -236,6 +235,15 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         private String content;
         // 1|进行中，2|已完结
         private String type;
+        private String retryNum;
+
+        public String getRetryNum() {
+            return retryNum;
+        }
+
+        public void setRetryNum(String retryNum) {
+            this.retryNum = retryNum;
+        }
 
         public String getUserId() {
             return userId;
