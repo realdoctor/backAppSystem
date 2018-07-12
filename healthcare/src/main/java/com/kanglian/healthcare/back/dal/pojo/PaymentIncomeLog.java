@@ -17,6 +17,20 @@ public class PaymentIncomeLog extends BasePojo {
 	private Date lastUpdateDtime;
 	private String userName;
 	private String toUserName;
+	private String userPicUrl;
+	private String toUserPicUrl;
+    public String getUserPicUrl() {
+        return userPicUrl;
+    }
+    public void setUserPicUrl(String userPicUrl) {
+        this.userPicUrl = userPicUrl;
+    }
+    public String getToUserPicUrl() {
+        return toUserPicUrl;
+    }
+    public void setToUserPicUrl(String toUserPicUrl) {
+        this.toUserPicUrl = toUserPicUrl;
+    }
     public void setToUserName(String toUserName) {
         this.toUserName = toUserName;
     }

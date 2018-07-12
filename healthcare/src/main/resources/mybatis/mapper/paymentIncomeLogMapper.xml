@@ -14,6 +14,8 @@
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<result property="userName" column="userName" jdbcType="VARCHAR"/>
 		<result property="toUserName" column="toUserName" jdbcType="VARCHAR"/>
+		<result property="userPicUrl" column="userPicUrl" jdbcType="VARCHAR"/>
+		<result property="toUserPicUrl" column="toUserPicUrl" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -42,10 +44,14 @@
 			t.add_time,
 			t.last_update_dtime,
 			t1.real_name AS userName,
-			t2.real_name AS toUserName
+			t2.real_name AS toUserName,
+			t3.thumbnail_pic AS userPicUrl,
+			t4.thumbnail_pic AS toUserPicUrl
 		from payment_income_log t
 		LEFT JOIN `user` t1 ON t1.user_id = t.user_id
 		LEFT JOIN `user` t2 ON t2.user_id = t.to_user
+		LEFT JOIN user_pic t3 ON t3.user_id = t1.user_id
+		LEFT JOIN user_pic t4 ON t4.user_id = t2.user_id
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
