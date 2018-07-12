@@ -296,7 +296,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             if ("2".equals(getType())) {// 已结束
                 query.addParam("type", "2");
                 query.addWithoutValueCondition(
-                        new WithoutValueCondition(" datediff(now(),t.add_time)>3 and t.status=2 "));
+                        new WithoutValueCondition(" datediff(now(),t.add_time)>3 or t.status=2 "));
             } else if ("1".equals(getType())) {// 进行中
                 query.addParam("type", "1");
                 query.addWithoutValueCondition(new WithoutValueCondition(
