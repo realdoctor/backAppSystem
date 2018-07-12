@@ -46,7 +46,7 @@ public final class JPushManager {
                     config.setMaxRetryTimes(JPushConstants.RETRY_NUM);
                     config.setTimeToLive(JPushConstants.TIME_TO_LIVE);
                     config.setApnsProduction(false);
-                    JPushClient jPushClient = new JPushClient("a24f70afad0f2571a3e661a9", "cc0f1b8ac99a8afcf09ce41c", null, config);
+                    JPushClient jPushClient = new JPushClient("cc0f1b8ac99a8afcf09ce41c", "a24f70afad0f2571a3e661a9", null, config);
                     return jPushClient;
                 }
             }, -1);
