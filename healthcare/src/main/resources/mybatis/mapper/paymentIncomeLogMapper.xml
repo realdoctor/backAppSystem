@@ -10,6 +10,7 @@
 		<result property="money" column="money" jdbcType="DOUBLE"/>
 		<result property="mark" column="mark" jdbcType="CHAR"/>
 		<result property="message" column="message" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="CHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<result property="userName" column="userName" jdbcType="VARCHAR"/>
@@ -27,6 +28,7 @@
 		t.money,
 		t.mark,
 		t.message,
+		t.status,
 		t.add_time,
 		t.last_update_dtime
 	</sql>
@@ -41,6 +43,7 @@
 			t.money,
 			t.mark,
 			t.message,
+			t.status,
 			t.add_time,
 			t.last_update_dtime,
 			t1.real_name AS userName,
@@ -92,6 +95,7 @@
 		money,
 		mark,
 		message,
+		status,
 		add_time,
 		last_update_dtime
 		)
@@ -103,6 +107,7 @@
 		#{money,jdbcType=DOUBLE},
 		#{mark,jdbcType=CHAR},
 		#{message,jdbcType=VARCHAR},
+		#{status,jdbcType=CHAR},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
@@ -118,6 +123,7 @@
 		  <if test="money != null">money=#{money,jdbcType=DOUBLE},</if>
 		  <if test="mark != null">mark=#{mark,jdbcType=CHAR},</if>
 		  <if test="message != null">message=#{message,jdbcType=VARCHAR},</if>
+		  <if test="status != null">mark=#{status,jdbcType=CHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>

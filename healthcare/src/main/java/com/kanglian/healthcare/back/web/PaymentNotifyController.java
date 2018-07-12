@@ -15,9 +15,11 @@ import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
+import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.service.AlipayNotifyLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
+import com.kanglian.healthcare.back.service.PaymentOrderBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.PayCommonUtil;
 
@@ -30,9 +32,11 @@ import com.kanglian.healthcare.util.PayCommonUtil;
 @RequestMapping(value = "/pay")
 public class PaymentNotifyController extends BaseController {
     @Autowired
-    private GoodsOrderBo      goodsOrderBo;
+    private GoodsOrderBo       goodsOrderBo;
     @Autowired
-    private AlipayNotifyLogBo alipayNotifyLogBo;
+    private PaymentOrderBo     paymentOrderBo;
+    @Autowired
+    private AlipayNotifyLogBo  alipayNotifyLogBo;
 
     /**
      * 支付宝异步通知
@@ -73,13 +77,20 @@ public class PaymentNotifyController extends BaseController {
                     logger.info("支付失败= 订单号:{}，支付宝交易号:{}", out_trade_no, trade_no);
                 } else if (trade_status.equals("TRADE_SUCCESS")) {
                     logger.info("支付成功= 订单号:{}，支付宝交易号:{}", out_trade_no, trade_no);
+                    Map<String, Object> retMap = JsonUtil.jsonToMap(passback_params);
+                    String type = (String)retMap.get("type");
                     // TODO 支付成功处理业务逻辑，避免重复处理
-                    if (!goodsOrderBo.orderPayStatus(out_trade_no)) {
+                    if ("sp".equals(type) && !goodsOrderBo.orderPayStatus(out_trade_no)) {
                         GoodsOrder order = new GoodsOrder();
                         order.setOrderNo(out_trade_no);
                         order.setTradeStatus(PaymentStatus.PAYMENT_TRADE_SUCCESS);
                         order.setUpdateTime(DateUtil.currentDate());
                         goodsOrderBo.updateOrderStatus(order);
+                    } else if("wq".equals(type) && !paymentOrderBo.orderPayStatus(out_trade_no)) {
+                        PaymentOrderT paymentOrderT = new PaymentOrderT();
+                        paymentOrderT.setOrderNo(out_trade_no);
+                        paymentOrderT.setUserId(retMap.get("userId") + "");
+                        paymentOrderBo.updatePaymentOrderAndLog(paymentOrderT);
                     }
                 }
             } else {

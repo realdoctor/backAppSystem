@@ -13,7 +13,8 @@ public class PaymentIncomeLog extends BasePojo {
 	private Double money;
 	private String mark;
 	private String message;
-	private Date addTime;
+	private String status;
+    private Date addTime;
 	private Date lastUpdateDtime;
 	private String userName;
 	private String toUserName;
@@ -82,6 +83,12 @@ public class PaymentIncomeLog extends BasePojo {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 	public Date getAddTime() {
 		return addTime;
 	}

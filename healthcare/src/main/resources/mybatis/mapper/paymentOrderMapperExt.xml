@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentOrderDao">
+	<select id="getByOrderNo" resultType="hashmap" parameterType="java.lang.String">
+		SELECT
+			t.order_id AS orderId,
+			t.order_no AS orderNo,
+			t.pay_price AS payPrice,
+			t.pay_status AS payStatus,
+			t.user_id AS userId,
+			t1.to_user AS toUserId
+		FROM
+			`payment_order` t
+		LEFT JOIN payment_order_item t1 ON t1.order_id = t.order_id
+		WHERE
+			t.order_no = #{orderNo,jdbcType=VARCHAR}
+	</select>
 </mapper>
