@@ -17,6 +17,7 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.dal.pojo.HealthNews;
 import com.kanglian.healthcare.back.service.HealthNewsBo;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
+import com.kanglian.healthcare.back.service.NewsAdBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -30,6 +31,8 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
 
     @Autowired
     private HealthNewsFocusBo healthNewsFocusBo;
+    @Autowired
+    private NewsAdBo newsAdBo;
     
     /**
      * 资讯一览
@@ -97,6 +100,11 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
         return ResultUtil.success(this.bo.get(Integer.valueOf(newsId)));
     }
 
+    @GetMapping("/ad/list")
+    public ResultBody newsAd() throws Exception {
+        return ResultUtil.success(newsAdBo.queryAll());
+    }
+    
     public static class BaseQuery extends Grid {
         private String userId;
 
