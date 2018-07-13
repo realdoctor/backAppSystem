@@ -10,6 +10,7 @@
 		<filter><![CDATA[/goods/search]]></filter>
 		<filter><![CDATA[/healthnews]]></filter>
 		<filter><![CDATA[/healthnews/info]]></filter>
+		<filter><![CDATA[/healthnews/ad/list]]></filter>
 		<filter><![CDATA[/guahao/hospital]]></filter>
 		<filter><![CDATA[/guahao/hospital/deptCategory]]></filter>
 		<filter><![CDATA[/guahao/hospital/search]]></filter>
