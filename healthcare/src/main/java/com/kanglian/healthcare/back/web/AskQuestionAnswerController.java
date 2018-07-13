@@ -21,7 +21,10 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
+import com.kanglian.healthcare.back.jpush.JPushService;
+import com.kanglian.healthcare.back.jpush.PushModel;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
+import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
@@ -36,7 +39,11 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 public class AskQuestionAnswerController extends CrudController<AskQuestionAnswer, AskQuestionAnswerBo> {
 
     @Autowired
-    private UserInfoBo userInfoBo;
+    private UserBo       userBo;
+    @Autowired
+    private UserInfoBo   userInfoBo;
+    @Autowired
+    private JPushService jPushService;
     
     /**
      * 上传病历问题列表
@@ -147,6 +154,17 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             if (StringUtil.isNotEmpty(content)) {
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
+                try {
+                    User u = userBo.get(userId);
+                    PushModel pushModel = new PushModel();
+                    pushModel.setTitle("复诊");
+                    pushModel.setContent(u.getRealName() + "回复了【"+askQuestionAnswer.getTitle()+"】问题。");
+                    pushModel.addParam("tagId", "0");
+                    pushModel.addAlias(askQuestionAnswer.getUserId()+"");
+                    jPushService.pushToAll(pushModel);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
             } else {
                 // 医生未回答三天后退款。如果医生回复了，患者发问第二次问题，上一次的问题才结束
                 if (askQuestionAnswer.getLastUpdateDtime() != null

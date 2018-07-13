@@ -30,9 +30,12 @@ import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
+import com.kanglian.healthcare.back.jpush.JPushService;
+import com.kanglian.healthcare.back.jpush.PushModel;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.back.service.UploadPatientBo;
+import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
@@ -49,6 +52,8 @@ public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
+    private UserBo              userBo;
+    @Autowired
     private UserPicBo           userPicBo;
     @Autowired
     private UploadContentBo     uploadContentBo;
@@ -56,6 +61,8 @@ public class UploadController {
     private UploadPatientBo     uploadPatientBo;
     @Autowired
     private AskQuestionAnswerBo askQuestionAnswerBo;
+    @Autowired
+    private JPushService        jPushService;
 
     /**
      * 上传头像
@@ -311,13 +318,23 @@ public class UploadController {
             newAskQuestionAnswer.setStatus("1");
             newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
             askQuestionAnswerBo.save(newAskQuestionAnswer);
+            try {
+                User u = userBo.get(userId);
+                PushModel pushModel = new PushModel();
+                pushModel.setTitle("复诊");
+                pushModel.setContent(u.getRealName() + "给您发送了病历。");
+                pushModel.addParam("tagId", "1");
+                pushModel.addAlias(receiveUserId);
+                jPushService.pushToAndroid(pushModel);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
             return ResultUtil.success();
         } else {
             // 上传病历限制一个
             if (files.length > 1) {
                 return ResultUtil.error("上传病历不能多个");
             }
-            
             String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
             // 判断file数组不能为空并且长度大于0
             if (files != null && files.length > 0) {
@@ -384,6 +401,17 @@ public class UploadController {
                         buff.append(fileName);
                         uploadContent.setRemark(buff.toString());
                         uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
+                        try {
+                            User u = userBo.get(userId);
+                            PushModel pushModel = new PushModel();
+                            pushModel.setTitle("复诊");
+                            pushModel.setContent(u.getRealName() + "给您发送了病历。");
+                            pushModel.addParam("tagId", "1");
+                            pushModel.addAlias(receiveUserId);
+                            jPushService.pushToAndroid(pushModel);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
                     }
                 }
                 return ResultUtil.success();
