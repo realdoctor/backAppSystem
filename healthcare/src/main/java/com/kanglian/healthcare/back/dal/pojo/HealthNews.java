@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import java.util.List;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class HealthNews extends BasePojo {
@@ -19,6 +20,13 @@ public class HealthNews extends BasePojo {
 	private String photoAddress;
 	private Integer viewedTime;
 	private String newsType;
+	private List<HealthNewsTags> tagsList;
+    public List<HealthNewsTags> getTagsList() {
+        return tagsList;
+    }
+    public void setTagsList(List<HealthNewsTags> tagsList) {
+        this.tagsList = tagsList;
+    }
     public Integer getNewsId() {
 		return newsId;
 	}

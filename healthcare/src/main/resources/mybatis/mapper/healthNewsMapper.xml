@@ -16,6 +16,8 @@
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
+		<collection property="tagsList" ofType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" select="com.kanglian.healthcare.back.dal.dao.HealthNewsTagsDao.getByNewsId" column="news_id">
+		</collection>
 	</resultMap>
 
 	<sql id="columns">
