@@ -323,7 +323,7 @@ public class UploadController {
                 PushModel pushModel = new PushModel();
                 pushModel.setTitle("复诊");
                 pushModel.setContent(u.getRealName() + "给您发送了病历。");
-                pushModel.addParam("tagId", "1");
+                pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
                 pushModel.addAlias(receiveUserId);
                 jPushService.pushToAndroid(pushModel);
             } catch (Exception e) {
@@ -406,7 +406,7 @@ public class UploadController {
                             PushModel pushModel = new PushModel();
                             pushModel.setTitle("复诊");
                             pushModel.setContent(u.getRealName() + "给您发送了病历。");
-                            pushModel.addParam("tagId", "1");
+                            pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
                             pushModel.addAlias(receiveUserId);
                             jPushService.pushToAndroid(pushModel);
                         } catch (Exception e) {

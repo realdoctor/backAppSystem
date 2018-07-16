@@ -18,6 +18,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserInfo;
@@ -159,7 +160,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     PushModel pushModel = new PushModel();
                     pushModel.setTitle("复诊");
                     pushModel.setContent(u.getRealName() + "回复了【"+askQuestionAnswer.getTitle()+"】问题。");
-                    pushModel.addParam("tagId", "0");
+                    pushModel.addParam(Constants.TAG_ID, Constants.TAG_PATIENT_ID);
                     pushModel.addAlias(askQuestionAnswer.getUserId()+"");
                     jPushService.pushToAll(pushModel);
                 } catch (Exception e) {

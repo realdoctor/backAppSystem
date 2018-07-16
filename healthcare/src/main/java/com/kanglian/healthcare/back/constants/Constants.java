@@ -99,4 +99,9 @@ public final class Constants {
     public static final String WXPAY_PREFIX                  = "WX";
     // 医保支付
     public static final String YBPAY_PREFIX                  = "YB";
+
+    // 极光推送，个人|医生标识
+    public static final String TAG_ID                        = "tagId";
+    public static final String TAG_PATIENT_ID                = "0";
+    public static final String TAG_DOCTOR_ID                 = "1";
 }
