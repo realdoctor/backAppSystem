@@ -86,6 +86,12 @@ public class UserController extends CrudController<User, UserBo> {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", accessToken);
         resultMap.put("user", user);
+        try {
+            String dataUrl = this.bo.getUserDataUrl(user.getUserId().intValue());
+            resultMap.put("url", dataUrl);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         return ResultUtil.success(resultMap);
     }
 
