@@ -18,16 +18,30 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.back.service.UserDoctorBo;
 import com.kanglian.healthcare.util.PropConfig;
 
-@Authorization
 @RestController
 @RequestMapping(value = "/user/doctor")
 public class UserDoctorController extends CrudController<User, UserBo> {
 
     @Autowired
+    private UserDoctorBo        userDoctorBo;
+    @Autowired
     private HospitalGuahaoLogBo hospitalGuahaoLogBo;
-    
+
+    /**
+     * 医生一览
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/list")
+    public ResultBody list(UserQuery query) throws Exception {
+        return ResultUtil.success(this.userDoctorBo.frontList(query));
+    }
+
     /**
      * 医生的预约（病人一览）
      * 
@@ -35,8 +49,10 @@ public class UserDoctorController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
+    @Authorization
     @GetMapping("/myPatientOrder")
-    public ResultBody myPatientOrder(@CurrentUser User user, GuahaoLogQuery query) throws Exception {
+    public ResultBody myPatientOrder(@CurrentUser User user, GuahaoLogQuery query)
+            throws Exception {
         return ResultUtil.success(hospitalGuahaoLogBo.myPatientOrder(query),
                 new JsonClothProcessor() {
 
@@ -58,6 +74,21 @@ public class UserDoctorController extends CrudController<User, UserBo> {
                 });
     }
 
+    public static class UserQuery extends Grid {
+
+        private String userId;
+
+        @SingleValue(column = "user_id", equal = "=")
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+    }
+
     public static class GuahaoLogQuery extends Grid {
 
         private String userId;
@@ -72,7 +103,7 @@ public class UserDoctorController extends CrudController<User, UserBo> {
             this.userId = userId;
         }
 
-        @SingleValue(tableAlias="t1", column = "orderDay", equal = "=")
+        @SingleValue(tableAlias = "t1", column = "orderDay", equal = "=")
         public String getOrderDay() {
             return orderDay;
         }

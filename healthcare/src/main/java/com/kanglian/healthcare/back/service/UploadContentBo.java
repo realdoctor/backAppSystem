@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.service;
 
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,16 +9,17 @@ import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.common.NewCrudBo;
 import com.kanglian.healthcare.back.dal.dao.HealthNewsDao;
 import com.kanglian.healthcare.back.dal.dao.UploadContentDao;
-import com.kanglian.healthcare.back.dal.dao.UserDao;
+import com.kanglian.healthcare.back.dal.dao.UserDoctorDao;
 import com.kanglian.healthcare.back.dal.pojo.HealthNews;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
+import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> {
 
     @Autowired
-    private UserDao userDao;
+    private UserDoctorDao userDoctorDao;
     @Autowired
     private HealthNewsDao healthNewsDao;
     
@@ -72,8 +72,8 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
     public void saveUploadContent(final UploadContent uploadContent) {
         try {
             this.dao.save(uploadContent);
-            Map<String, Object> retMap = userDao.getDoctorInfoByUserId(uploadContent.getUserId());
-            if (retMap != null) {
+            UserDoctor userDoctor = userDoctorDao.getDoctorInfo(uploadContent.getUserId());
+            if (userDoctor != null) {
                 HealthNews healthNews = new HealthNews();
                 healthNews.setUserId(uploadContent.getUserId());
                 healthNews.setPubId(uploadContent.getPubId());
@@ -91,10 +91,10 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
                 healthNews.setPutOn(1);
                 healthNews.setCommend(1);
                 healthNews.setArticle(uploadContent.getContent());
-                healthNews.setNewsAuthor(retMap.get("doctorName") + "");
-                healthNews.setAuthorProfer(retMap.get("positional") + "");
-                healthNews.setAuthorHos(retMap.get("hospitalName") + "");
-                healthNews.setAuthorDept(retMap.get("deptName") + "");
+                healthNews.setNewsAuthor(userDoctor.getDoctorName());
+                healthNews.setAuthorProfer(userDoctor.getPositional());
+                healthNews.setAuthorHos(userDoctor.getHospitalName());
+                healthNews.setAuthorDept(userDoctor.getDeptName());
                 healthNewsDao.save(healthNews);
             }
         } catch (Exception ex) {

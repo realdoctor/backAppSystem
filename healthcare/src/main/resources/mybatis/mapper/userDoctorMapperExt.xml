@@ -1,4 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDoctorDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserDoctor" id="BaseResultMapExt">
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
+		<result property="hospitalCode" column="hospital_code" jdbcType="VARCHAR"/>
+		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
+		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
+		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
+		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="frontList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t.user_id,
+			t2.doctor_code,
+			t2.doctor_name,
+			t2.doctor_intro,
+			t2.positional,
+			t3.hospital_id,
+			t3.hospital_code,
+			t3.hospital_name,
+			t3.hospital_level,
+			t3.dept_code,
+			t3.dept_name
+		FROM
+			user_doctor t
+		LEFT JOIN hospital_register_doctor t2 ON t2.doctor_code = t.doctor_code
+		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		user_id desc
+		</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getDoctorInfo" resultMap="BaseResultMapExt" parameterType="int">
+        SELECT
+			t.user_id,
+			t2.doctor_code,
+			t2.doctor_name,
+			t2.doctor_intro,
+			t2.positional,
+			t3.hospital_id,
+			t3.hospital_code,
+			t3.hospital_name,
+			t3.hospital_level,
+			t3.dept_code,
+			t3.dept_name
+		FROM
+			user_doctor t
+		LEFT JOIN hospital_register_doctor t2 ON t2.doctor_code = t.doctor_code
+		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
+		WHERE
+			t.user_id = #{userId,jdbcType=INTEGER}
+		GROUP BY
+			t3.hospital_id
+		ORDER BY
+			t3.hospital_id DESC
+	</select>
+	
 </mapper>

@@ -39,7 +39,7 @@ public class UserController extends CrudController<User, UserBo> {
     @Autowired
     private UserIdentifyBo userIdentifyBo;
     
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(UserQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getMobilePhone())) {
             return ResultUtil.error("手机号不能为空！");

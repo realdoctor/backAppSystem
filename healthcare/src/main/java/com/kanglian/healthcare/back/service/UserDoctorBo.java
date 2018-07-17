@@ -1,11 +1,25 @@
 package com.kanglian.healthcare.back.service;
 
-import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
-import com.easyway.business.framework.bo.CrudBo;
 import org.springframework.stereotype.Service;
+import com.kanglian.healthcare.back.common.NewCrudBo;
 import com.kanglian.healthcare.back.dal.dao.UserDoctorDao;
+import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
+import com.kanglian.healthcare.exception.DBException;
 
 @Service
-public class UserDoctorBo extends CrudBo<UserDoctor,UserDoctorDao> {
+public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {
 
+    /**
+     * 获取医生相关信息
+     * 
+     * @param userId
+     * @return
+     */
+    public UserDoctor getDoctorInfo(Integer userId) {
+        try {
+            return this.dao.getDoctorInfo(userId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
