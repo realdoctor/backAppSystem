@@ -10,17 +10,17 @@ import com.kanglian.healthcare.exception.DBException;
 @Service
 public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> {
 
-    public List<UploadContent> getByPubId(String orderId) {
+    public List<UploadContent> getByPubId(String pubId) {
         try {
-            return this.dao.getByPubId(orderId);
+            return this.dao.getByPubId(pubId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
 
-    public void deleteByPubId(String orderId) {
+    public void deleteByPubId(String pubId) {
         try {
-            this.dao.deleteByPubId(orderId);
+            this.dao.deleteByPubId(pubId);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
@@ -33,5 +33,20 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
             throw new DBException(ex);
         }
     }
+    
+    public UploadContent getByUserIdAndType(Integer userId, Integer type) {
+        try {
+            return this.dao.getByUserIdAndType(userId, type);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 
+    public int updateByUserIdAndType(UploadContent content) {
+        try {
+            return this.dao.updateByUserIdAndType(content);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
