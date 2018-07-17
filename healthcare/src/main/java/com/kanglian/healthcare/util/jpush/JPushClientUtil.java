@@ -1,6 +1,8 @@
 package com.kanglian.healthcare.util.jpush;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -134,13 +136,16 @@ public class JPushClientUtil {
     public static void main(String[] args) {
         JPushData pushData = new JPushData();
         Map<String, String> extrasMap = new HashMap<String, String>();
-        extrasMap.put("url", "http://news.sina.com.cn/c/nd/2017-10-15/doc-ifymviyp1380801.shtml");
+        extrasMap.put("url", "http://www.sina.com.cn/");
         pushData.setExtrasMap(extrasMap);
+        List<String> aliasList = new ArrayList<String>();
+        aliasList.add("24");
+        pushData.setAlias(aliasList);
         try {
             for (int i = 1; i <= 1; i++) {
-                pushData.setTitle("康链健康");
-                pushData.setContent("test");
-                if (JPushClientUtil.sendToAllAndroid(pushData) == 1) {// sendToAllIos
+                pushData.setTitle("test");
+                pushData.setContent("test12345");
+                if (JPushClientUtil.sendToAllAndroid(pushData) == 1) {
                     System.out.println("success");
                 }
             }
