@@ -395,7 +395,7 @@ public class UploadController {
                                 .getPropertyValue(Constants.STATIC_URL).concat(filePath));
                         uploadContent.setAddTime(DateUtil.currentDate());
                         StringBuilder buff = new StringBuilder();
-                        buff.append("[存档病历]");
+                        buff.append("[复诊病历]");
                         buff.append(user.getRealName());
                         buff.append("-");
                         buff.append(fileName);
