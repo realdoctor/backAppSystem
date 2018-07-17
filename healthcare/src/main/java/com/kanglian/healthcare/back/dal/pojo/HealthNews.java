@@ -9,25 +9,37 @@ public class HealthNews extends BasePojo {
 	private Integer newsId;
 	private String newsName;
 	private Integer newsTypeId;
+	private Integer userId;
+	private String pubId;
 	private String newsAuthor;
 	private String authorProfer;
 	private String authorHos;
 	private String authorDept;
 	private String article;
+	private Double price;
 	private Integer putOn;
 	private Integer commend;
 	private Date createDate;
 	private String photoAddress;
 	private Integer viewedTime;
+	/**
+	 * 扩展字段
+	 */
 	private String newsType;
-	private List<HealthNewsTags> tagsList;
+    private List<HealthNewsTags> tagsList;
+    public String getNewsType() {
+        return newsType;
+    }
+    public void setNewsType(String newsType) {
+        this.newsType = newsType;
+    }
     public List<HealthNewsTags> getTagsList() {
         return tagsList;
     }
     public void setTagsList(List<HealthNewsTags> tagsList) {
         this.tagsList = tagsList;
     }
-    public Integer getNewsId() {
+	public Integer getNewsId() {
 		return newsId;
 	}
 	public void setNewsId(Integer newsId) {
@@ -44,6 +56,18 @@ public class HealthNews extends BasePojo {
 	}
 	public void setNewsTypeId(Integer newsTypeId) {
 		this.newsTypeId = newsTypeId;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public String getPubId() {
+		return pubId;
+	}
+	public void setPubId(String pubId) {
+		this.pubId = pubId;
 	}
 	public String getNewsAuthor() {
 		return newsAuthor;
@@ -75,6 +99,12 @@ public class HealthNews extends BasePojo {
 	public void setArticle(String article) {
 		this.article = article;
 	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	public Integer getPutOn() {
 		return putOn;
 	}
@@ -105,10 +135,4 @@ public class HealthNews extends BasePojo {
 	public void setViewedTime(Integer viewedTime) {
 		this.viewedTime = viewedTime;
 	}
-	public String getNewsType() {
-        return newsType;
-    }
-    public void setNewsType(String newsType) {
-        this.newsType = newsType;
-    }
 }

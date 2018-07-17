@@ -54,4 +54,27 @@
 		WHERE
 			t.user_id = #{userId,jdbcType=INTEGER}
 	</select>
+	
+	<!-- 获取医生相关信息 -->
+	<select id="getDoctorInfoByUserId" resultType="map" parameterType="int">
+        SELECT
+			t.hospital_name AS hospitalName,
+			t.hospital_level AS hospitalLevel,
+			t.dept_name AS deptName,
+			t2.doctor_name AS doctorName,
+			t2.doctor_code AS doctorCode,
+			t2.doctor_intro AS doctorIntro,
+			t2.positional AS positional,
+			t3.user_id AS userId
+		FROM
+			hospital_dept t
+		LEFT JOIN hospital_register_doctor t2 ON t.dept_id = t2.dept_id
+		INNER JOIN user_doctor t3 ON t2.doctor_code = t3.doctor_code
+		WHERE
+			t3.user_id = #{userId,jdbcType=INTEGER}
+		GROUP BY
+			hospital_id
+		ORDER BY
+			hospital_id DESC
+	</select>
 </mapper>

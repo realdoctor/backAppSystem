@@ -5,11 +5,14 @@
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
 		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
+		<result property="pubId" column="pub_id" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
 		<result property="authorProfer" column="author_profer" jdbcType="VARCHAR"/>
 		<result property="authorHos" column="author_hos" jdbcType="VARCHAR"/>
 		<result property="authorDept" column="author_dept" jdbcType="VARCHAR"/>
 		<result property="article" column="article" jdbcType="LONGVARCHAR"/>
+		<result property="price" column="price" jdbcType="DECIMAL"/>
 		<result property="putOn" column="put_on" jdbcType="INTEGER"/>
 		<result property="commend" column="commend" jdbcType="INTEGER"/>
 		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
@@ -24,11 +27,14 @@
 		t.news_id,
 		t.news_name,
 		t.news_type_id,
+		t.pub_id,
+		t.user_id,
 		t.news_author,
 		t.author_profer,
 		t.author_hos,
 		t.author_dept,
 		t.article,
+		t.price,
 		t.put_on,
 		t.commend,
 		t.create_date,
@@ -41,10 +47,14 @@
 			t.news_id,
 			t.news_name,
 			t.news_type_id,
+			t.pub_id,
+			t.user_id,
 			t.news_author,
 			t.author_profer,
 			t.author_hos,
 			t.author_dept,
+			t.article,
+			t.price,
 			t.put_on,
 			t.commend,
 			t.create_date,
@@ -82,21 +92,22 @@
 		where t.news_id = #{newsId,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
-		delete from health_news where 1=1
-		and news_id=#{newsId,jdbcType=INTEGER}
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from health_news where news_id = #{newsId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews" useGeneratedKeys="true" keyProperty="newsId">
 		insert into health_news (
-		news_id,
 		news_name,
 		news_type_id,
+		pub_id,
+		user_id,
 		news_author,
 		author_profer,
 		author_hos,
 		author_dept,
 		article,
+		price,
 		put_on,
 		commend,
 		create_date,
@@ -104,14 +115,16 @@
 		viewed_time
 		)
 		values(
-		#{newsId,jdbcType=INTEGER},
 		#{newsName,jdbcType=VARCHAR},
 		#{newsTypeId,jdbcType=INTEGER},
+		#{pubId,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
 		#{newsAuthor,jdbcType=VARCHAR},
 		#{authorProfer,jdbcType=VARCHAR},
 		#{authorHos,jdbcType=VARCHAR},
 		#{authorDept,jdbcType=VARCHAR},
 		#{article,jdbcType=LONGVARCHAR},
+		#{price,jdbcType=DECIMAL},
 		#{putOn,jdbcType=INTEGER},
 		#{commend,jdbcType=INTEGER},
 		#{createDate,jdbcType=TIMESTAMP},
@@ -123,20 +136,22 @@
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
 		update health_news
 		<set>
-		  <if test="newsId != null">news_id=#{newsId,jdbcType=INTEGER},</if>
 		  <if test="newsName != null">news_name=#{newsName,jdbcType=VARCHAR},</if>
 		  <if test="newsTypeId != null">news_type_id=#{newsTypeId,jdbcType=INTEGER},</if>
+		  <if test="pubId != null">pub_id=#{pubId,jdbcType=VARCHAR},</if>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="newsAuthor != null">news_author=#{newsAuthor,jdbcType=VARCHAR},</if>
 		  <if test="authorProfer != null">author_profer=#{authorProfer,jdbcType=VARCHAR},</if>
 		  <if test="authorHos != null">author_hos=#{authorHos,jdbcType=VARCHAR},</if>
 		  <if test="authorDept != null">author_dept=#{authorDept,jdbcType=VARCHAR},</if>
 		  <if test="article != null">article=#{article,jdbcType=LONGVARCHAR},</if>
+		  <if test="price != null">price=#{price,jdbcType=DECIMAL},</if>
 		  <if test="putOn != null">put_on=#{putOn,jdbcType=INTEGER},</if>
 		  <if test="commend != null">commend=#{commend,jdbcType=INTEGER},</if>
 		  <if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
 		  <if test="photoAddress != null">photo_address=#{photoAddress,jdbcType=VARCHAR},</if>
 		  <if test="viewedTime != null">viewed_time=#{viewedTime,jdbcType=INTEGER},</if>
 		</set>
-		where 1=1 and news_id = #{newsId,jdbcType=INTEGER}
+		where news_id = #{newsId,jdbcType=INTEGER}
 	</update>
 </mapper>

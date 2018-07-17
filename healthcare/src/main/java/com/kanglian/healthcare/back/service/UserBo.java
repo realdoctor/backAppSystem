@@ -124,6 +124,20 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
     
     /**
+     * 获取医生相关信息
+     * 
+     * @param userId
+     * @return
+     */
+    public Map<String, Object> getDoctorInfoByUserId(Integer userId) {
+        try {
+            return this.dao.getDoctorInfoByUserId(userId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
      * 实名认证，关联用户信息
      * 
      * @param user
