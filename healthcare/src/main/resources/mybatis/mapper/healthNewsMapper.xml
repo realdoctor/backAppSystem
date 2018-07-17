@@ -5,7 +5,6 @@
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
 		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
-		<result property="pubId" column="pub_id" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
 		<result property="authorProfer" column="author_profer" jdbcType="VARCHAR"/>
@@ -27,7 +26,6 @@
 		t.news_id,
 		t.news_name,
 		t.news_type_id,
-		t.pub_id,
 		t.user_id,
 		t.news_author,
 		t.author_profer,
@@ -47,7 +45,6 @@
 			t.news_id,
 			t.news_name,
 			t.news_type_id,
-			t.pub_id,
 			t.user_id,
 			t.news_author,
 			t.author_profer,
@@ -100,7 +97,6 @@
 		insert into health_news (
 		news_name,
 		news_type_id,
-		pub_id,
 		user_id,
 		news_author,
 		author_profer,
@@ -117,7 +113,6 @@
 		values(
 		#{newsName,jdbcType=VARCHAR},
 		#{newsTypeId,jdbcType=INTEGER},
-		#{pubId,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
 		#{newsAuthor,jdbcType=VARCHAR},
 		#{authorProfer,jdbcType=VARCHAR},
@@ -138,7 +133,6 @@
 		<set>
 		  <if test="newsName != null">news_name=#{newsName,jdbcType=VARCHAR},</if>
 		  <if test="newsTypeId != null">news_type_id=#{newsTypeId,jdbcType=INTEGER},</if>
-		  <if test="pubId != null">pub_id=#{pubId,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="newsAuthor != null">news_author=#{newsAuthor,jdbcType=VARCHAR},</if>
 		  <if test="authorProfer != null">author_profer=#{authorProfer,jdbcType=VARCHAR},</if>

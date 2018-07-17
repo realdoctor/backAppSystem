@@ -10,7 +10,6 @@ public class HealthNews extends BasePojo {
 	private String newsName;
 	private Integer newsTypeId;
 	private Integer userId;
-	private String pubId;
 	private String newsAuthor;
 	private String authorProfer;
 	private String authorHos;
@@ -62,12 +61,6 @@ public class HealthNews extends BasePojo {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-	public String getPubId() {
-		return pubId;
-	}
-	public void setPubId(String pubId) {
-		this.pubId = pubId;
 	}
 	public String getNewsAuthor() {
 		return newsAuthor;

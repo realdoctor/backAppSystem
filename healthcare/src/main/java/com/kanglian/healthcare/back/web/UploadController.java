@@ -283,7 +283,7 @@ public class UploadController {
                         } catch (Exception e) {
                             logger.info("生成视频截图异常", e);
                         }
-                        uploadContentBo.saveUploadContent(uploadContent);
+                        uploadContentBo.save(uploadContent);
                     }
                 }
             }
