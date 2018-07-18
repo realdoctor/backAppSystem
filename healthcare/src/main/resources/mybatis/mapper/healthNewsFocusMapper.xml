@@ -17,6 +17,7 @@
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
+		<result property="price" column="price" jdbcType="DECIMAL"/>
 	</resultMap>
 	
 	<sql id="columns">
@@ -41,6 +42,7 @@
 			t1.create_date,
 			t1.photo_address,
 			t1.viewed_time,
+			t1.price,
 			t2.news_type
 		FROM
 			health_news_focus t
