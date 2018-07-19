@@ -29,6 +29,16 @@ public enum PaymentType {
         this.value = value;
     }
 
+    // 普通方法
+    public static String getValue(String name) {
+        for (PaymentType c : PaymentType.values()) {
+            if (c.getName().equals(name)) {
+                return c.value;
+            }
+        }
+        return null;
+    }
+    
     // get set 方法
     public String getName() {
         return name;
