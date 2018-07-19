@@ -12,16 +12,16 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.constants.Constants;
-import com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog;
-import com.kanglian.healthcare.back.service.PaymentIncomeLogBo;
+import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
+import com.kanglian.healthcare.back.service.PaymentLogBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
 
 @Authorization
 @RestController
 @RequestMapping(value = "/account")
-public class PaymentIncomeLogController
-        extends CrudController<PaymentIncomeLog, PaymentIncomeLogBo> {
+public class PaymentLogController
+        extends CrudController<PaymentLog, PaymentLogBo> {
 
     @GetMapping("/payment/list")
     public ResultBody list(PaymentIncomeQuery query) throws Exception {
@@ -34,7 +34,7 @@ public class PaymentIncomeLogController
 
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
-                PaymentIncomeLog entity = (PaymentIncomeLog) pojo;
+                PaymentLog entity = (PaymentLog) pojo;
                 try {
                     if (StringUtil.isNotEmpty(entity.getUserPicUrl())) {
                         jsonObject.put("userPicUrl", domainUrl.concat(entity.getUserPicUrl()));

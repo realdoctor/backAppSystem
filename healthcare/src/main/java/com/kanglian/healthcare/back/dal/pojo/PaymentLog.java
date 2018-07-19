@@ -3,7 +3,7 @@ package com.kanglian.healthcare.back.dal.pojo;
 import java.util.Date;
 import com.easyway.business.framework.pojo.BasePojo;
 
-public class PaymentIncomeLog extends BasePojo {
+public class PaymentLog extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String orderNo;

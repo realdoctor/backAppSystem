@@ -7,27 +7,24 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
-import com.kanglian.healthcare.back.dal.dao.PaymentIncomeLogDao;
+import com.kanglian.healthcare.back.dal.dao.PaymentLogDao;
 import com.kanglian.healthcare.back.dal.dao.PaymentOrderDao;
-import com.kanglian.healthcare.back.dal.dao.PaymentOrderItemDao;
-import com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog;
+import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
-import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 
-    @Autowired
-    private PaymentOrderItemDao paymentOrderItemDao;
 //    @Autowired
 //    private AccountDao          accountDao;
 //    @Autowired
 //    private AccountLogDao       accountLogDao;
     @Autowired
-    private PaymentIncomeLogDao paymentIncomeLogDao;
+    private PaymentLogDao paymentLogDao;
     
     /**
      * 写入用户支付订单
@@ -41,27 +38,20 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             PaymentOrder paymentOrder = new PaymentOrder();
             paymentOrder.setOrderNo(paymentOrderT.getOrderNo());
             paymentOrder.setUserId(Integer.valueOf(paymentOrderT.getUserId()));
+            if (StringUtil.isNotEmpty(paymentOrderT.getToUserId())) {
+                paymentOrder.setToUser(Integer.valueOf(paymentOrderT.getToUserId()));
+            }
             paymentOrder.setPayPrice(paymentOrderT.getPayAmount());
             paymentOrder.setPayTime(DateUtil.currentDate());
             paymentOrder.setPayStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentOrder.setAddTime(DateUtil.currentDate());
             this.dao.save(paymentOrder);
 
-            // 插入订单明细
-            Integer orderId = paymentOrder.getOrderId();
-            PaymentOrderItem paymentOrderItem = new PaymentOrderItem();
-            paymentOrderItem.setOrderId(orderId);
-            paymentOrderItem.setPrice(paymentOrder.getPayPrice());
-            paymentOrderItem.setNum(1);
-            paymentOrderItem.setToUser(Integer.valueOf(paymentOrderT.getToUserId()));
-            paymentOrderItem.setAddTime(DateUtil.currentDate());
-            paymentOrderItemDao.save(paymentOrderItem);
-
             // 用户支出明细
-            PaymentIncomeLog paymentIncomeLog = new PaymentIncomeLog();
+            PaymentLog paymentIncomeLog = new PaymentLog();
             paymentIncomeLog.setOrderNo(paymentOrder.getOrderNo());
             paymentIncomeLog.setUserId(paymentOrder.getUserId());
-            paymentIncomeLog.setToUser(paymentOrderItem.getToUser());
+            paymentIncomeLog.setToUser(paymentOrder.getToUser());
             paymentIncomeLog.setType("支付宝");
             paymentIncomeLog.setMark("2");
             paymentIncomeLog.setMoney(paymentOrder.getPayPrice());
@@ -69,7 +59,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentIncomeLog.setMessage(
                     "您[" + DateUtil.getCurrentDate() + "]支出[" + paymentIncomeLog.getMoney() + "]元");
             paymentIncomeLog.setAddTime(paymentOrder.getAddTime());
-            paymentIncomeLogDao.save(paymentIncomeLog);
+            paymentLogDao.save(paymentIncomeLog);
             
 //            /**
 //             * 如果使用账户自扣费，非支付宝微信支付
@@ -147,15 +137,15 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 //                paymentIncomeLogDao.save(paymentIncomeLog1);
                 
                 // 更新支出用户记录
-                PaymentIncomeLog paymentIncomeLog = paymentIncomeLogDao.getByOrderNo(orderNo);
+                PaymentLog paymentIncomeLog = paymentLogDao.getByOrderNo(orderNo);
                 if (paymentIncomeLog != null) {
                     paymentIncomeLog.setStatus(PaymentStatus.PAYMENT_TRADE_SUCCESS);
                     paymentIncomeLog.setLastUpdateDtime(DateUtil.currentDate());
-                    paymentIncomeLogDao.update(paymentIncomeLog);
+                    paymentLogDao.update(paymentIncomeLog);
                 }
                 
                 // 插入收款账户记录
-                PaymentIncomeLog paymentIncomeLog2 = new PaymentIncomeLog();
+                PaymentLog paymentIncomeLog2 = new PaymentLog();
                 paymentIncomeLog2.setOrderNo(orderNo);
                 paymentIncomeLog2.setUserId(toUserId);
                 paymentIncomeLog2.setToUser(userId);
@@ -164,7 +154,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                 paymentIncomeLog2
                         .setMessage("您[" + DateUtil.getCurrentDate() + "]收入[" + money + "]元");
                 paymentIncomeLog2.setAddTime(DateUtil.currentDate());
-                paymentIncomeLogDao.save(paymentIncomeLog2);
+                paymentLogDao.save(paymentIncomeLog2);
             }
         } catch (Exception ex) {
             throw new DBException(ex);

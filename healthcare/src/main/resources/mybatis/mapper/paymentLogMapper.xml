@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentIncomeLogDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentLogDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PaymentLog" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
@@ -50,7 +50,7 @@
 			t2.real_name AS toUserName,
 			t3.thumbnail_pic AS userPicUrl,
 			t4.thumbnail_pic AS toUserPicUrl
-		from payment_income_log t
+		from payment_log t
 		LEFT JOIN `user` t1 ON t1.user_id = t.user_id
 		LEFT JOIN `user` t2 ON t2.user_id = t.to_user
 		LEFT JOIN user_pic t3 ON t3.user_id = t1.user_id
@@ -71,23 +71,23 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from payment_income_log t
+		select count(*) from payment_log t
 		<include refid="conditionQuery.core" />
 	</select>
 
 	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="columns"/>
-		from payment_income_log t
+		from payment_log t
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
 	<delete id="delete" parameterType="java.lang.Integer">
-		delete from payment_income_log where id = #{id,jdbcType=INTEGER}
+		delete from payment_log where id = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog" useGeneratedKeys="true" keyProperty="id">
-		insert into payment_income_log (
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentLog" useGeneratedKeys="true" keyProperty="id">
+		insert into payment_log (
 		order_no,
 		user_id,
 		to_user,
@@ -113,8 +113,8 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog">
-		update payment_income_log
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentLog">
+		update payment_log
 		<set>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

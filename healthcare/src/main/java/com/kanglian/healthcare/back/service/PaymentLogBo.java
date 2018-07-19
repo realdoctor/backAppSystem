@@ -2,14 +2,14 @@ package com.kanglian.healthcare.back.service;
 
 import org.springframework.stereotype.Service;
 import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.PaymentIncomeLogDao;
-import com.kanglian.healthcare.back.dal.pojo.PaymentIncomeLog;
+import com.kanglian.healthcare.back.dal.dao.PaymentLogDao;
+import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
-public class PaymentIncomeLogBo extends NewCrudBo<PaymentIncomeLog,PaymentIncomeLogDao> {
+public class PaymentLogBo extends NewCrudBo<PaymentLog,PaymentLogDao> {
 
-    public PaymentIncomeLog getByOrderNo(String orderNo) {
+    public PaymentLog getByOrderNo(String orderNo) {
         try {
             return this.dao.getByOrderNo(orderNo);
         } catch (Exception ex) {

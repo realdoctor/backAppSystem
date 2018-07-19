@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentIncomeLogDao">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentLogDao">
 	<select id="getByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="columns"/>
-		from payment_income_log t
+		from payment_log t
 		where t.order_no = #{orderNo,jdbcType=VARCHAR}
 	</select>
 </mapper>

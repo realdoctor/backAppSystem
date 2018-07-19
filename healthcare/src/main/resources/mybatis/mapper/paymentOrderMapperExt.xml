@@ -8,10 +8,9 @@
 			t.pay_price AS payPrice,
 			t.pay_status AS payStatus,
 			t.user_id AS userId,
-			t1.to_user AS toUserId
+			t.to_user AS toUserId
 		FROM
 			`payment_order` t
-		LEFT JOIN payment_order_item t1 ON t1.order_id = t.order_id
 		WHERE
 			t.order_no = #{orderNo,jdbcType=VARCHAR}
 	</select>

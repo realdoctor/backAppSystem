@@ -56,16 +56,16 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/{type}/orderPay", method = RequestMethod.POST)
+    @RequestMapping(value = "/{ptype}/orderPay", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPay(@PathVariable("type") String type, @RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
+    public ResultBody orderPay(@PathVariable("ptype") String ptype, @RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取商品预付单");
-        if (PaymentType.ALIPAY.getName().equals(type)) {
+        if (PaymentType.ALIPAY.getName().equals(ptype)) {
             logger.info("==========================支付宝支付");
-        } else if (PaymentType.WXPAY.getName().equals(type)) {
+        } else if (PaymentType.WXPAY.getName().equals(ptype)) {
             logger.info("==========================微信支付");
-        } else if (PaymentType.SPAY.getName().equals(type)) {
+        } else if (PaymentType.SPAY.getName().equals(ptype)) {
             logger.info("==========================账户余额支付");
         } else {
             return ResultUtil.error("请选择支付方式");
@@ -99,7 +99,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取支付宝预付单
          */
-        if (PaymentType.ALIPAY.getName().equals(type)) {
+        if (PaymentType.ALIPAY.getName().equals(ptype)) {
             orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]这里调试每次支付1分钱，在项目上线前应将此处改为订单的总金额格
@@ -158,7 +158,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(type)) {
+        else if (PaymentType.ALIPAY.getName().equals(ptype)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
@@ -166,7 +166,7 @@ public class PaymentController extends BaseController {
         /**
          * 账户余额支付
          */
-        else if (PaymentType.SPAY.getName().equals(type)) {
+        else if (PaymentType.SPAY.getName().equals(ptype)) {
             return ResultUtil.error("余额支付未开放");
         }
         
@@ -185,17 +185,16 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unused")
-    @RequestMapping(value = "/{type}/orderPayT", method = RequestMethod.POST)
+    @RequestMapping(value = "/{ptype}/orderPayT", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPayT(@PathVariable("type") String type, @RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
+    public ResultBody orderPayT(@PathVariable("ptype") String ptype, @RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取预付单");
-        if (PaymentType.ALIPAY.getName().equals(type)) {
+        if (PaymentType.ALIPAY.getName().equals(ptype)) {
             logger.info("==========================支付宝支付");
-        } else if (PaymentType.WXPAY.getName().equals(type)) {
+        } else if (PaymentType.WXPAY.getName().equals(ptype)) {
             logger.info("==========================微信支付");
-        } else if (PaymentType.SPAY.getName().equals(type)) {
+        } else if (PaymentType.SPAY.getName().equals(ptype)) {
             logger.info("==========================账户余额支付");
         } else {
             return ResultUtil.error("请选择支付方式");
@@ -225,7 +224,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取支付宝预付单
          */
-        if (PaymentType.ALIPAY.getName().equals(type)) {
+        if (PaymentType.ALIPAY.getName().equals(ptype)) {
             orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             String orderPrice = "0.01";
@@ -235,8 +234,8 @@ public class PaymentController extends BaseController {
                     AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
             AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setSubject("问诊支付");
-            model.setBody("寻医问诊支付");
+            model.setSubject("支付-"+orderPrice);
+            model.setBody("支付-"+orderPrice);
             model.setOutTradeNo(orderNo);
             model.setTimeoutExpress("30m");
             model.setTotalAmount(orderPrice);
@@ -278,7 +277,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(type)) {
+        else if (PaymentType.ALIPAY.getName().equals(ptype)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
@@ -286,12 +285,12 @@ public class PaymentController extends BaseController {
         /**
          * 账户余额支付
          */
-        else if (PaymentType.SPAY.getName().equals(type)) {
+        else if (PaymentType.SPAY.getName().equals(ptype)) {
             return ResultUtil.error("余额支付未开放");
         }
         
         /**
-         * 写入支付订单明细
+         * 写入支付订单
          */
         paymentOrderBo.createPaymentOrderAndLog(paymentOrder);
         return ResultUtil.success(retResultMap);
