@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,11 +55,12 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/{ptype}/orderPay", method = RequestMethod.POST)
+    @RequestMapping(value = "/orderPay", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPay(@PathVariable("ptype") String ptype, @RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
+    public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取商品预付单");
+        final String ptype = paymentOrder.getType();
         if (PaymentType.ALIPAY.getName().equals(ptype)) {
             logger.info("==========================支付宝支付");
         } else if (PaymentType.WXPAY.getName().equals(ptype)) {
@@ -185,11 +185,12 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/{ptype}/orderPayT", method = RequestMethod.POST)
+    @RequestMapping(value = "/orderPayT", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPayT(@PathVariable("ptype") String ptype, @RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
+    public ResultBody orderPayT(@RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取预付单");
+        final String ptype = paymentOrder.getType();
         if (PaymentType.ALIPAY.getName().equals(ptype)) {
             logger.info("==========================支付宝支付");
         } else if (PaymentType.WXPAY.getName().equals(ptype)) {

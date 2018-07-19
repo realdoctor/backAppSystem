@@ -15,6 +15,16 @@ public class PaymentOrderT {
     private String orderNo;
     // 支付金额
     private Double payAmount;
+    // 支付类型
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getUserId() {
         return userId;
