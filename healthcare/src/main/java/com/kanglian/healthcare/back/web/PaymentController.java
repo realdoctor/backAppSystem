@@ -158,7 +158,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(ptype)) {
+        else if (PaymentType.WXPAY.getName().equals(ptype)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
@@ -278,7 +278,7 @@ public class PaymentController extends BaseController {
         /**
          * 拉取微信预付单
          */
-        else if (PaymentType.ALIPAY.getName().equals(ptype)) {
+        else if (PaymentType.WXPAY.getName().equals(ptype)) {
             orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
             paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
