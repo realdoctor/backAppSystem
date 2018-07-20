@@ -36,26 +36,9 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
-        query.setRoleId("1");
         return super.list(query);
     }
 
-    /**
-     * 用户关注医生后，可以查看他的视频图片列表
-     * 
-     * @param query
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/news_pub/attention/list")
-    public ResultBody list2(final ContentQuery query) throws Exception {
-        if (StringUtil.isEmpty(query.getUserId())) {
-            throw new InvalidParamException("userId");
-        }
-        query.setRoleId("0");
-        return super.list(query);
-    }
-    
     /**
      * 视频图片详情
      * 
@@ -70,9 +53,9 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
 
     public static class ContentQuery extends Grid {
         private String userId;
-        private String roleId;
         private String type;
 
+        @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
         }
@@ -81,14 +64,6 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
             this.userId = userId;
         }
 
-        public String getRoleId() {
-            return roleId;
-        }
-
-        public void setRoleId(String roleId) {
-            this.roleId = roleId;
-        }
-        
         @SingleValue(column = "type", equal = "=")
         public String getType() {
             return type;
@@ -103,13 +78,6 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
             ConditionQuery query = super.buildConditionQuery();
             if (!"3".equals(getType())) {
                 query.addSingleValueCondition(new SingleValueCondition("type", "!=", 3));
-            }
-            if (StringUtil.isNotEmpty(roleId) && "0".equals(roleId)) {// 普通用户
-                query.addParam("roleId", "0");
-                query.addSingleValueCondition(new SingleValueCondition("t0", "user_id", "=", userId));
-            } else {// 医生用户
-                query.addParam("roleId", "1");
-                query.addSingleValueCondition(new SingleValueCondition("t", "user_id", "=", userId));
             }
             return query;
         }
