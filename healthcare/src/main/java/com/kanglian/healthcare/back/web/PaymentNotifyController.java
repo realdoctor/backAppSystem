@@ -14,6 +14,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.AlipayNotifyResponse;
+import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
@@ -80,13 +81,13 @@ public class PaymentNotifyController extends BaseController {
                     Map<String, Object> retMap = JsonUtil.jsonToMap(passback_params);
                     String type = (String)retMap.get("type");
                     // TODO 支付成功处理业务逻辑，避免重复处理
-                    if ("sp".equals(type) && !goodsOrderBo.orderPayStatus(out_trade_no)) {
+                    if (Constants.NOTIFY_RETURN_TAG_SP.equals(type) && !goodsOrderBo.orderPayStatus(out_trade_no)) {
                         GoodsOrder order = new GoodsOrder();
                         order.setOrderNo(out_trade_no);
                         order.setTradeStatus(PaymentStatus.PAYMENT_TRADE_SUCCESS);
                         order.setUpdateTime(DateUtil.currentDate());
                         goodsOrderBo.updateOrderStatus(order);
-                    } else if("wq".equals(type) && !paymentOrderBo.orderPayStatus(out_trade_no)) {
+                    } else if(Constants.NOTIFY_RETURN_TAG_WQ.equals(type) && !paymentOrderBo.orderPayStatus(out_trade_no)) {
                         PaymentOrderT paymentOrderT = new PaymentOrderT();
                         paymentOrderT.setOrderNo(out_trade_no);
                         paymentOrderT.setUserId(retMap.get("userId") + "");

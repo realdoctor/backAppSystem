@@ -1,10 +1,9 @@
 package com.kanglian.healthcare.back.dal.dao;
 
-import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
-import java.util.Map;
 import com.easyway.business.framework.dao.CrudDao;
+import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
 
 public interface PaymentOrderDao extends CrudDao<PaymentOrder> {
 
-    public Map<String, Object> getByOrderNo(String orderNo);
+    public PaymentOrder getByOrderNo(String orderNo);
 }

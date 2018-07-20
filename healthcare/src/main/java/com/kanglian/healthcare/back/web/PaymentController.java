@@ -126,7 +126,7 @@ public class PaymentController extends BaseController {
             Map<String, Object> notifyParmMap = new HashMap<String, Object>();
             notifyParmMap.put("userId", userId);
             notifyParmMap.put("orderNo", orderNo);
-            notifyParmMap.put("type", "sp");
+            notifyParmMap.put(Constants.NOTIFY_RETURN_TAG, Constants.NOTIFY_RETURN_TAG_SP);
             model.setPassbackParams(
                     PayCommonUtil.urlEncodeUTF8(JsonUtil.beanToJson(notifyParmMap)));
             alipayRequest.setBizModel(model);
@@ -248,7 +248,7 @@ public class PaymentController extends BaseController {
             Map<String, Object> notifyParmMap = new HashMap<String, Object>();
             notifyParmMap.put("userId", userId);
             notifyParmMap.put("orderNo", orderNo);
-            notifyParmMap.put("type", "wq");
+            notifyParmMap.put(Constants.NOTIFY_RETURN_TAG, Constants.NOTIFY_RETURN_TAG_WQ);
             model.setPassbackParams(
                     PayCommonUtil.urlEncodeUTF8(JsonUtil.beanToJson(notifyParmMap)));
             alipayRequest.setBizModel(model);
