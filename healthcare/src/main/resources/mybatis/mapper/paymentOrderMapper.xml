@@ -7,8 +7,8 @@
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
 		<result property="payPrice" column="pay_price" jdbcType="DOUBLE"/>
-		<result property="payTime" column="pay_time" jdbcType="TIMESTAMP"/>
 		<result property="payStatus" column="pay_status" jdbcType="CHAR"/>
+		<result property="payTime" column="pay_time" jdbcType="TIMESTAMP"/>
 		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
@@ -20,8 +20,8 @@
 		t.user_id,
 		t.to_user,
 		t.pay_price,
-		t.pay_time,
 		t.pay_status,
+		t.pay_time,
 		t.close_time,
 		t.add_time,
 		t.last_update_dtime
@@ -34,8 +34,8 @@
 		t.user_id,
 		t.to_user,
 		t.pay_price,
-		t.pay_time,
 		t.pay_status,
+		t.pay_time,
 		t.close_time,
 		t.add_time,
 		t.last_update_dtime
@@ -77,8 +77,8 @@
 		user_id,
 		to_user,
 		pay_price,
-		pay_time,
 		pay_status,
+		pay_time,
 		close_time,
 		add_time,
 		last_update_dtime
@@ -88,8 +88,8 @@
 		#{userId,jdbcType=INTEGER},
 		#{toUser,jdbcType=INTEGER},
 		#{payPrice,jdbcType=DOUBLE},
-		#{payTime,jdbcType=TIMESTAMP},
 		#{payStatus,jdbcType=CHAR},
+		#{payTime,jdbcType=TIMESTAMP},
 		#{closeTime,jdbcType=TIMESTAMP},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
@@ -103,8 +103,8 @@
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
 		  <if test="payPrice != null">pay_price=#{payPrice,jdbcType=DOUBLE},</if>
-		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
 		  <if test="payStatus != null">pay_status=#{payStatus,jdbcType=CHAR},</if>
+		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
 		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>

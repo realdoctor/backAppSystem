@@ -10,8 +10,8 @@ public class PaymentOrder extends BasePojo {
 	private Integer userId;
 	private Integer toUser;
     private Double payPrice;
-	private Date payTime;
 	private String payStatus;
+	private Date payTime;
 	private Date closeTime;
 	private Date addTime;
 	private Date lastUpdateDtime;
@@ -45,17 +45,17 @@ public class PaymentOrder extends BasePojo {
 	public void setPayPrice(Double payPrice) {
 		this.payPrice = payPrice;
 	}
+	public String getPayStatus() {
+        return payStatus;
+    }
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
 	public Date getPayTime() {
 		return payTime;
 	}
 	public void setPayTime(Date payTime) {
 		this.payTime = payTime;
-	}
-	public String getPayStatus() {
-		return payStatus;
-	}
-	public void setPayStatus(String payStatus) {
-		this.payStatus = payStatus;
 	}
 	public Date getCloseTime() {
 		return closeTime;
