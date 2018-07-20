@@ -25,7 +25,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 public class UploadContentController extends CrudController<UploadContent, UploadContentBo> {
 
     /**
-     * 医生发布的视频图片列表
+     * 视频图片列表
      * 
      * @param query
      * @return
