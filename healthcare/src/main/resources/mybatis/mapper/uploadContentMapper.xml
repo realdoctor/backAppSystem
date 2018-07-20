@@ -45,6 +45,9 @@
 		t.last_update_dtime,
 		count(pub_id) num
 		from upload_content t
+		<if test="paramMap.roleId!=null and paramMap.roleId=='0'.toString()">
+		LEFT JOIN my_doctor t0 ON t0.doctor_id=t.user_id<!-- 只有关注过的医生才可以看 -->
+		</if>
 		<include refid="conditionQuery.core" />
 		group by pub_id
 		order by

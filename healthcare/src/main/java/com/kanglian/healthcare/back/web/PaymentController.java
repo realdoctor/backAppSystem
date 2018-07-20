@@ -94,7 +94,8 @@ public class PaymentController extends BaseController {
         String userId = paymentOrder.getUserId();
         // 外部订单号
         String orderNo = NumberUtil.getOrderId();
-
+        paymentOrder.setOrderNo(orderNo);
+        
         Map<String, String> retResultMap = new HashMap<String, String>();
         /**
          * 拉取支付宝预付单
@@ -214,13 +215,14 @@ public class PaymentController extends BaseController {
 
         // 支付用户Id
         String userId = paymentOrder.getUserId();
-        // 支付给用户Id
-        String toUserId = paymentOrder.getToUserId();
-        // 支付金额
-        Double payAmount = paymentOrder.getPayAmount();
+//        // 支付给用户Id
+//        String toUserId = paymentOrder.getToUserId();
+//        // 支付金额
+//        Double payAmount = paymentOrder.getPayAmount();
         // 外部订单号
         String orderNo = NumberUtil.getOrderId();
-
+        paymentOrder.setOrderNo(orderNo);
+        
         Map<String, String> retResultMap = new HashMap<String, String>();
         /**
          * 拉取支付宝预付单

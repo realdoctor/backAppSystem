@@ -22,6 +22,13 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RequestMapping(value = "/user/mydoctor")
 public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
 
+    /**
+     * 关注医生列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/list")
     public ResultBody list(MyDoctorQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
