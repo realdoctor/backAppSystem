@@ -8,6 +8,7 @@ import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.constants.Constants;
+import com.kanglian.healthcare.back.constants.FromType;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
 import com.kanglian.healthcare.back.constants.PaymentType;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
@@ -54,11 +55,12 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentLog.setUserId(paymentOrder.getUserId());
             paymentLog.setToUser(paymentOrder.getToUser());
             paymentLog.setType(PaymentType.getValue(paymentOrderT.getType()));// 支付类型
+            paymentLog.setFrom(FromType.getName(paymentOrderT.getFrom()));// 支付来源
             paymentLog.setMark(Constants.MARK_PAY);
             paymentLog.setMoney(paymentOrder.getPayPrice());
             paymentLog.setStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentLog.setMessage(
-                    "您[" + DateUtil.getCurrentDate() + "]支付（" + paymentLog.getMoney() + "）元");
+                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
             paymentLog.setAddTime(paymentOrder.getAddTime());
             paymentLogDao.save(paymentLog);
             
@@ -134,14 +136,18 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                 }
                 
                 // 判断是否有支付对象，写入日志--账户收款记录
-                if (toUserId != null) {
+                if (userId != null && toUserId != null) {
                     PaymentLog paymentLog2 = new PaymentLog();
                     paymentLog2.setOrderNo(orderNo);
                     paymentLog2.setUserId(toUserId);
                     paymentLog2.setToUser(userId);
                     paymentLog2.setMark(Constants.MARK_INCOME);// 收入
                     paymentLog2.setMoney(money);
-                    paymentLog2.setMessage("您[" + DateUtil.getCurrentDate() + "]收入（" + money + "）元");
+                    if (paymentLog1 != null) {
+                        paymentLog2.setType(paymentLog1.getType());
+                        paymentLog2.setFrom(paymentLog1.getFrom());
+                    }
+                    paymentLog2.setMessage("您" + DateUtil.getCurrentDate() + "【"+paymentLog2.getFrom()+"】收入（" + money + "）元");
                     paymentLog2.setAddTime(DateUtil.currentDate());
                     paymentLogDao.save(paymentLog2);
                 }

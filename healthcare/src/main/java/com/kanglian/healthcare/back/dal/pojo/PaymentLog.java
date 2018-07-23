@@ -7,7 +7,8 @@ public class PaymentLog extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String orderNo;
-	private Integer userId;
+	private String from;
+    private Integer userId;
 	private Integer toUser;
 	private String type;
 	private Double money;
@@ -47,6 +48,12 @@ public class PaymentLog extends BasePojo {
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
+	public String getFrom() {
+        return from;
+    }
+    public void setFrom(String from) {
+        this.from = from;
+    }
 	public Integer getUserId() {
 		return userId;
 	}

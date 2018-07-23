@@ -20,6 +20,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.constants.AlipayConfig;
 import com.kanglian.healthcare.back.constants.Constants;
+import com.kanglian.healthcare.back.constants.FromType;
 import com.kanglian.healthcare.back.constants.PaymentType;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
@@ -207,7 +208,11 @@ public class PaymentController extends BaseController {
         if (paymentOrder.getPayAmount() == null) {
             return ResultUtil.error("支付金额不能为空");
         }
-        
+        // 支付来源
+        if (StringUtil.isEmpty(paymentOrder.getFrom())
+                || StringUtil.isEmpty(FromType.getName(paymentOrder.getFrom()))) {
+            return ResultUtil.error("支付来源不明确");
+        }
         // 判断用户是否存在
         if (!userBo.ifExist(Long.valueOf(paymentOrder.getUserId()))) {
             return ResultUtil.error("非法用户");

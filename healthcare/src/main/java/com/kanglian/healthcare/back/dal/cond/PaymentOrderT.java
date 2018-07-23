@@ -17,6 +17,8 @@ public class PaymentOrderT {
     private Double payAmount;
     // 支付类型
     private String type;
+    // 支付来源
+    private String from;
 
     public String getType() {
         return type;
@@ -26,6 +28,14 @@ public class PaymentOrderT {
         this.type = type;
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+    
     public String getUserId() {
         return userId;
     }
