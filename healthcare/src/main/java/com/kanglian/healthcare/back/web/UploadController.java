@@ -29,6 +29,7 @@ import com.kanglian.healthcare.back.constants.UploadType;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
+import com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserPic;
 import com.kanglian.healthcare.back.jpush.JPushService;
@@ -36,6 +37,7 @@ import com.kanglian.healthcare.back.jpush.PushModel;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.back.service.UploadPatientBo;
+import com.kanglian.healthcare.back.service.UploadPatientRecordBo;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -53,17 +55,19 @@ public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
-    private UserBo              userBo;
+    private UserBo                userBo;
     @Autowired
-    private UserPicBo           userPicBo;
+    private UserPicBo             userPicBo;
     @Autowired
-    private UploadContentBo     uploadContentBo;
+    private UploadContentBo       uploadContentBo;
     @Autowired
-    private UploadPatientBo     uploadPatientBo;
+    private UploadPatientBo       uploadPatientBo;
     @Autowired
-    private AskQuestionAnswerBo askQuestionAnswerBo;
+    private UploadPatientRecordBo uploadPatientRecordBo;
     @Autowired
-    private JPushService        jPushService;
+    private AskQuestionAnswerBo   askQuestionAnswerBo;
+    @Autowired
+    private JPushService          jPushService;
 
     /**
      * 上传头像
@@ -208,88 +212,126 @@ public class UploadController {
                             .contains(extension)) {// 上传图片
                         filePath = "/files/images".concat(FileUtil.randomPathname(extension));
                         type = UploadType.IMAGES.getValue();
-                    } else if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(","))
-                            .contains(extension)) {// 上传文件
-                        StringBuilder buff = new StringBuilder();
-                        buff.append("/files/backup/");
-                        buff.append(DateUtil.getShortDateStr());
-                        buff.append("/");
-                        buff.append(fileName);
-                        filePath = buff.toString();
-                        type = UploadType.FILES.getValue();
                     } else {
                         return ResultUtil.error("上传格式不符合");
                     }
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     
-                    // 上传归档文件
-                    if (UploadType.FILES.getValue() == type) {
-                        UploadContent uploadContent = uploadContentBo.getByUserIdAndType(user.getUserId().intValue(), type);
-                        if(uploadContent != null) {
-                            uploadContent.setSrc(PropConfig.getInstance()
-                                    .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                            uploadContent.setLastUpdateDtime(DateUtil.currentDate());
-                            uploadContent.setRemark("[病历归档]"+fileName);
-                            uploadContentBo.updateByUserIdAndType(uploadContent);
-                        } else {
-                            uploadContent = new UploadContent();
-                            uploadContent.setUserId(user.getUserId().intValue());
-                            uploadContent.setPubId(contentId);
-                            uploadContent.setType(type);
-                            uploadContent.setContent(content);
-                            uploadContent.setSrc(PropConfig.getInstance()
-                                    .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                            uploadContent.setAddTime(DateUtil.currentDate());
-                            uploadContent.setRemark("[病历归档]"+fileName);
-                            uploadContentBo.save(uploadContent);
-                        }
-                        Map<String, String> urlMap = new HashMap<String, String>();
-                        urlMap.put("url", uploadContent.getSrc());
-                        pathList.add(urlMap);
+                    // 上传视频图片
+                    UploadContent uploadContent = new UploadContent();
+                    uploadContent.setUserId(user.getUserId().intValue());
+                    uploadContent.setPubId(contentId);
+                    uploadContent.setType(type);
+                    uploadContent.setContent(content);
+                    uploadContent.setSrc(PropConfig.getInstance()
+                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    uploadContent.setAddTime(DateUtil.currentDate());
+                    if (StringUtil.isNotBlank(price)) {// 发布视频图片价格
+                        uploadContent.setPrice(Double.valueOf(price));
                     } else {
-                        // 上传视频图片
-                        UploadContent uploadContent = new UploadContent();
-                        uploadContent.setUserId(user.getUserId().intValue());
-                        uploadContent.setPubId(contentId);
-                        uploadContent.setType(type);
-                        uploadContent.setContent(content);
-                        uploadContent.setSrc(PropConfig.getInstance()
-                                .getPropertyValue(Constants.STATIC_URL).concat(filePath));
-                        uploadContent.setAddTime(DateUtil.currentDate());
-                        if (StringUtil.isNotBlank(price)) {// 发布视频图片价格
-                            uploadContent.setPrice(Double.valueOf(price));
-                        } else {
-                            uploadContent.setPrice(0d);
-                        }
-                        
-                        Map<String, String> urlMap = new HashMap<String, String>();
-                        urlMap.put("url", uploadContent.getSrc());
-                        pathList.add(urlMap);
-                        String thumbnailUrl = "";
-                        try {
-                            // 上传视频，生成截图
-                            if (UploadType.VIDEOS.getValue() == type) {
-                                String outImagePath =
-                                        filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
-                                VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
-                                        pathRoot.concat(filePath), pathRoot.concat(outImagePath));
-                                uploadContent.setPic(PropConfig.getInstance()
-                                        .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
-                                uploadContent.setRemark(fileName + "视频截图");
-                                thumbnailUrl = uploadContent.getPic();
-                                urlMap.put("thumbnailUrl", thumbnailUrl);
-                            }
-                        } catch (Exception e) {
-                            logger.info("生成视频截图异常", e);
-                        }
-                        uploadContentBo.save(uploadContent);
+                        uploadContent.setPrice(0d);
                     }
+                    
+                    Map<String, String> urlMap = new HashMap<String, String>();
+                    urlMap.put("url", uploadContent.getSrc());
+                    pathList.add(urlMap);
+                    String thumbnailUrl = "";
+                    try {
+                        // 上传视频，生成截图
+                        if (UploadType.VIDEOS.getValue() == type) {
+                            String outImagePath =
+                                    filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
+                            VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
+                                    pathRoot.concat(filePath), pathRoot.concat(outImagePath));
+                            uploadContent.setPic(PropConfig.getInstance()
+                                    .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+                            uploadContent.setRemark(fileName + "视频截图");
+                            thumbnailUrl = uploadContent.getPic();
+                            urlMap.put("thumbnailUrl", thumbnailUrl);
+                        }
+                    } catch (Exception e) {
+                        logger.info("生成视频截图异常", e);
+                    }
+                    uploadContentBo.save(uploadContent);
                 }
             }
             resultMap.put("pubId", contentId);
             resultMap.put("list", pathList);
             return ResultUtil.success(resultMap);
+        }
+        return ResultUtil.error("上传失败");
+    }
+    
+    /**
+     * 上传本地病历记录
+     * 
+     * @param user
+     * @param files
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/uploadPatientRecord", method = RequestMethod.POST)
+    public ResultBody uploadPatientRecord(@CurrentUser User user,
+            @RequestParam(value = "attach", required = false) MultipartFile file,
+            HttpServletRequest request) throws Exception {
+        logger.info("===========进入上传本地病历记录，user=" + user.getMobilePhone());
+
+        // 文件
+        if (file == null) {
+            throw new InvalidParamException("attach");
+        }
+
+        if (file.isEmpty()) {
+            return ResultUtil.error("不能上传空文件");
+        }
+
+        // 文件名
+        final String fileName = file.getOriginalFilename();
+        // 获取文件类型
+        String extension = FilenameUtils.getExtension(fileName).toLowerCase();
+        String filePath = null;
+        if (Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("file").split(",")).contains(extension)) {// 上传文件
+            StringBuilder buff = new StringBuilder();
+            buff.append("/files/backup/");
+            buff.append(DateUtil.getShortDateStr());
+            buff.append("/");
+            buff.append(fileName);
+            filePath = buff.toString();
+        } else {
+            return ResultUtil.error("上传格式不符合");
+        }
+
+        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        File uploadedFile = new File(pathRoot + filePath);
+        FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+
+        try {
+            UploadPatientRecord uploadContent =
+                    uploadPatientRecordBo.getByUserId(user.getUserId().intValue());
+            if (uploadContent != null) {
+                uploadContent.setSrc(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL)
+                        .concat(filePath));
+                uploadContent.setLastUpdateDtime(DateUtil.currentDate());
+                uploadContent.setRemark("[病历归档]" + fileName);
+                uploadPatientRecordBo.updateByUserId(uploadContent);
+            } else {
+                uploadContent = new UploadPatientRecord();
+                uploadContent.setUserId(user.getUserId().intValue());
+                uploadContent.setSrc(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL)
+                        .concat(filePath));
+                uploadContent.setAddTime(DateUtil.currentDate());
+                uploadContent.setRemark("[病历归档]" + fileName);
+                uploadPatientRecordBo.save(uploadContent);
+            }
+            resultMap.put("url", uploadContent.getSrc());
+            return ResultUtil.success(resultMap);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
         return ResultUtil.error("上传失败");
     }

@@ -10,13 +10,12 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.token.impl.RedisTokenManager;
 import com.kanglian.healthcare.authorization.util.TokenUtil;
-import com.kanglian.healthcare.back.constants.UploadType;
-import com.kanglian.healthcare.back.dal.dao.UploadContentDao;
+import com.kanglian.healthcare.back.dal.dao.UploadPatientRecordDao;
 import com.kanglian.healthcare.back.dal.dao.UserDao;
 import com.kanglian.healthcare.back.dal.dao.UserIdentifyDao;
 import com.kanglian.healthcare.back.dal.dao.UserInfoDao;
 import com.kanglian.healthcare.back.dal.dao.UserRoleDao;
-import com.kanglian.healthcare.back.dal.pojo.UploadContent;
+import com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserRole;
@@ -35,7 +34,7 @@ public class UserBo extends CrudBo<User, UserDao> {
     @Autowired
     private UserIdentifyDao userIdentifyDao;
     @Autowired
-    private UploadContentDao uploadContentDao;
+    private UploadPatientRecordDao uploadPatientRecordDao;
     
     public User login(User user) {
         try {
@@ -91,17 +90,16 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
     
     /**
-     * 获取用户上传的病历路径
+     * 获取用户上传的本地病历路径
      * 
      * @param userId
      * @return
      */
     public String getUserDataUrl(Integer userId) {
         try {
-            UploadContent uploadContent =
-                    uploadContentDao.getByUserIdAndType(userId, UploadType.FILES.getValue());
-            if (uploadContent != null) {
-                return uploadContent.getSrc();
+            UploadPatientRecord uploadPatientRecord = uploadPatientRecordDao.getByUserId(userId);
+            if (uploadPatientRecord != null) {
+                return uploadPatientRecord.getSrc();
             }
             return null;
         } catch (Exception ex) {
