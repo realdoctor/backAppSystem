@@ -225,7 +225,7 @@ public class PaymentController extends BaseController {
 //        // 支付金额
 //        Double payAmount = paymentOrder.getPayAmount();
         // 外部订单号
-        String orderNo = NumberUtil.getOrderId();
+        String orderNo = NumberUtil.getOrderNo();
         paymentOrder.setOrderNo(orderNo);
         
         Map<String, String> retResultMap = new HashMap<String, String>();
