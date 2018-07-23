@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.UploadPatientRecordDao">
+	<select id="getByUserId" resultMap="BaseResultMap">
+		select
+		<include refid="columns"/>
+		from upload_patient_record t
+		where t.user_id=#{userId,jdbcType=INTEGER}
+	</select>
+	
+	<update id="updateByUserId" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
+		update upload_patient_record
+		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="title != null">title=#{title,jdbcType=VARCHAR},</if>
+		  <if test="content != null">content=#{content,jdbcType=VARCHAR},</if>
+		  <if test="src != null">src=#{src,jdbcType=VARCHAR},</if>
+		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
+		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where user_id=#{userId,jdbcType=INTEGER}
+	</update>
+</mapper>
