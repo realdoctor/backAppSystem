@@ -22,4 +22,8 @@ public class SystemException extends BaseRuntimeException {
     public SystemException(String message) {
         super(BaseResultCodeEnum.SYSTEM_ERROR, message);
     }
+
+    public SystemException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

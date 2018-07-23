@@ -187,7 +187,7 @@ public class UserBo extends CrudBo<User, UserDao> {
                     StringUtil.join(new Object[] {user.getUserId(), accessToken}, UNDERLINE));
             return accessToken;
         } catch (Exception ex) {
-            throw new InvalidOperationException(ex);
+            throw new InvalidOperationException("生成TOKEN错误", ex);
         }
     }
 
@@ -196,7 +196,7 @@ public class UserBo extends CrudBo<User, UserDao> {
             return redisTokenManager
                     .getKey(StringUtil.join(new Object[] {userId, token}, UNDERLINE));
         } catch (Exception ex) {
-            throw new InvalidOperationException(ex);
+            throw new InvalidOperationException("获取KEY错误", ex);
         }
     }
 
@@ -205,7 +205,7 @@ public class UserBo extends CrudBo<User, UserDao> {
             redisTokenManager.delRelationshipByToken(
                     StringUtil.join(new Object[] {userId, token}, UNDERLINE));
         } catch (Exception ex) {
-            throw new InvalidOperationException(ex);
+            throw new InvalidOperationException("删除TOKEN错误", ex);
         }
     }
 }

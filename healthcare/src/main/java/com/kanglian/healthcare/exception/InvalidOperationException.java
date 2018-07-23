@@ -23,6 +23,10 @@ public class InvalidOperationException extends BaseRuntimeException {
         super(BaseResultCodeEnum.ILLEGAL_OPERATION, cause);
     }
 
+    public InvalidOperationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public InvalidOperationException(String operation) {
         super(BaseResultCodeEnum.ILLEGAL_OPERATION, "Invalid operation: " + operation);
     }

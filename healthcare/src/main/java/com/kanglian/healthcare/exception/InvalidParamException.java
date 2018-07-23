@@ -23,6 +23,10 @@ public class InvalidParamException extends BaseRuntimeException {
         super(BaseResultCodeEnum.ILLEGAL_ARGUMENT, cause);
     }
 
+    public InvalidParamException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     /**
      * 构造器
      * 
