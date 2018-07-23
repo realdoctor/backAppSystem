@@ -66,6 +66,34 @@ public final class NumberUtil {
     }
     
     /**
+     * 2018072300001000880016404998
+     * 前六位数（20180723）是年月日格式化：yyyyMMdd
+
+              中间的8位数（00001000）是：00001000，固定4个0+1000
+
+              在后两位（88）：随机生成一个两位数
+
+              在后两位（00）：又是固定的两个0
+
+              接下来的6位数是（164049）：时分秒的格式化HHmmss
+
+              最后两位是（98）：又是随机生成
+     * @return
+     */
+    public static String getOrderNo() {
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String seconds = new SimpleDateFormat("HHmmss").format(new Date());
+        StringBuffer buff = new StringBuffer();
+        buff.append(date);
+        buff.append("00001000");
+        buff.append(RandomStringUtils.randomNumeric(2));
+        buff.append("00");
+        buff.append(seconds);
+        buff.append(RandomStringUtils.randomNumeric(2));
+        return buff.toString();
+    }
+    
+    /**
      * 产生num位的随机数
      * 
      * @return
