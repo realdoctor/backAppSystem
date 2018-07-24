@@ -153,6 +153,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         if (askQuestionAnswer != null) {
             askQuestionAnswer.setAnswer(content);
             if (StringUtil.isNotEmpty(content)) {
+                askQuestionAnswer.setStatus("2");
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
                 try {
