@@ -145,6 +145,8 @@ public class UserBo extends CrudBo<User, UserDao> {
                 UserIdentify userIdentifyT = userIdentifyDao.getByUserId(userId);
                 if (userIdentifyT != null) {
                     userIdentifyT.setUserId(userId);
+                    userIdentifyT.setTypeId(userIdentify.getTypeId());
+                    userIdentify.setIdNo(userIdentify.getIdNo());
                     userIdentifyT.setStatus(0);
                     userIdentifyT.setAddTime(DateUtil.currentDate());
                     userIdentifyDao.update(userIdentifyT);
