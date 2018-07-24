@@ -18,10 +18,11 @@ public class HealthNews extends BasePojo {
 	private Double price;
 	private Integer putOn;
 	private Integer commend;
-	private Date createDate;
 	private String photoAddress;
 	private Integer viewedTime;
-	/**
+	private Date createDate;
+	private Date lastUpdateDtime;
+    /**
 	 * 扩展字段
 	 */
 	private String newsType;
@@ -110,12 +111,6 @@ public class HealthNews extends BasePojo {
 	public void setCommend(Integer commend) {
 		this.commend = commend;
 	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
 	public String getPhotoAddress() {
 		return photoAddress;
 	}
@@ -128,4 +123,16 @@ public class HealthNews extends BasePojo {
 	public void setViewedTime(Integer viewedTime) {
 		this.viewedTime = viewedTime;
 	}
+	public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+	public Date getLastUpdateDtime() {
+        return lastUpdateDtime;
+    }
+    public void setLastUpdateDtime(Date lastUpdateDtime) {
+        this.lastUpdateDtime = lastUpdateDtime;
+    }
 }

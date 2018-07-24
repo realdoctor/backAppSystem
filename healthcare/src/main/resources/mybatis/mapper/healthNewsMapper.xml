@@ -3,9 +3,9 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNews" id="BaseResultMap">
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
+		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
 		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
-		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
 		<result property="authorProfer" column="author_profer" jdbcType="VARCHAR"/>
 		<result property="authorHos" column="author_hos" jdbcType="VARCHAR"/>
@@ -14,19 +14,20 @@
 		<result property="price" column="price" jdbcType="DECIMAL"/>
 		<result property="putOn" column="put_on" jdbcType="INTEGER"/>
 		<result property="commend" column="commend" jdbcType="INTEGER"/>
-		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
+		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<collection property="tagsList" ofType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" select="com.kanglian.healthcare.back.dal.dao.HealthNewsTagsDao.getByNewsId" column="news_id">
 		</collection>
 	</resultMap>
 
 	<sql id="columns">
 		t.news_id,
+		t.user_id,
 		t.news_name,
 		t.news_type_id,
-		t.user_id,
 		t.news_author,
 		t.author_profer,
 		t.author_hos,
@@ -35,17 +36,18 @@
 		t.price,
 		t.put_on,
 		t.commend,
-		t.create_date,
 		t.photo_address,
-		t.viewed_time
+		t.viewed_time,
+		t.create_date,
+		t.last_update_dtime
 	</sql>
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
 			t.news_id,
+			t.user_id,
 			t.news_name,
 			t.news_type_id,
-			t.user_id,
 			t.news_author,
 			t.author_profer,
 			t.author_hos,
@@ -95,9 +97,9 @@
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews" useGeneratedKeys="true" keyProperty="newsId">
 		insert into health_news (
+		user_id,
 		news_name,
 		news_type_id,
-		user_id,
 		news_author,
 		author_profer,
 		author_hos,
@@ -106,14 +108,15 @@
 		price,
 		put_on,
 		commend,
-		create_date,
 		photo_address,
-		viewed_time
+		viewed_time,
+		create_date,
+		last_update_dtime
 		)
 		values(
+		#{userId,jdbcType=INTEGER},
 		#{newsName,jdbcType=VARCHAR},
 		#{newsTypeId,jdbcType=INTEGER},
-		#{userId,jdbcType=INTEGER},
 		#{newsAuthor,jdbcType=VARCHAR},
 		#{authorProfer,jdbcType=VARCHAR},
 		#{authorHos,jdbcType=VARCHAR},
@@ -122,18 +125,19 @@
 		#{price,jdbcType=DECIMAL},
 		#{putOn,jdbcType=INTEGER},
 		#{commend,jdbcType=INTEGER},
-		#{createDate,jdbcType=TIMESTAMP},
 		#{photoAddress,jdbcType=VARCHAR},
-		#{viewedTime,jdbcType=INTEGER}
+		#{viewedTime,jdbcType=INTEGER},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
 		update health_news
 		<set>
+		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="newsName != null">news_name=#{newsName,jdbcType=VARCHAR},</if>
 		  <if test="newsTypeId != null">news_type_id=#{newsTypeId,jdbcType=INTEGER},</if>
-		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="newsAuthor != null">news_author=#{newsAuthor,jdbcType=VARCHAR},</if>
 		  <if test="authorProfer != null">author_profer=#{authorProfer,jdbcType=VARCHAR},</if>
 		  <if test="authorHos != null">author_hos=#{authorHos,jdbcType=VARCHAR},</if>
@@ -142,9 +146,10 @@
 		  <if test="price != null">price=#{price,jdbcType=DECIMAL},</if>
 		  <if test="putOn != null">put_on=#{putOn,jdbcType=INTEGER},</if>
 		  <if test="commend != null">commend=#{commend,jdbcType=INTEGER},</if>
-		  <if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
 		  <if test="photoAddress != null">photo_address=#{photoAddress,jdbcType=VARCHAR},</if>
 		  <if test="viewedTime != null">viewed_time=#{viewedTime,jdbcType=INTEGER},</if>
+		  <if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
+		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where news_id = #{newsId,jdbcType=INTEGER}
 	</update>
