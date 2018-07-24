@@ -69,17 +69,21 @@ public class PaymentController extends BaseController {
         } else if (PaymentType.SPAY.getName().equals(ptype)) {
             logger.info("==========================账户余额支付");
         } else {
+            logger.info("+++++++++++++++++++++++++++++++请选择支付方式");
             return ResultUtil.error("请选择支付方式");
         }
         if (StringUtil.isEmpty(paymentOrder.getUserId())) {
+            logger.info("+++++++++++++++++++++++++++++++用户不能为空");
             return ResultUtil.error("用户不能为空");
         }
         if (paymentOrder.getTotalAmount() == null) {
+            logger.info("+++++++++++++++++++++++++++++++支付金额不能为空");
             return ResultUtil.error("支付金额不能为空");
         }
         
         // 判断用户是否存在
         if (!userBo.ifExist(Long.valueOf(paymentOrder.getUserId()))) {
+            logger.info("+++++++++++++++++++++++++++++++非法用户请求");
             return ResultUtil.error("非法用户");
         }
 
@@ -200,21 +204,26 @@ public class PaymentController extends BaseController {
         } else if (PaymentType.SPAY.getName().equals(ptype)) {
             logger.info("==========================账户余额支付");
         } else {
+            logger.info("+++++++++++++++++++++++++++++++请选择支付方式");
             return ResultUtil.error("请选择支付方式");
         }
         if (StringUtil.isEmpty(paymentOrder.getUserId())) {
+            logger.info("+++++++++++++++++++++++++++++++用户不能为空");
             return ResultUtil.error("用户不能为空");
         }
         if (paymentOrder.getPayAmount() == null) {
+            logger.info("+++++++++++++++++++++++++++++++支付金额不能为空");
             return ResultUtil.error("支付金额不能为空");
         }
         // 支付来源
         if (StringUtil.isEmpty(paymentOrder.getFrom())
                 || StringUtil.isEmpty(FromType.getName(paymentOrder.getFrom()))) {
+            logger.info("+++++++++++++++++++++++++++++++支付来源不明确");
             return ResultUtil.error("支付来源不明确");
         }
         // 判断用户是否存在
         if (!userBo.ifExist(Long.valueOf(paymentOrder.getUserId()))) {
+            logger.info("+++++++++++++++++++++++++++++++非法用户请求");
             return ResultUtil.error("非法用户");
         }
 
