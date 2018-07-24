@@ -9,7 +9,6 @@ public class UserIdentify extends BasePojo {
 	private Integer userId;
 	private String typeId;
 	private String idNo;
-	private String name;
 	private Integer status;
 	private String litpic;
 	private Date verifyTime;
@@ -53,12 +52,6 @@ public class UserIdentify extends BasePojo {
 	}
 	public void setIdNo(String idNo) {
 		this.idNo = idNo;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public Integer getStatus() {
 		return status;

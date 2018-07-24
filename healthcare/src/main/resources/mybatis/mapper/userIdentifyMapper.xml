@@ -6,7 +6,6 @@
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="typeId" column="type_id" jdbcType="VARCHAR"/>
 		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
-		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="status" column="status" jdbcType="INTEGER"/>
 		<result property="litpic" column="litpic" jdbcType="VARCHAR"/>
 		<result property="verifyTime" column="verify_time" jdbcType="TIMESTAMP"/>
@@ -20,7 +19,6 @@
 		t.user_id,
 		t.type_id,
 		t.id_no,
-		t.name,
 		t.status,
 		t.litpic,
 		t.verify_time,
@@ -35,7 +33,6 @@
 		t.user_id,
 		t.type_id,
 		t.id_no,
-		t.name,
 		t.status,
 		t.litpic,
 		t.verify_time,
@@ -79,7 +76,6 @@
 		user_id,
 		type_id,
 		id_no,
-		name,
 		status,
 		litpic,
 		verify_time,
@@ -91,7 +87,6 @@
 		#{userId,jdbcType=INTEGER},
 		#{typeId,jdbcType=VARCHAR},
 		#{idNo,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR},
 		#{status,jdbcType=INTEGER},
 		#{litpic,jdbcType=VARCHAR},
 		#{verifyTime,jdbcType=TIMESTAMP},
@@ -107,7 +102,6 @@
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="typeId != null">type_id=#{typeId,jdbcType=VARCHAR},</if>
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
-		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
 		  <if test="status != null">status=#{status,jdbcType=INTEGER},</if>
 		  <if test="litpic != null">litpic=#{litpic,jdbcType=VARCHAR},</if>
 		  <if test="verifyTime != null">verify_time=#{verifyTime,jdbcType=TIMESTAMP},</if>
