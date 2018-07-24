@@ -488,6 +488,7 @@ public class UploadController {
                             pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
                             pushModel.addAlias(receiveUserId);
                             jPushService.pushToAndroid(pushModel);
+                            logger.info("======================"+pushModel.getContent()+"医生用户userId="+receiveUserId);
                         } catch (Exception e) {
                             // TODO: handle exception
                         }

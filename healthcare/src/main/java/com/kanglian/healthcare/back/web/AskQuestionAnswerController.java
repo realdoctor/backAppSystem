@@ -163,6 +163,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     pushModel.addParam(Constants.TAG_ID, Constants.TAG_PATIENT_ID);
                     pushModel.addAlias(askQuestionAnswer.getUserId()+"");
                     jPushService.pushToAll(pushModel);
+                    logger.info("======================"+pushModel.getContent()+"患者用户userId="+askQuestionAnswer.getUserId());
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
