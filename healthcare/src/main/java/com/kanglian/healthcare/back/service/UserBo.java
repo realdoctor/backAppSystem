@@ -147,7 +147,6 @@ public class UserBo extends CrudBo<User, UserDao> {
                     userIdentifyT.setUserId(userId);
                     userIdentifyT.setStatus(0);
                     userIdentifyT.setAddTime(DateUtil.currentDate());
-                    userIdentifyT.setName("用户重新认证，时间="+DateUtil.getCurrentTime());
                     userIdentifyDao.update(userIdentifyT);
                 } else {
                     userIdentify.setUserId(userId);
