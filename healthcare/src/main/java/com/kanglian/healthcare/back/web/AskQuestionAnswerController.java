@@ -170,7 +170,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                 }
             } else {
                 // 医生未回答三天后退款。如果医生回复了，患者发问第二次问题，上一次的问题才结束
-                if (askQuestionAnswer.getLastUpdateDtime() != null
+                if (askQuestionAnswer.getLastUpdateDtime() == null
                         && StringUtil.isNotEmpty(askQuestionAnswer.getAnswer())) {
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     this.bo.update(askQuestionAnswer);
