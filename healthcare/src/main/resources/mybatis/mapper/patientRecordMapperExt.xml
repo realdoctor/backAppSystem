@@ -37,7 +37,7 @@
 				b.id AS patient_diag_id,
 				b.diag_code,
 				b.diag_name,
-				c.user_id AS doctor_user_id,
+				c.user_id AS doctor_user_id
 			FROM
 				patient_record a
 			LEFT JOIN patient_diag b ON (
