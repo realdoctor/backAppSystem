@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.PatientRecordDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientRecord" id="BaseResultMapExt">
+		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
+		<result property="visitOrgCode" column="visit_org_code" jdbcType="VARCHAR"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
@@ -28,6 +30,7 @@
 				a.id,
 				a.org_code,
 				a.patient_id,
+				a.visit_org_code,
 				a.visit_org_name,
 				a.visit_dept_name,
 				a.visit_dtime,
