@@ -1,8 +1,10 @@
 package com.kanglian.healthcare.back.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,14 +47,20 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
     public ResultBody list(final BaseQuery query) throws Exception {
         return super.list(query, new JsonClothProcessor() {
 
-            List<Map<String, Object>> focusNewsList = getNewsIdsByUserId(query.getUserId());
+            List<String> focusNewsList = getNewsIdsByUserId(query.getUserId());
 
-            private List<Map<String, Object>> getNewsIdsByUserId(String userId) {
-                if (StringUtil.isEmpty(userId)) {
+            private List<String> getNewsIdsByUserId(String userId) {
+                if (StringUtils.isEmpty(userId)) {
                     return null;
                 }
 
-                return healthNewsFocusBo.getListByUserId(Integer.valueOf(query.getUserId()));
+                List<Map<String, Object>> focusNewsList =
+                        healthNewsFocusBo.getListByUserId(Integer.valueOf(query.getUserId()));
+                List<String> newsIdList = new ArrayList<String>();
+                for (Map<String, Object> newsFocus : focusNewsList) {
+                    newsIdList.add(newsFocus.get("newsId") + "");
+                }
+                return newsIdList;
             }
             
             @Override
@@ -65,14 +73,11 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
                         if (CollectionUtil.isEmpty(focusNewsList)) {
                             jsonObject.put("focusFlag", "0");
                         } else {
-                            for (Map<String, Object> newsFocus : focusNewsList) {
-                                Integer newsId = (Integer) newsFocus.get("newsId");
-                                if (newsId != null && (newsId == healthNews.getNewsId()
-                                        || newsId.equals(healthNews.getNewsId()))) {
-                                    jsonObject.put("focusFlag", "1");
-                                } else {
-                                    jsonObject.put("focusFlag", "0");
-                                }
+                            if (healthNews.getNewsId() != null
+                                    && focusNewsList.contains(healthNews.getNewsId() + "")) {
+                                jsonObject.put("focusFlag", "1");
+                            } else {
+                                jsonObject.put("focusFlag", "0");
                             }
                         }
                     }
