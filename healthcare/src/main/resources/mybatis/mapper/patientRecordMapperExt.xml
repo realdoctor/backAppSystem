@@ -13,6 +13,7 @@
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
+		<result property="doctorUserId" column="doctor_user_id" jdbcType="INTEGER"/>
 		<collection property="drugList" ofType="com.kanglian.healthcare.back.dal.pojo.PatientDrug" select="com.kanglian.healthcare.back.dal.dao.PatientDrugDao.getByPatientDiagId" column="patient_diag_id">
 		</collection>
 	</resultMap>
@@ -31,15 +32,18 @@
 				a.visit_dept_name,
 				a.visit_dtime,
 				a.visit_way,
+				a.doctor_code,
 				a.resp_doctor_name,
 				b.id AS patient_diag_id,
 				b.diag_code,
-				b.diag_name
+				b.diag_name,
+				c.user_id AS doctor_user_id,
 			FROM
 				patient_record a
 			LEFT JOIN patient_diag b ON (
 				a.id = b.patient_record_id
 			)
+			LEFT JOIN user_doctor c ON c.doctor_code = a.doctor_code
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
