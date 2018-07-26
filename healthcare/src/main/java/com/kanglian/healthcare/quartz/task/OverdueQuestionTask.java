@@ -12,7 +12,9 @@ import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.quartz.common.AbstractTask;
 
 /**
- * 过期问题处理 1、退款 2、已结束
+ * 过期问题处理
+ * 1、超过三天未处理，已回复[已结束]
+ * 2、超过三天未处理，未回复[退款]
  * 
  * @author xl.liu
  */
@@ -37,7 +39,7 @@ public class OverdueQuestionTask extends AbstractTask {
         try {
             logger.info("==============进入过期问题处理");
             List<AskQuestionAnswer> overdueQuestionList = askQuestionAnswerBo.getListOverThreeday();
-            logger.info("==============超过三天未处理已回复列表 {} 条", overdueQuestionList.size());
+            logger.info("==============超过三天未处理，已回复列表 {} 条", overdueQuestionList.size());
             if (CollectionUtil.isNotEmpty(overdueQuestionList)) {
                 List<String> list = new ArrayList<String>();
                 for (AskQuestionAnswer info : overdueQuestionList) {

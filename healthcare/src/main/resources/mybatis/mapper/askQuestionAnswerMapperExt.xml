@@ -87,29 +87,85 @@
 		</if>
 	</select>
 	
-	<!-- 患者超过三天未处理已回复列表 -->
+	<!-- 超过三天未处理列表 -->
 	<select id="getListOverThreeday" resultMap="BaseResultMap">
 		SELECT
-		<include refid="columns"/>
-		FROM ask_question_answer t
+			<include refid="columns"/>
+		FROM
+			ask_question_answer t
 		WHERE
+			t.`status` = 1
+		AND
+		<![CDATA[
+		IF (
 			(
-			<![CDATA[
-			t.answer IS NOT NULL AND t.answer <> '' AND datediff(now(), t.last_update_dtime) > 3 AND `status` = 1
-			]]>
-			)
-		ORDER BY last_update_dtime DESC
+				t.last_update_dtime IS NOT NULL
+				AND t.last_update_dtime <> ''
+			),
+			datediff(now(), t.last_update_dtime) > 3,
+			datediff(now(), t.add_time) > 3
+		)
+		]]>
+		ORDER BY
+			last_update_dtime DESC
 	</select>
 	
-	<!-- 更新患者超过三天未处理，已回复列表状态 -->
+	<!-- 更新超过三天未处理列表状态 -->
 	<update id="updateStatusOverThreeday">
 		UPDATE ask_question_answer
 		SET `status` = 2
 		WHERE
+			t.`status` = 1
+		AND
+		<![CDATA[
+		IF (
 			(
-			<![CDATA[
-			answer IS NOT NULL AND answer <> '' AND datediff(now(), last_update_dtime) > 3
-			]]>
-			)
+				t.last_update_dtime IS NOT NULL
+				AND t.last_update_dtime <> ''
+			),
+			datediff(now(), t.last_update_dtime) > 3,
+			datediff(now(), t.add_time) > 3
+		)
+		]]>
 	</update>
+	
+	<!-- 
+	 1）发了多个问题，都未回复
+	 2）发了多个问题，只回复其中一个
+	 3）发了一个问题，未回复
+	 -->
+	<!-- 超过三天未处理，未回复列表[退款] -->
+	<select id="getListOverThreedayUnAnswer" resultMap="BaseResultMap">
+		SELECT
+			<include refid="columns"/>
+		FROM
+			ask_question_answer t
+		WHERE 
+			(
+				t.answer IS NULL
+				OR t.answer = ''
+			)
+		AND
+		IF (
+			(
+				t.last_update_dtime IS NULL
+				OR t.last_update_dtime = ''
+			),
+			datediff(now(), t.add_time) > 3,
+			datediff(now(), t.last_update_dtime) > 3
+		)
+		<![CDATA[
+		AND NOT EXISTS (
+			SELECT
+				t0.message_id
+			FROM
+				ask_question_answer t0
+			WHERE
+				(
+					t0.answer IS NOT NULL
+					AND t0.answer <> ''
+				)
+			AND t0.message_id = t.message_id
+		)]]>
+	</select>
 </mapper>

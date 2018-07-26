@@ -27,7 +27,7 @@ public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestio
     }
 
     /**
-     * 获取患者超过三天未处理已回复列表
+     * 获取超过三天未处理，进行中列表
      * 
      * @return
      */
@@ -40,13 +40,26 @@ public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestio
     }
 
     /**
-     * 更新患者超过三天未处理，已回复列表状态2
+     * 更新超过三天未处理，进行中列表状态2
      * 
      * @return
      */
     public int updateStatusOverThreeday() {
         try {
             return this.dao.updateStatusOverThreeday();
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
+     * 超过三天未处理，未回复列表[退款]
+     * 
+     * @return
+     */
+    public List<AskQuestionAnswer> getListOverThreedayUnAnswer() {
+        try {
+            return this.dao.getListOverThreedayUnAnswer();
         } catch (Exception ex) {
             throw new DBException(ex);
         }
