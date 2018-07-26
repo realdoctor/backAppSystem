@@ -13,7 +13,7 @@ import com.kanglian.healthcare.quartz.common.AbstractTask;
 
 /**
  * 过期问题处理
- * 1、超过三天未处理，已回复[已结束]
+ * 1、超过三天未处理，进行中[已结束]
  * 2、超过三天未处理，未回复[退款]
  * 
  * @author xl.liu
