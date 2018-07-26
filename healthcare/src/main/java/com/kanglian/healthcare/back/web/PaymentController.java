@@ -246,8 +246,6 @@ public class PaymentController extends BaseController {
          * 拉取支付宝预付单
          */
         if (PaymentType.ALIPAY.getName().equals(ptype)) {
-            orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
-            paymentOrder.setOrderNo(orderNo);
             String orderPrice = "0.01";
             String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
             AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
@@ -299,8 +297,6 @@ public class PaymentController extends BaseController {
          * 拉取微信预付单
          */
         else if (PaymentType.WXPAY.getName().equals(ptype)) {
-            orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
-            paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
         }
         /**
