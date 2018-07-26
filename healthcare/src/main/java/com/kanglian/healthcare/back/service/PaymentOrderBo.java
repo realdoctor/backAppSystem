@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.service;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,8 +148,10 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                 this.dao.update(paymentOrder);
                 
                 // 更新日志--用户支付记录
-                PaymentLog paymentLog1 = paymentLogDao.getByOrderNo(orderNo);
-                if (paymentLog1 != null) {
+                List<PaymentLog> paymentLogList = paymentLogDao.getByOrderNo(orderNo);
+                PaymentLog paymentLog1 = null;
+                if (paymentLogList != null) {
+                    paymentLog1 = paymentLogList.get(0);
                     paymentLog1.setStatus(PaymentStatus.PAYMENT_TRADE_SUCCESS);
                     paymentLog1.setLastUpdateDtime(DateUtil.currentDate());
                     paymentLogDao.update(paymentLog1);
@@ -186,7 +189,17 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
         if (askQuestionAnswer == null) {
             return;
         }
-        logger.info("===============在线复诊，进行退款");
+        
+        logger.info("===============在线复诊，进行退款。questionId="+askQuestionAnswer.getId());
+//        try {
+//            // 1、更新支付记录状态为3，退款
+//            List<PaymentOrder> orderItemList = getByGoodsId(String.valueOf(askQuestionAnswer.getPatientRecordId()));
+//            for (PaymentOrder order : orderItemList) {
+//            }
+//            // 2、写入账户退款额度
+//        } catch (Exception ex) {
+//            throw new DBException(ex);
+//        }
     }
     
     /**
@@ -215,5 +228,13 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             return PaymentStatus.PAYMENT_TRADE_SUCCESS.equals(paymentOrder.getPayStatus());
         }
         return false;
+    }
+    
+    public List<PaymentOrder> getByGoodsId(String goodsId){
+        try {
+            return this.dao.getByGoodsId(goodsId);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
     }
 }
