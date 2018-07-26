@@ -17,5 +17,6 @@
 		<filter><![CDATA[/guahao/hospital/orderExpert]]></filter>
 		<filter><![CDATA[/guahao/hospital/orderDate]]></filter>
 		<filter><![CDATA[/guahao/hospital/orderDateExpert]]></filter>
+		<filter><![CDATA[/user/doctor/getDoctorInfo]]></filter>
 	</actionWirteNames>
 </filters>
