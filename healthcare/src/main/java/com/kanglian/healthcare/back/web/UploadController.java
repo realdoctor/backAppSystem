@@ -358,7 +358,7 @@ public class UploadController {
         // 上传病历名
         String title = request.getParameter("title");
         
-        // 询问问题Id
+        // 询问问题Id（第一次询问问题没有，继续询问必须带入）
         String questionId = request.getParameter("questionId");
         
         // 复诊病历Id
@@ -367,13 +367,13 @@ public class UploadController {
             throw new InvalidParamException("patientRecordId");
         }
         
-        // 上传病历，接收人
+        // 上传病历，接收人[医生用户]
         String receiveUserId = request.getParameter("receiveUserId");
         if (StringUtil.isEmpty(receiveUserId)) {
             throw new InvalidParamException("receiveUserId");
         }
         
-        // 上传病历问题
+        // 上传病历问题内容
         String content = request.getParameter("content");
         if (StringUtil.isEmpty(content)) {
             throw new InvalidParamException("content");
@@ -414,6 +414,7 @@ public class UploadController {
                 jPushService.pushToAndroid(pushModel);
             } catch (Exception e) {
                 // TODO: handle exception
+                logger.info("极光推送异常1", e);
             }
             return ResultUtil.success();
         } else {
@@ -499,6 +500,7 @@ public class UploadController {
                             logger.info("======================"+pushModel.getContent()+"医生用户userId="+receiveUserId);
                         } catch (Exception e) {
                             // TODO: handle exception
+                            logger.info("极光推送异常2", e);
                         }
                     }
                 }
