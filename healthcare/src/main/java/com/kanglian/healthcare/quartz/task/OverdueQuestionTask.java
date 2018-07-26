@@ -39,13 +39,13 @@ public class OverdueQuestionTask extends AbstractTask {
         try {
             logger.info("==============进入过期问题处理");
             List<AskQuestionAnswer> overdueQuestionList = askQuestionAnswerBo.getListOverThreeday();
-            logger.info("==============超过三天未处理，已回复列表 {} 条", overdueQuestionList.size());
+            logger.info("==============超过三天未处理，进行中列表 {} 条", overdueQuestionList.size());
             if (CollectionUtil.isNotEmpty(overdueQuestionList)) {
                 List<String> list = new ArrayList<String>();
                 for (AskQuestionAnswer info : overdueQuestionList) {
                     list.add(info.getMessageId() + "-" + info.getUserId());
                 }
-                logger.info("==============未处理回复列表如下：\r\n" + JSON.toJSONString(list));
+                logger.info("==============未处理进行中列表如下：\r\n" + JSON.toJSONString(list));
                 int num = askQuestionAnswerBo.updateStatusOverThreeday();
                 logger.info("==============成功处理[{}]条", num);
             }
