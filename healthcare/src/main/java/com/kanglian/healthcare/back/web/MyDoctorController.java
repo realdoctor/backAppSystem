@@ -17,6 +17,11 @@ import com.kanglian.healthcare.back.dal.pojo.MyDoctor;
 import com.kanglian.healthcare.back.service.MyDoctorBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
+/**
+ * 患者扫描医生关注
+ * 
+ * @author xl.liu
+ */
 @Authorization
 @RestController
 @RequestMapping(value = "/user/mydoctor")
