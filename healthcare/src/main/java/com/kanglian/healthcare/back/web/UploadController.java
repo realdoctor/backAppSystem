@@ -379,6 +379,8 @@ public class UploadController {
             throw new InvalidParamException("content");
         }
         
+        String orderNo = request.getParameter("orderNo");
+        
         if (files == null || files.length == 0) {// 只咨询问题，不上传病历
             String messageId = null;
             if (StringUtil.isNotEmpty(questionId)) {
@@ -392,7 +394,11 @@ public class UploadController {
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 askQuestionAnswerBo.update(askQuestionAnswer);
             } else {
-                messageId = NumberUtil.getNewId();
+                if (StringUtil.isNotEmpty(orderNo)) {
+                    messageId = orderNo;
+                } else {
+                    messageId = NumberUtil.getNewId();
+                }
             }
             AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
             newAskQuestionAnswer.setMessageId(messageId);
@@ -437,7 +443,11 @@ public class UploadController {
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     askQuestionAnswerBo.update(askQuestionAnswer);
                 } else {
-                    messageId = NumberUtil.getNewId();
+                    if (StringUtil.isNotEmpty(orderNo)) {
+                        messageId = orderNo;
+                    } else {
+                        messageId = NumberUtil.getNewId();
+                    }
                 }
                 // 循环获取file数组中得文件
                 for (int i = 0; i < files.length; i++) {
