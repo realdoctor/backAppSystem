@@ -414,7 +414,7 @@ public class UploadController {
                 jPushService.pushToAndroid(pushModel);
             } catch (Exception e) {
                 // TODO: handle exception
-                logger.info("极光推送异常1", e);
+                logger.info("【资讯问题】极光推送异常1", e);
             }
             return ResultUtil.success();
         } else {
@@ -500,7 +500,7 @@ public class UploadController {
                             logger.info("======================"+pushModel.getContent()+"医生用户userId="+receiveUserId);
                         } catch (Exception e) {
                             // TODO: handle exception
-                            logger.info("极光推送异常2", e);
+                            logger.info("【资讯问题】极光推送异常2", e);
                         }
                     }
                 }
