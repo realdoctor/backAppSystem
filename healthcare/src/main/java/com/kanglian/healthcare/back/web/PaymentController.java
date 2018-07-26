@@ -227,8 +227,8 @@ public class PaymentController extends BaseController {
         }
         // 判断用户是否存在
         if (!userBo.ifExist(Long.valueOf(paymentOrder.getUserId()))) {
-            logger.info("+++++++++++++++++++++++++++++++非法用户请求");
-            return ResultUtil.error("非法用户");
+            logger.info("+++++++++++++++++++++++++++++++非法用户支付请求");
+            return ResultUtil.error("非法用户支付");
         }
 
         // 支付用户Id
