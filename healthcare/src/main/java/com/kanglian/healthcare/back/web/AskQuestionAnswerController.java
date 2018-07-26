@@ -153,7 +153,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         if (askQuestionAnswer != null) {
             askQuestionAnswer.setAnswer(content);
             if (StringUtil.isNotEmpty(content)) {
-                askQuestionAnswer.setStatus("2");
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
                 try {
@@ -167,10 +166,13 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                     logger.info("======================"+pushModel.getContent()+"患者用户userId="+askQuestionAnswer.getUserId());
                 } catch (Exception e) {
                     // TODO: handle exception
+                    logger.info("【回复问题】极光推送异常", e);
                 }
             } else {
-                // 医生未回答三天后退款。如果医生回复了，患者发问第二次问题，上一次的问题才结束
-                if (askQuestionAnswer.getLastUpdateDtime() == null
+                // 医生未回答三天后退款
+                // 如果医生回复了，患者查看记录。计时3天到期时间取[更新时间]，否则取[创建时间]进行判断
+                // 患者发问第二次问题，上一次的问题就结束
+                if (askQuestionAnswer.getLastUpdateDtime() != null
                         && StringUtil.isNotEmpty(askQuestionAnswer.getAnswer())) {
                     askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                     this.bo.update(askQuestionAnswer);
