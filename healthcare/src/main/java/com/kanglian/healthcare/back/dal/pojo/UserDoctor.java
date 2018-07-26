@@ -10,11 +10,11 @@ public class UserDoctor extends BasePojo {
     private String            hospitalCode;
     // 医院名称
     private String            hospitalName;
+    // 医院等级
+    private String            hospitalLevel;
     private String            deptCode;
     // 科室名称
     private String            deptName;
-    // 医院等级
-    private String            hospitalLevel;
     // 医生码
     private String            doctorCode;
     // 医生名字
@@ -23,6 +23,8 @@ public class UserDoctor extends BasePojo {
     private String            doctorIntro;
     // 医生职称
     private String            positional;
+    // 擅长领域
+    private String            goodAt;
     public Integer getUserId() {
         return userId;
     }
@@ -47,6 +49,12 @@ public class UserDoctor extends BasePojo {
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
     }
+    public String getHospitalLevel() {
+        return hospitalLevel;
+    }
+    public void setHospitalLevel(String hospitalLevel) {
+        this.hospitalLevel = hospitalLevel;
+    }
     public String getDeptCode() {
         return deptCode;
     }
@@ -58,12 +66,6 @@ public class UserDoctor extends BasePojo {
     }
     public void setDeptName(String deptName) {
         this.deptName = deptName;
-    }
-    public String getHospitalLevel() {
-        return hospitalLevel;
-    }
-    public void setHospitalLevel(String hospitalLevel) {
-        this.hospitalLevel = hospitalLevel;
     }
     public String getDoctorCode() {
         return doctorCode;
@@ -89,5 +91,10 @@ public class UserDoctor extends BasePojo {
     public void setPositional(String positional) {
         this.positional = positional;
     }
-
+    public String getGoodAt() {
+        return goodAt;
+    }
+    public void setGoodAt(String goodAt) {
+        this.goodAt = goodAt;
+    }
 }

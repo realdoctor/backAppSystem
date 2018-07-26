@@ -42,6 +42,11 @@ public class UserDoctorController extends CrudController<User, UserBo> {
         return ResultUtil.success(this.userDoctorBo.frontList(query));
     }
 
+    @GetMapping("/getDoctorInfo")
+    public ResultBody getDoctorInfo(UserQuery query) throws Exception {
+        return ResultUtil.success(this.userDoctorBo.getDoctorInfo(query.buildConditionQuery()));
+    }
+    
     /**
      * 医生的预约（病人一览）
      * 
@@ -77,7 +82,8 @@ public class UserDoctorController extends CrudController<User, UserBo> {
     public static class UserQuery extends Grid {
 
         private String userId;
-
+        private String doctorCode;
+        
         @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
@@ -87,8 +93,16 @@ public class UserDoctorController extends CrudController<User, UserBo> {
             this.userId = userId;
         }
 
-    }
+        @SingleValue(column = "doctor_code", equal = "=")
+        public String getDoctorCode() {
+            return doctorCode;
+        }
 
+        public void setDoctorCode(String doctorCode) {
+            this.doctorCode = doctorCode;
+        }
+    }
+    
     public static class GuahaoLogQuery extends Grid {
 
         private String userId;

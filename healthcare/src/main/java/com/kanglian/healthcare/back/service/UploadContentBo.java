@@ -72,7 +72,7 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
     public void saveUploadContent(final UploadContent uploadContent) {
         try {
             this.dao.save(uploadContent);
-            UserDoctor userDoctor = userDoctorDao.getDoctorInfo(uploadContent.getUserId());
+            UserDoctor userDoctor = userDoctorDao.getDoctorInfoById(uploadContent.getUserId());
             if (userDoctor != null) {
                 HealthNews healthNews = new HealthNews();
                 healthNews.setUserId(uploadContent.getUserId());
