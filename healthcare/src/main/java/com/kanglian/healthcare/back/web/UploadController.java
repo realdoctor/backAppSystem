@@ -361,6 +361,12 @@ public class UploadController {
         // 询问问题Id
         String questionId = request.getParameter("questionId");
         
+        // 复诊病历Id
+        String patientRecordId = request.getParameter("patientRecordId");
+        if (StringUtil.isEmpty(patientRecordId)) {
+            throw new InvalidParamException("patientRecordId");
+        }
+        
         // 上传病历，接收人
         String receiveUserId = request.getParameter("receiveUserId");
         if (StringUtil.isEmpty(receiveUserId)) {
@@ -373,7 +379,7 @@ public class UploadController {
             throw new InvalidParamException("content");
         }
         
-        if (files == null || files.length == 0) {
+        if (files == null || files.length == 0) {// 只咨询问题，不上传病历
             String messageId = null;
             if (StringUtil.isNotEmpty(questionId)) {
                 // 此问题已询问过，可继续询问
@@ -390,6 +396,7 @@ public class UploadController {
             }
             AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
             newAskQuestionAnswer.setMessageId(messageId);
+            newAskQuestionAnswer.setPatientRecordId(Integer.valueOf(patientRecordId));
             newAskQuestionAnswer.setUserId(userId.intValue());
             newAskQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
             newAskQuestionAnswer.setTitle(title);
@@ -457,8 +464,9 @@ public class UploadController {
                         
                         // 保存咨询问题
                         AskQuestionAnswer askQuestionAnswer = new AskQuestionAnswer();
-                        askQuestionAnswer.setUserId(userId.intValue());
                         askQuestionAnswer.setMessageId(messageId);
+                        askQuestionAnswer.setPatientRecordId(Integer.valueOf(patientRecordId));
+                        askQuestionAnswer.setUserId(userId.intValue());
                         askQuestionAnswer.setToUser(Integer.valueOf(receiveUserId));
                         askQuestionAnswer.setTitle(title);
                         askQuestionAnswer.setQuestion(content);
