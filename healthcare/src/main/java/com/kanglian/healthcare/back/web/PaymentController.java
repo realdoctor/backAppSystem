@@ -215,6 +215,10 @@ public class PaymentController extends BaseController {
             logger.info("+++++++++++++++++++++++++++++++支付金额不能为空");
             return ResultUtil.error("支付金额不能为空");
         }
+        if (StringUtil.isEmpty(paymentOrder.getGoodsId())) {
+            logger.info("+++++++++++++++++++++++++++++++商品Id不能为空");
+            return ResultUtil.error("商品Id不能为空");
+        }
         // 支付来源
         if (StringUtil.isEmpty(paymentOrder.getFrom())
                 || StringUtil.isEmpty(FromType.getName(paymentOrder.getFrom()))) {

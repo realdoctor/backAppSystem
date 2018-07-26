@@ -9,7 +9,8 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	@JSONField(name="questionId")
 	private Long id;
 	private String messageId;
-	private Integer userId;
+	private Integer patientRecordId;
+    private Integer userId;
 	private Integer toUser;
 	private String title;
 	private String question;
@@ -40,6 +41,12 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
+	public Integer getPatientRecordId() {
+        return patientRecordId;
+    }
+    public void setPatientRecordId(Integer patientRecordId) {
+        this.patientRecordId = patientRecordId;
+    }
 	public Integer getUserId() {
 		return userId;
 	}

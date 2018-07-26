@@ -4,6 +4,7 @@
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="messageId" column="message_id" jdbcType="VARCHAR"/>
+		<result property="patientRecordId" column="patient_record_id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
 		<result property="title" column="title" jdbcType="VARCHAR"/>
@@ -22,6 +23,7 @@
 	<sql id="columns">
 		t.id,
 		t.message_id,
+		t.patient_record_id,
 		t.user_id,
 		t.to_user,
 		t.title,
@@ -37,6 +39,7 @@
 		SELECT
 			t.id,
 			t.message_id,
+			t.patient_record_id,
 			t.user_id,
 			t.to_user,
 			t.title,
@@ -109,6 +112,7 @@
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" useGeneratedKeys="true" keyProperty="id">
 		insert into ask_question_answer (
 		message_id,
+		patient_record_id,
 		user_id,
 		to_user,
 		title,
@@ -120,6 +124,7 @@
 		)
 		values(
 		#{messageId,jdbcType=VARCHAR},
+		#{patientRecordId,jdbcType=INTEGER},
 		#{userId,jdbcType=INTEGER},
 		#{toUser,jdbcType=INTEGER},
 		#{title,jdbcType=VARCHAR},
@@ -135,6 +140,7 @@
 		update ask_question_answer
 		<set>
 		  <if test="messageId != null">message_id=#{messageId,jdbcType=VARCHAR},</if>
+		  <if test="patientRecordId != null">patient_record_id=#{patientRecordId,jdbcType=INTEGER},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
 		  <if test="title != null">question=#{title,jdbcType=VARCHAR},</if>

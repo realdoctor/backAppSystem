@@ -1,5 +1,7 @@
 package com.kanglian.healthcare.back.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,17 +16,25 @@ import com.kanglian.healthcare.back.constants.PaymentType;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
 import com.kanglian.healthcare.back.dal.dao.PaymentLogDao;
 import com.kanglian.healthcare.back.dal.dao.PaymentOrderDao;
+import com.kanglian.healthcare.back.dal.dao.PaymentOrderItemDao;
+import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
+import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 
+    /** logger */
+    private final static Logger logger = LoggerFactory.getLogger(PaymentOrderBo.class);
+    
 //    @Autowired
 //    private AccountDao          accountDao;
 //    @Autowired
 //    private AccountLogDao       accountLogDao;
+    @Autowired
+    private PaymentOrderItemDao paymentOrderItemDao;
     @Autowired
     private PaymentLogDao paymentLogDao;
     
@@ -48,6 +58,15 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentOrder.setPayStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentOrder.setAddTime(DateUtil.currentDate());
             this.dao.save(paymentOrder);
+            
+            // 订单明细
+            PaymentOrderItem paymentOrderItem = new PaymentOrderItem();
+            paymentOrderItem.setOrderId(paymentOrder.getOrderId()+"");
+            paymentOrderItem.setGoodsId(paymentOrderT.getGoodsId());
+            paymentOrderItem.setNum(1);
+            paymentOrderItem.setPrice(paymentOrder.getPayPrice());
+            paymentOrderItem.setAddTime(DateUtil.currentDate());
+            paymentOrderItemDao.save(paymentOrderItem);
 
             // 用户支出明细
             PaymentLog paymentLog = new PaymentLog();
@@ -155,6 +174,19 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
         } catch (Exception ex) {
             throw new DBException(ex);
         }
+    }
+    
+    /**
+     * 在线复诊，超过三天未回复。进行退款....
+     * 
+     * @param askQuestionAnswer
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void refundAskQuestion(AskQuestionAnswer askQuestionAnswer) {
+        if (askQuestionAnswer == null) {
+            return;
+        }
+        logger.info("===============在线复诊，进行退款");
     }
     
     /**

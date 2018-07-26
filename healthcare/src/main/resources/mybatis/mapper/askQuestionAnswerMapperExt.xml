@@ -13,6 +13,7 @@
 		SELECT
 			t.id,
 			t.message_id,
+			t.patient_record_id,
 			t.user_id,
 			t.to_user,
 			t.title,

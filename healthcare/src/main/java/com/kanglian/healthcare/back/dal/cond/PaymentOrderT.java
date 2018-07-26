@@ -15,6 +15,8 @@ public class PaymentOrderT {
     private String orderNo;
     // 支付金额
     private Double payAmount;
+    // 商品id
+    private String goodsId;
     // 支付类型
     private String type;
     // 支付来源
@@ -68,4 +70,11 @@ public class PaymentOrderT {
         this.payAmount = payAmount;
     }
 
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 }
