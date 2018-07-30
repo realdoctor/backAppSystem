@@ -30,4 +30,12 @@ public interface AskQuestionAnswerDao extends NewCrudDao<AskQuestionAnswer> {
      * @return
      */
     public List<AskQuestionAnswer> getListOverThreedayUnAnswer();
+    
+    /**
+     * 批量更新状态2
+     * 
+     * @param list
+     * @return
+     */
+    public int batchUpdate(List<AskQuestionAnswer> list);
 }

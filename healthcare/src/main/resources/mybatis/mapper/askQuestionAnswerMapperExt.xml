@@ -130,6 +130,17 @@
 		]]>
 	</update>
 	
+	<!-- 批量更新状态 -->
+	<update id="batchUpdate" parameterType="java.util.List">  
+	    <foreach collection="list" item="item" separator=";">
+	        update ask_question_answer
+	        <set>
+	            `status` = 2
+	        </set>
+	        where id = ${item.id}
+	    </foreach>      
+	</update>
+	
 	<!-- 
 	 1）发了多个问题，都未回复
 	 2）发了多个问题，只回复其中一个

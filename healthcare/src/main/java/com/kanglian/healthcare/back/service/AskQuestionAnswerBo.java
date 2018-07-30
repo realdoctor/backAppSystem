@@ -64,4 +64,18 @@ public class AskQuestionAnswerBo extends NewCrudBo<AskQuestionAnswer, AskQuestio
             throw new DBException(ex);
         }
     }
+    
+    /**
+     * 批量更新状态2
+     * 
+     * @param list
+     * @return
+     */
+    public int batchUpdate(List<AskQuestionAnswer> list) {
+        try {
+            return this.dao.batchUpdate(list);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
