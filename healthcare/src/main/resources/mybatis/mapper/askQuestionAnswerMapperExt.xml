@@ -116,16 +116,16 @@
 		UPDATE ask_question_answer
 		SET `status` = 2
 		WHERE
-			t.`status` = 1
+			`status` = 1
 		AND
 		<![CDATA[
 		IF (
 			(
-				t.last_update_dtime IS NOT NULL
-				AND t.last_update_dtime <> ''
+				last_update_dtime IS NOT NULL
+				AND last_update_dtime <> ''
 			),
-			datediff(now(), t.last_update_dtime) > 3,
-			datediff(now(), t.add_time) > 3
+			datediff(now(), last_update_dtime) > 3,
+			datediff(now(), add_time) > 3
 		)
 		]]>
 	</update>
