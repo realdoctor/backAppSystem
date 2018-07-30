@@ -1,11 +1,9 @@
 package com.kanglian.healthcare.quartz.task;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.alibaba.fastjson.JSON;
 import com.easyway.business.framework.util.CollectionUtil;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
@@ -26,7 +24,7 @@ public class OverdueQuestionTask extends AbstractTask {
     private AskQuestionAnswerBo askQuestionAnswerBo;
     
     public OverdueQuestionTask() {
-        this.taskName = "过期问题处理";
+        this.taskName = "复诊问题过期处理";
     }
 
     @Override
@@ -37,17 +35,17 @@ public class OverdueQuestionTask extends AbstractTask {
     @Override
     public void process() {
         try {
-            logger.info("==============进入过期问题处理");
+            logger.info("==============进入复诊问题过期处理");
             List<AskQuestionAnswer> overdueQuestionList = askQuestionAnswerBo.getListOverThreeday();
             logger.info("==============超过三天未处理，进行中列表 {} 条", overdueQuestionList.size());
             if (CollectionUtil.isNotEmpty(overdueQuestionList)) {
-                List<String> list = new ArrayList<String>();
                 for (AskQuestionAnswer info : overdueQuestionList) {
-                    list.add(info.getMessageId() + "-" + info.getUserId());
+                    logger.info("==============正在处理messageId={}，id={}", new Object[] {info.getMessageId(), info.getId()});
+                    info.setStatus("2");
+                    askQuestionAnswerBo.update(info);// TODO:后改为批处理
+                    logger.info("==============成功处理id={}", info.getId());
                 }
-                logger.info("==============未处理进行中列表如下：\r\n" + JSON.toJSONString(list));
-                int num = askQuestionAnswerBo.updateStatusOverThreeday();
-                logger.info("==============成功处理[{}]条", num);
+                // askQuestionAnswerBo.updateStatusOverThreeday();
             }
         } catch (Exception e) {
             logger.error("过期问题处理异常", e);
