@@ -15,6 +15,7 @@ public class PaymentLog extends BasePojo {
 	private String mark;
 	private String message;
 	private String status;
+	private String remark;
     private Date addTime;
 	private Date lastUpdateDtime;
 	private String userName;
@@ -95,6 +96,12 @@ public class PaymentLog extends BasePojo {
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 	public Date getAddTime() {
 		return addTime;
