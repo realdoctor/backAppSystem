@@ -90,7 +90,7 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @GetMapping("/hospital/orderExpert")
-    public ResultBody orderExpert(HospitalYuyuaQuery query) throws Exception {
+    public ResultBody orderExpert(HospitalDoctorQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -110,7 +110,7 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @GetMapping("/hospital/orderDate")
-    public ResultBody orderDate(DoctorOrderDateQuery query) throws Exception {
+    public ResultBody orderDate(OrderDateQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -130,7 +130,7 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @GetMapping("/hospital/orderDateExpert")
-    public ResultBody orderDateExpert(HospitalYuyuaQuery query) throws Exception {
+    public ResultBody orderDateExpert(HospitalDoctorQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -198,11 +198,11 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 医生可预约日期
+     * 医生排班日期
      * 
      * @author xl.liu
      */
-    public static class DoctorOrderDateQuery extends Grid {
+    public static class OrderDateQuery extends Grid {
         // 医院id
         private String hospitalId;
         // 科室编码
@@ -249,7 +249,12 @@ public class HospitalGuahaoController
         }
     }
     
-    public static class HospitalYuyuaQuery extends Grid {
+    /**
+     * 按专家、日期预约查询
+     * 
+     * @author xl.liu
+     */
+    public static class HospitalDoctorQuery extends Grid {
         // 医院id
         private String hospitalId;
         // 科室编码
@@ -305,7 +310,6 @@ public class HospitalGuahaoController
         public void setOrderDay(String orderDay) {
             this.orderDay = orderDay;
         }
-
         
         @Override
         public ConditionQuery buildConditionQuery() {
