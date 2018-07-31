@@ -90,7 +90,7 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @GetMapping("/hospital/orderExpert")
-    public ResultBody orderExpert(HospitalZhuanjiaQuery query) throws Exception {
+    public ResultBody orderExpert(HospitalYuyuaQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -103,14 +103,14 @@ public class HospitalGuahaoController
     }
     
     /**
-     * 工作日列表-按日期预约
+     * 按日期预约-医生工作日排班列表
      * 
      * @param query
      * @return
      * @throws Exception
      */
     @GetMapping("/hospital/orderDate")
-    public ResultBody orderDate(HospitalZhuanjiaQuery query) throws Exception {
+    public ResultBody orderDate(DoctorOrderDateQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -130,7 +130,7 @@ public class HospitalGuahaoController
      * @throws Exception
      */
     @GetMapping("/hospital/orderDateExpert")
-    public ResultBody orderDateExpert(HospitalZhuanjiaQuery query) throws Exception {
+    public ResultBody orderDateExpert(HospitalYuyuaQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
@@ -197,7 +197,59 @@ public class HospitalGuahaoController
         return ResultUtil.success();
     }
     
-    public static class HospitalZhuanjiaQuery extends Grid {
+    /**
+     * 医生可预约日期
+     * 
+     * @author xl.liu
+     */
+    public static class DoctorOrderDateQuery extends Grid {
+        // 医院id
+        private String hospitalId;
+        // 科室编码
+        private String deptCode;
+        // 科室名称
+        private String deptName;
+        // 医生编码
+        private String doctorCode;
+
+        @SingleValue(tableAlias = "t", column = "hospital_id", equal = "=")
+        public String getHospitalId() {
+            return hospitalId;
+        }
+
+        public void setHospitalId(String hospitalId) {
+            this.hospitalId = hospitalId;
+        }
+
+        @SingleValue(tableAlias = "t2", column = "dept_name", equal = "like")
+        public String getDeptName() {
+            return StringUtil.isNotBlank(deptName) ? ("%" + deptName + "%") : null;
+        }
+
+        public void setDeptName(String deptName) {
+            this.deptName = deptName;
+        }
+        
+        @SingleValue(tableAlias = "t", column = "dept_code", equal = "=")
+        public String getDeptCode() {
+            return deptCode;
+        }
+
+        public void setDeptCode(String deptCode) {
+            this.deptCode = deptCode;
+        }
+        
+        @SingleValue(tableAlias = "t", column = "doctor_code", equal = "=")
+        public String getDoctorCode() {
+            return doctorCode;
+        }
+
+        public void setDoctorCode(String doctorCode) {
+            this.doctorCode = doctorCode;
+        }
+    }
+    
+    public static class HospitalYuyuaQuery extends Grid {
         // 医院id
         private String hospitalId;
         // 科室名称
@@ -216,6 +268,7 @@ public class HospitalGuahaoController
 
         @SingleValue(tableAlias = "t", column = "dept_name", equal = "like")
         public String getDeptName() {
+            // TODO：后改为科室码来匹配
             return StringUtil.isNotBlank(deptName) ? ("%" + deptName + "%") : null;
         }
 
@@ -244,7 +297,63 @@ public class HospitalGuahaoController
         
     }
     
+    public static class HospitalGuahaoQuery extends Grid {
+        /**
+         * 1）综合排序
+         * 3）预约量排序
+         */
+        private String sortstr;
+        /**
+         * 筛选字段
+         */
+        // 三级甲等
+        private String hospitalLevel;
+        // 城市名称
+        private String cityName;
+        
+        @SingleValue(tableAlias="t1", column = "hospital_level", equal = "=")
+        public String getHospitalLevel() {
+            return hospitalLevel;
+        }
+        public void setHospitalLevel(String hospitalLevel) {
+            this.hospitalLevel = hospitalLevel;
+        }
+        public String getCityName() {
+            return cityName;
+        }
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
+        }
+        public String getSortstr() {
+            return sortstr;
+        }
+        public void setSortstr(String sortstr) {
+            this.sortstr = sortstr;
+        }
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            if(StringUtil.isNotEmpty(sortstr)) {
+                // 综合排序
+                if ("1".equals(sortstr)) {
+                    this.setSortname("city");
+                    this.setSortorder("desc");
+                } else if ("3".equals(sortstr)) {// 预约量排序
+                    this.setSortname("appointment_num");
+                    this.setSortorder("desc");
+                }
+            }
+            ConditionQuery query = super.buildConditionQuery();
+            if(StringUtil.isNotBlank(cityName)) {
+                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
+            }
+            return query;
+        }
+
+    }
+    
     /**
+     * 按条件搜索（已迁移到solr）
+     * 
      * @author xl.liu
      */
     public static class GuahaoSearchQuery extends HospitalGuahaoQuery {
@@ -314,59 +423,5 @@ public class HospitalGuahaoController
             }
             return query;
         }
-    }
-    
-    public static class HospitalGuahaoQuery extends Grid {
-        /**
-         * 1）综合排序
-         * 3）预约量排序
-         */
-        private String sortstr;
-        /**
-         * 筛选字段
-         */
-        // 三级甲等
-        private String hospitalLevel;
-        // 城市名称
-        private String cityName;
-        
-        @SingleValue(tableAlias="t1", column = "hospital_level", equal = "=")
-        public String getHospitalLevel() {
-            return hospitalLevel;
-        }
-        public void setHospitalLevel(String hospitalLevel) {
-            this.hospitalLevel = hospitalLevel;
-        }
-        public String getCityName() {
-            return cityName;
-        }
-        public void setCityName(String cityName) {
-            this.cityName = cityName;
-        }
-        public String getSortstr() {
-            return sortstr;
-        }
-        public void setSortstr(String sortstr) {
-            this.sortstr = sortstr;
-        }
-        @Override
-        public ConditionQuery buildConditionQuery() {
-            if(StringUtil.isNotEmpty(sortstr)) {
-                // 综合排序
-                if ("1".equals(sortstr)) {
-                    this.setSortname("city");
-                    this.setSortorder("desc");
-                } else if ("3".equals(sortstr)) {// 预约量排序
-                    this.setSortname("appointment_num");
-                    this.setSortorder("desc");
-                }
-            }
-            ConditionQuery query = super.buildConditionQuery();
-            if(StringUtil.isNotBlank(cityName)) {
-                query.addWithoutValueCondition(new WithoutValueCondition(" (instr('"+cityName+"', t.province) > 0) or (instr('"+cityName+"', t.city) > 0) "));
-            }
-            return query;
-        }
-
     }
 }

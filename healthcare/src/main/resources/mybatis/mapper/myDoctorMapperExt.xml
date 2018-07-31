@@ -6,12 +6,13 @@
 		<result property="doctorId" column="doctor_id" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
-		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
-		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
-		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
-		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
 		<result property="hospitalCode" column="hospital_code" jdbcType="VARCHAR"/>
 		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
 		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
@@ -30,6 +31,7 @@
 			t1.hospital_code,
 			t1.hospital_name,
 			t1.hospital_level,
+			t1.dept_id,
 			t1.dept_code,
 			t1.dept_name
 		FROM
@@ -45,6 +47,7 @@
 				t3.hospital_code,
 				t3.hospital_name,
 				t3.hospital_level,
+				t3.dept_id,
 				t3.dept_code,
 				t3.dept_name
 			FROM
