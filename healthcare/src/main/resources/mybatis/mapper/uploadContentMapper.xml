@@ -10,6 +10,8 @@
 		<result property="src" column="src" jdbcType="VARCHAR"/>
 		<result property="pic" column="pic" jdbcType="VARCHAR"/>
 		<result property="price" column="price" jdbcType="DECIMAL"/>
+		<result property="tag" column="tag" jdbcType="VARCHAR"/>
+		<result property="description" column="description" jdbcType="LONGVARCHAR"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
@@ -25,6 +27,8 @@
 		t.src,
 		t.pic,
 		t.price,
+		t.tag,
+		t.description,
 		t.remark,
 		t.add_time,
 		t.last_update_dtime
@@ -40,6 +44,8 @@
 		t.src,
 		t.pic,
 		t.price,
+		t.tag,
+		t.description,
 		t.remark,
 		t.add_time,
 		t.last_update_dtime,
@@ -86,6 +92,8 @@
 		src,
 		pic,
 		price,
+		tag,
+		description,
 		remark,
 		add_time,
 		last_update_dtime
@@ -98,6 +106,8 @@
 		#{src,jdbcType=VARCHAR},
 		#{pic,jdbcType=VARCHAR},
 		#{price,jdbcType=DECIMAL},
+		#{tag,jdbcType=VARCHAR},
+		#{description,jdbcType=LONGVARCHAR},
 		#{remark,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
@@ -114,6 +124,8 @@
 		  <if test="src != null">src=#{src,jdbcType=VARCHAR},</if>
 		  <if test="pic != null">pic=#{pic,jdbcType=VARCHAR},</if>
 		  <if test="price != null">price=#{price,jdbcType=DECIMAL},</if>
+		  <if test="tag != null">tag=#{tag,jdbcType=VARCHAR},</if>
+		  <if test="description != null">description=#{description,jdbcType=LONGVARCHAR},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>

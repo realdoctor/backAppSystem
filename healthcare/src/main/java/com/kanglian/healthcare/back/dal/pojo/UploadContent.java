@@ -15,6 +15,8 @@ public class UploadContent extends BasePojo {
 	private String src;
 	private String pic;
     private Double price;
+    private String tag;
+    private String description;
 	private String remark;
 	private Date addTime;
 	private Date lastUpdateDtime;
@@ -67,6 +69,18 @@ public class UploadContent extends BasePojo {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	public String getTag() {
+        return tag;
+    }
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 	public String getRemark() {
 		return remark;
 	}

@@ -47,22 +47,6 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
         }
     }
     
-    public UploadContent getByUserIdAndType(Integer userId, Integer type) {
-        try {
-            return this.dao.getByUserIdAndType(userId, type);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
-    }
-
-    public int updateByUserIdAndType(UploadContent content) {
-        try {
-            return this.dao.updateByUserIdAndType(content);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
-    }
-    
     /**
      * 保存上传资讯
      * 
