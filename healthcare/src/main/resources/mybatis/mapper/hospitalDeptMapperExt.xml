@@ -16,7 +16,7 @@
 		<result property="worktimeWeek" column="worktimeWeek" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<!-- 按医院、科室、疾病获取本院医生[按专家预约] -->
+	<!-- 按医院、科室、疾病获取本院医生列表[按专家预约] -->
 	<select id="findDeptDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.hospital_id,
@@ -88,7 +88,7 @@
 		</choose>
 	</select>
 	
-	<!-- 按医院、科室、疾病获取本院医生[按日期预约] -->
+	<!-- 按医院、科室、疾病获取本院医生列表[按日期预约] -->
 	<select id="findOrderDateDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.hospital_id,

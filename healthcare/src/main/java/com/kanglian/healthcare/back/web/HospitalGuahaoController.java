@@ -252,8 +252,12 @@ public class HospitalGuahaoController
     public static class HospitalYuyuaQuery extends Grid {
         // 医院id
         private String hospitalId;
+        // 科室编码
+        private String deptCode;
         // 科室名称
         private String deptName;
+        // 医生编码
+        private String doctorCode;
         // 预约日
         private String orderDay;
 
@@ -276,6 +280,24 @@ public class HospitalGuahaoController
             this.deptName = deptName;
         }
         
+        @SingleValue(tableAlias = "t", column = "dept_code", equal = "=")
+        public String getDeptCode() {
+            return deptCode;
+        }
+
+        public void setDeptCode(String deptCode) {
+            this.deptCode = deptCode;
+        }
+
+        @SingleValue(tableAlias = "t1", column = "doctor_code", equal = "=")
+        public String getDoctorCode() {
+            return doctorCode;
+        }
+
+        public void setDoctorCode(String doctorCode) {
+            this.doctorCode = doctorCode;
+        }
+        
         public String getOrderDay() {
             return orderDay;
         }
@@ -284,6 +306,7 @@ public class HospitalGuahaoController
             this.orderDay = orderDay;
         }
 
+        
         @Override
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
