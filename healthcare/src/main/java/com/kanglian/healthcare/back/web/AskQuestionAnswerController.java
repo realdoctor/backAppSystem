@@ -318,12 +318,14 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             }
             if ("2".equals(getType())) {// 已结束
                 query.addParam("type", "2");
-                query.addWithoutValueCondition(
-                        new WithoutValueCondition(" IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) > 3, datediff(now(), t.add_time) > 3) OR t.status=2 "));
+//                query.addWithoutValueCondition(
+//                        new WithoutValueCondition(" IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) > 3, datediff(now(), t.add_time) > 3) OR t.status=2 "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" t.status=2 "));
             } else if ("1".equals(getType())) {// 进行中
                 query.addParam("type", "1");
-                query.addWithoutValueCondition(new WithoutValueCondition(
-                        " IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) <= 3, datediff(now(), t.add_time) <= 3) OR t.status=1 "));
+//                query.addWithoutValueCondition(new WithoutValueCondition(
+//                        " IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) <= 3, datediff(now(), t.add_time) <= 3) OR t.status=1 "));
+                query.addWithoutValueCondition(new WithoutValueCondition(" t.status=1 "));
             }
             return query;
         }
