@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.easyway.business.framework.util.CollectionUtil;
-import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.quartz.common.AbstractTask;
@@ -43,7 +42,6 @@ public class OverdueQuestionTask extends AbstractTask {
                 for (AskQuestionAnswer info : overdueQuestionList) {
                     logger.info("==============正在处理messageId={}，id={}", new Object[] {info.getMessageId(), info.getId()});
                     info.setStatus("2");
-                    info.setLastUpdateDtime(DateUtil.currentDate());
                     askQuestionAnswerBo.update(info);// TODO:后改为批处理
                     logger.info("==============成功处理id={}", info.getId());
                 }
