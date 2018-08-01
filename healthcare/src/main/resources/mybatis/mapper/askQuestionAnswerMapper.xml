@@ -12,6 +12,7 @@
 		<result property="answer" column="answer" jdbcType="VARCHAR"/>
 		<result property="status" column="status" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<result property="src" column="src" jdbcType="VARCHAR"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
@@ -31,6 +32,7 @@
 		t.answer,
 		t.status,
 		t.add_time,
+		t.close_time,
 		t.last_update_dtime
 	</sql>
 
@@ -118,6 +120,7 @@
 		answer,
 		status,
 		add_time,
+		close_time,
 		last_update_dtime
 		)
 		values(
@@ -130,6 +133,7 @@
 		#{answer,jdbcType=VARCHAR},
 		#{status,jdbcType=VARCHAR},
 		#{addTime,jdbcType=TIMESTAMP},
+		#{closeTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -146,6 +150,7 @@
 		  <if test="answer != null">answer=#{answer,jdbcType=VARCHAR},</if>
 		  <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
 		  <if test="addTime != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
+		  <if test="closeTime != null">close_time=#{closeTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
