@@ -179,7 +179,7 @@ public class UploadController {
             throw new InvalidParamException("attach");
         }
         // 判断file数组不能为空并且长度大于0
-        if (files != null && files.length > 0) {
+        if (files.length <= 0) {
             return ResultUtil.error("不能上传空文件");
         }
         
