@@ -16,6 +16,7 @@ public class UploadContent extends BasePojo {
 	private String pic;
     private Double price;
     private String tag;
+    @JSONField(name="desc")
     private String description;
 	private String remark;
 	private Date addTime;
