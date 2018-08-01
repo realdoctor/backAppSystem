@@ -114,7 +114,9 @@
 	<!-- 更新超过三天未处理列表状态 -->
 	<update id="updateStatusOverThreeday">
 		UPDATE ask_question_answer
-		SET `status` = 2
+		SET 
+			`status` = 2, 
+			close_time = NOW()
 		WHERE
 			`status` = 1
 		AND
@@ -135,7 +137,8 @@
 	    <foreach collection="list" item="item" separator=";">
 	        update ask_question_answer
 	        <set>
-	            `status` = 2
+	            `status` = 2,
+	            close_time = NOW()
 	        </set>
 	        where id = ${item.id}
 	    </foreach>      
