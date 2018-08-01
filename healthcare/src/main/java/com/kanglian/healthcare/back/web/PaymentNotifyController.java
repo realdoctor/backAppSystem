@@ -49,7 +49,7 @@ public class PaymentNotifyController extends BaseController {
      */
     @RequestMapping(value = "/alipay/notifyCallBack", method = RequestMethod.POST)
     @ResponseBody
-    public String alipayNotify(AlipayNotifyResponse alipayResponse, HttpServletRequest request)
+    public String orderPayNotifyT(AlipayNotifyResponse alipayResponse, HttpServletRequest request)
             throws Exception {
         logger.debug("==============支付宝回调");
         @SuppressWarnings("rawtypes")

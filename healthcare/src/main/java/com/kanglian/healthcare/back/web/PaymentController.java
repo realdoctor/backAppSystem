@@ -121,7 +121,7 @@ public class PaymentController extends BaseController {
             // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
             model.setSubject("测试支付");// 订单标题
-            model.setBody("康连健康商品支付");// 对交易或商品的描述
+            model.setBody("康连健康商品");// 对交易或商品的描述
             model.setOutTradeNo(orderNo);
             model.setTimeoutExpress("30m");// 30分钟付款超时
             model.setTotalAmount(orderPrice);
@@ -282,6 +282,10 @@ public class PaymentController extends BaseController {
                 responseString = JsonUtil.beanToJson(response);
                 orderString = response.getBody();
                 retResultMap.put("orderString", orderString);// 就是orderString可以直接给客户端请求，无需再做处理。
+                // 问诊支付，返回orderNo
+                if (FromType.QUESTION.getValue().equals(paymentOrder.getFrom())) {
+                    retResultMap.put("orderNo", orderNo);
+                }
                 logger.debug("=============用户Id：{}，订单号：{}，请求参数：{}，响应字符串：{}，支付串：{}",
                         new Object[] {userId, orderNo, requestParams, responseString, orderString});
             } catch (AlipayApiException e) {
