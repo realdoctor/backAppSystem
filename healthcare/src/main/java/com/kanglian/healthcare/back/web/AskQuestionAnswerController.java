@@ -62,6 +62,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
+        if (StringUtil.isEmpty(query.getRoleId())) {
+            throw new InvalidParamException("roleId");
+        }
+        if (StringUtil.isEmpty(query.getType())) {
+            throw new InvalidParamException("type");
+        }
         
         return super.list(query, new JsonClothProcessor() {
 
