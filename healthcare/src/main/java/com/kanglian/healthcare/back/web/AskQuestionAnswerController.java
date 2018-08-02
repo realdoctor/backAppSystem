@@ -69,6 +69,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("type");
         }
         
+        logger.info("[我的复诊]患者病历列表，roleId=" + query.getRoleId());
         return super.list(query, new JsonClothProcessor() {
 
             @Override
