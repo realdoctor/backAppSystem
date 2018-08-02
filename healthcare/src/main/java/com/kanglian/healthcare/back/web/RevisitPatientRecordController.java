@@ -28,7 +28,7 @@ public class RevisitPatientRecordController
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(RevisitPatientQuery query) throws Exception {
         String mobilePhone = query.getMobilePhone();
         if (StringUtil.isBlank(mobilePhone)) {

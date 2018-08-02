@@ -26,7 +26,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/cart")
+@RequestMapping(value = "/goods/cart")
 public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsShopcarBo> {
 
     /**
@@ -36,7 +36,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(@CurrentUser User user, ShopcarQuery query) throws Exception {
         if (user.getUserId() == null) {
             throw new InvalidParamException("userId");

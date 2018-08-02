@@ -30,7 +30,7 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(PatientQuery query) throws Exception {
         String mobilePhone = query.getMobilePhone();
         Integer clientNum = query.getClientNum();

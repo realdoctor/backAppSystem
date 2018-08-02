@@ -43,7 +43,7 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(final BaseQuery query) throws Exception {
         return super.list(query, new JsonClothProcessor() {
 
