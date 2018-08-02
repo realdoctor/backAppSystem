@@ -166,7 +166,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
             this.bo.update(askQuestionAnswer);
             try {
-                User u = userBo.get(userId);
+                User u = userBo.get(Long.valueOf(userId));
                 PushModel pushModel = new PushModel();
                 pushModel.setTitle("复诊");
                 pushModel.setContent(u.getRealName() + "回复了【"+askQuestionAnswer.getTitle()+"】问题。");
