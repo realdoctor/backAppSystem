@@ -16,7 +16,7 @@
 		<result property="goodAt" column="field" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<select id="frontList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<sql id="Query_UserDoctor_Sql">
 		SELECT
 			t.user_id,
 			t.doctor_code,
@@ -24,16 +24,21 @@
 			t2.doctor_intro,
 			t2.positional,
 			t2.field,
-			t3.hospital_id,
-			t3.hospital_code,
-			t3.hospital_name,
-			t3.hospital_level,
 			t3.dept_code,
-			t3.dept_name
+			t3.dept_name,
+			t4.hospital_id,
+			t4.hospital_code,
+			t4.hospital_name,
+			t4.hospital_level
 		FROM
 			user_doctor t
-		LEFT JOIN hospital_register_doctor t2 ON t2.doctor_code = t.doctor_code
+		LEFT JOIN hospital_doctor t2 ON t2.doctor_code = t.doctor_code
 		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
+		LEFT JOIN hospital t4 ON t4.hospital_id = t3.hospital_id
+	</sql>
+	
+	<select id="frontList" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		<include refid="Query_UserDoctor_Sql" />
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -48,46 +53,15 @@
 	
 	<!-- 医生详情 -->
 	<select id="getDoctorInfo" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
-        SELECT
-			t.user_id,
-			t.doctor_code,
-			t2.doctor_name,
-			t2.doctor_intro,
-			t2.positional,
-			t2.field,
-			t3.hospital_id,
-			t3.hospital_code,
-			t3.hospital_name,
-			t3.hospital_level,
-			t3.dept_code,
-			t3.dept_name
-		FROM
-			user_doctor t
-		LEFT JOIN hospital_register_doctor t2 ON t2.doctor_code = t.doctor_code
-		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
+        <include refid="Query_UserDoctor_Sql" />
 		<include refid="conditionQuery.core" />
 		ORDER BY
 			t3.hospital_id DESC
 	</select>
 	
+	<!-- 医生详情 -->
 	<select id="getDoctorInfoById" resultMap="BaseResultMapExt" parameterType="int">
-        SELECT
-			t.user_id,
-			t.doctor_code,
-			t2.doctor_name,
-			t2.doctor_intro,
-			t2.positional,
-			t2.field,
-			t3.hospital_id,
-			t3.hospital_code,
-			t3.hospital_name,
-			t3.hospital_level,
-			t3.dept_code,
-			t3.dept_name
-		FROM
-			user_doctor t
-		LEFT JOIN hospital_register_doctor t2 ON t2.doctor_code = t.doctor_code
-		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
+        <include refid="Query_UserDoctor_Sql" />
 		WHERE
 			t.user_id = #{userId,jdbcType=INTEGER}
 		ORDER BY

@@ -7,8 +7,6 @@
 		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
-		<result property="hospitalCode" column="hospital_code" jdbcType="VARCHAR"/>
-		<result property="hospitalLevel" column="hospital_level" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -16,9 +14,7 @@
 		t.dept_name,
 		t.dept_code,
 		t.hospital_id,
-		t.hospital_name,
-		t.hospital_code,
-		t.hospital_level
+		t.hospital_name
 	</sql>
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
@@ -27,10 +23,8 @@
 		t.dept_name,
 		t.dept_code,
 		t.hospital_id,
-		t.hospital_name,
-		t.hospital_code,
-		t.hospital_level
-		from hospital_dept t 
+		t.hospital_name
+		from hospital_dept t
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -51,50 +45,40 @@
 		<include refid="conditionQuery.core" />
 	</select>
 
-	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="columns"/>
 		from hospital_dept t
 		where t.dept_id = #{deptId,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
-		delete from hospital_dept where 1=1
-		and dept_id=#{deptId,jdbcType=INTEGER}
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from hospital_dept where dept_id = #{deptId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept" useGeneratedKeys="true" keyProperty="deptId">
 		insert into hospital_dept (
-		dept_id,
 		dept_name,
 		dept_code,
 		hospital_id,
-		hospital_name,
-		hospital_code,
-		hospital_level
+		hospital_name
 		)
 		values(
-		#{deptId,jdbcType=INTEGER},
 		#{deptName,jdbcType=VARCHAR},
 		#{deptCode,jdbcType=VARCHAR},
 		#{hospitalId,jdbcType=INTEGER},
-		#{hospitalName,jdbcType=VARCHAR},
-		#{hospitalCode,jdbcType=VARCHAR},
-		#{hospitalLevel,jdbcType=VARCHAR}
+		#{hospitalName,jdbcType=VARCHAR}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
 		update hospital_dept
 		<set>
-		  <if test="deptId != null">dept_id=#{deptId,jdbcType=INTEGER},</if>
 		  <if test="deptName != null">dept_name=#{deptName,jdbcType=VARCHAR},</if>
 		  <if test="deptCode != null">dept_code=#{deptCode,jdbcType=VARCHAR},</if>
 		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=INTEGER},</if>
 		  <if test="hospitalName != null">hospital_name=#{hospitalName,jdbcType=VARCHAR},</if>
-		  <if test="hospitalCode != null">hospital_code=#{hospitalCode,jdbcType=VARCHAR},</if>
-		  <if test="hospitalLevel != null">hospital_level=#{hospitalLevel,jdbcType=VARCHAR},</if>
 		</set>
-		where 1=1 and dept_id = #{deptId,jdbcType=INTEGER}
+		where dept_id = #{deptId,jdbcType=INTEGER}
 	</update>
 </mapper>

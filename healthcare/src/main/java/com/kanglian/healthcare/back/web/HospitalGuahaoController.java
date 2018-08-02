@@ -21,10 +21,10 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
+import com.kanglian.healthcare.back.dal.pojo.Hospital;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
 import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
-import com.kanglian.healthcare.back.service.HospitalAddressBo;
+import com.kanglian.healthcare.back.service.HospitalBo;
 import com.kanglian.healthcare.back.service.HospitalDeptBo;
 import com.kanglian.healthcare.back.service.HospitalDeptCategoryBo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
@@ -37,8 +37,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @RestController
 @RequestMapping(value = "/guahao")
-public class HospitalGuahaoController
-        extends CrudController<HospitalAddress, HospitalAddressBo> {
+public class HospitalGuahaoController extends CrudController<Hospital, HospitalBo> {
 
     @Autowired
     private HospitalDeptCategoryBo hospitalDeptCategoryBo;

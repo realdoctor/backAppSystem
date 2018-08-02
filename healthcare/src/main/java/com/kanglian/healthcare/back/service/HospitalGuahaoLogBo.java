@@ -11,7 +11,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
 import com.kanglian.healthcare.back.common.DaoTemplate;
 import com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao;
-import com.kanglian.healthcare.back.dal.pojo.HospitalAddress;
+import com.kanglian.healthcare.back.dal.pojo.Hospital;
 import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
 import com.kanglian.healthcare.exception.DBException;
 
@@ -19,7 +19,7 @@ import com.kanglian.healthcare.exception.DBException;
 public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuahaoLogDao> {
 
     @Autowired
-    private HospitalAddressBo hospitalAddressBo;
+    private HospitalBo hospitalBo;
     
     /**
      * 获取挂号单列表
@@ -76,12 +76,11 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
     public void fastorder(HospitalGuahaoLog hospitalGuahaoLog) {
         try {
             this.dao.save(hospitalGuahaoLog);
-            HospitalAddress hospitalAddress =
-                    hospitalAddressBo.get(Integer.valueOf(hospitalGuahaoLog.getHospitalId()));
-            if (hospitalAddress != null) {
+            Hospital hospital = hospitalBo.get(Integer.valueOf(hospitalGuahaoLog.getHospitalId()));
+            if (hospital != null) {
                 // 更新预约挂号量
-                hospitalAddress.setAppointmentNum(hospitalAddress.getAppointmentNum() + 1);
-                hospitalAddressBo.update(hospitalAddress);
+                hospital.setAppointmentNum(hospital.getAppointmentNum() + 1);
+                hospitalBo.update(hospital);
             }
         } catch (Exception ex) {
             throw new DBException(ex);

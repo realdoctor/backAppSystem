@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDoctorDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDoctor" id="BaseResultMap">
+		<result property="doctorId" column="doctor_id" jdbcType="INTEGER"/>
+		<result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
+		<result property="doctorLicense" column="doctor_license" jdbcType="INTEGER"/>
+		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="field" column="field" jdbcType="VARCHAR"/>
+		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
+		<result property="positional" column="positional" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		t.doctor_id,
+		t.dept_id,
+		t.hospital_id,
+		t.doctor_license,
+		t.doctor_name,
+		t.doctor_code,
+		t.field,
+		t.doctor_intro,
+		t.positional
+	</sql>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		select
+		t.doctor_id,
+		t.dept_id,
+		t.hospital_id,
+		t.doctor_license,
+		t.doctor_name,
+		t.doctor_code,
+		t.field,
+		t.doctor_intro,
+		t.positional
+		from hospital_doctor t
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		doctor_id desc
+		</otherwise>
+		</choose>
+		<if test="paramMap.pageSize > 0">
+		  limit #{paramMap.pageOffset},#{paramMap.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
+		select count(*) from hospital_doctor t
+		<include refid="conditionQuery.core" />
+	</select>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="columns"/>
+		from hospital_doctor t
+		where t.doctor_id = #{doctorId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from hospital_doctor where doctor_id = #{doctorId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDoctor" useGeneratedKeys="true" keyProperty="doctorId">
+		insert into hospital_doctor (
+		dept_id,
+		hospital_id,
+		doctor_license,
+		doctor_name,
+		doctor_code,
+		field,
+		doctor_intro,
+		positional
+		)
+		values(
+		#{deptId,jdbcType=INTEGER},
+		#{hospitalId,jdbcType=INTEGER},
+		#{doctorLicense,jdbcType=INTEGER},
+		#{doctorName,jdbcType=VARCHAR},
+		#{doctorCode,jdbcType=VARCHAR},
+		#{field,jdbcType=VARCHAR},
+		#{doctorIntro,jdbcType=LONGVARCHAR},
+		#{positional,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDoctor">
+		update hospital_doctor
+		<set>
+		  <if test="deptId != null">dept_id=#{deptId,jdbcType=INTEGER},</if>
+		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=INTEGER},</if>
+		  <if test="doctorLicense != null">doctor_license=#{doctorLicense,jdbcType=INTEGER},</if>
+		  <if test="doctorName != null">doctor_name=#{doctorName,jdbcType=VARCHAR},</if>
+		  <if test="doctorCode != null">doctor_code=#{doctorCode,jdbcType=VARCHAR},</if>
+		  <if test="field != null">field=#{field,jdbcType=VARCHAR},</if>
+		  <if test="doctorIntro != null">doctor_intro=#{doctorIntro,jdbcType=LONGVARCHAR},</if>
+		  <if test="positional != null">positional=#{positional,jdbcType=VARCHAR},</if>
+		</set>
+		where doctor_id = #{doctorId,jdbcType=INTEGER}
+	</update>
+</mapper>

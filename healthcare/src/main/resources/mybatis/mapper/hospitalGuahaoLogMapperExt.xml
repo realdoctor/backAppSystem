@@ -17,23 +17,24 @@
 		SELECT
 			t1.hospital_name AS hospitalName,
 			t1.dept_name AS deptName,
-			t1.hospital_level AS hospitalLevel,
+			t3.hospital_level AS hospitalLevel,
 			t2.doctor_name AS doctorName,
 			t2.positional AS positional,
 			t2.doctor_intro AS doctorIntro,
 			t2.field AS goodAt,
 			t.order_day AS orderDay,
-			t3.plan AS plan,
-			IFNULL(t4.receive_num,0) AS receiveNum
+			t4.plan AS plan,
+			IFNULL(t5.receive_num,0) AS receiveNum
 		FROM
 			hospital_guahao_log t
 		LEFT JOIN hospital_dept t1 ON (
-			t.hospital_id = t1.hospital_id
-			AND t.dept_id = t1.dept_id
+			t1.hospital_id = t.hospital_id
+			AND t1.dept_id = t.dept_id
 		)
-		LEFT JOIN hospital_register_doctor t2 ON (t.dept_id = t2.dept_id and t.doctor_code = t2.doctor_code)
-		LEFT JOIN hospital_doctor_duty t3 ON t.hospital_doctor_duty_id = t3.id
-		LEFT JOIN hospital_receive_log t4 ON (t.hospital_id=t4.hospital_id AND t.doctor_code=t4.doctor_code)
+		LEFT JOIN hospital_doctor t2 ON (t2.dept_id = t.dept_id and t2.doctor_code = t.doctor_code)
+		LEFT JOIN hospital t3 ON t3.hospital_id = t2.hospital_id
+		LEFT JOIN hospital_doctor_duty t4 ON t4.id = t.hospital_doctor_duty_id
+		LEFT JOIN hospital_receive_log t5 ON (t5.hospital_id=t.hospital_id AND t4.doctor_code=t.doctor_code)
 		WHERE
 			t.user_id = #{userId,jdbcType=INTEGER}
 	</select>

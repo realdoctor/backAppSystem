@@ -29,7 +29,7 @@
 			t2.receive_num
 		FROM
 			hospital_dept t
-		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
+		LEFT JOIN hospital_doctor t1 ON t.dept_id = t1.dept_id
 		LEFT JOIN hospital_receive_log t2 ON (t.hospital_id = t2.hospital_id AND t1.doctor_code=t2.doctor_code)
 		<include refid="conditionQuery.core" />
 		order by
@@ -71,7 +71,7 @@
 			) AS worktimeWeek
 		FROM
 			hospital_doctor_duty t
-		LEFT JOIN hospital_register_doctor t1 ON (t1.dept_id = t.dept_id AND t1.doctor_code = t.doctor_code)
+		LEFT JOIN hospital_doctor t1 ON (t1.dept_id = t.dept_id AND t1.doctor_code = t.doctor_code)
 		LEFT JOIN hospital_dept t2 ON (
 			t2.hospital_id = t.hospital_id
 			AND t2.dept_id = t.dept_id AND t2.dept_id = t1.dept_id
@@ -105,7 +105,7 @@
 			t2.duty_dtime
 		FROM
 			hospital_dept t
-		LEFT JOIN hospital_register_doctor t1 ON t.dept_id = t1.dept_id
+		LEFT JOIN hospital_doctor t1 ON t.dept_id = t1.dept_id
 		LEFT JOIN hospital_doctor_duty t2 ON (t.hospital_id = t2.hospital_id AND t.dept_id = t2.dept_id AND t1.doctor_code=t2.doctor_code)
 		<include refid="conditionQuery.core" />
 		order by
