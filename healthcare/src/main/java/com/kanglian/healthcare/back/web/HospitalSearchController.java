@@ -22,7 +22,7 @@ import com.kanglian.healthcare.back.service.HospitalBo;
 public class HospitalSearchController extends CrudController<Hospital, HospitalBo> {
 
     /**
-     * 按条件医院、医生、科室、疾病搜索
+     * 按条件医院、医生、科室、疾病搜索（已迁移到solr）
      * 
      * @param searchstr
      * @return
@@ -34,7 +34,7 @@ public class HospitalSearchController extends CrudController<Hospital, HospitalB
     }
     
     /**
-     * 按条件搜索（已迁移到solr）
+     * 按条件搜索
      * 
      * @author xl.liu
      */

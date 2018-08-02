@@ -33,7 +33,7 @@ public class HospitalController extends CrudController<Hospital, HospitalBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/guahao/hospital")
+    @GetMapping("/guahao/hospital/list")
     public ResultBody list(HospitalQuery query) throws Exception {
         return super.list(query);
     }

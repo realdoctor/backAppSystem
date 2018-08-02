@@ -30,13 +30,13 @@ public class GoodsController extends CrudController<Goods, GoodsBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResultBody list(GoodsQuery query) throws Exception {
         return super.list(query);
     }
 
     /**
-     * 商品搜索
+     * 商品搜索（已迁移到solr）
      * 
      * @param query
      * @return
