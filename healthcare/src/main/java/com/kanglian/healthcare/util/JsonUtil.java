@@ -6,6 +6,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.PropertyPreFilter;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
 /**
@@ -24,7 +25,7 @@ public class JsonUtil {
     public static String beanToJson(Object object, String dataFormatString) {
         if (object != null) {
             if (StringUtils.isEmpty(dataFormatString)) {
-                return JSONObject.toJSONString(object);
+                return JSONObject.toJSONString(object, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat});
             }
             return JSON.toJSONStringWithDateFormat(object, dataFormatString);
         } else {
@@ -40,7 +41,7 @@ public class JsonUtil {
      */
     public static String object2Json(Object object) {
         if (object != null) {
-            return JSON.toJSONString(object);
+            return JSON.toJSONString(object, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat});
         } else {
             return null;
         }
@@ -54,7 +55,7 @@ public class JsonUtil {
      */
     public static String beanToJson(Object object) {
         if (object != null) {
-            return JSON.toJSONString(object);
+            return JSON.toJSONString(object, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat});
         } else {
             return null;
         }
