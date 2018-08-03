@@ -173,7 +173,7 @@ public class UploadController {
             @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
         logger.info("===========进入上传视频图片，user=" + user.getMobilePhone());
-        
+
         // 文件
         if (files == null) {
             throw new InvalidParamException("attach");
@@ -182,26 +182,51 @@ public class UploadController {
         if (files.length <= 0) {
             return ResultUtil.error("不能上传空文件");
         }
-        
+
         // 内容
         String content = request.getParameter("content");
-        
+
         // 价格
         String price = request.getParameter("price");
         if (StringUtil.isNotBlank(price) && !NumberUtil.checkPrice(price)) {
             return ResultUtil.error("价格不正确");
         }
-        
+
         // 标签
         String tag = request.getParameter("tag");
-        
+
         // 描述
         String description = request.getParameter("description");
-        
+
+        String staticUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
-        final String contentId = NumberUtil.getNewId();// RandomStringUtils.randomAlphanumeric(20);
+
+        // 一组图片视频id
+        String pubId = request.getParameter("pubId");
+        if (StringUtil.isNotEmpty(pubId)) {
+            try {
+                uploadContentBo.deleteByPubId(pubId);
+                // 清除存放的文件
+                List<UploadContent> contentList = uploadContentBo.getByPubId(pubId);
+                for (UploadContent cc : contentList) {
+                    String src = pathRoot.concat(cc.getSrc().replaceAll(staticUrl, ""));
+                    logger.debug("删除文件路径==============" + src);
+                    FileUtils.forceDelete(new File(src));
+                    if (StringUtil.isNotBlank(cc.getPic())) {
+                        src = pathRoot.concat(cc.getPic().replaceAll(staticUrl, ""));
+                        logger.debug("删除视频小图路径==============" + src);
+                        FileUtils.forceDelete(new File(src));
+                    }
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        } else {
+            pubId = NumberUtil.getNewId();// RandomStringUtils.randomAlphanumeric(20);
+        }
+
         // 循环获取file数组中得文件
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
@@ -223,7 +248,7 @@ public class UploadController {
                 } else {
                     return ResultUtil.error("上传格式不符合");
                 }
-                
+
                 try {
                     File uploadedFile = new File(pathRoot + filePath);
                     FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
@@ -231,15 +256,14 @@ public class UploadController {
                     logger.error("上传图文视频文件异常", e);
                     return ResultUtil.error("上传失败");
                 }
-                
+
                 // 上传视频图片
                 UploadContent uploadContent = new UploadContent();
                 uploadContent.setUserId(user.getUserId().intValue());
-                uploadContent.setPubId(contentId);
+                uploadContent.setPubId(pubId);
                 uploadContent.setType(type);
                 uploadContent.setContent(content);
-                uploadContent.setSrc(PropConfig.getInstance()
-                        .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                uploadContent.setSrc(staticUrl.concat(filePath));
                 uploadContent.setTag(tag);
                 uploadContent.setDescription(description);
                 uploadContent.setAddTime(DateUtil.currentDate());
@@ -248,7 +272,7 @@ public class UploadController {
                 } else {
                     uploadContent.setPrice(0d);
                 }
-                
+
                 Map<String, String> urlMap = new HashMap<String, String>();
                 urlMap.put("url", uploadContent.getSrc());
                 pathList.add(urlMap);
@@ -260,8 +284,7 @@ public class UploadController {
                                 filePath.substring(0, filePath.lastIndexOf(".")).concat(".png");
                         VideoPictureUtil.getVideoImage(Constants.FFMPEG_PATH,
                                 pathRoot.concat(filePath), pathRoot.concat(outImagePath));
-                        uploadContent.setPic(PropConfig.getInstance()
-                                .getPropertyValue(Constants.STATIC_URL).concat(outImagePath));
+                        uploadContent.setPic(staticUrl.concat(outImagePath));
                         uploadContent.setRemark(fileName + "视频截图");
                         thumbnailUrl = uploadContent.getPic();
                         urlMap.put("thumbnailUrl", thumbnailUrl);
@@ -272,7 +295,8 @@ public class UploadController {
                 uploadContentBo.save(uploadContent);
             }
         }
-        resultMap.put("pubId", contentId);
+
+        resultMap.put("pubId", pubId);
         resultMap.put("list", pathList);
         return ResultUtil.success(resultMap);
     }

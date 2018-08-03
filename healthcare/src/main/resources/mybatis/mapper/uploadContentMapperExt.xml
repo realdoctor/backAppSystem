@@ -30,4 +30,12 @@
 		</set>
 		where pub_id=#{pubId,jdbcType=VARCHAR}
 	</update>
+	
+	<delete id="deleteContent" parameterType="int[]">
+		delete from upload_content where id in
+		<foreach collection="array" item="arr" index="no" open="("
+			separator="," close=")">
+			#{arr}
+		</foreach>
+	</delete>
 </mapper>

@@ -11,4 +11,6 @@ public interface UploadContentDao extends NewCrudDao<UploadContent> {
     public void deleteByPubId(String orderId);
 
     public int updateByPubId(UploadContent content);
+    
+    public int deleteContent(int[] arr);
 }

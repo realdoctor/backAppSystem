@@ -51,6 +51,19 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
         return ResultUtil.success(this.bo.getByPubId(pubId));
     }
 
+    /**
+     * 视频图片删除
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/news_pub/del")
+    public ResultBody del(String pubId) throws Exception {
+        this.bo.deleteByPubId(pubId);
+        return ResultUtil.success();
+    }
+    
     public static class ContentQuery extends Grid {
         private String userId;
         private String type;

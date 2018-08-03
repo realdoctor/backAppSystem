@@ -48,6 +48,20 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
     }
     
     /**
+     * 删除上传文件
+     * 
+     * @param arr
+     * @return
+     */
+    public int deleteContent(int[] arr) {
+        try {
+            return this.dao.deleteContent(arr);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
      * 保存上传资讯
      * 
      * @param uploadContent
