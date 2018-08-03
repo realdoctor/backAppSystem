@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.AuthConfig;
@@ -63,7 +65,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
                 User user = (User) JsonUtil.jsonToBean(userJsonString, User.class);
                 request.setAttribute(AuthConfig.CURRENT_USER_ID, user.getUserId());
-                logger.debug("=================身份已验证，user=" + JsonUtil.beanToJson(user));
+                logger.debug("=================身份已验证，user=" + JSON.toJSONString(user, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat}));
                 String sessionId = userBo.getKey(user.getUserId(), token);
                 logger.debug("=================SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
