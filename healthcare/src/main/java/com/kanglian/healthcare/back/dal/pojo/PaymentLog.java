@@ -8,7 +8,7 @@ public class PaymentLog extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String orderNo;
-	@JSONField(name="orderFrom")
+	@JSONField(name="payFrom")
 	private String from;
     private Integer userId;
 	private Integer toUser;
