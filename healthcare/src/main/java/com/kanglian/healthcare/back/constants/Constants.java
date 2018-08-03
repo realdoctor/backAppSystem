@@ -114,4 +114,7 @@ public final class Constants {
     public static final String TAG_ID                        = "tagId";
     public static final String TAG_PATIENT_ID                = "0";
     public static final String TAG_DOCTOR_ID                 = "1";
+
+    /** logger */
+    public static final String LOG_NAME_PAYMENT              = "PAYMENT";
 }
