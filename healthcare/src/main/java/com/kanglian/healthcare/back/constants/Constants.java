@@ -116,5 +116,5 @@ public final class Constants {
     public static final String TAG_DOCTOR_ID                 = "1";
 
     /** logger */
-    public static final String LOG_NAME_PAYMENT              = "PAYMENT";
+    public static final String LOG_NAME_PAYMENT              = "HealthCare.Pay";
 }
