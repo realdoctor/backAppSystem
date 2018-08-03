@@ -32,7 +32,7 @@ import com.kanglian.healthcare.util.NumberUtil;
 @Service
 public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
 
-    private static final Logger logger = LoggerFactory.getLogger(GoodsOrderBo.class);
+    private static final Logger logger = LoggerFactory.getLogger(Constants.LOG_NAME_PAYMENT);
 
     @Autowired
     private GoodsDao            goodsDao;
@@ -84,8 +84,8 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             goodsOrder.setAddTime(DateUtil.currentDate());
             this.dao.save(goodsOrder);
             final Integer goodsOrderId = goodsOrder.getId();
-            logger.info("==========订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
-            logger.info("==========订单详情：{}", JsonUtil.object2Json(paymentOrder.getGoodsList()));
+            logger.info("==========[商城]订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
+            logger.info("==========[商城]订单详情：{}", JsonUtil.object2Json(paymentOrder.getGoodsList()));
             // 2、订单详情
             for (PaymentOrderItem order : paymentOrder.getGoodsList()) {
                 GoodsOrderItem goodsItem = new GoodsOrderItem();
@@ -119,6 +119,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                     "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
             paymentLog.setAddTime(goodsOrder.getAddTime());
             paymentLogDao.save(paymentLog);
+            logger.info("==========[商城]用户支出明细：{}", JsonUtil.object2Json(paymentLog));
             retMap.put("userId", goodsOrder.getUserId());
             retMap.put("orderId", goodsOrder.getId());
             retMap.put("orderNo", goodsOrder.getOrderNo());

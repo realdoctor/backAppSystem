@@ -23,12 +23,13 @@ import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
 import com.kanglian.healthcare.exception.DBException;
+import com.kanglian.healthcare.util.JsonUtil;
 
 @Service
 public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 
     /** logger */
-    private final static Logger logger = LoggerFactory.getLogger(PaymentOrderBo.class);
+    private final static Logger logger = LoggerFactory.getLogger(Constants.LOG_NAME_PAYMENT);
     
 //    @Autowired
 //    private AccountDao          accountDao;
@@ -69,6 +70,9 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentOrderItem.setAddTime(DateUtil.currentDate());
             paymentOrderItemDao.save(paymentOrderItem);
 
+            logger.info("==========支付订单信息[订单id：{}，订单号：{}]", paymentOrder.getOrderId(), paymentOrder.getOrderNo());
+            logger.info("==========支付订单详情：{}", JsonUtil.object2Json(paymentOrderItem));
+            
             // 用户支出明细
             PaymentLog paymentLog = new PaymentLog();
             paymentLog.setOrderNo(paymentOrder.getOrderNo());
@@ -83,6 +87,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                     "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
             paymentLog.setAddTime(paymentOrder.getAddTime());
             paymentLogDao.save(paymentLog);
+            logger.info("==========用户支出明细：{}", JsonUtil.object2Json(paymentLog));
             
 //            /**
 //             * 如果使用账户自扣费，非支付宝微信支付
