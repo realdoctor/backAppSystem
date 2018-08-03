@@ -26,7 +26,11 @@ public enum FromType {
     /**
      * 5，资讯支付
      */
-    INFORMATION("资讯支付", "5");
+    INFORMATION("资讯支付", "5"),
+    /**
+     * 6，商城支付
+     */
+    GOODS("商城支付", "6");
 
     // 成员变量
     private String name;
