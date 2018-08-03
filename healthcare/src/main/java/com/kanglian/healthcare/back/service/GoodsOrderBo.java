@@ -11,15 +11,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
+import com.kanglian.healthcare.back.constants.Constants;
+import com.kanglian.healthcare.back.constants.FromType;
 import com.kanglian.healthcare.back.constants.PaymentStatus;
+import com.kanglian.healthcare.back.constants.PaymentType;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderItem;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
 import com.kanglian.healthcare.back.dal.dao.GoodsDao;
 import com.kanglian.healthcare.back.dal.dao.GoodsOrderDao;
 import com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao;
+import com.kanglian.healthcare.back.dal.dao.PaymentLogDao;
 import com.kanglian.healthcare.back.dal.pojo.Goods;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem;
+import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.NumberUtil;
@@ -33,6 +38,8 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
     private GoodsDao            goodsDao;
     @Autowired
     private GoodsOrderItemDao   goodsOrderItemDao;
+    @Autowired
+    private PaymentLogDao       paymentLogDao;
 
     /**
      * 判断支付的总金额是否匹配，防止被修改
@@ -99,6 +106,19 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                     goodsDao.update(goods);
                 }
             }
+            // 用户支出明细
+            PaymentLog paymentLog = new PaymentLog();
+            paymentLog.setOrderNo(goodsOrder.getOrderNo());
+            paymentLog.setUserId(goodsOrder.getUserId());
+            paymentLog.setType(PaymentType.getValue(paymentOrder.getType()));// 支付类型
+            paymentLog.setFrom(FromType.getName("6"));// 支付来源
+            paymentLog.setMark(Constants.MARK_PAY);
+            paymentLog.setMoney(goodsOrder.getPayPrice());
+            paymentLog.setStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
+            paymentLog.setMessage(
+                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
+            paymentLog.setAddTime(goodsOrder.getAddTime());
+            paymentLogDao.save(paymentLog);
             retMap.put("userId", goodsOrder.getUserId());
             retMap.put("orderId", goodsOrder.getId());
             retMap.put("orderNo", goodsOrder.getOrderNo());
