@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
@@ -58,7 +59,7 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
      * @return
      * @throws Exception
      */
-    @GetMapping("/news_pub/del")
+    @PostMapping("/news_pub/del")
     public ResultBody del(String pubId) throws Exception {
         this.bo.deleteByPubId(pubId);
         return ResultUtil.success();
