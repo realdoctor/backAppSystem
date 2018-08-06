@@ -2,10 +2,12 @@ package com.kanglian.healthcare.back.web;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDTO;
 import com.kanglian.healthcare.back.service.DataimportBo;
 import com.kanglian.healthcare.util.BeanToMapUtil;
+import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.excel.POIUtil;
 
@@ -64,19 +67,33 @@ public class DataimportController extends BaseController {
         if (!file.exists()) {
             return ResultUtil.error("没有文件导入");
         }
+        
+        // 文件名
+        final String fileName = file.getName();
+        // 获取文件类型
+        String extension = FilenameUtils.getExtension(fileName).toLowerCase();
+        if (!Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("excel").split(",")).contains(extension)) {
+            return ResultUtil.error("不是excel文件");
+        }
+        
         FileInputStream fis = new FileInputStream(file);
-        List<Map<String, Object>> mapList = POIUtil.getListByExcel(fis, "doctor.xlsx", mapping);
+        List<Map<String, Object>> mapList = POIUtil.getListByExcel(fis, fileName, mapping);
         if (mapList != null && mapList.size() > 0) {
+            POIUtil.printLog2(mapList);
             List<HospitalDoctorDTO> dataList =
                     BeanToMapUtil.convertListMap2ListBean(mapList, HospitalDoctorDTO.class);
-            dataimportBo.doctorImport(dataList);
-            StringBuilder buff = new StringBuilder();
-            buff.append(filePath.substring(0, filePath.lastIndexOf(".")));
-            buff.append(DateUtil.getLongDateStr());
-            buff.append(filePath.substring(filePath.lastIndexOf(".")));
-            filePath = buff.toString();
-            logger.info("========修改导入文件，防止重复导入-->>"+filePath);
-            FileUtils.moveFile(file, new File(filePath));
+            try {
+                dataimportBo.doctorImport(dataList);
+                StringBuilder buff = new StringBuilder();
+                buff.append(filePath.substring(0, filePath.lastIndexOf(".")));
+                buff.append(DateUtil.getLongDateStr());
+                buff.append(filePath.substring(filePath.lastIndexOf(".")));
+                filePath = buff.toString();
+                logger.info("========修改导入文件，防止重复导入-->>"+filePath);
+                FileUtils.moveFile(file, new File(filePath));
+            } catch (Exception e) {
+                return ResultUtil.error("导入失败");
+            }
             return ResultUtil.success(dataList);
         }
         return ResultUtil.error("无数据导入");

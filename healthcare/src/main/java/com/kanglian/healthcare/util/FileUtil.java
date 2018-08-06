@@ -17,6 +17,7 @@ public class FileUtil {
         CONTENT_TYPE_MAP.put("flash", "swf,flv");
         CONTENT_TYPE_MAP.put("media", "swf,flv,mp3,mp4,3gp,wav,wma,wmv,mid,avi,mpg,asf,mov,rm,rmvb");
         CONTENT_TYPE_MAP.put("file", "rar,zip,doc,docx,xls,xlsx,ppt,pptx,htm,html,txt,dwg,pdf");
+        CONTENT_TYPE_MAP.put("excel", "xls,xlsx");
     }
 
     public static final String ALLCHAR =
