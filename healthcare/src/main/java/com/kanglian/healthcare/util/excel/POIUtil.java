@@ -260,9 +260,9 @@ public class POIUtil extends ExcelCommon {
 //        String[] attributes = new String[] {"id", "省份", "城市", "医院名", "医院编号", "医院等级", "经度", "纬度", "科室名", "科室编号",
 //                "姓名", "医生编号", "手机号", "医生执照", "擅长", "医生简介", "职称"};
         try {
-            File file = new File("E:\\医生样品.xlsx");
+            File file = new File("/home/dataimport/doctor.xlsx");
             FileInputStream fis = new FileInputStream(file);
-            printLog2(getListByExcel(fis, "医生样品.xlsx", null));
+            printLog2(getListByExcel(fis, "doctor.xlsx", null));
         } catch (Exception e) {
             e.printStackTrace();
         }
