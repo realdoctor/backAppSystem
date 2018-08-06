@@ -117,4 +117,7 @@ public final class Constants {
 
     /** logger */
     public static final String LOG_NAME_PAYMENT              = "HealthCare.Pay";
+
+    // 导入医生数据
+    public static final String IMPORT_DOCTOR_FILE            = "import_doctor_file";
 }
