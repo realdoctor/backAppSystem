@@ -32,4 +32,5 @@ public interface HospitalDeptDao extends CrudDao<HospitalDept> {
      */
     public List<Map<String, String>> findWorkingDay(ConditionQuery query);
     
+    public HospitalDept getHospitalDept(HospitalDept dept);
 }

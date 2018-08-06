@@ -12,4 +12,6 @@ public interface HospitalDao extends CrudDao<Hospital> {
      * @return 医院 | 医生
      */
     public List<Hospital> queryForHospitalAndDoctor(ConditionQuery query);
+    
+    public Hospital getByCode(String hospitalCode);
 }

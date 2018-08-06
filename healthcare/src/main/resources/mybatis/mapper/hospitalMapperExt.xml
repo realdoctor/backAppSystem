@@ -50,4 +50,11 @@
 		</otherwise>
 		</choose>
 	</select>
+	
+	<select id="getByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="columns"/>
+		from hospital t
+		where t.hospital_code = #{hospitalCode,jdbcType=VARCHAR}
+	</select>
 </mapper>

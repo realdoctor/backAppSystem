@@ -118,4 +118,21 @@
 		</otherwise>
 		</choose>
 	</select>
+	
+	<select id="getHospitalDept" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
+		select
+		<include refid="columns"/>
+		from hospital_dept t
+		<where>
+			<if test="deptId != null">
+			   t.dept_id = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="deptCode != null">
+				and t.dept_code=#{deptCode,jdbcType=VARCHAR}
+			</if>
+		  	<if test="hospitalId != null">
+		  		and t.hospital_id=#{hospitalId,jdbcType=INTEGER}
+		  	</if>
+		</where>
+	</select>
 </mapper>

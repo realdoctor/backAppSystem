@@ -5,4 +5,5 @@ import com.easyway.business.framework.dao.CrudDao;
 
 public interface HospitalDoctorDao extends CrudDao<HospitalDoctor> {
 
+    public HospitalDoctor getHospitalDoctor(HospitalDoctor doctor);
 }

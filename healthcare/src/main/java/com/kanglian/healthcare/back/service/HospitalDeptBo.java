@@ -54,4 +54,23 @@ public class HospitalDeptBo extends CrudBo<HospitalDept, HospitalDeptDao> {
             throw new DBException(ex);
         }
     }
+    
+    public HospitalDept getHospitalDept(HospitalDept dept) {
+        try {
+            return this.dao.getHospitalDept(dept);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    public HospitalDept getHospitalDept(Integer hospitalId, String deptCode) {
+        try {
+            HospitalDept dept = new HospitalDept();
+            dept.setHospitalId(hospitalId);
+            dept.setDeptCode(deptCode);
+            return this.dao.getHospitalDept(dept);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }

@@ -44,4 +44,12 @@ public class HospitalBo extends CrudBo<Hospital,HospitalDao> {
 
         }, grid.getPageNum(), grid.getPageSize());
     }
+    
+    public Hospital getByCode(String hospitalCode) {
+        try {
+            return dao.getByCode(hospitalCode);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
 }
