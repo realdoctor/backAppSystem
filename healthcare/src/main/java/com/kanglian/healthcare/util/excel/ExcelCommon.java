@@ -9,6 +9,8 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Excel公共封装类<br>
@@ -21,6 +23,8 @@ import org.apache.poi.ss.usermodel.Sheet;
  */
 public class ExcelCommon {
 
+    private final static Logger logger = LoggerFactory.getLogger(ExcelCommon.class);
+    
     /**
      * 将读取到的Cell单元格为日期类型时,通过表示5位数的Double类型,转换成Java的Date
      * 
@@ -150,7 +154,8 @@ public class ExcelCommon {
             for (Object object : rowData) {
                 sbf.append("\t" + String.valueOf(object));
             }
-            System.out.println(sbf.toString());
+//            System.out.println(sbf.toString());
+            logger.info(sbf.toString());
         }
     }
 
@@ -161,7 +166,8 @@ public class ExcelCommon {
             for (Map.Entry<String, Object> object : rowData.entrySet()) {
                 sbf.append("\t" + String.valueOf(object.getValue()));
             }
-            System.out.println(sbf.toString());
+//            System.out.println(sbf.toString());
+            logger.info(sbf.toString());
         }
     }
 }
