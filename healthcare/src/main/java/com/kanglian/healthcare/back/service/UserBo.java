@@ -56,7 +56,11 @@ public class UserBo extends CrudBo<User, UserDao> {
             this.dao.save(user);
             UserRole rserRole = new UserRole();
             rserRole.setUserId(user.getUserId().intValue());
-            rserRole.setRoleId(user.getRoleId());
+            if (user.getRoleId() != null) {
+                rserRole.setRoleId(user.getRoleId());
+            } else {
+                rserRole.setRoleId(0);
+            }
             userRoleDao.save(rserRole);
         } catch (Exception ex) {
             throw new DBException(ex);
