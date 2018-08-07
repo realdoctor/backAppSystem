@@ -54,7 +54,7 @@
 			u2.real_name AS doctorRealName,
 			t2.src,
 			t2.remark
-			<if test="paramMap.type!=null and paramMap.type=='1'.toString()">
+			<if test="paramMap.roleId!=null and paramMap.roleId=='0'.toString()">
 			,(3 - t1.replyNum) retryNum
 			</if>
 		FROM
@@ -62,7 +62,8 @@
 		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
 		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
 		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
-		<if test="paramMap.type!=null and paramMap.type=='1'.toString()">
+		<!-- 患者发问可使用次数 -->
+		<if test="paramMap.roleId!=null and paramMap.roleId=='0'.toString()">
 		INNER JOIN (
 			SELECT
 				max(t.id) AS id,
