@@ -95,13 +95,13 @@ public class DataimportTask extends AbstractTask {
                         BeanToMapUtil.convertListMap2ListBean(mapList, HospitalDoctorDTO.class);
                 try {
                     dataimportBo.doctorImport(dataList);
-                    logger.info("===================导入成功");
                     StringBuilder buff = new StringBuilder();
                     buff.append(filePath.substring(0, filePath.lastIndexOf(".")));
                     buff.append(DateUtil.getLongDateStr());
                     buff.append(filePath.substring(filePath.lastIndexOf(".")));
                     filePath = buff.toString();
                     FileUtils.moveFile(file, new File(filePath));
+                    logger.info("===================导入成功");
                     logger.info("========修改文件，防止重复导入-->>" + filePath);
                 } catch (Exception e) {
                     logger.error("===================导入失败", e);
