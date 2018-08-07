@@ -179,7 +179,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         private String roleId;
         // 1|进行中，2|已完结
         private String status;
-        private String realName;
+        private String searchstr;
         private String questionId;
         private String content;
         private String retryNum;
@@ -209,12 +209,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             this.status = status;
         }
 
-        public String getRealName() {
-            return realName;
+        public String getSearchstr() {
+            return searchstr;
         }
 
-        public void setRealName(String realName) {
-            this.realName = realName;
+        public void setSearchstr(String searchstr) {
+            this.searchstr = searchstr;
         }
         
         public String getRetryNum() {
@@ -247,8 +247,8 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             if ("1".equals(getRoleId())) {// 医生1
                 query.addParam("roleId", "1");
                 query.addSingleValueCondition(new SingleValueCondition("to_user", getUserId()));
-                if (StringUtil.isNotEmpty(getRealName())) {
-                    query.addWithoutValueCondition(new WithoutValueCondition("u1.real_name LIKE '%"+getRealName()+"%'"));
+                if (StringUtil.isNotEmpty(getSearchstr())) {
+                    query.addWithoutValueCondition(new WithoutValueCondition("u1.real_name LIKE '%"+getSearchstr()+"%'"));
                 }
             } else {// 普通用户0
                 query.addParam("roleId", "0");
