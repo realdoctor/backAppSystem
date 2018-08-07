@@ -34,6 +34,7 @@
 			<list>
 				<ref bean="codeRefreshTaskTrigger" />
 				<ref bean="overdueQuestionTaskTrigger" />
+				<ref bean="dataimportTaskTrigger" />
 			</list>
 		</property>
 		<property name="taskExecutor" ref="executor" />
@@ -68,4 +69,19 @@
 		<property name="cronExpression" value="0 0/30 * * * ?" />
 	</bean>
 	<!-- 处理要过期问题 end -->
+	
+	<!-- 数据导入 start -->
+	<bean id="dataimportTask" class="com.kanglian.healthcare.quartz.task.DataimportTask"></bean>
+	<bean id="dataimportTaskDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="dataimportTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="dataimportTaskTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="dataimportTaskDetail" />
+		<property name="cronExpression" value="0 0/10 * * * ?" />
+	</bean>
+	<!-- 数据导入  end -->
 </beans>
