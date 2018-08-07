@@ -21,7 +21,7 @@ public abstract class AbstractTask {
     /** 线程防重复执行管理 */
     protected static final Map<Class<?>, AtomicBoolean> lockMaps = new ConcurrentHashMap<Class<?>, AtomicBoolean>();
 
-    protected String                                    taskName;                                                   // 任务名称
+    protected String                                    taskName; // 任务名称
 
     /**
      * 构造器
