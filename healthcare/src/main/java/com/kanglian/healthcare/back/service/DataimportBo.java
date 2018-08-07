@@ -39,7 +39,7 @@ public class DataimportBo {
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void doctorImport(final List<HospitalDoctorDTO> dataList) {
-        logger.info("==============进入导入医生数据");
+        logger.info("==============进入导入数据");
         if (dataList == null || dataList.size() == 0) {
             return;
         }
@@ -107,7 +107,16 @@ public class DataimportBo {
                                 "==============更新医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
                 } else {
-                    // 1、保存医院
+                    // 1、创建用户
+                    User user = new User();
+                    user.setMobilePhone(phone);
+                    user.setPwd("123456");
+                    user.setRoleId(1);
+                    user.setRealName(hdd.getDoctorName());
+                    userBo.regist(user);
+                    logger.info("==============写入用户数据，data=" + JSON.toJSONString(user));
+                    
+                    // 2、保存医院
                     Hospital hospital = hospitalBo.getByCode(hdd.getHospitalCode());
                     if (hospital == null) {
                         hospital = new Hospital();
@@ -123,7 +132,7 @@ public class DataimportBo {
                         logger.info("==============写入医院数据，data=" + JSON.toJSONString(hospital));
                     }
 
-                    // 2、保存科室
+                    // 3、保存科室
                     HospitalDept dept = new HospitalDept();
                     dept.setHospitalId(hospital.getHospitalId());
                     dept.setDeptCode(hdd.getDeptCode());
@@ -138,7 +147,7 @@ public class DataimportBo {
                         logger.info("==============写入科室数据，data=" + JSON.toJSONString(hospitalDept));
                     }
 
-                    // 3、保存医生
+                    // 4、保存医生
                     HospitalDoctor doctor = new HospitalDoctor();
                     doctor.setHospitalId(hospitalDept.getHospitalId());
                     doctor.setDeptId(hospitalDept.getDeptId());
@@ -155,18 +164,8 @@ public class DataimportBo {
                         hospitalDoctor.setDoctorIntro(hdd.getDoctorIntro());
                         hospitalDoctor.setPositional(hdd.getPositional());
                         hospitalDoctorBo.save(hospitalDoctor);
-                        logger.info(
-                                "==============写入医生数据，data=" + JSON.toJSONString(hospitalDoctor));
+                        logger.info("==============写入医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
-
-                    // 4、创建用户
-                    User user = new User();
-                    user.setMobilePhone(phone);
-                    user.setPwd("123456");
-                    user.setRoleId(1);
-                    user.setRealName(hdd.getDoctorName());
-                    userBo.regist(user);
-                    logger.info("==============写入用户数据，data=" + JSON.toJSONString(user));
                 }
             } else {
                 logger.info("==============导入id=【{}】数据，手机号为空", hid);
