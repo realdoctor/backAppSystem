@@ -72,10 +72,12 @@ public class DataimportTask extends AbstractTask {
                     PropConfig.getInstance().getPropertyValue(Constants.IMPORT_DOCTOR_FILE);
             if (!StringUtils.hasText(filePath)) {
                 logger.info("===================导入文件不存在");
+                return;
             }
             File file = new File(filePath);
             if (!file.exists()) {
                 logger.info("===================没有文件导入");
+                return;
             }
 
             // 文件名
@@ -85,6 +87,7 @@ public class DataimportTask extends AbstractTask {
             if (!Arrays.asList(FileUtil.CONTENT_TYPE_MAP.get("excel").split(","))
                     .contains(extension)) {
                 logger.info("===================不是excel文件，fileName=" + fileName);
+                return;
             }
 
             FileInputStream fis = new FileInputStream(file);
