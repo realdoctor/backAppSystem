@@ -23,8 +23,8 @@ import com.kanglian.healthcare.util.BeanToMapUtil;
 
 public class POIUtil extends ExcelCommon {
     private final static Logger logger     = LoggerFactory.getLogger(POIUtil.class);
-    private final static String excel2003L = ".xls";                                // 2003-
-    private final static String excel2007U = ".xlsx";                               // 2007+
+    private final static String excel2003L = ".xls"; // 2003-
+    private final static String excel2007U = ".xlsx"; // 2007+
 
     /**
      * 获取IO流中的数据，组装成List<List<Object>>对象
