@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
+import com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDTO;
+import com.kanglian.healthcare.util.BeanToMapUtil;
 
 public class POIUtil extends ExcelCommon {
     private final static Logger logger     = LoggerFactory.getLogger(POIUtil.class);
@@ -259,10 +261,35 @@ public class POIUtil extends ExcelCommon {
     public static void main(String[] args) {
 //        String[] attributes = new String[] {"id", "省份", "城市", "医院名", "医院编号", "医院等级", "经度", "纬度", "科室名", "科室编号",
 //                "姓名", "医生编号", "手机号", "医生执照", "擅长", "医生简介", "职称"};
+        Map<String, String> mapping = new HashMap<String, String>();
+        mapping.put("id", "id");
+        mapping.put("省份", "province");
+        mapping.put("城市", "city");
+        mapping.put("医院名", "hospitalName");
+        mapping.put("医院编号", "hospitalCode");
+        mapping.put("医院等级", "hospitalLevel");
+        mapping.put("经度", "lng");
+        mapping.put("纬度", "lat");
+        mapping.put("科室名", "deptName");
+        mapping.put("科室编号", "deptCode");
+        mapping.put("姓名", "doctorName");
+        mapping.put("医生编号", "doctorCode");
+        mapping.put("手机号", "phone");
+        mapping.put("医生执照", "doctorLicense");
+        mapping.put("擅长", "goodAt");
+        mapping.put("医生简介", "doctorIntro");
+        mapping.put("职称", "positional");
+        
         try {
             File file = new File("/home/dataimport/doctor.xlsx");
             FileInputStream fis = new FileInputStream(file);
-            printLog2(getListByExcel(fis, "doctor.xlsx", null));
+            List<Map<String, Object>> mapList = getListByExcel(fis, "doctor.xlsx", mapping);
+            printLog2(mapList);
+            List<HospitalDoctorDTO> dataList =
+                    BeanToMapUtil.convertListMap2ListBean(mapList, HospitalDoctorDTO.class);
+            for (HospitalDoctorDTO ddd : dataList) {
+                System.err.println("lng:" + ddd.getLng() + " lat:" + ddd.getLat());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
