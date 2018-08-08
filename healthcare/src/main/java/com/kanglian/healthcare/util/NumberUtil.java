@@ -60,7 +60,7 @@ public final class NumberUtil {
             hashCodeV = -hashCodeV;
         }
         String machineId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String orderId = machineId + String.format("%018d", hashCodeV);
+        String orderId = machineId + String.format("%015d", hashCodeV);
         System.out.println(orderId);
         return orderId;
     }
