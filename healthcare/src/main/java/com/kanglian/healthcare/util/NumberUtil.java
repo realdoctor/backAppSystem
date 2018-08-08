@@ -54,7 +54,7 @@ public final class NumberUtil {
      * 
      * @return
      */
-    public static String getOrderId() {
+    public static String genOrderNo() {
         int hashCodeV = UUID.randomUUID().toString().hashCode();
         if (hashCodeV < 0) {// 有可能是负数
             hashCodeV = -hashCodeV;

@@ -98,7 +98,7 @@ public class PaymentController extends BaseController {
         // 用户Id
         String userId = paymentOrder.getUserId();
         // 外部订单号
-        String orderNo = NumberUtil.getOrderId();
+        String orderNo = NumberUtil.genOrderNo();
         paymentOrder.setOrderNo(orderNo);
         
         Map<String, String> retResultMap = new HashMap<String, String>();
@@ -106,8 +106,6 @@ public class PaymentController extends BaseController {
          * 拉取支付宝预付单
          */
         if (PaymentType.ALIPAY.getName().equals(ptype)) {
-            orderNo = Constants.ALIPAY_PREFIX.concat(orderNo);
-            paymentOrder.setOrderNo(orderNo);
             // 订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]这里调试每次支付1分钱，在项目上线前应将此处改为订单的总金额格
             String orderPrice = "0.01";
             // 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
@@ -165,8 +163,6 @@ public class PaymentController extends BaseController {
          * 拉取微信预付单
          */
         else if (PaymentType.WXPAY.getName().equals(ptype)) {
-            orderNo = Constants.WXPAY_PREFIX.concat(orderNo);
-            paymentOrder.setOrderNo(orderNo);
             return ResultUtil.error("微信支付未开放");
         }
         /**
@@ -313,7 +309,7 @@ public class PaymentController extends BaseController {
         /**
          * 写入支付订单
          */
-        paymentOrderBo.createPaymentOrderAndLog(paymentOrder);
+        paymentOrderBo.createPaymentOrder(paymentOrder);
         return ResultUtil.success(retResultMap);
     }
 }

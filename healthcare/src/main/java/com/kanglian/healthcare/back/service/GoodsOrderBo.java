@@ -78,6 +78,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             GoodsOrder goodsOrder = new GoodsOrder();
             goodsOrder.setUserId(Integer.valueOf(paymentOrder.getUserId()));
             goodsOrder.setOrderNo(paymentOrder.getOrderNo());
+            goodsOrder.setPayType(PaymentType.getValue(paymentOrder.getType()));
             goodsOrder.setPayPrice(paymentOrder.getTotalAmount());
             goodsOrder.setPayTime(DateUtil.currentDate());
             goodsOrder.setTradeStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
@@ -86,6 +87,7 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             final Integer goodsOrderId = goodsOrder.getId();
             logger.info("==========[商城]订单信息[订单id：{}，订单号：{}]", goodsOrderId, paymentOrder.getOrderNo());
             logger.info("==========[商城]订单详情：{}", JsonUtil.object2Json(paymentOrder.getGoodsList()));
+            
             // 2、订单详情
             for (PaymentOrderItem order : paymentOrder.getGoodsList()) {
                 GoodsOrderItem goodsItem = new GoodsOrderItem();
@@ -106,11 +108,12 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
                     goodsDao.update(goods);
                 }
             }
-            // 用户支出明细
+            
+            // 3、用户支出明细
             PaymentLog paymentLog = new PaymentLog();
             paymentLog.setOrderNo(goodsOrder.getOrderNo());
             paymentLog.setUserId(goodsOrder.getUserId());
-            paymentLog.setType(PaymentType.getValue(paymentOrder.getType()));// 支付类型
+            paymentLog.setType(goodsOrder.getPayType());// 支付类型
             paymentLog.setFrom(FromType.getName("6"));// 支付来源
             paymentLog.setMark(Constants.MARK_PAY);
             paymentLog.setMoney(goodsOrder.getPayPrice());

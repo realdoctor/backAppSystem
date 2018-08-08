@@ -46,7 +46,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
      * @param paymentOrder
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void createPaymentOrderAndLog(PaymentOrderT paymentOrderT) {
+    public void createPaymentOrder(PaymentOrderT paymentOrderT) {
         try {
             // 创建订单
             PaymentOrder paymentOrder = new PaymentOrder();
@@ -55,6 +55,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             if (StringUtil.isNotEmpty(paymentOrderT.getToUserId())) {
                 paymentOrder.setToUser(Integer.valueOf(paymentOrderT.getToUserId()));
             }
+            paymentOrder.setPayType(PaymentType.getValue(paymentOrderT.getType()));
             paymentOrder.setPayPrice(paymentOrderT.getPayAmount());
             paymentOrder.setPayTime(DateUtil.currentDate());
             paymentOrder.setPayStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
@@ -69,7 +70,6 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentOrderItem.setPrice(paymentOrder.getPayPrice());
             paymentOrderItem.setAddTime(DateUtil.currentDate());
             paymentOrderItemDao.save(paymentOrderItem);
-
             logger.info("==========支付订单信息[订单id：{}，订单号：{}]", paymentOrder.getOrderId(), paymentOrder.getOrderNo());
             logger.info("==========支付订单详情：{}", JsonUtil.object2Json(paymentOrderItem));
             
@@ -78,7 +78,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentLog.setOrderNo(paymentOrder.getOrderNo());
             paymentLog.setUserId(paymentOrder.getUserId());
             paymentLog.setToUser(paymentOrder.getToUser());
-            paymentLog.setType(PaymentType.getValue(paymentOrderT.getType()));// 支付类型
+            paymentLog.setType(paymentOrder.getPayType());// 支付类型
             paymentLog.setFrom(FromType.getName(paymentOrderT.getFrom()));// 支付来源
             paymentLog.setMark(Constants.MARK_PAY);
             paymentLog.setMoney(paymentOrder.getPayPrice());

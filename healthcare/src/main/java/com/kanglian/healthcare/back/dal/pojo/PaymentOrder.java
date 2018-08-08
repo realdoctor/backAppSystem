@@ -9,6 +9,7 @@ public class PaymentOrder extends BasePojo {
 	private String orderNo;
 	private Integer userId;
 	private Integer toUser;
+	private String payType;
     private Double payPrice;
 	private String payStatus;
 	private Date payTime;
@@ -38,6 +39,12 @@ public class PaymentOrder extends BasePojo {
     }
     public void setToUser(Integer toUser) {
         this.toUser = toUser;
+    }
+    public String getPayType() {
+        return payType;
+    }
+    public void setPayType(String payType) {
+        this.payType = payType;
     }
 	public Double getPayPrice() {
 		return payPrice;

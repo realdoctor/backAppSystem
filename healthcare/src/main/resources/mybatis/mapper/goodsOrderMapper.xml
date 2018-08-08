@@ -5,6 +5,7 @@
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="payType" column="pay_type" jdbcType="VARCHAR"/>
 		<result property="payPrice" column="pay_price" jdbcType="DOUBLE"/>
 		<result property="payTime" column="pay_time" jdbcType="TIMESTAMP"/>
 		<result property="consignTime" column="consign_time" jdbcType="TIMESTAMP"/>
@@ -24,6 +25,7 @@
 		t.id,
 		t.order_no,
 		t.user_id,
+		t.pay_type,
 		t.pay_price,
 		t.pay_time,
 		t.consign_time,
@@ -42,6 +44,7 @@
 		t.id,
 		t.order_no,
 		t.user_id,
+		t.pay_type,
 		t.pay_price,
 		t.pay_time,
 		t.consign_time,
@@ -89,6 +92,7 @@
 		insert into goods_order (
 		order_no,
 		user_id,
+		pay_type,
 		pay_price,
 		pay_time,
 		consign_time,
@@ -104,6 +108,7 @@
 		values(
 		#{orderNo,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
+		#{payType,jdbcType=VARCHAR},
 		#{payPrice,jdbcType=DOUBLE},
 		#{payTime,jdbcType=TIMESTAMP},
 		#{consignTime,jdbcType=TIMESTAMP},
@@ -123,6 +128,7 @@
 		<set>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
+		  <if test="payType != null">pay_type=#{payType,jdbcType=DOUBLE},</if>
 		  <if test="payPrice != null">pay_price=#{payPrice,jdbcType=DOUBLE},</if>
 		  <if test="payTime != null">pay_time=#{payTime,jdbcType=TIMESTAMP},</if>
 		  <if test="consignTime != null">consign_time=#{consignTime,jdbcType=TIMESTAMP},</if>
