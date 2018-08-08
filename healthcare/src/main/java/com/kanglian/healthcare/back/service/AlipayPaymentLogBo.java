@@ -3,12 +3,12 @@ package com.kanglian.healthcare.back.service;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.dal.dao.AlipayOrderLogDao;
-import com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog;
+import com.kanglian.healthcare.back.dal.dao.AlipayPaymentLogDao;
+import com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service
-public class AlipayOrderLogBo extends CrudBo<AlipayOrderLog, AlipayOrderLogDao> {
+public class AlipayPaymentLogBo extends CrudBo<AlipayPaymentLog, AlipayPaymentLogDao> {
 
     /**
      * 写入支付宝预付单日志
@@ -21,7 +21,7 @@ public class AlipayOrderLogBo extends CrudBo<AlipayOrderLog, AlipayOrderLogDao> 
     public void insertPayOrderLog(String userId, String orderNo, String requestParams,
             String responseString, String orderString) {
         try {
-            AlipayOrderLog alipayOrderLog = new AlipayOrderLog();
+            AlipayPaymentLog alipayOrderLog = new AlipayPaymentLog();
             alipayOrderLog.setUserId(userId);
             alipayOrderLog.setOrderNo(orderNo);
             alipayOrderLog.setRequestParams(requestParams);

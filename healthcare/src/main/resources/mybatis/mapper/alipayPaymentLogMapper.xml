@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.AlipayOrderLogDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dal.dao.AlipayPaymentLogDao">
+	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="userId" column="user_id" jdbcType="VARCHAR"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
@@ -30,7 +30,7 @@
 		t.response_string,
 		t.order_string,
 		t.add_time
-		from alipay_order_log t 
+		from alipay_payment_log t 
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -47,24 +47,24 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from alipay_order_log t
+		select count(*) from alipay_payment_log t
 		<include refid="conditionQuery.core" />
 	</select>
 
 	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="columns"/>
-		from alipay_order_log t
+		from alipay_payment_log t
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
-		delete from alipay_order_log where 1=1
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog">
+		delete from alipay_payment_log where 1=1
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog" useGeneratedKeys="true" keyProperty="id">
-		insert into alipay_order_log (
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog" useGeneratedKeys="true" keyProperty="id">
+		insert into alipay_payment_log (
 		user_id,
 		order_no,
 		request_params,
@@ -82,8 +82,8 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayOrderLog">
-		update alipay_order_log
+	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog">
+		update alipay_payment_log
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>

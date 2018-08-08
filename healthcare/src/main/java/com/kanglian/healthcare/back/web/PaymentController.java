@@ -24,7 +24,7 @@ import com.kanglian.healthcare.back.constants.FromType;
 import com.kanglian.healthcare.back.constants.PaymentType;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrder;
 import com.kanglian.healthcare.back.dal.cond.PaymentOrderT;
-import com.kanglian.healthcare.back.service.AlipayOrderLogBo;
+import com.kanglian.healthcare.back.service.AlipayPaymentLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
 import com.kanglian.healthcare.back.service.PaymentOrderBo;
 import com.kanglian.healthcare.back.service.UserBo;
@@ -43,12 +43,12 @@ public class PaymentController extends BaseController {
     @Autowired
     private GoodsOrderBo     goodsOrderBo;
     @Autowired
-    private AlipayOrderLogBo alipayOrderLogBo;
-    @Autowired
     private UserBo           userBo;
     @Autowired
     private PaymentOrderBo   paymentOrderBo;
-
+    @Autowired
+    private AlipayPaymentLogBo alipayOrderLogBo;
+    
     /**
      * 拉取商品预付单
      * 
