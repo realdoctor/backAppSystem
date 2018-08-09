@@ -17,7 +17,7 @@ public class PayCommonUtil {
     /**
      * 创建支付宝交易对象
      */
-    public static AlipayClient getAliClient() {
+    public static AlipayClient getAlipayClient() {
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.getPayUrl(),
                 AlipayConfig.getAppid(), AlipayConfig.getAppPrivateKey(), AlipayConfig.FORMAT,
                 AlipayConfig.CHARSET, AlipayConfig.getAlipayPublicKey(), AlipayConfig.SIGNTYPE);

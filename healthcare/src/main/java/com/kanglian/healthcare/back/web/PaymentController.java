@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
@@ -72,6 +71,7 @@ public class PaymentController extends BaseController {
             logger.info("+++++++++++++++++++++++++++++++请选择支付方式");
             return ResultUtil.error("请选择支付方式");
         }
+        
         if (StringUtil.isEmpty(paymentOrder.getUserId())) {
             logger.info("+++++++++++++++++++++++++++++++用户不能为空");
             return ResultUtil.error("用户不能为空");
@@ -111,9 +111,7 @@ public class PaymentController extends BaseController {
             // 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
             String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
             // 实例化客户端
-            AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
-                    AlipayConfig.APPID, AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT,
-                    AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
+            AlipayClient alipayClient = PayCommonUtil.getAlipayClient();
             // 实例化具体API对应的request类，类名称和接口名称对应，当前调用接口名称：alipay.trade.app.pay
             AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
             // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -203,6 +201,7 @@ public class PaymentController extends BaseController {
             logger.info("+++++++++++++++++++++++++++++++请选择支付方式");
             return ResultUtil.error("请选择支付方式");
         }
+        
         if (StringUtil.isEmpty(paymentOrder.getUserId())) {
             logger.info("+++++++++++++++++++++++++++++++用户不能为空");
             return ResultUtil.error("用户不能为空");
@@ -227,6 +226,8 @@ public class PaymentController extends BaseController {
             return ResultUtil.error("非法用户支付");
         }
 
+        // 支付来源
+        String payFrom = FromType.getName(paymentOrder.getFrom());
         // 支付用户Id
         String userId = paymentOrder.getUserId();
 //        // 支付给用户Id
@@ -244,13 +245,11 @@ public class PaymentController extends BaseController {
         if (PaymentType.ALIPAY.getName().equals(ptype)) {
             String orderPrice = "0.01";
             String alipayNotifyUrl = AlipayConfig.getNotifyUrl();
-            AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.PAY_URL,
-                    AlipayConfig.APPID, AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT,
-                    AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
+            AlipayClient alipayClient = PayCommonUtil.getAlipayClient();
             AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setSubject("支付-"+orderPrice);
-            model.setBody("支付-"+orderPrice);
+            model.setSubject(payFrom.concat("-").concat(orderPrice));
+            model.setBody(payFrom.concat("-").concat(orderPrice));
             model.setOutTradeNo(orderNo);
             model.setTimeoutExpress("30m");
             model.setTotalAmount(orderPrice);
