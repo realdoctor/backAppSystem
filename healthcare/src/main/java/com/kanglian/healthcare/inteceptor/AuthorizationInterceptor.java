@@ -65,9 +65,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 // 如果token验证成功，将token对应的用户id存在request中，便于之后注入
                 User user = (User) JsonUtil.jsonToBean(userJsonString, User.class);
                 request.setAttribute(AuthConfig.CURRENT_USER_ID, user.getUserId());
-                logger.debug("=================身份已验证，user=" + JSON.toJSONString(user, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat}));
+                logger.info("=================身份已验证，user=" + JSON.toJSONString(user, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat}));
                 String sessionId = userBo.getKey(user.getUserId(), token);
-                logger.debug("=================SessionId=" + sessionId);
+                logger.info("=================SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
