@@ -21,7 +21,7 @@
 		<business-framework.version>1.2.3</business-framework.version>
 		<!-- log4j2版本号 -->
 		<slf4j.version>1.7.25</slf4j.version>
-		<log4j.version>2.11.0</log4j.version>
+		<log4j.version>2.11.1</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -203,12 +203,12 @@
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>3.2.6</version>
+			<version>3.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
-			<version>3.2.6</version>
+			<version>3.2.7</version>
 		</dependency>
 
 		<!-- ======================================== -->
