@@ -13,7 +13,6 @@
 		<result property="authorDept" column="author_dept" jdbcType="VARCHAR"/>
 		<result property="putOn" column="put_on" jdbcType="INTEGER"/>
 		<result property="commend" column="commend" jdbcType="INTEGER"/>
-		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
@@ -39,7 +38,6 @@
 			t1.author_dept,
 			t1.put_on,
 			t1.commend,
-			t1.create_date,
 			t1.photo_address,
 			t1.viewed_time,
 			t1.price,
