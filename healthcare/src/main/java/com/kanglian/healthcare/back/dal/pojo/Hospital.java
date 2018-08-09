@@ -15,6 +15,9 @@ public class Hospital extends BasePojo {
 	private String city;
 	private String lng;
 	private String lat;
+	/**
+	 * 医院接诊量
+	 */
 	@JSONField(name="receiveNum")
 	private Integer appointmentNum;
 	/**

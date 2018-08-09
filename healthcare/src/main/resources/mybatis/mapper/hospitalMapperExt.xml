@@ -10,16 +10,19 @@
 	</resultMap>
 	
 	<!-- 搜索医院、医生、科室、疾病 -->
-	<select id="queryForHospitalAndDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<select id="queryHospitalAndDoctor" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.hospital_id,
 			t.province,
 			t.city,
 			t.lng,
 			t.lat,
+			t.hospital_code,
 			t.hospital_name,
 			t.hospital_level,
+			t1.dept_code,
 			t1.dept_name,
+			t2.doctor_code,
 			t2.doctor_name,
 			t2.doctor_intro,
 			t2.field,

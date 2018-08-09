@@ -30,7 +30,7 @@ public class HospitalSearchController extends CrudController<Hospital, HospitalB
      */
     @GetMapping("/guahao/search")
     public ResultBody search(GuahaoSearchQuery query) throws Exception {
-        return ResultUtil.success(this.bo.queryForHospitalAndDoctor(query));
+        return ResultUtil.success(this.bo.queryHospitalAndDoctor(query));
     }
     
     /**

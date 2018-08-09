@@ -19,9 +19,9 @@ public class HospitalBo extends CrudBo<Hospital,HospitalDao> {
      * 
      * @return 医院 | 医生
      */
-    public List<Hospital> queryForHospitalAndDoctor(ConditionQuery query) {
+    public List<Hospital> queryHospitalAndDoctor(ConditionQuery query) {
         try {
-            return dao.queryForHospitalAndDoctor(query);
+            return dao.queryHospitalAndDoctor(query);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
@@ -32,14 +32,14 @@ public class HospitalBo extends CrudBo<Hospital,HospitalDao> {
      * 
      * @return 医院 | 医生
      */
-    public Grid queryForHospitalAndDoctor(final Grid grid) {
+    public Grid queryHospitalAndDoctor(final Grid grid) {
         return DaoTemplate.pagingList(new DaoExecutorAdapter() {
 
             @Override
             @SuppressWarnings("unchecked")
             public List<Hospital> selectList() throws Exception {
                 ConditionQuery query = grid.buildConditionQuery();
-                return getDao().queryForHospitalAndDoctor(query);
+                return getDao().queryHospitalAndDoctor(query);
             }
 
         }, grid.getPageNum(), grid.getPageSize());

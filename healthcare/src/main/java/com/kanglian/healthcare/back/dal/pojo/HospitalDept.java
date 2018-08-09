@@ -19,7 +19,7 @@ public class HospitalDept extends BasePojo {
     private String field;
     private String doctorIntro;
     private String positional;
-    // 接诊量
+    // 医生接诊量
     private Integer receiveNum;
     private Integer hospitalDoctorDutyId;
     // 星期几
