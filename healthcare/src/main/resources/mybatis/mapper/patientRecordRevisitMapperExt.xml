@@ -54,7 +54,7 @@
 		LEFT JOIN user_doctor t1 ON t0.doctor_code = t1.doctor_code
 	</sql>
 	
-	<!-- 复诊患者病历列表 -->
+	<!-- 患者复诊病历列表 -->
 	<select id="frontList" resultMap="BaseResultMapExt"
 		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		<include refid="Revisit_Patient_Select_Query" />
@@ -71,7 +71,7 @@
 		</choose>
 	</select>
 
-	<!-- 复诊患者诊断列表 -->
+	<!-- 患者复诊诊断列表 -->
 	<select id="findDiagList" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			DISTINCT t0.diag_code AS diagCode,

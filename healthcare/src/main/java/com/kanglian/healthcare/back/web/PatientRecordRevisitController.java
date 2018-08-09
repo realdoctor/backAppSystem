@@ -15,14 +15,19 @@ import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.RevisitPatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
+/**
+ * 在线复诊
+ * 
+ * @author xl.liu
+ */
 @Authorization
 @RestController
 @RequestMapping(value = "/patient/revisit")
-public class RevisitPatientRecordController
+public class PatientRecordRevisitController
         extends CrudController<PatientRecord, RevisitPatientRecordBo> {
 
     /**
-     * 复诊患者病历列表
+     * 患者复诊病历列表
      * 
      * @param query
      * @return
@@ -38,7 +43,7 @@ public class RevisitPatientRecordController
     }
 
     /**
-     * 复诊患者病历诊断列表
+     * 患者复诊病历诊断列表
      * 
      * @param query
      * @return

@@ -18,6 +18,11 @@ import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.PatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
+/**
+ * 病历归档
+ * 
+ * @author xl.liu
+ */
 @Authorization
 @RestController
 @RequestMapping(value = "/patient")
