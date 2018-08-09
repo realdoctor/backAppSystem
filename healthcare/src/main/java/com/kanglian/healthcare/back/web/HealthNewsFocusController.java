@@ -31,7 +31,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @GetMapping("/myFocusList")
-    public ResultBody newsGuanzhuList(@CurrentUser User user, NewsGuanzhuQuery query) throws Exception {
+    public ResultBody newsFocusList(@CurrentUser User user, NewsFocusQuery query) throws Exception {
         query.setUserId(String.valueOf(user.getUserId()));
         return super.list(query);
     }
@@ -44,7 +44,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @PostMapping("/focus")
-    public ResultBody newsGuanzhu(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+    public ResultBody newsFocus(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getNewsId() == null) {
             throw new InvalidParamException("newsId");
@@ -64,7 +64,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @throws Exception
      */
     @PostMapping("/focus/off")
-    public ResultBody newsGuanzhuOff(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
+    public ResultBody newsFocusOff(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getNewsId() == null) {
             throw new InvalidParamException("newsId");
@@ -73,7 +73,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
         return ResultUtil.success();
     }
     
-    public static class NewsGuanzhuQuery extends Grid {
+    public static class NewsFocusQuery extends Grid {
         private String userId;
 
         @SingleValue(column = "user_id", equal = "=")
