@@ -20,7 +20,7 @@ public class HealthNews extends BasePojo {
 	private Integer commend;
 	private String photoAddress;
 	private Integer viewedTime;
-	private Date createDate;
+	private Date addTime;
 	private Date lastUpdateDtime;
     /**
 	 * 扩展字段
@@ -123,11 +123,11 @@ public class HealthNews extends BasePojo {
 	public void setViewedTime(Integer viewedTime) {
 		this.viewedTime = viewedTime;
 	}
-	public Date getCreateDate() {
-        return createDate;
+	public Date getAddTime() {
+        return addTime;
     }
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
     }
 	public Date getLastUpdateDtime() {
         return lastUpdateDtime;

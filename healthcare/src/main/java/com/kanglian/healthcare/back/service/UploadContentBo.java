@@ -74,7 +74,7 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
             if (userDoctor != null) {
                 HealthNews healthNews = new HealthNews();
                 healthNews.setUserId(uploadContent.getUserId());
-                healthNews.setCreateDate(DateUtil.currentDate());
+                healthNews.setAddTime(DateUtil.currentDate());
                 if (uploadContent.getType() == 1) {// 视频
                     healthNews.setNewsTypeId(9);
                     healthNews.setNewsName("视频");

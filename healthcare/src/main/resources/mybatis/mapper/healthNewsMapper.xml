@@ -17,7 +17,7 @@
 		<result property="photoAddress" column="photo_address" jdbcType="VARCHAR"/>
 		<result property="viewedTime" column="viewed_time" jdbcType="INTEGER"/>
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
-		<result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<collection property="tagsList" ofType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" select="com.kanglian.healthcare.back.dal.dao.HealthNewsTagsDao.getByNewsId" column="news_id">
 		</collection>
@@ -38,7 +38,7 @@
 		t.commend,
 		t.photo_address,
 		t.viewed_time,
-		t.create_date,
+		t.addTime,
 		t.last_update_dtime
 	</sql>
 
@@ -56,7 +56,7 @@
 			t.price,
 			t.put_on,
 			t.commend,
-			t.create_date,
+			t.addTime,
 			t.photo_address,
 			t.viewed_time,
 			t1.news_type
@@ -110,7 +110,7 @@
 		commend,
 		photo_address,
 		viewed_time,
-		create_date,
+		add_time,
 		last_update_dtime
 		)
 		values(
@@ -127,7 +127,7 @@
 		#{commend,jdbcType=INTEGER},
 		#{photoAddress,jdbcType=VARCHAR},
 		#{viewedTime,jdbcType=INTEGER},
-		#{createDate,jdbcType=TIMESTAMP},
+		#{addTime,jdbcType=TIMESTAMP},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -148,7 +148,7 @@
 		  <if test="commend != null">commend=#{commend,jdbcType=INTEGER},</if>
 		  <if test="photoAddress != null">photo_address=#{photoAddress,jdbcType=VARCHAR},</if>
 		  <if test="viewedTime != null">viewed_time=#{viewedTime,jdbcType=INTEGER},</if>
-		  <if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
+		  <if test="createDate != null">add_time=#{addTime,jdbcType=TIMESTAMP},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where news_id = #{newsId,jdbcType=INTEGER}
