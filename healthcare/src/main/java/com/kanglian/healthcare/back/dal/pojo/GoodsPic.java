@@ -10,6 +10,7 @@ public class GoodsPic extends BasePojo {
 	private String bigPic;
 	private String smallPic;
 	private Date addTime;
+	private Date updateTime;
 	public Long getId() {
 		return id;
 	}
@@ -40,4 +41,10 @@ public class GoodsPic extends BasePojo {
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
 	}
+	public Date getUpdateTime() {
+        return updateTime;
+    }
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }
