@@ -86,12 +86,6 @@ public class UserController extends CrudController<User, UserBo> {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("token", accessToken);
         resultMap.put("user", user);
-        try {
-            String dataUrl = this.bo.getUploadPatientUrl(user.getUserId().intValue());
-            resultMap.put("url", dataUrl);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
         return ResultUtil.success(resultMap);
     }
 
@@ -335,6 +329,27 @@ public class UserController extends CrudController<User, UserBo> {
             resultMap.put("verifyFlag", "1");// 已认证
         }
 
+        return ResultUtil.success(resultMap);
+    }
+    
+    /**
+     * 下载用户上传的病历
+     * 
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Authorization
+    @GetMapping("/getUploadPatientUrl")
+    public ResultBody getUploadPatientUrl(@CurrentUser User user, String userId) throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("url", "");
+        try {
+            String dataUrl = this.bo.getUploadPatientUrl(user.getUserId().intValue());
+            resultMap.put("url", dataUrl);
+        } catch (Exception e) {
+            return ResultUtil.error("获取下载链接失败");
+        }
         return ResultUtil.success(resultMap);
     }
     
