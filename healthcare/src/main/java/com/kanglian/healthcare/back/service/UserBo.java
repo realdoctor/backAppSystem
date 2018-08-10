@@ -99,7 +99,7 @@ public class UserBo extends CrudBo<User, UserDao> {
      * @param userId
      * @return
      */
-    public String getUserDataUrl(Integer userId) {
+    public String getUploadPatientUrl(Integer userId) {
         try {
             UploadPatientRecord uploadPatientRecord = uploadPatientRecordDao.getByUserId(userId);
             if (uploadPatientRecord != null) {

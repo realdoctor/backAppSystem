@@ -87,7 +87,7 @@ public class UserController extends CrudController<User, UserBo> {
         resultMap.put("token", accessToken);
         resultMap.put("user", user);
         try {
-            String dataUrl = this.bo.getUserDataUrl(user.getUserId().intValue());
+            String dataUrl = this.bo.getUploadPatientUrl(user.getUserId().intValue());
             resultMap.put("url", dataUrl);
         } catch (Exception e) {
             // TODO: handle exception
