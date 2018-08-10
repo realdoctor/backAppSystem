@@ -9,6 +9,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
+import com.github.pagehelper.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionMoney;
@@ -38,7 +39,10 @@ public class AskQuestionMoneyController extends CrudController<AskQuestionMoney,
     @GetMapping("/getAskQuestionMoney")
     public ResultBody getAskQuestionMoney(@CurrentUser User user, AskQuestionMoney query)
             throws Exception {
-        return ResultUtil.success(this.bo.get(user.getUserId()));
+        if (query.getUserId() == null) {
+            throw new InvalidParamException("userId");
+        }
+        return ResultUtil.success(this.bo.get(query.getUserId()));
     }
 
     /**
