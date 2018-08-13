@@ -69,7 +69,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 String sessionId = userBo.getKey(user.getUserId(), token);
                 logger.info("=================SessionId=" + sessionId);
                 if (StringUtil.isNotEmpty(sessionId)
-                        || "logout".equals(name)) {
+                        || "logout".equals(method.getName())) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
                 } else {
