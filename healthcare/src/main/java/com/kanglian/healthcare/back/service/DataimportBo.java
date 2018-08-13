@@ -15,6 +15,7 @@ import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDoctor;
 import com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDTO;
 import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
 
 /**
  * 数据导入
@@ -33,6 +34,8 @@ public class DataimportBo {
     private HospitalDoctorBo    hospitalDoctorBo;
     @Autowired
     private UserBo              userBo;
+    @Autowired
+    private UserDoctorBo        userDoctorBo;
 
     /**
      * 导入医生数据
@@ -106,6 +109,14 @@ public class DataimportBo {
                         logger.info(
                                 "==============更新医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
+                    
+                    UserDoctor userDoctor = userDoctorBo.get(u.getUserId().intValue());
+                    if (userDoctor != null) {
+                        userDoctor.setUserId(u.getUserId().intValue());
+                        userDoctor.setDoctorCode(doctor.getDoctorCode());
+                        userDoctorBo.update(userDoctor);
+                        logger.info("==============更新医生关系，data=" + JSON.toJSONString(userDoctor));
+                    }
                 } else {
                     // 1、创建用户
                     User user = new User();
@@ -166,6 +177,13 @@ public class DataimportBo {
                         hospitalDoctorBo.save(hospitalDoctor);
                         logger.info("==============写入医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
+                    
+                    // 5、挂载医生
+                    UserDoctor userDoctor = new UserDoctor();
+                    userDoctor.setUserId(user.getUserId().intValue());
+                    userDoctor.setDoctorCode(doctor.getDoctorCode());
+                    userDoctorBo.save(userDoctor);
+                    logger.info("==============写入医生关系，data=" + JSON.toJSONString(userDoctor));
                 }
             } else {
                 logger.info("==============导入id=【{}】数据，手机号为空", hid);
