@@ -40,13 +40,20 @@
 				b.id AS patient_diag_id,
 				b.diag_code,
 				b.diag_name,
-				c.user_id AS doctor_user_id
+				ud.user_id AS doctor_user_id
 			FROM
 				patient_record a
 			LEFT JOIN patient_diag b ON (
 				a.id = b.patient_record_id
 			)
-			LEFT JOIN user_doctor c ON c.doctor_code = a.doctor_code
+			LEFT JOIN (
+				SELECT
+					c.user_id,
+					d.doctor_code
+				FROM
+					user_doctor c
+				INNER JOIN hospital_doctor d ON d.doctor_id = c.doctor_id
+			) ud ON ud.doctor_code = a.doctor_code
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
