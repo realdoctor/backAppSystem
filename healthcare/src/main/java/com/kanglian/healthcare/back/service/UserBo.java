@@ -206,6 +206,9 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
 
     public void delRelationshipByToken(Long userId, String token) {
+        if (userId == null || StringUtil.isEmpty(token)) {
+            return;
+        }
         try {
             redisTokenManager.delRelationshipByToken(
                     StringUtil.join(new Object[] {userId, token}, UNDERLINE));
