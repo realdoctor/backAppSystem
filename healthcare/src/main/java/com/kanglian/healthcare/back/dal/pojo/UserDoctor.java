@@ -6,6 +6,7 @@ public class UserDoctor extends BasePojo {
     private static final long serialVersionUID = 1L;
     // 用户Id
     private Integer           userId;
+    private Integer           doctorId;
     private Integer           hospitalId;
     private String            hospitalCode;
     // 医院名称
@@ -30,6 +31,12 @@ public class UserDoctor extends BasePojo {
     }
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+    public Integer getDoctorId() {
+        return doctorId;
+    }
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
     public Integer getHospitalId() {
         return hospitalId;

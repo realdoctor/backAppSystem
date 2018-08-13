@@ -3,6 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDoctorDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserDoctor" id="BaseResultMapExt">
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="doctorId" column="doctor_id" jdbcType="INTEGER"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
 		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
@@ -19,7 +20,8 @@
 	<sql id="Query_UserDoctor_Sql">
 		SELECT
 			t.user_id,
-			t.doctor_code,
+			t.doctor_id,
+			t2.doctor_code,
 			t2.doctor_name,
 			t2.doctor_intro,
 			t2.positional,
@@ -32,7 +34,7 @@
 			t4.hospital_level
 		FROM
 			user_doctor t
-		LEFT JOIN hospital_doctor t2 ON t2.doctor_code = t.doctor_code
+		LEFT JOIN hospital_doctor t2 ON t2.doctor_id = t.doctor_id
 		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
 		LEFT JOIN hospital t4 ON t4.hospital_id = t3.hospital_id
 	</sql>
@@ -55,15 +57,6 @@
 	<select id="getDoctorInfo" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
         <include refid="Query_UserDoctor_Sql" />
 		<include refid="conditionQuery.core" />
-		ORDER BY
-			t3.hospital_id DESC
-	</select>
-	
-	<!-- 医生详情 -->
-	<select id="getDoctorInfoById" resultMap="BaseResultMapExt" parameterType="int">
-        <include refid="Query_UserDoctor_Sql" />
-		WHERE
-			t.user_id = #{userId,jdbcType=INTEGER}
 		ORDER BY
 			t3.hospital_id DESC
 	</select>

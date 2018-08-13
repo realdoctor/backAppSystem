@@ -50,7 +50,7 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
     }
     
     /**
-     * 医生的被预约
+     * 医生的被预约记录
      * 
      * @param userId
      * @return

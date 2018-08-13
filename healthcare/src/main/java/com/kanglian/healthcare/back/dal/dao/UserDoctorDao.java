@@ -13,6 +13,4 @@ public interface UserDoctorDao extends NewCrudDao<UserDoctor> {
      * @return
      */
     public UserDoctor getDoctorInfo(ConditionQuery query);
-    
-    public UserDoctor getDoctorInfoById(Integer userId);
 }

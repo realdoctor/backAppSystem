@@ -20,6 +20,7 @@ import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.HospitalDoctorBo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserDoctorBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
 
 /**
@@ -48,8 +49,18 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
         return ResultUtil.success(this.userDoctorBo.frontList(query));
     }
 
+    /**
+     * 医生详情
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getDoctorInfo")
     public ResultBody getDoctorInfo(UserQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getUserId())) {
+            throw new InvalidParamException("userId");
+        }
         return ResultUtil.success(this.userDoctorBo.getDoctorInfo(query.buildConditionQuery()));
     }
     
@@ -99,7 +110,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
             this.userId = userId;
         }
 
-        @SingleValue(column = "doctor_code", equal = "=")
+        @SingleValue(tableAlias="t2", column = "doctor_code", equal = "=")
         public String getDoctorCode() {
             return doctorCode;
         }

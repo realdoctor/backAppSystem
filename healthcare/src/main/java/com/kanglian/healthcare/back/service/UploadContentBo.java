@@ -9,7 +9,6 @@ import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.common.NewCrudBo;
 import com.kanglian.healthcare.back.dal.dao.HealthNewsDao;
 import com.kanglian.healthcare.back.dal.dao.UploadContentDao;
-import com.kanglian.healthcare.back.dal.dao.UserDoctorDao;
 import com.kanglian.healthcare.back.dal.pojo.HealthNews;
 import com.kanglian.healthcare.back.dal.pojo.UploadContent;
 import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
@@ -19,7 +18,7 @@ import com.kanglian.healthcare.exception.DBException;
 public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> {
 
     @Autowired
-    private UserDoctorDao userDoctorDao;
+    private UserDoctorBo userDoctorBo;
     @Autowired
     private HealthNewsDao healthNewsDao;
     
@@ -70,7 +69,7 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
     public void saveUploadContent(final UploadContent uploadContent) {
         try {
             this.dao.save(uploadContent);
-            UserDoctor userDoctor = userDoctorDao.getDoctorInfoById(uploadContent.getUserId());
+            UserDoctor userDoctor = userDoctorBo.getDoctorInfoById(uploadContent.getUserId());
             if (userDoctor != null) {
                 HealthNews healthNews = new HealthNews();
                 healthNews.setUserId(uploadContent.getUserId());

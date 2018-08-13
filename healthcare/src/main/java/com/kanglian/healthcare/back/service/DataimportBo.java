@@ -110,12 +110,13 @@ public class DataimportBo {
                                 "==============更新医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
                     
+                    // 4、更新医生关系
                     UserDoctor userDoctor = userDoctorBo.get(u.getUserId().intValue());
                     if (userDoctor != null) {
                         userDoctor.setUserId(u.getUserId().intValue());
-                        userDoctor.setDoctorCode(doctor.getDoctorCode());
+                        userDoctor.setDoctorId(hospitalDoctor.getDoctorId());
                         userDoctorBo.update(userDoctor);
-                        logger.info("==============更新医生关系，data=" + JSON.toJSONString(userDoctor));
+                        logger.info("==============更新医生用户，data=" + JSON.toJSONString(userDoctor));
                     }
                 } else {
                     // 1、创建用户
@@ -178,12 +179,12 @@ public class DataimportBo {
                         logger.info("==============写入医生数据，data=" + JSON.toJSONString(hospitalDoctor));
                     }
                     
-                    // 5、挂载医生
+                    // 5、挂载医生关系
                     UserDoctor userDoctor = new UserDoctor();
                     userDoctor.setUserId(user.getUserId().intValue());
-                    userDoctor.setDoctorCode(doctor.getDoctorCode());
+                    userDoctor.setDoctorId(hospitalDoctor.getDoctorId());
                     userDoctorBo.save(userDoctor);
-                    logger.info("==============写入医生关系，data=" + JSON.toJSONString(userDoctor));
+                    logger.info("==============写入医生用户，data=" + JSON.toJSONString(userDoctor));
                 }
             } else {
                 logger.info("==============导入id=【{}】数据，手机号为空", hid);
