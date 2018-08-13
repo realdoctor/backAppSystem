@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.back.dal.pojo;
 
 import java.util.Date;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class AskQuestionMoney extends BasePojo {
@@ -8,7 +9,9 @@ public class AskQuestionMoney extends BasePojo {
 	private Long userId;
 	private Double chatMoney;
 	private Double questionMoney;
+	@JSONField(serialize=false)
 	private Date addTime;
+	@JSONField(serialize=false)
 	private Date lastUpdateDtime;
 	public Long getUserId() {
 		return userId;
