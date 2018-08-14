@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.RandomStringUtils;
@@ -29,42 +28,6 @@ public final class NumberUtil {
         return str;
     }
 
-    /**
-     * 生成不重复的20位数字
-     * 
-     * @return
-     */
-    public static String getNewId() {
-        long now = System.currentTimeMillis();
-        // 获取4位年份数字
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
-        // 获取时间戳
-        String time = dateFormat.format(now);
-        // 获取三位随机数
-        String ran = RandomStringUtils.randomNumeric(3);
-        StringBuilder buff = new StringBuilder();
-        buff.append(time);
-        buff.append(now);
-        buff.append(ran);
-        return buff.toString();
-    }
-    
-    /**
-     * 生成唯一订单号
-     * 
-     * @return
-     */
-    public static String genOrderNo() {
-        int hashCodeV = UUID.randomUUID().toString().hashCode();
-        if (hashCodeV < 0) {// 有可能是负数
-            hashCodeV = -hashCodeV;
-        }
-        String machineId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String orderId = machineId + String.format("%015d", hashCodeV);
-        System.out.println(orderId);
-        return orderId;
-    }
-    
     /**
      * 2018072300001000880016404998
      * 前六位数（20180723）是年月日格式化：yyyyMMdd

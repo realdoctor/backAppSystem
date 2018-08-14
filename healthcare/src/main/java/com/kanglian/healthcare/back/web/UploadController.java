@@ -42,6 +42,7 @@ import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserPicBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
+import com.kanglian.healthcare.util.GeneralKey;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.VideoPictureUtil;
@@ -224,7 +225,7 @@ public class UploadController {
                 // TODO: handle exception
             }
         } else {
-            pubId = NumberUtil.getNewId();// RandomStringUtils.randomAlphanumeric(20);
+            pubId = GeneralKey.getNewId();// RandomStringUtils.randomAlphanumeric(20);
         }
 
         // 循环获取file数组中得文件
@@ -435,7 +436,7 @@ public class UploadController {
                 if (StringUtil.isNotEmpty(orderNo)) {
                     messageId = orderNo;
                 } else {
-                    messageId = NumberUtil.getNewId();
+                    messageId = GeneralKey.getNewId();
                 }
             }
             AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
@@ -484,7 +485,7 @@ public class UploadController {
                     if (StringUtil.isNotEmpty(orderNo)) {
                         messageId = orderNo;
                     } else {
-                        messageId = NumberUtil.getNewId();
+                        messageId = GeneralKey.getNewId();
                     }
                 }
                 // 循环获取file数组中得文件

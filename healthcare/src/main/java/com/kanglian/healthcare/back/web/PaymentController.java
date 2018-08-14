@@ -27,6 +27,7 @@ import com.kanglian.healthcare.back.service.AlipayPaymentLogBo;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
 import com.kanglian.healthcare.back.service.PaymentOrderBo;
 import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.util.GeneralKey;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PayCommonUtil;
@@ -98,7 +99,7 @@ public class PaymentController extends BaseController {
         // 用户Id
         String userId = paymentOrder.getUserId();
         // 外部订单号
-        String orderNo = NumberUtil.genOrderNo();
+        String orderNo = GeneralKey.getOrderNo();
         paymentOrder.setOrderNo(orderNo);
         
         Map<String, String> retResultMap = new HashMap<String, String>();
