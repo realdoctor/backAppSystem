@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.alibaba.fastjson.JSON;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
@@ -195,16 +196,36 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             return;
         }
         
-        logger.info("===============在线复诊，进行退款。questionId="+askQuestionAnswer.getId());
-//        try {
-//            // 1、更新支付记录状态为3，退款
-//            List<PaymentOrder> orderItemList = getByGoodsId(String.valueOf(askQuestionAnswer.getPatientRecordId()));
-//            for (PaymentOrder order : orderItemList) {
+        // messageId为交易订单号
+        logger.info("===============在线问诊，进行退款。questionId={}，messageId={}", new Object[] {askQuestionAnswer.getId(), askQuestionAnswer.getMessageId()});
+        try {
+            final String orderNo = askQuestionAnswer.getMessageId();
+            // 1、更新支付记录状态，交易关闭
+            PaymentOrder paymentOrder = getByOrderNo(orderNo);
+            logger.info("===============在线问诊，退款单。paymentOrder={}", JSON.toJSONString(paymentOrder));
+            if (paymentOrder != null) {
+                paymentOrder.setPayStatus(PaymentStatus.PAYMENT_TRADE_CLOSE);
+                paymentOrder.setLastUpdateDtime(DateUtil.currentDate());
+                this.update(paymentOrder);
+            }
+            // 2、更新账户退款记录
+            List<PaymentLog> paymentLogList = paymentLogDao.getByOrderNo(orderNo);
+            logger.info("===============在线问诊，收支明细记录。paymentLog={}", JSON.toJSONString(paymentLogList));
+            for (PaymentLog paymentLog : paymentLogList) {
+                paymentLog.setMark("3");// 1=收入，2=支出，3=退回
+                paymentLog.setLastUpdateDtime(DateUtil.currentDate());
+                paymentLogDao.update(paymentLog);
+            }
+//            // 3、调用支付宝退款
+//            String returnStr = AlipayRefundUtil.alipayRefundRequest(paymentOrder.getOrderNo(), null, paymentOrder.getPayPrice());
+//            logger.info("===============在线问诊，调用支付宝退款。returnStr={}", returnStr);
+//            if (!"success".equals(returnStr)) {
+//                // 支付宝退款不成功，回滚事务。
+//                throw new RuntimeException("支付宝退款不成功，回滚事务。");
 //            }
-//            // 2、写入账户退款额度
-//        } catch (Exception ex) {
-//            throw new DBException(ex);
-//        }
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
     }
     
     /**
@@ -233,13 +254,5 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             return PaymentStatus.PAYMENT_TRADE_SUCCESS.equals(paymentOrder.getPayStatus());
         }
         return false;
-    }
-    
-    public List<PaymentOrder> getByGoodsId(String goodsId){
-        try {
-            return this.dao.getByGoodsId(goodsId);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
     }
 }
