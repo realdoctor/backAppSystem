@@ -63,11 +63,16 @@
 			<appender-ref ref="TASK" />
 		</logger>
 		
+		<logger name="HealthCare.Task" level="DEBUG" additivity="false">
+			<appender-ref ref="STDOUT"/>
+			<appender-ref ref="TASK" />
+		</logger>
+		
 		<logger name="HealthCare.Pay" level="DEBUG" additivity="false">
 	        <appender-ref ref="STDOUT"/>
 	        <appender-ref ref="PAYMENT"/>
 	    </logger>
-    
+	    
 		<root level="DEBUG">
         	<appender-ref ref="STDOUT"/>
         	<appender-ref ref="PROJECT"/>
