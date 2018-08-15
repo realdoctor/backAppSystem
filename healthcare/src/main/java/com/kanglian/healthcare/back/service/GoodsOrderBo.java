@@ -27,12 +27,13 @@ import com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem;
 import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.util.JsonUtil;
+import com.kanglian.healthcare.util.LogUtil;
 import com.kanglian.healthcare.util.NumberUtil;
 
 @Service
 public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Constants.LOG_NAME_PAYMENT);
+    private static final Logger logger = LoggerFactory.getLogger(LogUtil.LOG_NAME_PAYMENT);
 
     @Autowired
     private GoodsDao            goodsDao;

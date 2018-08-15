@@ -26,12 +26,13 @@ import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
 import com.kanglian.healthcare.exception.BizException;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.util.JsonUtil;
+import com.kanglian.healthcare.util.LogUtil;
 
 @Service
 public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 
     /** logger */
-    private final static Logger logger = LoggerFactory.getLogger(Constants.LOG_NAME_PAYMENT);
+    private final static Logger logger = LoggerFactory.getLogger(LogUtil.LOG_NAME_PAYMENT);
     
 //    @Autowired
 //    private AccountDao          accountDao;
@@ -198,12 +199,12 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
         }
         
         // messageId为交易订单号
-        logger.info("===============在线问诊，进行退款。questionId={}，messageId={}", new Object[] {askQuestionAnswer.getId(), askQuestionAnswer.getMessageId()});
+        LogUtil.getTaskLogger().info("===============在线问诊，进行退款。questionId={}，messageId={}", new Object[] {askQuestionAnswer.getId(), askQuestionAnswer.getMessageId()});
         try {
             final String orderNo = askQuestionAnswer.getMessageId();
             // 1、更新支付记录状态，交易关闭
             PaymentOrder paymentOrder = getByOrderNo(orderNo);
-            logger.info("===============在线问诊，退款单。paymentOrder={}", JSON.toJSONString(paymentOrder));
+            LogUtil.getTaskLogger().info("===============在线问诊，退款单。paymentOrder={}", JSON.toJSONString(paymentOrder));
             if (paymentOrder != null) {
                 paymentOrder.setPayStatus(PaymentStatus.PAYMENT_TRADE_CLOSE);
                 paymentOrder.setLastUpdateDtime(DateUtil.currentDate());
@@ -211,7 +212,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             }
             // 2、更新账户退款记录
             List<PaymentLog> paymentLogList = paymentLogDao.getByOrderNo(orderNo);
-            logger.info("===============在线问诊，收支明细记录。paymentLog={}", JSON.toJSONString(paymentLogList));
+            LogUtil.getTaskLogger().info("===============在线问诊，收支明细记录。paymentLog={}", JSON.toJSONString(paymentLogList));
             for (PaymentLog paymentLog : paymentLogList) {
                 paymentLog.setMark("3");// 1=收入，2=支出，3=退回
                 paymentLog.setLastUpdateDtime(DateUtil.currentDate());
@@ -219,7 +220,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             }
 //            // 3、调用支付宝退款
 //            String returnStr = AlipayRefundUtil.alipayRefundRequest(paymentOrder.getOrderNo(), null, paymentOrder.getPayPrice());
-//            logger.info("===============在线问诊，调用支付宝退款。returnStr={}", returnStr);
+//            LogUtil.getTaskLogger().info("===============在线问诊，调用支付宝退款。returnStr={}", returnStr);
 //            if (!"success".equals(returnStr)) {
 //                // 支付宝退款不成功，回滚事务。
 //                throw new RuntimeException("支付宝退款不成功，回滚事务。");

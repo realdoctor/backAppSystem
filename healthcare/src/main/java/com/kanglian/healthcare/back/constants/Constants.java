@@ -115,9 +115,6 @@ public final class Constants {
     public static final String TAG_PATIENT_ID                = "0";
     public static final String TAG_DOCTOR_ID                 = "1";
 
-    /** logger */
-    public static final String LOG_NAME_PAYMENT              = "HealthCare.Pay";
-
     // 导入医生数据
     public static final String IMPORT_DOCTOR_FILE            = "import_doctor_file";
 }
