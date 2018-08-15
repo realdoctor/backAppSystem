@@ -23,6 +23,7 @@ import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.PaymentLog;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrder;
 import com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem;
+import com.kanglian.healthcare.exception.BizException;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.util.JsonUtil;
 
@@ -128,7 +129,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 //                }
 //            }
         } catch (Exception ex) {
-            throw new DBException(ex);
+            throw new BizException(ex);
         }
     }
     
@@ -181,7 +182,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                 }
             }
         } catch (Exception ex) {
-            throw new DBException(ex);
+            throw new BizException(ex);
         }
     }
     
@@ -224,7 +225,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
 //                throw new RuntimeException("支付宝退款不成功，回滚事务。");
 //            }
         } catch (Exception ex) {
-            throw new DBException(ex);
+            throw new BizException(ex);
         }
     }
     
