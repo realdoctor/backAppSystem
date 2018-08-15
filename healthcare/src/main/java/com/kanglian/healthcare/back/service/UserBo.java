@@ -1,6 +1,8 @@
 package com.kanglian.healthcare.back.service;
 
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +21,7 @@ import com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
 import com.kanglian.healthcare.back.dal.pojo.UserRole;
+import com.kanglian.healthcare.exception.BizException;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.JsonUtil;
@@ -27,6 +30,8 @@ import com.kanglian.healthcare.util.MD5Util;
 @Service
 public class UserBo extends CrudBo<User, UserDao> {
 
+    private final static Logger logger = LoggerFactory.getLogger(UserBo.class);
+    
     @Autowired
     private UserInfoDao userInfoDao;
     @Autowired
@@ -126,7 +131,7 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
     
     /**
-     * 实名认证，关联用户信息
+     * 用户实名认证，关联用户信息
      * 
      * @param user
      * @return
@@ -138,6 +143,7 @@ public class UserBo extends CrudBo<User, UserDao> {
         }
         try {
             User userT = this.dao.queryUser(userIdentify.getMobilePhone());
+            logger.info("=======================用户实名认证，用户信息。user="+JsonUtil.beanToJson(userT));
             if(userT != null) {
                 userT.setIdNo(userIdentify.getIdNo());
                 userT.setRealName(userIdentify.getRealName());
@@ -162,18 +168,23 @@ public class UserBo extends CrudBo<User, UserDao> {
                 }
                 
                 // 关联用户信息，挂载病历。
-                // 如果证件类型挂载不上，再用手机号
+                // 如果证件类型挂不上，用手机号
                 int ss = userInfoDao.updateRelationship(userT);
+                logger.info("=======================身份证【{}】关联结果，result={}", new Object[] {userT.getIdNo(), ss});
                 if (ss < 1) {
                     User newUser = new User();
                     newUser.setMobilePhone(userT.getMobilePhone());
-                    userInfoDao.updateRelationship(newUser);
+                    ss = userInfoDao.updateRelationship(newUser);
+                    logger.info("=======================身份证未挂上，手机号【{}】关联结果，result={}", new Object[] {userT.getMobilePhone(), ss});
+                    if (ss < 1) {
+                        logger.info("=======================身份证手机号都未挂上");
+                    }
                 }
                 return true;
             }
             return false;
         } catch (Exception ex) {
-            throw new DBException(ex);
+            throw new BizException(ex);
         }
     }
     
