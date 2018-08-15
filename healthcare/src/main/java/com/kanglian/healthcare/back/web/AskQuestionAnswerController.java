@@ -65,10 +65,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         }
         if (StringUtil.isEmpty(query.getRoleId())) {
             throw new InvalidParamException("roleId");
-        } else {
-            if ("1".equals(query.getRoleId())) {
-                query.setStatus("1");
-            }
         }
         if (StringUtil.isEmpty(query.getStatus())) {
             throw new InvalidParamException("status");
