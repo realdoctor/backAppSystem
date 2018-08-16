@@ -17,7 +17,7 @@ import com.kanglian.healthcare.exception.DBException;
 public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends CrudBo<T, Dao> {
 
     /**
-     * 分页列表
+     * 分页查询列表
      * 
      * @param grid
      * @return
@@ -45,7 +45,7 @@ public class NewCrudBo<T extends BasePojo, Dao extends NewCrudDao<T>> extends Cr
     public List<T> frontList(ConditionQuery query) {
         try {
             if (query != null) {
-                query.addParam("pageSize", 0);
+                query.addParam("pageSize", 0);// 不分页
             }
             return this.dao.frontList(query);
         } catch (Exception ex) {

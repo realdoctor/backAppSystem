@@ -34,9 +34,9 @@ public final class DaoTemplate<T> {
      * @return
      * @throws Exception
      */
-    public static <T> T selectOne(IDaoExecutor executor) throws BaseException {
+    public static <T> T select(IDaoExecutor executor) throws BaseException {
         try {
-            return executor.<T>selectOne();
+            return executor.<T>select();
         } catch (Exception ex) {
             throw new DBException(ex);
         }

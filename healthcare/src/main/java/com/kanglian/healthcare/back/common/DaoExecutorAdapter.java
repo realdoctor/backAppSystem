@@ -18,7 +18,7 @@ public abstract class DaoExecutorAdapter implements IDaoExecutor {
      * 选择单个实体
      */
     @Override
-    public <T> T selectOne() throws Exception {
+    public <T> T select() throws Exception {
         return null;
     }
 

@@ -21,7 +21,7 @@ public interface IDaoExecutor {
      * @return
      * @throws Exception
      */
-    <T> T selectOne() throws Exception;
+    <T> T select() throws Exception;
 
     /**
      * 选择实体集合
