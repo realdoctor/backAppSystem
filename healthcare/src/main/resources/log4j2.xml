@@ -30,6 +30,16 @@
 			<DefaultRolloverStrategy max="20" />
 		</RollingFile>
 		
+		<RollingFile name="MESSAGE" fileName="${LOG_HOME}/message.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/message-%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="30 MB" />
+			</Policies>
+		</RollingFile>
+		
 		<RollingFile name="TASK" fileName="${LOG_HOME}/task.log"
 			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
@@ -37,12 +47,11 @@
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 				<SizeBasedTriggeringPolicy size="10 MB" />
-				<!-- <SizeBasedTriggeringPolicy size="2 kB" /> -->
 			</Policies>
 		</RollingFile>
 		
 		<RollingFile name="PAYMENT" fileName="${LOG_HOME}/payment.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/payment-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
 			<Policies>
@@ -55,12 +64,18 @@
 	<!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
 	<loggers>
 		<logger name="org.springframework" level="INFO"></logger>
+		<logger name="org.hibernate" level="INFO"></logger>
 		<logger name="org.mybatis" level="INFO"></logger>
 		<logger name="org.quartz" level="INFO"></logger>
 		
 		<logger name="com.kanglian.healthcare.quartz" level="DEBUG" additivity="false">
 			<appender-ref ref="STDOUT"/>
 			<appender-ref ref="TASK" />
+		</logger>
+		
+		<logger name="HealthCare.Message" level="DEBUG" additivity="false">
+			<appender-ref ref="STDOUT"/>
+			<appender-ref ref="MESSAGE" />
 		</logger>
 		
 		<logger name="HealthCare.Task" level="DEBUG" additivity="false">
@@ -73,7 +88,7 @@
 	        <appender-ref ref="PAYMENT"/>
 	    </logger>
 	    
-		<root level="DEBUG">
+		<root level="ALL">
         	<appender-ref ref="STDOUT"/>
         	<appender-ref ref="PROJECT"/>
         	<appender-ref ref="TEST"/>
