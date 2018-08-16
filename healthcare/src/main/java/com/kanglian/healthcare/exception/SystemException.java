@@ -19,11 +19,15 @@ public class SystemException extends BaseException {
         super(BaseResultCodeEnum.SYSTEM_ERROR);
     }
 
-    public SystemException(String message) {
-        super(BaseResultCodeEnum.SYSTEM_ERROR, message);
+    public SystemException(Throwable cause) {
+        super(BaseResultCodeEnum.SYSTEM_ERROR, cause);
     }
-
+    
     public SystemException(String message, Throwable cause) {
         super(message, cause);
+    }
+    
+    public SystemException(String message) {
+        super(message);
     }
 }

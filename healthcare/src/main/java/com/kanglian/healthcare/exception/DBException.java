@@ -23,14 +23,6 @@ public class DBException extends BaseException {
         super(BaseResultCodeEnum.DATA_ERROR, cause);
     }
 
-    public DBException(String errorCode, String message, Throwable cause) {
-        super(errorCode, message, cause);
-    }
-
-    public DBException(String errorCode, String message) {
-        super(errorCode, message);
-    }
-
     public DBException(String message, Throwable cause) {
         super(message, cause);
     }
