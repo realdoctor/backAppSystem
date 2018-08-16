@@ -1,14 +1,14 @@
 package com.kanglian.healthcare.exception;
 
 import com.easyway.business.framework.common.enums.BaseResultCodeEnum;
-import com.easyway.business.framework.common.exception.BaseRuntimeException;
+import com.easyway.business.framework.common.exception.BaseException;
 
 /**
  * 业务异常
  * 
  * @author liuxl
  */
-public class BizException extends BaseRuntimeException {
+public class BizException extends BaseException {
 
     /**
      * 

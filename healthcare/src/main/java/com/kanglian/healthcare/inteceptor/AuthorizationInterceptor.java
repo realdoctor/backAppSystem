@@ -68,8 +68,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 logger.info("=================身份已验证，user=" + JSON.toJSONString(user, new SerializerFeature[] {SerializerFeature.WriteDateUseDateFormat}));
                 String sessionId = userBo.getKey(user.getUserId(), token);
                 logger.info("=================SessionId=" + sessionId);
-                if (StringUtil.isNotEmpty(sessionId)
-                        || "logout".equals(method.getName())) {
+                if (StringUtil.isNotEmpty(sessionId)) {
                     logger.info("============================token验证通过，直接放行");
                     return true;
                 } else {

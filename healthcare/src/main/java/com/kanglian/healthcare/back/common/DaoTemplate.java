@@ -1,7 +1,7 @@
 package com.kanglian.healthcare.back.common;
 
 import java.util.List;
-import com.easyway.business.framework.common.exception.BaseRuntimeException;
+import com.easyway.business.framework.common.exception.BaseException;
 import com.easyway.business.framework.pojo.Grid;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,7 +19,7 @@ public final class DaoTemplate<T> {
      * @param executor
      * @throws Exception
      */
-    public static void execute(IDaoExecutor executor) throws BaseRuntimeException {
+    public static void execute(IDaoExecutor executor) throws BaseException {
         try {
             executor.execute();
         } catch (Exception ex) {
@@ -34,7 +34,7 @@ public final class DaoTemplate<T> {
      * @return
      * @throws Exception
      */
-    public static <T> T selectOne(IDaoExecutor executor) throws BaseRuntimeException {
+    public static <T> T selectOne(IDaoExecutor executor) throws BaseException {
         try {
             return executor.<T>selectOne();
         } catch (Exception ex) {
@@ -49,7 +49,7 @@ public final class DaoTemplate<T> {
      * @return
      * @throws Exception
      */
-    public static <T> List<T> selectList(IDaoExecutor executor) throws BaseRuntimeException {
+    public static <T> List<T> selectList(IDaoExecutor executor) throws BaseException {
         try {
             return executor.<T>selectList();
         } catch (Exception ex) {
@@ -65,7 +65,7 @@ public final class DaoTemplate<T> {
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Grid pagingList(IDaoExecutor executor, int pageNum, int pageSize)
-            throws BaseRuntimeException {
+            throws BaseException {
         try {
             PageHelper.startPage(pageNum, pageSize);
             List newsList = executor.selectList();

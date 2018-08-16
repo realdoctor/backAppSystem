@@ -1,15 +1,13 @@
 package com.kanglian.healthcare.inteceptor;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import com.easyway.business.framework.common.enums.EnumBase;
-import com.easyway.business.framework.common.exception.BaseRuntimeException;
+import com.easyway.business.framework.common.exception.BaseException;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 
@@ -43,8 +41,8 @@ public class GlobalHandlerExceptionResolver {
      * @return
      */
     @ResponseBody
-    @ExceptionHandler(value = BaseRuntimeException.class)
-    public ResultBody errorHandlerOverJson(HttpServletRequest request, BaseRuntimeException exception) {
+    @ExceptionHandler(value = BaseException.class)
+    public ResultBody errorHandlerOverJson(HttpServletRequest request, BaseException exception) {
         EnumBase errorInfo = exception.getErrorEnum();
         if (errorInfo != null) {
             logger.error(errorInfo.message(), exception);

@@ -1,14 +1,14 @@
 package com.kanglian.healthcare.exception;
 
 import com.easyway.business.framework.common.enums.BaseResultCodeEnum;
-import com.easyway.business.framework.common.exception.BaseRuntimeException;
+import com.easyway.business.framework.common.exception.BaseException;
 
 /**
  * 输入参数校验异常
  * 
  * @author liuxl
  */
-public class InvalidParamException extends BaseRuntimeException {
+public class InvalidParamException extends BaseException {
 
     /**
      * 
