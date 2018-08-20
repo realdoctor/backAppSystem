@@ -13,73 +13,64 @@
 	</select>
 	
 	<!-- 我的预约 -->
-	<select id="myGuahaoOrder" resultType="map" parameterType="int">
+	<select id="myGuahaoOrder" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
-			t1.hospital_name AS hospitalName,
-			t1.dept_name AS deptName,
-			t3.hospital_level AS hospitalLevel,
-			t2.doctor_name AS doctorName,
-			t2.positional AS positional,
-			t2.doctor_intro AS doctorIntro,
-			t2.field AS goodAt,
+			t.id AS hospitalGuahaoId,
+			t.user_id AS userId,
+			t.hospital_id AS hospitalId,
+			t.dept_id AS deptId,
+			t.doctor_code AS doctorCode,
 			t.order_day AS orderDay,
-			t4.plan AS plan,
-			IFNULL(t5.receive_num,0) AS receiveNum
+			t3.hospital_name AS hospitalName,
+			t3.hospital_code AS hospitalCode,
+			t3.hospital_level AS hospitalLevel,
+			t4.dept_code AS deptCode,
+			t4.dept_name AS deptName,
+			t5.thumbnail_pic AS imageUrl,
+			t5.real_name AS realName,
+			t5.doctor_name AS doctorName,
+			t5.positional AS positional,
+			t5.doctor_intro AS doctorIntro,
+			t5.field AS goodAt,
+			t6.`week` AS week,
+			t6.plan AS plan,
+			IFNULL(t7.receive_num, 0) AS receiveNum
 		FROM
 			hospital_guahao_log t
-		LEFT JOIN hospital_dept t1 ON (
-			t1.hospital_id = t.hospital_id
-			AND t1.dept_id = t.dept_id
+		LEFT JOIN hospital t3 ON t3.hospital_id = t.hospital_id
+		LEFT JOIN hospital_dept t4 ON (
+			t4.hospital_id = t.hospital_id
+			AND t4.dept_id = t.dept_id
 		)
-		LEFT JOIN hospital_doctor t2 ON (t2.dept_id = t.dept_id and t2.doctor_code = t.doctor_code)
-		LEFT JOIN hospital t3 ON t3.hospital_id = t2.hospital_id
-		LEFT JOIN hospital_doctor_duty t4 ON t4.id = t.hospital_doctor_duty_id
-		LEFT JOIN hospital_receive_log t5 ON (t5.hospital_id=t.hospital_id AND t4.doctor_code=t.doctor_code)
-		WHERE
-			t.user_id = #{userId,jdbcType=INTEGER}
-	</select>
-	
-	<!-- 医生的病人预约一览 -->
-	<select id="myPatientOrder" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
-		SELECT
-			t1.hospitalGuahaoId,
-			t1.userId,
-			t1.hospitalId,
-			t1.deptId,
-			t1.doctorCode,
-			t1.orderDay,
-			t1.realName,
-			t1.imageUrl,
-			t1.hospitalName,
-			t1.deptName,
-			t1.week AS week,
-			t1.plan AS plan
-		FROM
-			user_doctor t
-		INNER JOIN hospital_doctor hd ON hd.doctor_id = t.doctor_id 
-		INNER JOIN (
+		LEFT JOIN (
 			SELECT
-				t.id AS hospitalGuahaoId,
-				t.user_id AS userId,
-				t.hospital_id AS hospitalId,
-				t.dept_id AS deptId,
-				t.doctor_code AS doctorCode,
-				t.order_day AS orderDay,
-				t1.real_name AS realName,
-				t6.thumbnail_pic AS imageUrl,
-				t2.hospital_name AS hospitalName,
-				t2.dept_name AS deptName,
-				t3. WEEK AS WEEK,
-				t3.plan AS plan
+				t.user_id,
+				t.doctor_id,
+				t1.hospital_id,
+				t1.dept_id,
+				t1.doctor_name,
+				t1.doctor_code,
+				t1.field,
+				t1.doctor_intro,
+				t1.positional,
+				t2.real_name,
+				t3.pic,
+				t3.thumbnail_pic
 			FROM
-				hospital_guahao_log t
-			LEFT JOIN `user` t1 ON t.user_id = t1.user_id
-			LEFT JOIN user_pic t6 ON t1.user_id = t6.user_id
-			LEFT JOIN hospital_dept t2 ON t.dept_id = t2.dept_id
-			LEFT JOIN hospital_doctor_duty t3 ON (
-				t.hospital_doctor_duty_id = t3.id
-			)
-		) t1 ON t1.doctorCode = hd.doctor_code
+				user_doctor t
+			INNER JOIN hospital_doctor t1 ON t1.doctor_id = t.doctor_id
+			INNER JOIN `user` t2 ON t2.user_id = t.user_id
+			INNER JOIN user_pic t3 ON t3.user_id = t2.user_id
+		) t5 ON (
+			t5.hospital_id = t.hospital_id
+			AND t5.dept_id = t.dept_id
+			AND t5.doctor_code = t.doctor_code
+		)
+		LEFT JOIN hospital_doctor_duty t6 ON t6.id = t.hospital_doctor_duty_id
+		LEFT JOIN hospital_receive_log t7 ON (
+			t7.hospital_id = t.hospital_id
+			AND t7.doctor_code = t.doctor_code
+		)
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -87,7 +78,67 @@
 		${paramMap.orderCol}
 		</when>
 		<otherwise>
-		t1.orderDay desc
+		t.order_day desc
+		</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 医生的病人预约一览 -->
+	<select id="myPatientOrder" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+		SELECT
+			t6.id AS hospitalGuahaoId,
+			t6.user_id AS userId,
+			t6.hospital_id AS hospitalId,
+			t6.dept_id AS deptId,
+			t6.doctor_code AS doctorCode,
+			t6.order_day AS orderDay,
+			t6.real_name AS realName,
+			t6.thumbnail_pic AS imageUrl,
+			t6.hospital_name AS hospitalName,
+			t6.hospital_code AS hospitalCode,
+			t6.hospital_level AS hospitalLevel,
+			t6.dept_code AS deptCode,
+			t6.dept_name AS deptName,
+			t6.`week` AS week,
+			t6.plan AS plan
+		FROM
+			user_doctor t
+		INNER JOIN hospital_doctor hd ON hd.doctor_id = t.doctor_id 
+		INNER JOIN (
+			SELECT
+				t.id,
+				t.user_id,
+				t.hospital_id,
+				t.dept_id,
+				t.doctor_code,
+				t.order_day,
+				t1.real_name,
+				t2.thumbnail_pic,
+				t3.hospital_name,
+				t3.hospital_code,
+				t3.hospital_level,
+				t4.dept_code,
+				t4.dept_name,
+				t5.`week`,
+				t5.plan
+			FROM
+				hospital_guahao_log t
+			LEFT JOIN `user` t1 ON t.user_id = t1.user_id
+			LEFT JOIN user_pic t2 ON t1.user_id = t2.user_id
+			LEFT JOIN hospital t3 ON t3.hospital_id = t.hospital_id
+			LEFT JOIN hospital_dept t4 ON (t4.hospital_id = t.hospital_id AND t4.dept_id = t.dept_id)
+			LEFT JOIN hospital_doctor_duty t5 ON (
+				t5.id = t.hospital_doctor_duty_id
+			)
+		) t6 ON t6.doctor_code = hd.doctor_code
+		<include refid="conditionQuery.core" />
+		order by
+		<choose>
+		<when test="paramMap.orderCol!=null">
+		${paramMap.orderCol}
+		</when>
+		<otherwise>
+		t6.order_day desc
 		</otherwise>
 		</choose>
 	</select>

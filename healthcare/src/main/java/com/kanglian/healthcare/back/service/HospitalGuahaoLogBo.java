@@ -36,21 +36,25 @@ public class HospitalGuahaoLogBo extends CrudBo<HospitalGuahaoLog, HospitalGuaha
     }
 
     /**
-     * 我的预约
+     * 我的预约-患者预约记录
      * 
      * @param userId
      * @return
      */
-    public List<Map<String, Object>> myDoctorOrder(final Integer userId) {
-        try {
-            return this.dao.myGuahaoOrder(userId);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
+    public Grid myDoctorOrder(final Grid grid) {
+        return DaoTemplate.pagingList(new DaoExecutorAdapter() {
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Map<String, Object>> selectList() throws Exception {
+                return getDao().myGuahaoOrder(grid.buildConditionQuery());
+            }
+
+        }, grid.getPageNum(), grid.getPageSize());
     }
     
     /**
-     * 医生的被预约记录
+     * 我的预约-医生的被预约记录
      * 
      * @param userId
      * @return
