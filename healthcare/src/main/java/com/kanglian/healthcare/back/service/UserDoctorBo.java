@@ -3,10 +3,11 @@ package com.kanglian.healthcare.back.service;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
+import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.back.common.DaoTemplate;
 import com.kanglian.healthcare.back.common.NewCrudBo;
 import com.kanglian.healthcare.back.dal.dao.UserDoctorDao;
 import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
-import com.kanglian.healthcare.exception.DBException;
 
 @Service
 public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {
@@ -17,21 +18,29 @@ public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {
      * @param userId
      * @return
      */
-    public UserDoctor getDoctorInfo(ConditionQuery query) {
-        try {
-            return this.dao.getDoctorInfo(query);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
+    public UserDoctor getDoctorInfo(final ConditionQuery query) {
+        return DaoTemplate.select(new DaoExecutorAdapter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public UserDoctor select() throws Exception {
+                return getDao().getDoctorInfo(query);
+            }
+
+        });
     }
-    
-    public UserDoctor getDoctorInfoById(Integer userId) {
-        try {
-            ConditionQuery query = new ConditionQuery();
-            query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
-            return this.dao.getDoctorInfo(query);
-        } catch (Exception ex) {
-            throw new DBException(ex);
-        }
+
+    public UserDoctor getDoctorInfoById(final Integer userId) {
+        return DaoTemplate.select(new DaoExecutorAdapter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public UserDoctor select() throws Exception {
+                ConditionQuery query = new ConditionQuery();
+                query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
+                return getDao().getDoctorInfo(query);
+            }
+
+        });
     }
 }
