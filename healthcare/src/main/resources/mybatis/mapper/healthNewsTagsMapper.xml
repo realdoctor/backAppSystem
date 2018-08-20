@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsTagsDao">
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" id="BaseResultMap">
-		<result property="id" column="id" jdbcType="INTEGER"/>
-		<result property="newsTypeId" column="news_type_id" jdbcType="INTEGER"/>
+		<result property="tagId" column="tag_id" jdbcType="INTEGER"/>
+		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="newsTag" column="news_tag" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
-		t.id,
-		t.news_type_id,
+		t.tag_id,
+		t.news_id,
 		t.news_tag
 	</sql>
 
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		select
-		t.id,
-		t.news_type_id,
+		t.tag_id,
+		t.news_id,
 		t.news_tag
 		from health_news_tags t
 		<include refid="conditionQuery.core" />
@@ -26,7 +26,7 @@
 		${paramMap.orderCol}
 		</when>
 		<otherwise>
-		id desc
+		tag_id desc
 		</otherwise>
 		</choose>
 		<if test="paramMap.pageSize > 0">
@@ -43,20 +43,20 @@
 		select
 		<include refid="columns"/>
 		from health_news_tags t
-		where t.id = #{id,jdbcType=INTEGER}
+		where t.tag_id = #{tagId,jdbcType=INTEGER}
 	</select>
 
 	<delete id="delete" parameterType="java.lang.Integer">
-		delete from health_news_tags where id = #{id,jdbcType=INTEGER}
+		delete from health_news_tags where tag_id = #{tagId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" useGeneratedKeys="true" keyProperty="tagId">
 		insert into health_news_tags (
-		news_type_id,
+		news_id,
 		news_tag
 		)
 		values(
-		#{newsTypeId,jdbcType=INTEGER},
+		#{newsId,jdbcType=INTEGER},
 		#{newsTag,jdbcType=VARCHAR}
 		)
 	</insert>
@@ -64,9 +64,9 @@
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags">
 		update health_news_tags
 		<set>
-		  <if test="newsTypeId != null">news_type_id=#{newsTypeId,jdbcType=INTEGER},</if>
+		  <if test="newsId != null">news_id=#{newsId,jdbcType=INTEGER},</if>
 		  <if test="newsTag != null">news_tag=#{newsTag,jdbcType=VARCHAR},</if>
 		</set>
-		where id = #{id,jdbcType=INTEGER}
+		where tag_id = #{tagId,jdbcType=INTEGER}
 	</update>
 </mapper>

@@ -4,20 +4,20 @@ import com.easyway.business.framework.pojo.BasePojo;
 
 public class HealthNewsTags extends BasePojo {
 	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private Integer newsTypeId;
+	private Integer tagId;
+	private Integer newsId;
 	private String newsTag;
-	public Integer getId() {
-		return id;
+	public Integer getTagId() {
+		return tagId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setTagId(Integer tagId) {
+		this.tagId = tagId;
 	}
-	public Integer getNewsTypeId() {
-		return newsTypeId;
+	public Integer getNewsId() {
+		return newsId;
 	}
-	public void setNewsTypeId(Integer newsTypeId) {
-		this.newsTypeId = newsTypeId;
+	public void setNewsId(Integer newsId) {
+		this.newsId = newsId;
 	}
 	public String getNewsTag() {
 		return newsTag;

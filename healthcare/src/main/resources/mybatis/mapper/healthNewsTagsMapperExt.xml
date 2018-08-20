@@ -5,6 +5,6 @@
 		select
 		<include refid="columns"/>
 		from health_news_tags t
-		where t.news_type_id = #{newsTypeId,jdbcType=INTEGER}
+		where t.news_id = #{newsId,jdbcType=INTEGER}
 	</select>
 </mapper>
