@@ -15,6 +15,10 @@ public enum PaymentType {
      */
     WXPAY("wxpay", "微信"),
     /**
+     * 医保支付
+     */
+    YBPAY("ybpay", "医保"),
+    /**
      * 账户余额支付
      */
     SPAY("spay", "账户");
