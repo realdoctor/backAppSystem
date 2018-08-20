@@ -34,6 +34,34 @@ public class UserInfo extends BasePojo {
 	// 头像缩略图200x200
     private String imageUrl;
     private String typeId;
+    private String hospitalCode;
+    private String hospitalName;
+    private String deptCode;
+    private String deptName;
+    public String getHospitalCode() {
+        return hospitalCode;
+    }
+    public void setHospitalCode(String hospitalCode) {
+        this.hospitalCode = hospitalCode;
+    }
+    public String getHospitalName() {
+        return hospitalName;
+    }
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+    public String getDeptCode() {
+        return deptCode;
+    }
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
+    }
+    public String getDeptName() {
+        return deptName;
+    }
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
     public String getRealName() {
         return realName;
     }

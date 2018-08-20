@@ -6,6 +6,10 @@
 		<result property="realName" column="real_name" jdbcType="VARCHAR"/>
 		<result property="originalImageUrl" column="pic" jdbcType="VARCHAR"/>
 		<result property="imageUrl" column="thumbnail_pic" jdbcType="VARCHAR"/>
+		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
+		<result property="hospitalCode" column="hospital_code" jdbcType="VARCHAR"/>
+		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
+		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<!-- 用户基本信息 -->
@@ -30,12 +34,37 @@
 			t2.pic,
 			t2.thumbnail_pic,
 			t3.type_id,
-			t3.id_no
+			t3.id_no,
+			t4.dept_code,
+			t4.dept_name,
+			t4.hospital_code,
+			t4.hospital_name
 		FROM
 			`user` t
 		LEFT JOIN user_info t1 ON t.user_id = t1.user_id
 		LEFT JOIN user_pic t2 ON t.user_id = t2.user_id
 		LEFT JOIN user_identify t3 ON t.user_id = t3.user_id
+		LEFT JOIN (
+			SELECT
+				t.user_id,
+				t.doctor_id,
+				t1.hospital_id,
+				t1.dept_id,
+				t1.doctor_name,
+				t1.doctor_code,
+				t2.dept_code,
+				t2.dept_name,
+				t3.hospital_code,
+				t3.hospital_name
+			FROM
+				user_doctor t
+			INNER JOIN hospital_doctor t1 ON t1.doctor_id = t.doctor_id
+			INNER JOIN hospital_dept t2 ON (
+				t2.hospital_id = t1.hospital_id
+				AND t2.dept_id = t1.dept_id
+			)
+			INNER JOIN hospital t3 ON t3.hospital_id = t2.hospital_id
+		) t4 ON t4.user_id = t.user_id
 		<trim prefix="where" prefixOverrides="and|or">
 			<choose>
 				<when test="userId!=null">
