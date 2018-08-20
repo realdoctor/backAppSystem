@@ -34,10 +34,17 @@ public class UserInfo extends BasePojo {
 	// 头像缩略图200x200
     private String imageUrl;
     private String typeId;
+    private Integer hospitalId;
     private String hospitalCode;
     private String hospitalName;
     private String deptCode;
     private String deptName;
+    public Integer getHospitalId() {
+        return hospitalId;
+    }
+    public void setHospitalId(Integer hospitalId) {
+        this.hospitalId = hospitalId;
+    }
     public String getHospitalCode() {
         return hospitalCode;
     }

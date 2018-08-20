@@ -6,6 +6,7 @@
 		<result property="realName" column="real_name" jdbcType="VARCHAR"/>
 		<result property="originalImageUrl" column="pic" jdbcType="VARCHAR"/>
 		<result property="imageUrl" column="thumbnail_pic" jdbcType="VARCHAR"/>
+		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="hospitalName" column="hospital_name" jdbcType="VARCHAR"/>
 		<result property="hospitalCode" column="hospital_code" jdbcType="VARCHAR"/>
 		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
@@ -35,6 +36,7 @@
 			t2.thumbnail_pic,
 			t3.type_id,
 			t3.id_no,
+			t4.hospital_id,
 			t4.dept_code,
 			t4.dept_name,
 			t4.hospital_code,
