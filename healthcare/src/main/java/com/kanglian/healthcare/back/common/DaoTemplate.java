@@ -12,7 +12,7 @@ import com.kanglian.healthcare.exception.DBException;
  * 
  * @author xl.liu
  */
-public final class DaoTemplate<T> {
+public final class DaoTemplate {
     /**
      * 执行DAO
      * 
