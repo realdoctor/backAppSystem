@@ -11,16 +11,19 @@ import org.slf4j.LoggerFactory;
 public final class LogUtil {
     /** logger */
     public static final String  LOG_NAME_SYS     = "HealthCare.Sys";
+    public static final String  LOG_NAME_ERROR   = "HealthCare.Error";
     public static final String  LOG_NAME_MESSAGE = "HealthCare.Message";
     public static final String  LOG_NAME_TASK    = "HealthCare.Task";
     public static final String  LOG_NAME_PAYMENT = "HealthCare.Pay";
 
     private static final Logger message;
+    private static final Logger error;
     private static final Logger pay;
     private static final Logger task;
 
     static {
         message = LoggerFactory.getLogger(LOG_NAME_MESSAGE);
+        error = LoggerFactory.getLogger(LOG_NAME_ERROR);
         pay = LoggerFactory.getLogger(LOG_NAME_PAYMENT);
         task = LoggerFactory.getLogger(LOG_NAME_TASK);
 
@@ -28,6 +31,10 @@ public final class LogUtil {
             System.out.println("WARNING: Can not get message logger.");
         }
 
+        if (error == null) {
+            System.out.println("WARNING: Can not get error logger.");
+        }
+        
         if (pay == null) {
             System.out.println("WARNING: Can not get payment logger.");
         }
@@ -50,6 +57,15 @@ public final class LogUtil {
         return message;
     }
 
+    /**
+     * 获取错误输出Log
+     * 
+     * @return 错误输出Log
+     */
+    public static Logger getErrorLogger() {
+        return error;
+    }
+    
     /**
      * 获取支付输出Log
      * 

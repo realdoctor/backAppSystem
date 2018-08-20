@@ -40,8 +40,18 @@
 			</Policies>
 		</RollingFile>
 		
-		<RollingFile name="TASK" fileName="${LOG_HOME}/task.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
+		<RollingFile name="ERROR" fileName="${LOG_HOME}/error.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="30 MB" />
+			</Policies>
+		</RollingFile>
+		
+		<RollingFile name="PAYMENT" fileName="${LOG_HOME}/payment.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/payment-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
 			<Policies>
@@ -50,8 +60,8 @@
 			</Policies>
 		</RollingFile>
 		
-		<RollingFile name="PAYMENT" fileName="${LOG_HOME}/payment.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/payment-%d{yyyy-MM-dd}-%i.log">
+		<RollingFile name="TASK" fileName="${LOG_HOME}/task.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/task-%d{yyyy-MM-dd}-%i.log">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] (%C{2},%L) -|%x %m%n" />
 			<Policies>
@@ -73,14 +83,14 @@
 			<appender-ref ref="TASK" />
 		</logger>
 		
-		<logger name="HealthCare.Message" level="DEBUG" additivity="false">
+		<logger name="HealthCare.Message" level="INFO" additivity="false">
 			<appender-ref ref="STDOUT"/>
 			<appender-ref ref="MESSAGE" />
 		</logger>
 		
-		<logger name="HealthCare.Task" level="DEBUG" additivity="false">
+		<logger name="HealthCare.Error" level="ERROR" additivity="false">
 			<appender-ref ref="STDOUT"/>
-			<appender-ref ref="TASK" />
+			<appender-ref ref="ERROR" />
 		</logger>
 		
 		<logger name="HealthCare.Pay" level="DEBUG" additivity="false">
@@ -88,6 +98,11 @@
 	        <appender-ref ref="PAYMENT"/>
 	    </logger>
 	    
+		<logger name="HealthCare.Task" level="DEBUG" additivity="false">
+			<appender-ref ref="STDOUT"/>
+			<appender-ref ref="TASK" />
+		</logger>
+		
 		<root level="ALL">
         	<appender-ref ref="STDOUT"/>
         	<appender-ref ref="PROJECT"/>
