@@ -7,6 +7,7 @@
 		<result property="visitOrgCode" column="visit_org_code" jdbcType="VARCHAR"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
+		<result property="visitDeptCode" column="visit_dept_code" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
 		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
@@ -33,6 +34,7 @@
 				a.visit_org_code,
 				a.visit_org_name,
 				a.visit_dept_name,
+				a.visit_dept_code,
 				a.visit_dtime,
 				a.visit_way,
 				a.doctor_code,

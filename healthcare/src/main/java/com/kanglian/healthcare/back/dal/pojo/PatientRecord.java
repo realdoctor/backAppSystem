@@ -14,7 +14,8 @@ public class PatientRecord extends BasePojo {
 	private String visitOrgName;
 	private String visitOrgCode;
 	private String visitDeptName;
-	private Date visitDtime;
+	private String visitDeptCode;
+    private Date visitDtime;
 	private String visitWay;
 	private String respDoctorName;
 	private String doctorCode;
@@ -59,6 +60,12 @@ public class PatientRecord extends BasePojo {
 	public void setVisitDeptName(String visitDeptName) {
 		this.visitDeptName = visitDeptName;
 	}
+	public String getVisitDeptCode() {
+        return visitDeptCode;
+    }
+    public void setVisitDeptCode(String visitDeptCode) {
+        this.visitDeptCode = visitDeptCode;
+    }
 	public Date getVisitDtime() {
 		return visitDtime;
 	}

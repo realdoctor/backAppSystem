@@ -8,6 +8,7 @@
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
 		<result property="visitOrgCode" column="visit_org_code" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
+		<result property="visitDeptCode" column="visit_dept_code" jdbcType="VARCHAR"/>
 		<result property="visitDtime" column="visit_dtime" jdbcType="TIMESTAMP"/>
 		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
@@ -22,6 +23,7 @@
 		t.visit_org_name,
 		t.visit_org_code,
 		t.visit_dept_name,
+		t.visit_dept_code,
 		t.visit_dtime,
 		t.visit_way,
 		t.resp_doctor_name,
@@ -37,6 +39,7 @@
 		t.visit_org_name,
 		t.visit_org_code,
 		t.visit_dept_name,
+		t.visit_dept_code,
 		t.visit_dtime,
 		t.visit_way,
 		t.resp_doctor_name,
@@ -71,8 +74,7 @@
 	</select>
 
 	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
-		delete from patient_record where 1=1
-		and id=#{id,jdbcType=BIGINT}
+		delete from patient_record where 1=1 and id=#{id,jdbcType=BIGINT}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
@@ -82,6 +84,7 @@
 		visit_org_name,
 		visit_org_code,
 		visit_dept_name,
+		visit_dept_code,
 		visit_dtime,
 		visit_way,
 		resp_doctor_name,
@@ -94,6 +97,7 @@
 		#{visitOrgName,jdbcType=VARCHAR},
 		#{visitOrgCode,jdbcType=VARCHAR},
 		#{visitDeptName,jdbcType=VARCHAR},
+		#{visitDeptCode,jdbcType=VARCHAR},
 		#{visitDtime,jdbcType=TIMESTAMP},
 		#{visitWay,jdbcType=VARCHAR},
 		#{respDoctorName,jdbcType=VARCHAR},
@@ -110,6 +114,7 @@
 		  <if test="visitOrgName != null">visit_org_name=#{visitOrgName,jdbcType=VARCHAR},</if>
 		  <if test="visitOrgCode != null">visit_org_code=#{visitOrgCode,jdbcType=VARCHAR},</if>
 		  <if test="visitDeptName != null">visit_dept_name=#{visitDeptName,jdbcType=VARCHAR},</if>
+		  <if test="visitDeptCode != null">visit_dept_code=#{visitDeptCode,jdbcType=VARCHAR},</if>
 		  <if test="visitDtime != null">visit_dtime=#{visitDtime,jdbcType=TIMESTAMP},</if>
 		  <if test="visitWay != null">visit_way=#{visitWay,jdbcType=VARCHAR},</if>
 		  <if test="respDoctorName != null">resp_doctor_name=#{respDoctorName,jdbcType=VARCHAR},</if>
