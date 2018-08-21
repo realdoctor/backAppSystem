@@ -60,9 +60,10 @@
 		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
 		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
 		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
-		INNER JOIN (
+		LEFT JOIN (
 			SELECT
 				max(t.id) AS id,
+				message_id AS messageId,
 				COUNT(t.message_id) replyNum
 			FROM
 				ask_question_answer t
@@ -70,7 +71,7 @@
 				t.message_id
 			ORDER BY
 				t.add_time DESC
-		) t1 ON t.id = t1.id
+		) t1 ON t.message_id = t1.messageId
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
