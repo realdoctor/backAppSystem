@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
+import com.easyway.business.framework.mybatis.query.ConditionQuery;
+import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
-import com.github.pagehelper.util.StringUtil;
+import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
@@ -150,13 +152,23 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
             this.userId = userId;
         }
 
-        @SingleValue(tableAlias = "t6", column = "order_day", equal = "=")
         public String getOrderDay() {
             return orderDay;
         }
 
         public void setOrderDay(String orderDay) {
             this.orderDay = orderDay;
+        }
+        
+        @Override
+        public ConditionQuery buildConditionQuery() {
+            ConditionQuery query = super.buildConditionQuery();
+            if (StringUtil.isNotBlank(orderDay)) {
+                StringBuffer buff = new StringBuffer();
+                buff.append(" date_format(t1.order_day, '%m-%d')='" + orderDay + "' ");
+                query.addWithoutValueCondition(new WithoutValueCondition(buff.toString()));
+            }
+            return query;
         }
     }
 }
