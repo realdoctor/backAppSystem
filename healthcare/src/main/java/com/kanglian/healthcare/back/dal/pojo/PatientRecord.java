@@ -97,6 +97,9 @@ public class PatientRecord extends BasePojo {
     private Integer patientDiagId;
     private String  diagCode;
     private String  diagName;
+    private Integer hospitalId;
+    private String deptCode;
+    private String deptName;
     
     public Integer getPatientDiagId() {
         return patientDiagId;
@@ -134,5 +137,24 @@ public class PatientRecord extends BasePojo {
     }
     public void setDrugList(List<PatientDrug> drugList) {
         this.drugList = drugList;
+    }
+    
+    public Integer getHospitalId() {
+        return hospitalId;
+    }
+    public void setHospitalId(Integer hospitalId) {
+        this.hospitalId = hospitalId;
+    }
+    public String getDeptCode() {
+        return deptCode;
+    }
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
+    }
+    public String getDeptName() {
+        return deptName;
+    }
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }
