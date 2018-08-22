@@ -18,6 +18,8 @@
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
 		<result property="patientRealName" column="patientRealName" jdbcType="VARCHAR"/>
 		<result property="doctorRealName" column="doctorRealName" jdbcType="VARCHAR"/>
+		<result property="patientImageUrl" column="patientImageUrl" jdbcType="VARCHAR"/>
+		<result property="doctorImageUrl" column="doctorImageUrl" jdbcType="VARCHAR"/>
 		<result property="retryNum" column="retryNum" jdbcType="VARCHAR"/>
 	</resultMap>
 
@@ -52,6 +54,8 @@
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
 			u2.real_name AS doctorRealName,
+			up1.thumbnail_pic AS patientImageUrl,
+			up2.thumbnail_pic AS doctorImageUrl,
 			t2.src,
 			t2.remark
 			,(3 - t1.replyNum) retryNum
@@ -60,6 +64,8 @@
 		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
 		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
 		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
+		LEFT JOIN user_pic up1 ON up1.user_id = t.user_id
+		LEFT JOIN user_pic up2 ON up2.user_id = t.to_user
 		LEFT JOIN (
 			SELECT
 				max(t.id) AS id,

@@ -31,6 +31,7 @@ import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
+import com.kanglian.healthcare.util.PropConfig;
 
 /**
  * 寻医问诊问题与解答
@@ -52,7 +53,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     private JPushService jPushService;
     
     /**
-     * 上传病历问题列表
+     * 我的复诊-上传病历问题列表
      * 
      * @param query
      * @return
@@ -76,11 +77,18 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
+                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                 try {
                     User user = new User();
                     user.setUserId(Long.valueOf(askQuestionAnswer.getUserId()));
                     UserInfo userInfo = userInfoBo.getUserInfo(user);
                     jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
+                    if (StringUtil.isNotEmpty(askQuestionAnswer.getPatientImageUrl())) {
+                        jsonObject.put("patientImageUrl", domainUrl.concat(askQuestionAnswer.getPatientImageUrl()));
+                    }
+                    if (StringUtil.isNotEmpty(askQuestionAnswer.getDoctorImageUrl())) {
+                        jsonObject.put("doctorImageUrl", domainUrl.concat(askQuestionAnswer.getDoctorImageUrl()));
+                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
