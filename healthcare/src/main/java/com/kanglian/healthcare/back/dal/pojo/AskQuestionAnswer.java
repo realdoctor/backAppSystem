@@ -23,6 +23,8 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
 	private String remark;
     private String patientRealName;
     private String doctorRealName;
+    private String patientImageUrl;
+    private String doctorImageUrl;
     private String retryNum;
     public String getRetryNum() {
         return retryNum;
@@ -125,6 +127,18 @@ public class AskQuestionAnswer extends BasePojo implements Comparable<AskQuestio
     }
     public void setDoctorRealName(String doctorRealName) {
         this.doctorRealName = doctorRealName;
+    }
+    public String getPatientImageUrl() {
+        return patientImageUrl;
+    }
+    public void setPatientImageUrl(String patientImageUrl) {
+        this.patientImageUrl = patientImageUrl;
+    }
+    public String getDoctorImageUrl() {
+        return doctorImageUrl;
+    }
+    public void setDoctorImageUrl(String doctorImageUrl) {
+        this.doctorImageUrl = doctorImageUrl;
     }
     @Override
     public int compareTo(AskQuestionAnswer o) {
