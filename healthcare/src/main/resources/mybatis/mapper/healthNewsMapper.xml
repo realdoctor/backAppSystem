@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsDao">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNews" id="BaseResultMap">
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>

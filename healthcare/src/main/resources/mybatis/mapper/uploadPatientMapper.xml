@@ -27,7 +27,7 @@
 		t.add_time
 	</sql>
 
-	<!-- 患者上传病历列表 -->
+	<!-- 在线复诊-患者上传病历 -->
 	<select id="query" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.id,
