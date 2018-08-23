@@ -23,7 +23,13 @@ public class PatientRecord extends BasePojo {
 
     /** 处方列表 */
 	private List<PatientDrug> drugList;
-	
+	public List<PatientDrug> getDrugList() {
+        return drugList;
+    }
+    public void setDrugList(List<PatientDrug> drugList) {
+        this.drugList = drugList;
+    }
+    
     public Long getId() {
 		return id;
 	}
@@ -102,6 +108,7 @@ public class PatientRecord extends BasePojo {
 	 */
 	private Integer doctorUserId;
     private Integer patientDiagId;
+    private String mobilePhone;
     private String  diagCode;
     private String  diagName;
     private Integer hospitalId;
@@ -139,11 +146,11 @@ public class PatientRecord extends BasePojo {
         this.doctorUserId = doctorUserId;
     }
     
-    public List<PatientDrug> getDrugList() {
-        return drugList;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
-    public void setDrugList(List<PatientDrug> drugList) {
-        this.drugList = drugList;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
     
     public Integer getHospitalId() {
