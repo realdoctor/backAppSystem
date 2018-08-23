@@ -429,7 +429,7 @@ public class UploadController {
                         File uploadedFile = new File(pathRoot + filePath);
                         FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
                     } catch (Exception e) {
-                        logger.error("上传复诊病历文件异常", e);
+                        logger.error("上传复诊病历异常", e);
                         return ResultUtil.error("上传失败");
                     }
                     
@@ -526,7 +526,7 @@ public class UploadController {
             File uploadedFile = new File(pathRoot + filePath);
             FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
         } catch (Exception e) {
-            logger.error("上传本地病历记录异常", e);
+            logger.error("上传本地病历异常", e);
             return ResultUtil.error("上传失败");
         }
         
