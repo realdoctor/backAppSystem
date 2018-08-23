@@ -12,6 +12,7 @@
 		<result property="visitWay" column="visit_way" jdbcType="VARCHAR"/>
 		<result property="respDoctorName" column="resp_doctor_name" jdbcType="VARCHAR"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
+		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 		<result property="doctorUserId" column="doctor_user_id" jdbcType="INTEGER"/>
