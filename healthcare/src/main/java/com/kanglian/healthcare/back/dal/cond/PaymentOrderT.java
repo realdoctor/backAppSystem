@@ -19,7 +19,7 @@ public class PaymentOrderT {
     private String goodsId;
     // 支付类型
     private String type;
-    // 支付来源
+    // 支付来源(支付来源：1，聊天支付；2，问诊支付；3，视频支付；4，图文支付；5，资讯支付)
     private String from;
 
     public String getType() {
