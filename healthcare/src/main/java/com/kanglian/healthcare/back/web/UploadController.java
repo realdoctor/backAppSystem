@@ -329,25 +329,29 @@ public class UploadController {
         
         // 复诊病历Id
         String patientRecordId = request.getParameter("patientRecordId");
-        if (StringUtil.isEmpty(patientRecordId)) {
+        if (StringUtil.isEmpty(patientRecordId)
+                || "null".equals(patientRecordId)) {
             throw new InvalidParamException("patientRecordId");
         }
         
         // 上传病历，接收人[医生用户]
         String receiveUserId = request.getParameter("doctorUserId");
-        if (StringUtil.isEmpty(receiveUserId)) {
+        if (StringUtil.isEmpty(receiveUserId)
+                || "null".equals(receiveUserId)) {
             throw new InvalidParamException("doctorUserId");
         }
         
         // 上传病历问题内容
         String content = request.getParameter("content");
-        if (StringUtil.isEmpty(content)) {
+        if (StringUtil.isEmpty(content)
+                || "null".equals(receiveUserId)) {
             throw new InvalidParamException("content");
         }
         
         // 支付订单号
         String messageId = request.getParameter("messageId");
-        if (StringUtil.isEmpty(content)) {
+        if (StringUtil.isEmpty(messageId)
+                || "null".equals(messageId)) {
             throw new InvalidParamException("messageId");
         }
         
