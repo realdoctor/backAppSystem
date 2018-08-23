@@ -64,6 +64,7 @@
 		LEFT JOIN (
 			SELECT
 				c.user_id,
+				u.mobile_phone,
 				d.doctor_code,
 				e.hospital_id,
 				e.dept_code,
