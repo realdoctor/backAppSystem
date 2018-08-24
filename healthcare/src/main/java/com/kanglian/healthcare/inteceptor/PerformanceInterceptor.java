@@ -70,7 +70,6 @@ public class PerformanceInterceptor {
                 } else if (arg instanceof HttpServletRequest) {
                     HttpServletRequest request = (HttpServletRequest) arg;
                     // 获取query string 或 posted form data参数
-                    @SuppressWarnings("unchecked")
                     Map<String, String[]> paramMap = request.getParameterMap();
                     if (paramMap != null && paramMap.size() > 0) {
                         allParams.add(paramMap);
