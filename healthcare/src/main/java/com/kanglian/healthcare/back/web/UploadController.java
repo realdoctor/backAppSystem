@@ -344,7 +344,7 @@ public class UploadController {
         // 上传病历问题内容
         String content = request.getParameter("content");
         if (StringUtil.isEmpty(content)
-                || "null".equals(receiveUserId)) {
+                || "null".equals(content)) {
             throw new InvalidParamException("content");
         }
         
