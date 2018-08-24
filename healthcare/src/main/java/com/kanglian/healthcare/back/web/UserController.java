@@ -3,6 +3,7 @@ package com.kanglian.healthcare.back.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,13 @@ import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
+import com.kanglian.healthcare.back.jpush.JPushService;
+import com.kanglian.healthcare.back.jpush.PushModel;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserIdentifyBo;
+import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.FileUtil;
+import com.kanglian.healthcare.util.LogUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PropConfig;
@@ -40,6 +45,8 @@ public class UserController extends CrudController<User, UserBo> {
     private RedisCacheManager redisCacheManager;
     @Autowired
     private UserIdentifyBo userIdentifyBo;
+    @Autowired
+    private JPushService jPushService;
     
     @GetMapping("/list")
     public ResultBody list(UserQuery query) throws Exception {
@@ -358,6 +365,31 @@ public class UserController extends CrudController<User, UserBo> {
             return ResultUtil.error("获取下载链接失败");
         }
         return ResultUtil.success(resultMap);
+    }
+    
+    @Authorization
+    @PostMapping("/pushmsg")
+    public ResultBody pushmsg(@CurrentUser User user, HttpServletRequest request) throws Exception {
+        String receiveUserId = request.getParameter("receiveUserId");
+        if (StringUtil.isEmpty(receiveUserId)
+                || "null".equals(receiveUserId)) {
+            throw new InvalidParamException("receiveUserId");
+        }
+        
+        String content = request.getParameter("content");
+        if (StringUtil.isEmpty(content)
+                || "null".equals(receiveUserId)) {
+            throw new InvalidParamException("content");
+        }
+        
+        PushModel pushModel = new PushModel();
+        pushModel.setTitle("即时聊天");
+        pushModel.setContent(content);
+        pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
+        pushModel.addAlias(receiveUserId);
+        jPushService.pushToAndroid(pushModel);
+        LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 内容={}", new Object[] {user.getUserId(), receiveUserId, content});
+        return ResultUtil.success();
     }
     
     public static class UserQuery extends Grid {
