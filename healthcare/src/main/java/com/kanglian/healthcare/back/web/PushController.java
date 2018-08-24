@@ -33,13 +33,13 @@ public class PushController extends BaseController {
     @Authorization
     @RequestMapping(value = "/pushmsg", method = RequestMethod.POST)
     public @ResponseBody ResultBody pushmsg(@CurrentUser User user, HttpServletRequest request) throws Exception {
-        String receiveUserId = request.getParameter("receiveUserId");
-        if (StringUtil.isEmpty(receiveUserId) || "null".equals(receiveUserId)) {
-            throw new InvalidParamException("receiveUserId");
+        String receiveId = request.getParameter("receiveId");
+        if (StringUtil.isEmpty(receiveId) || "null".equals(receiveId)) {
+            throw new InvalidParamException("receiveId");
         }
 
         String content = request.getParameter("content");
-        if (StringUtil.isEmpty(content) || "null".equals(receiveUserId)) {
+        if (StringUtil.isEmpty(content) || "null".equals(content)) {
             throw new InvalidParamException("content");
         }
 
@@ -47,10 +47,10 @@ public class PushController extends BaseController {
         pushModel.setTitle("即时聊天");
         pushModel.setContent(content);
         pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
-        pushModel.addAlias(receiveUserId);
+        pushModel.addAlias(receiveId);
         jPushService.pushToAndroid(pushModel);
         LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 内容={}",
-                new Object[] {user.getUserId(), receiveUserId, content});
+                new Object[] {user.getUserId(), receiveId, content});
         return ResultUtil.success();
     }
 
