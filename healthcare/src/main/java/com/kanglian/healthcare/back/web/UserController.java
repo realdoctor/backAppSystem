@@ -341,7 +341,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-//    @Authorization
+    @Authorization
     @GetMapping("/getUploadPatientUrl")
     public ResultBody getUploadPatientUrl(@CurrentUser User user, String userId) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
