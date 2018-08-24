@@ -1,6 +1,12 @@
 package com.kanglian.healthcare.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,5 +62,81 @@ public class FileUtil {
 
     public static String randomPathname(String extension) {
         return randomPathname("/yyyyMMdd/yyyyMMddHHmmss_", extension);
+    }
+    
+    public static String getKBSize(long size) {
+        if (size <= 0) return "0";
+        double value = (double) size;
+        DecimalFormat df = new DecimalFormat("#0.00");
+        return df.format(value / 1024);
+    }
+
+    public static String getMBSize(long size) {
+        if (size <= 0) return "0";
+        double value = (double) size;
+        DecimalFormat df = new DecimalFormat("#0.00");
+        return df.format(value / (1024 * 1024));
+    }
+    
+    public static String getGBSize(long size) {
+        if (size <= 0) return "0";
+        double value = (double) size;
+        DecimalFormat df = new DecimalFormat("#0.00");
+        return df.format(value / (1024 * 1024 * 1024));
+    }
+    
+    public static long getFileSize(String filePath) {
+        FileChannel fc = null;
+        FileInputStream fis = null;
+        long size = 0L;
+        try {
+            File f = new File(filePath);
+            if (f.exists() && f.isFile()) {
+                fis = new FileInputStream(f);
+                fc = fis.getChannel();
+                size = fc.size();
+            }
+        } catch (Exception e) {
+            LogUtil.getErrorLogger().error(e.getMessage(), e);
+        } finally {
+            if (null != fis) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                }
+            }
+            if (null != fc) {
+                try {
+                    fc.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return size;
+    }
+    
+    public static String getPrintSize(long size) {
+        // 如果字节数少于1024，则直接以B为单位，否则先除于1024，后3位因太少无意义
+        double value = (double) size;
+        if (value < 1024) {
+            return String.valueOf(value) + "B";
+        } else {
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        }
+        // 如果原字节数除于1024之后，少于1024，则可以直接以KB作为单位
+        // 因为还没有到达要使用另一个单位的时候
+        // 接下去以此类推
+        if (value < 1024) {
+            return String.valueOf(value) + "KB";
+        } else {
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        }
+        if (value < 1024) {
+            return String.valueOf(value) + "MB";
+        } else {
+            // 否则如果要以GB为单位的，先除于1024再作同样的处理
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+            return String.valueOf(value) + "GB";
+        }
     }
 }
