@@ -1,6 +1,7 @@
 package com.kanglian.healthcare.util;
 
 import java.security.MessageDigest;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class MD5Util {
 
@@ -47,5 +48,7 @@ public class MD5Util {
      */
     public static void main(String[] args) {
         System.err.println(MD5Util.encrypt("123456"));
+        String sign = DigestUtils.sha1Hex("123456");
+        System.err.println(sign);
     }
 }
