@@ -43,8 +43,8 @@ public final class GeneralKey {
             hashCodeV = -hashCodeV;
         }
         String machineId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String orderId = machineId + String.format("%014d", hashCodeV);
-        System.out.println(orderId);
-        return orderId;
+        String orderNo = machineId + String.format("%010d", hashCodeV);
+        System.out.println(orderNo);
+        return orderNo;
     }
 }
