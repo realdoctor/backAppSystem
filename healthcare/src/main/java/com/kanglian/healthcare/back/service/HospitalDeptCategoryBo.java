@@ -61,7 +61,7 @@ public class HospitalDeptCategoryBo extends CrudBo<HospitalDeptCategory, Hospita
             do {
                 try {
                     String sss = RandomStringUtils.randomAlphanumeric(16);
-                    deptCategoryItem.setDeptCodeNew("DE4rO-" + sss);
+                    deptCategoryItem.setDeptCodeNew("DEPT-" + sss);
                     this.hospitalDeptCategoryItemBo.updateNew(deptCategoryItem);
                     retryNum = 1;
                 } catch (Exception e) {

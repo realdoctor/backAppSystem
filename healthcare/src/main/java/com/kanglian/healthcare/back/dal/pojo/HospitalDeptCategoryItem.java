@@ -8,6 +8,8 @@ public class HospitalDeptCategoryItem extends BasePojo {
 	private String deptName;
 	private String deptCode;
 	@JSONField(serialize=false)
+	private String deptCodeNew;
+    @JSONField(serialize=false)
 	private Integer parentId;
 	public String getDeptName() {
 		return deptName;
@@ -21,6 +23,12 @@ public class HospitalDeptCategoryItem extends BasePojo {
 	public void setDeptCode(String deptCode) {
 		this.deptCode = deptCode;
 	}
+	public String getDeptCodeNew() {
+        return deptCodeNew;
+    }
+    public void setDeptCodeNew(String deptCodeNew) {
+        this.deptCodeNew = deptCodeNew;
+    }
 	public Integer getParentId() {
 		return parentId;
 	}
