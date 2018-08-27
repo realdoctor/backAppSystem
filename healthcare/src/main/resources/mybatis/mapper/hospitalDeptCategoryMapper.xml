@@ -18,7 +18,7 @@
 		t.dept_id,
 		t.dept_name,
 		t.dept_code
-		from hospital_dept_category2 t
+		from hospital_dept_category t
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
@@ -35,23 +35,23 @@
 	</select>
 
 	<select id="queryCnt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery" resultType="java.lang.Integer">
-		select count(*) from hospital_dept_category2 t
+		select count(*) from hospital_dept_category t
 		<include refid="conditionQuery.core" />
 	</select>
 
 	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="columns"/>
-		from hospital_dept_category2 t
+		from hospital_dept_category t
 		where t.dept_id = #{deptId,jdbcType=INTEGER}
 	</select>
 
 	<delete id="delete" parameterType="java.lang.Integer">
-		delete from hospital_dept_category2 where dept_id = #{deptId,jdbcType=INTEGER}
+		delete from hospital_dept_category where dept_id = #{deptId,jdbcType=INTEGER}
 	</delete>
 
 	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory" useGeneratedKeys="true" keyProperty="deptId">
-		insert into hospital_dept_category2 (
+		insert into hospital_dept_category (
 		dept_name,
 		dept_code
 		)
@@ -62,7 +62,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory">
-		update hospital_dept_category2
+		update hospital_dept_category
 		<set>
 		  <if test="deptName != null">dept_name=#{deptName,jdbcType=VARCHAR},</if>
 		  <if test="deptCode != null">dept_code=#{deptCode,jdbcType=VARCHAR},</if>
