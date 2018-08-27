@@ -43,8 +43,8 @@
 		</choose>
 	</select>
 	
-	<!-- 查询挂号医生的工作日 -->
-	<select id="findWorkingDay" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+	<!-- 查询挂号医生的排班日 -->
+	<select id="findDoctorDutyDay" resultType="map" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			DISTINCT t.`week`,
 			CONCAT(
@@ -118,6 +118,7 @@
 		</choose>
 	</select>
 	
+	<!-- 按条件获取科室 -->
 	<select id="getHospitalDept" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
 		select
 		<include refid="columns"/>

@@ -47,14 +47,20 @@ public class HospitalDeptBo extends CrudBo<HospitalDept, HospitalDeptDao> {
      * @param query
      * @return
      */
-    public List<Map<String, String>> findWorkingDay(ConditionQuery query) {
+    public List<Map<String, String>> findDoctorDutyDay(ConditionQuery query) {
         try {
-            return this.dao.findWorkingDay(query);
+            return this.dao.findDoctorDutyDay(query);
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
     
+    /**
+     * 按条件获取医院科室
+     * 
+     * @param dept
+     * @return
+     */
     public HospitalDept getHospitalDept(HospitalDept dept) {
         try {
             return this.dao.getHospitalDept(dept);

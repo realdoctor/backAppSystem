@@ -55,16 +55,16 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
-        if (StringUtil.isEmpty(query.getDeptName())) {
-            throw new InvalidParamException("deptName");
-        }
+//        if (StringUtil.isEmpty(query.getDeptCode())) {
+//            throw new InvalidParamException("deptCode");
+//        }
         ConditionQuery conditionQuery = query.buildConditionQuery();
         List<HospitalDept> orderZhuanjiaList = hospitalDeptBo.findDeptDoctor(conditionQuery);
         return ResultUtil.success(orderZhuanjiaList);
     }
 
     /**
-     * 【按日期预约】按医院、科室、日期获取本院医生列表
+     * 【按日期预约】按医院、科室、日期获取本院医生值班列表
      * 
      * @param query
      * @return
@@ -75,9 +75,9 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
-        if (StringUtil.isEmpty(query.getDeptName())) {
-            throw new InvalidParamException("deptName");
-        }
+//        if (StringUtil.isEmpty(query.getDeptCode())) {
+//            throw new InvalidParamException("deptCode");
+//        }
         if (StringUtil.isEmpty(query.getOrderDay())) {
             throw new InvalidParamException("orderDay");
         }
@@ -111,7 +111,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
     }
 
     /**
-     * 【按日期预约】-获取医生工作日排班列表
+     * 【按日期预约】-获取医生值班日
      * 
      * @param query
      * @return
@@ -122,11 +122,11 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
-        if (StringUtil.isEmpty(query.getDeptName())) {
-            throw new InvalidParamException("deptName");
+        if (StringUtil.isEmpty(query.getDeptCode())) {
+            throw new InvalidParamException("deptCode");
         }
         ConditionQuery conditionQuery = query.buildConditionQuery();
-        List<Map<String, String>> orderDateList = hospitalDeptBo.findWorkingDay(conditionQuery);
+        List<Map<String, String>> orderDateList = hospitalDeptBo.findDoctorDutyDay(conditionQuery);
         return ResultUtil.success(orderDateList);
     }
 
