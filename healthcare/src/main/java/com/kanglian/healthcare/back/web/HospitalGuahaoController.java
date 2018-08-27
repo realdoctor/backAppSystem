@@ -55,9 +55,9 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
-//        if (StringUtil.isEmpty(query.getDeptCode())) {
-//            throw new InvalidParamException("deptCode");
-//        }
+        if (StringUtil.isEmpty(query.getDeptCode())) {
+            throw new InvalidParamException("deptCode");
+        }
         ConditionQuery conditionQuery = query.buildConditionQuery();
         List<HospitalDept> orderZhuanjiaList = hospitalDeptBo.findDeptDoctor(conditionQuery);
         return ResultUtil.success(orderZhuanjiaList);
@@ -75,9 +75,9 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
         }
-//        if (StringUtil.isEmpty(query.getDeptCode())) {
-//            throw new InvalidParamException("deptCode");
-//        }
+        if (StringUtil.isEmpty(query.getDeptCode())) {
+            throw new InvalidParamException("deptCode");
+        }
         if (StringUtil.isEmpty(query.getOrderDay())) {
             throw new InvalidParamException("orderDay");
         }
