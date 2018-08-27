@@ -194,7 +194,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
             this.deptName = deptName;
         }
 
-        @SingleValue(tableAlias = "t", column = "dept_code", equal = "=")
+        @SingleValue(tableAlias = "t2", column = "dept_code", equal = "=")
         public String getDeptCode() {
             return deptCode;
         }
