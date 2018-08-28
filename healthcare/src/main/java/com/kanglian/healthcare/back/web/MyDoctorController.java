@@ -57,7 +57,7 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
             throw new InvalidParamException("doctorId");
         }
         if (this.bo.get(myDoctor) != null) {
-            return ResultUtil.error("不能重复关注");
+            return ResultUtil.success();// 已关注
         }
         myDoctor.setAddTime(DateUtil.currentDate());
         this.bo.save(myDoctor);
