@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,10 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.dal.pojo.MyDoctor;
+import com.kanglian.healthcare.back.dal.pojo.User;
 import com.kanglian.healthcare.back.service.MyDoctorBo;
+import com.kanglian.healthcare.back.service.UserBo;
+import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -27,6 +31,9 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RequestMapping(value = "/user/mydoctor")
 public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
 
+    @Autowired
+    private UserBo userBo;
+    
     /**
      * 关注医生列表
      * 
@@ -50,15 +57,37 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
      */
     @PostMapping("/add")
     public ResultBody addDoctor(@RequestBody MyDoctor myDoctor) {
-        if (StringUtil.isEmpty(myDoctor.getUserId())) {
+        String userId = myDoctor.getUserId();
+        String doctorId = myDoctor.getDoctorId();
+        if (StringUtil.isEmpty(userId)) {
             throw new InvalidParamException("userId");
+        } else {
+            try {
+                Long.valueOf(userId);
+            } catch (Exception e) {
+                throw new InvalidOperationException("userId");
+            }
         }
-        if (StringUtil.isEmpty(myDoctor.getDoctorId())) {
+        
+        if (StringUtil.isEmpty(doctorId)) {
             throw new InvalidParamException("doctorId");
+        } else {
+            try {
+                Long.valueOf(doctorId);
+            } catch (Exception e) {
+                throw new InvalidOperationException("doctorId");
+            }
         }
+        
+        User u2 = userBo.get(Long.valueOf(doctorId));
+        if (u2 == null) {
+            return ResultUtil.error("医生不存在");
+        }
+        
         if (this.bo.get(myDoctor) != null) {
             return ResultUtil.success();// 已关注
         }
+        
         myDoctor.setAddTime(DateUtil.currentDate());
         this.bo.save(myDoctor);
         return ResultUtil.success();
