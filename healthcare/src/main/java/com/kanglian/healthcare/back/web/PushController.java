@@ -38,7 +38,7 @@ public class PushController extends BaseController {
         if (StringUtil.isEmpty(receiveId) || "null".equals(receiveId)) {
             throw new InvalidParamException("receiveId");
         }
-
+        
         String content = query.getContent();
         if (StringUtil.isEmpty(content) || "null".equals(content)) {
             throw new InvalidParamException("content");
@@ -56,8 +56,15 @@ public class PushController extends BaseController {
     }
 
     public static class PushmsgQuery extends QueryPojo {
+        private String userId;
         private String receiveId;
         private String content;
+        public String getUserId() {
+            return userId;
+        }
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
         public String getReceiveId() {
             return receiveId;
         }
