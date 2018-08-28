@@ -4,6 +4,7 @@
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientRecord" id="BaseResultMapExt">
 		<result property="id" column="id" jdbcType="BIGINT"/>
+		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
 		<result property="visitOrgName" column="visit_org_name" jdbcType="VARCHAR"/>
 		<result property="visitDeptName" column="visit_dept_name" jdbcType="VARCHAR"/>
@@ -15,25 +16,67 @@
 		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
+		<result property="patientUserId" column="patient_user_id" jdbcType="INTEGER"/>
 		<result property="doctorUserId" column="doctor_user_id" jdbcType="INTEGER"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
 		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
+		<result property="patientRealName" column="patient_real_name" jdbcType="VARCHAR"/>
+		<result property="doctorRealName" column="doctor_real_name" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<sql id="Revisit_Patient_Select_Query">
+	<sql id="Revisit_Patient_Query">
+		SELECT
+			t.id,
+			t.org_code,
+			t.patient_id,
+			t.visit_org_name,
+			t.visit_dept_name,
+			t.visit_dept_code,
+			t.visit_dtime,
+			t.visit_way,
+			t.doctor_code,
+			t.resp_doctor_name,
+			c.diag_code,
+			c.diag_name
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					patient_record
+				ORDER BY
+					visit_dtime DESC
+				LIMIT 10000000000
+			) t
+		LEFT JOIN patient_diag c ON (c.patient_record_id = t.id)
+		GROUP BY
+			org_code,
+			patient_id,
+			doctor_code,
+			diag_code
+		ORDER BY
+			visit_dtime DESC
+	</sql>
+	
+	<!-- 患者复诊病历列表 -->
+	<select id="frontList" resultMap="BaseResultMapExt"
+		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t0.id,
 			t0.org_code,
 			t0.patient_id,
 			t0.visit_org_name,
 			t0.visit_dept_name,
-			max(t0.visit_dtime) AS visit_dtime,
+			t0.visit_dtime,
 			t0.visit_way,
 			t0.doctor_code,
 			t0.resp_doctor_name,
 			t0.diag_code,
 			t0.diag_name,
+			t.`name` AS patient_real_name,
+			t.user_id AS patient_user_id,
+			t1.real_name AS doctor_real_name,
 			t1.user_id AS doctor_user_id,
 			t1.hospital_id,
 			t1.dept_code,
@@ -42,49 +85,33 @@
 		FROM
 			user_info t
 		INNER JOIN (
-			SELECT
-				a.id,
-				a.org_code,
-				a.patient_id,
-				a.visit_org_name,
-				a.visit_dept_name,
-				a.visit_dept_code,
-				a.visit_dtime,
-				a.visit_way,
-				a.doctor_code,
-				a.resp_doctor_name,
-				c.diag_code,
-				c.diag_name
-			FROM
-				patient_record a
-			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
+			<include refid="Revisit_Patient_Query" />
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
 		)
 		LEFT JOIN (
 			SELECT
-				c.user_id,
+				t.user_id,
+				u.real_name,
 				u.mobile_phone,
 				d.doctor_code,
 				e.hospital_id,
 				e.dept_code,
 				e.dept_name
 			FROM
-				user_doctor c
-			INNER JOIN `user` u ON u.user_id = c.user_id
-			INNER JOIN hospital_doctor d ON d.doctor_id = c.doctor_id
+				user_doctor t
+			INNER JOIN `user` u ON u.user_id = t.user_id
+			INNER JOIN hospital_doctor d ON d.doctor_id = t.doctor_id
 			INNER JOIN hospital_dept e ON e.dept_id = d.dept_id
 		) t1 ON t1.doctor_code = t0.doctor_code
-	</sql>
-	
-	<!-- 患者复诊病历列表 -->
-	<select id="frontList" resultMap="BaseResultMapExt"
-		parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
-		<include refid="Revisit_Patient_Select_Query" />
 		<include refid="conditionQuery.core" />
-		group by org_code, patient_id, doctor_code, diag_code
-		order by
+		GROUP BY
+			org_code,
+			patient_id,
+			doctor_code,
+			diag_code
+		ORDER BY
 		<choose>
 			<when test="paramMap.orderCol!=null">
 				${paramMap.orderCol}
@@ -103,27 +130,14 @@
 		FROM
 			user_info t
 		INNER JOIN (
-			SELECT
-				a.org_code,
-				a.patient_id,
-				a.visit_org_name,
-				a.visit_dept_name,
-				a.visit_dtime,
-				a.visit_way,
-				a.doctor_code,
-				a.resp_doctor_name,
-				c.diag_code,
-				c.diag_name
-			FROM
-				patient_record a
-			LEFT JOIN patient_diag c ON (a.id = c.patient_record_id)
+			<include refid="Revisit_Patient_Query" />
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
 		)
 		<include refid="conditionQuery.core" />
-		group by t0.org_code, t0.patient_id, t0.doctor_code, t0.diag_code
-		order by
+		GROUP BY t0.org_code, t0.patient_id, t0.doctor_code, t0.diag_code
+		ORDER BY
 		<choose>
 		<when test="paramMap.orderCol!=null">
 		${paramMap.orderCol}

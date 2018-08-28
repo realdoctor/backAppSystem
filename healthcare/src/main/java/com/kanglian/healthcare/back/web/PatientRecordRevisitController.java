@@ -35,10 +35,6 @@ public class PatientRecordRevisitController
      */
     @GetMapping("/list")
     public ResultBody list(RevisitPatientQuery query) throws Exception {
-        String mobilePhone = query.getMobilePhone();
-        if (StringUtil.isBlank(mobilePhone)) {
-            throw new InvalidParamException("mobilePhone");
-        }
         return ResultUtil.success(this.bo.frontList(query));
     }
 
@@ -65,12 +61,13 @@ public class PatientRecordRevisitController
         private String userId;
         private String mobilePhone;
         private String patientId;
+        private String doctorCode;
         private String diagCode;
         private String beginDate;
         private String endDate;
         private String sortstr;
 
-        @SingleValue(column = "user_id", equal = "=")
+        @SingleValue(tableAlias = "t", column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
         }
@@ -79,7 +76,7 @@ public class PatientRecordRevisitController
             this.userId = userId;
         }
         
-        @SingleValue(column = "mobile_phone", equal = "=")
+        @SingleValue(tableAlias = "t", column = "mobile_phone", equal = "=")
         public String getMobilePhone() {
             return mobilePhone;
         }
@@ -88,6 +85,15 @@ public class PatientRecordRevisitController
             this.mobilePhone = mobilePhone;
         }
 
+        @SingleValue(tableAlias = "t0", column = "doctor_code", equal = "=")
+        public String getDoctorCode() {
+            return doctorCode;
+        }
+
+        public void setDoctorCode(String doctorCode) {
+            this.doctorCode = doctorCode;
+        }
+        
         @SingleValue(column = "patient_id", equal = "=")
         public String getPatientId() {
             return patientId;

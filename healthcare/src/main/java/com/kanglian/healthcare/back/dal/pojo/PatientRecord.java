@@ -106,7 +106,8 @@ public class PatientRecord extends BasePojo {
 	/**
 	 * 扩展字段
 	 */
-	private Integer doctorUserId;
+	private Integer patientUserId;
+    private Integer doctorUserId;
     private Integer patientDiagId;
     private String mobilePhone;
     private String  diagCode;
@@ -114,11 +115,37 @@ public class PatientRecord extends BasePojo {
     private Integer hospitalId;
     private String deptCode;
     private String deptName;
+    private String patientRealName;
+    private String doctorRealName;
+    
+    public Integer getPatientUserId() {
+        return patientUserId;
+    }
+    public void setPatientUserId(Integer patientUserId) {
+        this.patientUserId = patientUserId;
+    }
+    public Integer getDoctorUserId() {
+        return doctorUserId;
+    }
+    public void setDoctorUserId(Integer doctorUserId) {
+        this.doctorUserId = doctorUserId;
+    }
+    public String getPatientRealName() {
+        return patientRealName;
+    }
+    public void setPatientRealName(String patientRealName) {
+        this.patientRealName = patientRealName;
+    }
+    public String getDoctorRealName() {
+        return doctorRealName;
+    }
+    public void setDoctorRealName(String doctorRealName) {
+        this.doctorRealName = doctorRealName;
+    }
     
     public Integer getPatientDiagId() {
         return patientDiagId;
     }
-    
     public void setPatientDiagId(Integer patientDiagId) {
         this.patientDiagId = patientDiagId;
     }
@@ -126,7 +153,6 @@ public class PatientRecord extends BasePojo {
     public String getDiagCode() {
         return diagCode;
     }
-    
     public void setDiagCode(String diagCode) {
         this.diagCode = diagCode;
     }
@@ -134,16 +160,8 @@ public class PatientRecord extends BasePojo {
     public String getDiagName() {
         return diagName;
     }
-    
     public void setDiagName(String diagName) {
         this.diagName = diagName;
-    }
-    
-    public Integer getDoctorUserId() {
-        return doctorUserId;
-    }
-    public void setDoctorUserId(Integer doctorUserId) {
-        this.doctorUserId = doctorUserId;
     }
     
     public String getMobilePhone() {
