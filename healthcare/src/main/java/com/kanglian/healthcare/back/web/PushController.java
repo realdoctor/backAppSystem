@@ -49,6 +49,7 @@ public class PushController extends BaseController {
         pushModel.setContent(content);
         pushModel.addAlias(receiveId);
         pushModel.addParam(Constants.TAG_ID, Constants.TAG_CHAT_ID);
+        pushModel.addParam(Constants.USER_ID, String.valueOf(user.getUserId()));
         jPushService.pushToAndroid(pushModel);
         LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 内容={}",
                 new Object[] {user.getUserId(), receiveId, content});
