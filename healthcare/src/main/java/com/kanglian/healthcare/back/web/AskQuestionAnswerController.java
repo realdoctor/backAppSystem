@@ -67,9 +67,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
         if (StringUtil.isEmpty(query.getRoleId())) {
             throw new InvalidParamException("roleId");
         }
-        if (StringUtil.isEmpty(query.getStatus())) {
-            throw new InvalidParamException("status");
-        }
         
         logger.info("[我的复诊]患者病历列表，roleId=" + query.getRoleId());
         return super.list(query, new JsonClothProcessor() {
