@@ -14,10 +14,8 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserRole;
 import com.kanglian.healthcare.back.jpush.JPushService;
 import com.kanglian.healthcare.back.jpush.PushModel;
-import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.LogUtil;
 
@@ -32,8 +30,6 @@ public class PushController extends BaseController {
 
     @Autowired
     private JPushService jPushService;
-    @Autowired
-    private UserRoleBo userRoleBo;
 
     @Authorization
     @RequestMapping(value = "/pushmsg", method = RequestMethod.POST)
@@ -52,16 +48,7 @@ public class PushController extends BaseController {
         pushModel.setTitle("即时聊天");
         pushModel.setContent(content);
         pushModel.addAlias(receiveId);
-        try {
-            UserRole u = userRoleBo.get(Integer.valueOf(receiveId));
-            if (u != null && u.getRoleId() == 1) {
-                pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
-            } else {
-                pushModel.addParam(Constants.TAG_ID, Constants.TAG_PATIENT_ID);
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        pushModel.addParam(Constants.TAG_ID, Constants.TAG_CHAT_ID);
         jPushService.pushToAndroid(pushModel);
         LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 内容={}",
                 new Object[] {user.getUserId(), receiveId, content});

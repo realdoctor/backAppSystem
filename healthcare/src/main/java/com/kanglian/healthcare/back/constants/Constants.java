@@ -114,6 +114,7 @@ public final class Constants {
     public static final String TAG_ID                        = "tagId";
     public static final String TAG_PATIENT_ID                = "0";
     public static final String TAG_DOCTOR_ID                 = "1";
+    public static final String TAG_CHAT_ID                   = "2";
 
     // 导入医生数据
     public static final String IMPORT_DOCTOR_FILE            = "import_doctor_file";
