@@ -20,11 +20,11 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.back.constants.Constants;
-import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserIdentify;
-import com.kanglian.healthcare.back.jpush.JPushService;
-import com.kanglian.healthcare.back.jpush.PushModel;
+import com.kanglian.healthcare.back.constant.Constants;
+import com.kanglian.healthcare.back.pojo.PushModel;
+import com.kanglian.healthcare.back.pojo.User;
+import com.kanglian.healthcare.back.pojo.UserIdentify;
+import com.kanglian.healthcare.back.service.PushService;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -46,7 +46,7 @@ public class UserController extends CrudController<User, UserBo> {
     @Autowired
     private UserIdentifyBo userIdentifyBo;
     @Autowired
-    private JPushService jPushService;
+    private PushService jPushService;
     
     @GetMapping("/list")
     public ResultBody list(UserQuery query) throws Exception {

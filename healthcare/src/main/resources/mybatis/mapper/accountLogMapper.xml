@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.AccountLogDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AccountLog" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.AccountLogDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.AccountLog" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="type" column="type" jdbcType="VARCHAR"/>
@@ -77,7 +77,7 @@
 		delete from account_log where id = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AccountLog" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.AccountLog" useGeneratedKeys="true" keyProperty="id">
 		insert into account_log (
 		user_id,
 		type,
@@ -106,7 +106,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AccountLog">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.AccountLog">
 		update account_log
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

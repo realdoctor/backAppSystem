@@ -5,11 +5,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
-import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
-import com.kanglian.healthcare.back.common.DaoTemplate;
-import com.kanglian.healthcare.back.dal.dao.HospitalDeptCategoryDao;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategoryItem;
+import com.kanglian.healthcare.back.dao.HospitalDeptCategoryDao;
+import com.kanglian.healthcare.back.pojo.HospitalDeptCategory;
+import com.kanglian.healthcare.back.pojo.HospitalDeptCategoryItem;
+import com.kanglian.healthcare.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.common.DaoTemplate;
 
 @Service
 public class HospitalDeptCategoryBo extends CrudBo<HospitalDeptCategory, HospitalDeptCategoryDao> {

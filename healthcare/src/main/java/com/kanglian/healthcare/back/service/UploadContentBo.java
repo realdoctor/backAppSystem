@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.HealthNewsDao;
-import com.kanglian.healthcare.back.dal.dao.UploadContentDao;
-import com.kanglian.healthcare.back.dal.pojo.HealthNews;
-import com.kanglian.healthcare.back.dal.pojo.UploadContent;
-import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
+import com.kanglian.healthcare.back.dao.HealthNewsDao;
+import com.kanglian.healthcare.back.dao.UploadContentDao;
+import com.kanglian.healthcare.back.pojo.HealthNews;
+import com.kanglian.healthcare.back.pojo.UploadContent;
+import com.kanglian.healthcare.back.pojo.UserDoctor;
+import com.kanglian.healthcare.common.NewCrudBo;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.RevisitPatientRecordDao;
-import com.kanglian.healthcare.back.dal.pojo.PatientRecord;
+import com.kanglian.healthcare.back.dao.RevisitPatientRecordDao;
+import com.kanglian.healthcare.back.pojo.PatientRecord;
+import com.kanglian.healthcare.common.NewCrudBo;
 import com.kanglian.healthcare.exception.DBException;
 
 /**

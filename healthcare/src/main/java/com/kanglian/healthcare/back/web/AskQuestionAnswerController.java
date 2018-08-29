@@ -19,13 +19,13 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.back.constants.Constants;
-import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
-import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserRole;
-import com.kanglian.healthcare.back.jpush.JPushService;
-import com.kanglian.healthcare.back.jpush.PushModel;
+import com.kanglian.healthcare.back.constant.Constants;
+import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
+import com.kanglian.healthcare.back.pojo.PushModel;
+import com.kanglian.healthcare.back.pojo.User;
+import com.kanglian.healthcare.back.pojo.UserRole;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
+import com.kanglian.healthcare.back.service.PushService;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -46,7 +46,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     @Autowired
     private UserRoleBo   userRoleBo;
     @Autowired
-    private JPushService jPushService;
+    private PushService jPushService;
     
     /**
      * 我的复诊-患者病历列表

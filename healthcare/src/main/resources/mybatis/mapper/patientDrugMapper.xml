@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PatientDrugDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientDrug" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.PatientDrugDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.PatientDrug" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="patientDiagId" column="patient_diag_id" jdbcType="INTEGER"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
@@ -65,7 +65,7 @@
 		delete from patient_drug where id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.PatientDrug" useGeneratedKeys="true" keyProperty="id">
 		insert into patient_drug (
 		patient_diag_id,
 		drug_name,
@@ -86,7 +86,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientDrug">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.PatientDrug">
 		update patient_drug
 		<set>
 		  <if test="patientDiagId != null">patient_diag_id=#{patientDiagId,jdbcType=INTEGER},</if>

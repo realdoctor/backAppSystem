@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsPicDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsPic" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsPicDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsPic" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
 		<result property="bigPic" column="big_pic" jdbcType="VARCHAR"/>
@@ -55,12 +55,12 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.GoodsPic">
 		delete from goods_pic where 1=1
 		and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.GoodsPic" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_pic (
 		goods_id,
 		big_pic,
@@ -77,7 +77,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsPic">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.GoodsPic">
 		update goods_pic
 		<set>
 		  <if test="goodsId != null">goods_id=#{goodsId,jdbcType=INTEGER},</if>

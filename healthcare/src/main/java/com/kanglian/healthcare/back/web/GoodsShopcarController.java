@@ -13,9 +13,9 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.back.dal.cond.ApList;
-import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
-import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.common.ApList;
+import com.kanglian.healthcare.back.pojo.GoodsShopcar;
+import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 

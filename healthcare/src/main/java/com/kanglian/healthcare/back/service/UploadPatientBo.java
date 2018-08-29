@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.UploadPatientDao;
-import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
-import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
+import com.kanglian.healthcare.back.dao.UploadPatientDao;
+import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
+import com.kanglian.healthcare.back.pojo.UploadPatient;
+import com.kanglian.healthcare.common.NewCrudBo;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

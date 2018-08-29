@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.kanglian.healthcare.back.constants.AlipayConfig;
+import com.kanglian.healthcare.back.constant.AlipayConfig;
 
 public class PayCommonUtil {
     private static final Logger logger    = LoggerFactory.getLogger(PayCommonUtil.class);

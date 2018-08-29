@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.UserDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.User" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.UserDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.User" id="BaseResultMap">
 		<result property="userId" column="user_id" jdbcType="BIGINT"/>
 		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
 		<result property="pwd" column="pwd" jdbcType="VARCHAR"/>
@@ -64,12 +64,12 @@
 		where t.user_id = #{userId,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.User">
 		delete from user where 1=1
 		and user_id=#{userId,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.User" useGeneratedKeys="true" keyProperty="userId">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.User" useGeneratedKeys="true" keyProperty="userId">
 		insert into user (
 		user_name,
 		pwd,
@@ -92,7 +92,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.User">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.User">
 		update user
 		<set>
 		  <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR},</if>

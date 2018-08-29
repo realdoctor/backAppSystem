@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.NoticeMessageDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.NoticeMessageDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NoticeMessage" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="noticeTypeId" column="notice_type_id" jdbcType="VARCHAR"/>
 		<result property="noticeType" column="type" jdbcType="VARCHAR"/>
@@ -78,12 +78,12 @@
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.NoticeMessage">
 		delete from notice_message where 1=1
 		and id=#{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.NoticeMessage" useGeneratedKeys="true" keyProperty="id">
 		insert into notice_message (
 		notice_type_id,
 		user_id,
@@ -100,7 +100,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.NoticeMessage">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.NoticeMessage">
 		update notice_message
 		<set>
 		  <if test="noticeTypeId != null">notice_type_id=#{noticeTypeId,jdbcType=VARCHAR},</if>

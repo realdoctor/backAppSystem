@@ -12,8 +12,8 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.back.dal.pojo.NoticeMessage;
-import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.pojo.NoticeMessage;
+import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.NoticeMessageBo;
 
 /**

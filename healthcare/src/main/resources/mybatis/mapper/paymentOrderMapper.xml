@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentOrderDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PaymentOrder" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.PaymentOrderDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.PaymentOrder" id="BaseResultMap">
 		<result property="orderId" column="order_id" jdbcType="INTEGER"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
@@ -74,7 +74,7 @@
 		delete from payment_order where order_id = #{orderId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentOrder" useGeneratedKeys="true" keyProperty="orderId">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.PaymentOrder" useGeneratedKeys="true" keyProperty="orderId">
 		insert into payment_order (
 		order_no,
 		user_id,
@@ -101,7 +101,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentOrder">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.PaymentOrder">
 		update payment_order
 		<set>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>

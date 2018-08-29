@@ -3,11 +3,11 @@ package com.kanglian.healthcare.back.service;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
-import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
-import com.kanglian.healthcare.back.common.DaoTemplate;
-import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.UserDoctorDao;
-import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
+import com.kanglian.healthcare.back.dao.UserDoctorDao;
+import com.kanglian.healthcare.back.pojo.UserDoctor;
+import com.kanglian.healthcare.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.common.DaoTemplate;
+import com.kanglian.healthcare.common.NewCrudBo;
 
 @Service
 public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {

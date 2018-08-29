@@ -11,7 +11,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.dal.pojo.Goods;
+import com.kanglian.healthcare.back.pojo.Goods;
 import com.kanglian.healthcare.back.service.GoodsBo;
 
 /**

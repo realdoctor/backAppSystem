@@ -3,9 +3,9 @@ package com.kanglian.healthcare.back.service;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
-import com.kanglian.healthcare.back.common.NewCrudBo;
-import com.kanglian.healthcare.back.dal.dao.HealthNewsFocusDao;
-import com.kanglian.healthcare.back.dal.pojo.HealthNewsFocus;
+import com.kanglian.healthcare.back.dao.HealthNewsFocusDao;
+import com.kanglian.healthcare.back.pojo.HealthNewsFocus;
+import com.kanglian.healthcare.common.NewCrudBo;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.UserPicDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserPic" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.UserPicDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.UserPic" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="pic" column="pic" jdbcType="VARCHAR"/>
@@ -55,12 +55,12 @@
 		where t.user_id = #{userId,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.UserPic">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.UserPic">
 		delete from user_pic where 1=1
 		and id=#{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserPic" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.UserPic" useGeneratedKeys="true" keyProperty="id">
 		insert into user_pic (
 		user_id,
 		pic,
@@ -77,7 +77,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserPic">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.UserPic">
 		update user_pic
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

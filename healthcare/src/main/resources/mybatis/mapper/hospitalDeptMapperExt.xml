@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDeptDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDept" id="BaseResultMapExt" extends="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.HospitalDeptDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.HospitalDept" id="BaseResultMapExt" extends="BaseResultMap">
 		<result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
 		<result property="field" column="field" jdbcType="VARCHAR"/>
@@ -119,7 +119,7 @@
 	</select>
 	
 	<!-- 按条件获取科室 -->
-	<select id="getHospitalDept" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDept">
+	<select id="getHospitalDept" resultMap="BaseResultMap" parameterType="com.kanglian.healthcare.back.pojo.HospitalDept">
 		select
 		<include refid="columns"/>
 		from hospital_dept t

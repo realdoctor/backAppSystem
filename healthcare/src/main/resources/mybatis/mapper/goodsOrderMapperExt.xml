@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsOrderDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsOrderDao">
 	<!-- 更新订单状态 -->
 	<update id="updateOrderStatus"
-		parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">
+		parameterType="com.kanglian.healthcare.back.pojo.GoodsOrder">
 		update goods_order set
 		trade_status = #{status,jdbcType=CHAR},
 		sent_status = #{sentStatus,jdbcType=CHAR},

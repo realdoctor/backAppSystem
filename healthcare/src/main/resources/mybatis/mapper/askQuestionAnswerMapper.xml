@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.AskQuestionAnswerDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.AskQuestionAnswerDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.AskQuestionAnswer" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="messageId" column="message_id" jdbcType="VARCHAR"/>
 		<result property="patientRecordId" column="patient_record_id" jdbcType="INTEGER"/>
@@ -112,7 +112,7 @@
 		delete from ask_question_answer where id = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.AskQuestionAnswer" useGeneratedKeys="true" keyProperty="id">
 		insert into ask_question_answer (
 		message_id,
 		patient_record_id,
@@ -141,7 +141,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.AskQuestionAnswer">
 		update ask_question_answer
 		<set>
 		  <if test="messageId != null">message_id=#{messageId,jdbcType=VARCHAR},</if>

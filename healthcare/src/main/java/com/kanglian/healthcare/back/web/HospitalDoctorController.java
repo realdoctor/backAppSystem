@@ -10,7 +10,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.github.pagehelper.util.StringUtil;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDoctor;
+import com.kanglian.healthcare.back.pojo.HospitalDoctor;
 import com.kanglian.healthcare.back.service.HospitalDoctorBo;
 import com.kanglian.healthcare.back.service.UserDoctorBo;
 import com.kanglian.healthcare.exception.InvalidParamException;

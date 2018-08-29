@@ -11,7 +11,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import com.kanglian.healthcare.authorization.AuthConfig;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
 import com.kanglian.healthcare.authorization.util.TokenUtil;
-import com.kanglian.healthcare.back.dal.pojo.User;
+import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.exception.InvalidOperationException;
 import com.kanglian.healthcare.util.JsonUtil;

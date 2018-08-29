@@ -16,7 +16,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.CollectionUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.dal.pojo.HealthNews;
+import com.kanglian.healthcare.back.pojo.HealthNews;
 import com.kanglian.healthcare.back.service.HealthNewsBo;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
 import com.kanglian.healthcare.back.service.NewsAdBo;

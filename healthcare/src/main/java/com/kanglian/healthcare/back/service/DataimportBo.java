@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.dal.pojo.Hospital;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDoctor;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDTO;
-import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserDoctor;
+import com.kanglian.healthcare.back.pojo.Hospital;
+import com.kanglian.healthcare.back.pojo.HospitalDept;
+import com.kanglian.healthcare.back.pojo.HospitalDoctor;
+import com.kanglian.healthcare.back.pojo.HospitalDoctorDTO;
+import com.kanglian.healthcare.back.pojo.User;
+import com.kanglian.healthcare.back.pojo.UserDoctor;
 
 /**
  * 数据导入

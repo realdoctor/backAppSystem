@@ -3,10 +3,10 @@ package com.kanglian.healthcare.back.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
-import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
-import com.kanglian.healthcare.back.common.DaoTemplate;
-import com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao;
-import com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem;
+import com.kanglian.healthcare.back.dao.GoodsOrderItemDao;
+import com.kanglian.healthcare.back.pojo.GoodsOrderItem;
+import com.kanglian.healthcare.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.common.DaoTemplate;
 
 @Service
 public class GoodsOrderItemBo extends CrudBo<GoodsOrderItem, GoodsOrderItemDao> {

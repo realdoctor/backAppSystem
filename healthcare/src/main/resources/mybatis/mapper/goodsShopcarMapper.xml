@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsShopcarDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsShopcarDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsShopcar" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
@@ -11,7 +11,7 @@
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" id="BaseResultMapExt" extends="BaseResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsShopcar" id="BaseResultMapExt" extends="BaseResultMap">
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="store" column="store" jdbcType="INTEGER"/>
 		<result property="cost" column="cost" jdbcType="DECIMAL"/>
@@ -73,12 +73,12 @@
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.GoodsShopcar">
 		delete from goods_shopcar where 1=1
 		and id=#{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.GoodsShopcar" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_shopcar (
 		user_id,
 		goods_id,
@@ -97,7 +97,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsShopcar">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.GoodsShopcar">
 		update goods_shopcar
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

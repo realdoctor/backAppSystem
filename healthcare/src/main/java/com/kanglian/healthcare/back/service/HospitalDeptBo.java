@@ -5,8 +5,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.kanglian.healthcare.back.dal.dao.HospitalDeptDao;
-import com.kanglian.healthcare.back.dal.pojo.HospitalDept;
+import com.kanglian.healthcare.back.dao.HospitalDeptDao;
+import com.kanglian.healthcare.back.pojo.HospitalDept;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

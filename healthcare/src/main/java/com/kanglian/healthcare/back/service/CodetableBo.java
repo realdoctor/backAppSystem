@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
-import com.kanglian.healthcare.back.constants.Constants;
-import com.kanglian.healthcare.back.dal.dao.CodetableDao;
-import com.kanglian.healthcare.back.dal.pojo.Codetable;
+import com.kanglian.healthcare.back.constant.Constants;
+import com.kanglian.healthcare.back.dao.CodetableDao;
+import com.kanglian.healthcare.back.pojo.Codetable;
 import com.kanglian.healthcare.exception.DBException;
 import com.kanglian.healthcare.util.RedisCacheManager;
 

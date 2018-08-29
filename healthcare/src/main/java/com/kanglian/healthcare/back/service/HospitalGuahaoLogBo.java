@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.pojo.Grid;
-import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
-import com.kanglian.healthcare.back.common.DaoTemplate;
-import com.kanglian.healthcare.back.dal.dao.HospitalGuahaoLogDao;
-import com.kanglian.healthcare.back.dal.pojo.Hospital;
-import com.kanglian.healthcare.back.dal.pojo.HospitalGuahaoLog;
+import com.kanglian.healthcare.back.dao.HospitalGuahaoLogDao;
+import com.kanglian.healthcare.back.pojo.Hospital;
+import com.kanglian.healthcare.back.pojo.HospitalGuahaoLog;
+import com.kanglian.healthcare.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.common.DaoTemplate;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

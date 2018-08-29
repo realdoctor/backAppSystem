@@ -24,17 +24,17 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.back.constants.Constants;
-import com.kanglian.healthcare.back.constants.UploadType;
-import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
-import com.kanglian.healthcare.back.dal.pojo.UploadContent;
-import com.kanglian.healthcare.back.dal.pojo.UploadPatient;
-import com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord;
-import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserPic;
-import com.kanglian.healthcare.back.jpush.JPushService;
-import com.kanglian.healthcare.back.jpush.PushModel;
+import com.kanglian.healthcare.back.constant.Constants;
+import com.kanglian.healthcare.back.constant.UploadType;
+import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
+import com.kanglian.healthcare.back.pojo.PushModel;
+import com.kanglian.healthcare.back.pojo.UploadContent;
+import com.kanglian.healthcare.back.pojo.UploadPatient;
+import com.kanglian.healthcare.back.pojo.UploadPatientRecord;
+import com.kanglian.healthcare.back.pojo.User;
+import com.kanglian.healthcare.back.pojo.UserPic;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
+import com.kanglian.healthcare.back.service.PushService;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.back.service.UploadPatientBo;
 import com.kanglian.healthcare.back.service.UploadPatientRecordBo;
@@ -68,7 +68,7 @@ public class UploadController {
     @Autowired
     private AskQuestionAnswerBo   askQuestionAnswerBo;
     @Autowired
-    private JPushService          jPushService;
+    private PushService          jPushService;
 
     /**
      * 上传头像

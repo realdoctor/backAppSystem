@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.UploadContentDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.UploadContentDao">
 	<select id="getByPubId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="columns"/>
@@ -12,7 +12,7 @@
 		delete from upload_content where pub_id=#{pubId,jdbcType=VARCHAR}
 	</delete>
 
-	<update id="updateByPubId" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadContent">
+	<update id="updateByPubId" parameterType="com.kanglian.healthcare.back.pojo.UploadContent">
 		update upload_content
 		<set>
 		  <if test="pubId != null">pub_id=#{pubId,jdbcType=VARCHAR},</if>

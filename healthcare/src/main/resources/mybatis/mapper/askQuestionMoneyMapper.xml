@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.AskQuestionMoneyDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.AskQuestionMoney" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.AskQuestionMoneyDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.AskQuestionMoney" id="BaseResultMap">
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="chatMoney" column="chat_money" jdbcType="DECIMAL"/>
 		<result property="questionMoney" column="question_money" jdbcType="DECIMAL"/>
@@ -56,7 +56,7 @@
 		delete from ask_question_money where user_id = #{userId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionMoney">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.AskQuestionMoney">
 		insert into ask_question_money (
 		user_id,
 		chat_money,
@@ -73,7 +73,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.AskQuestionMoney">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.AskQuestionMoney">
 		update ask_question_money
 		<set>
 		  <if test="chatMoney != null">chat_money=#{chatMoney,jdbcType=DECIMAL},</if>

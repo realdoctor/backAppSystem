@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsOrderItemDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsOrderItem" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="goodsOrderId" column="goods_order_id" jdbcType="INTEGER"/>
 		<result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
@@ -55,11 +55,11 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrderItem">
 		delete from goods_order_item where 1=1 and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrderItem" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_order_item (
 		goods_order_id,
 		goods_id,
@@ -76,7 +76,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrderItem">
 		update goods_order_item
 		<set>
 		  <if test="goodsOrderId != null">goods_order_id=#{goodsOrderId,jdbcType=INTEGER},</if>

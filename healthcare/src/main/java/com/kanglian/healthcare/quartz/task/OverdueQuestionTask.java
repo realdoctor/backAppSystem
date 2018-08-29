@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.easyway.business.framework.util.CollectionUtil;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
+import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.quartz.common.AbstractTask;
 

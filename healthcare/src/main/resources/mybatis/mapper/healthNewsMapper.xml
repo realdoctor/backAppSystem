@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.HealthNewsDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.HealthNewsDao">
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HealthNews" id="BaseResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.HealthNews" id="BaseResultMap">
 		<result property="newsId" column="news_id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="newsName" column="news_name" jdbcType="VARCHAR"/>
@@ -20,7 +20,7 @@
 		<result property="newsType" column="news_type" jdbcType="VARCHAR"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
-		<collection property="tagsList" ofType="com.kanglian.healthcare.back.dal.pojo.HealthNewsTags" select="com.kanglian.healthcare.back.dal.dao.HealthNewsTagsDao.getByNewsId" column="news_id">
+		<collection property="tagsList" ofType="com.kanglian.healthcare.back.pojo.HealthNewsTags" select="com.kanglian.healthcare.back.dao.HealthNewsTagsDao.getByNewsId" column="news_id">
 		</collection>
 	</resultMap>
 
@@ -96,7 +96,7 @@
 		delete from health_news where news_id = #{newsId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews" useGeneratedKeys="true" keyProperty="newsId">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.HealthNews" useGeneratedKeys="true" keyProperty="newsId">
 		insert into health_news (
 		user_id,
 		news_name,
@@ -133,7 +133,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HealthNews">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.HealthNews">
 		update health_news
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

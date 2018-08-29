@@ -2,8 +2,8 @@ package com.kanglian.healthcare.back.service;
 
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
-import com.kanglian.healthcare.back.dal.dao.GoodsShopcarDao;
-import com.kanglian.healthcare.back.dal.pojo.GoodsShopcar;
+import com.kanglian.healthcare.back.dao.GoodsShopcarDao;
+import com.kanglian.healthcare.back.pojo.GoodsShopcar;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

@@ -15,7 +15,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.back.dal.pojo.GoodsOrder;
+import com.kanglian.healthcare.back.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
 import com.kanglian.healthcare.back.service.GoodsOrderItemBo;
 import com.kanglian.healthcare.exception.InvalidParamException;

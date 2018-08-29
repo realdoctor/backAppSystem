@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsOrderDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsOrder" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsOrderDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsOrder" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
@@ -17,7 +17,7 @@
 		<result property="closeTime" column="close_time" jdbcType="TIMESTAMP"/>
 		<result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-		<collection property="orderList" ofType="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" select="com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao.getGoodsOrderDetail" column="id">
+		<collection property="orderList" ofType="com.kanglian.healthcare.back.pojo.GoodsOrderItem" select="com.kanglian.healthcare.back.dao.GoodsOrderItemDao.getGoodsOrderDetail" column="id">
 		</collection>
 	</resultMap>
 
@@ -84,11 +84,11 @@
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrder">
 		delete from goods_order where 1=1 and id=#{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrder" useGeneratedKeys="true" keyProperty="id">
 		insert into goods_order (
 		order_no,
 		user_id,
@@ -123,7 +123,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.GoodsOrder">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.GoodsOrder">
 		update goods_order
 		<set>
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>

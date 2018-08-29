@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import com.kanglian.healthcare.back.constants.Constants;
+import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.service.CodetableBo;
 import com.kanglian.healthcare.util.JsonUtil;
 import com.kanglian.healthcare.util.RedisCacheManager;

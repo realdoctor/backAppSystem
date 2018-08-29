@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.NewsAdDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NewsAd" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.NewsAdDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NewsAd" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="type" column="type" jdbcType="VARCHAR"/>
 		<result property="content" column="content" jdbcType="VARCHAR"/>
@@ -65,7 +65,7 @@
 		delete from news_ad where id = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.NewsAd" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.NewsAd" useGeneratedKeys="true" keyProperty="id">
 		insert into news_ad (
 		type,
 		content,
@@ -86,7 +86,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.NewsAd">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.NewsAd">
 		update news_ad
 		<set>
 		  <if test="type != null">type=#{type,jdbcType=VARCHAR},</if>

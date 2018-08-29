@@ -9,7 +9,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
-import com.kanglian.healthcare.back.dal.pojo.PatientDrug;
+import com.kanglian.healthcare.back.pojo.PatientDrug;
 import com.kanglian.healthcare.back.service.PatientDrugBo;
 
 /**

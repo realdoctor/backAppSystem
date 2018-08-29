@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsOrderItemDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsOrderItemDao">
 	<!-- 订单号获取订单明细 -->
 	<select id="getGoodsOrderDetailByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String">
 		SELECT
@@ -16,7 +16,7 @@
 		where t.order_no = #{orderNo,jdbcType=VARCHAR}
 	</select>
 	
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.GoodsOrderItem" id="BaseResultMapExt" extends="BaseResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.GoodsOrderItem" id="BaseResultMapExt" extends="BaseResultMap">
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="description" column="description" jdbcType="LONGVARCHAR"/>
 		<result property="bigPic" column="big_pic" jdbcType="VARCHAR"/>

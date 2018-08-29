@@ -3,8 +3,8 @@ package com.kanglian.healthcare.back.service;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.dal.dao.AlipayPaymentLogDao;
-import com.kanglian.healthcare.back.dal.pojo.AlipayPaymentLog;
+import com.kanglian.healthcare.back.dao.AlipayPaymentLogDao;
+import com.kanglian.healthcare.back.pojo.AlipayPaymentLog;
 import com.kanglian.healthcare.exception.DBException;
 
 @Service

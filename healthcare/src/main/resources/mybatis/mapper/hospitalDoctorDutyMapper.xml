@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDoctorDutyDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDuty" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.HospitalDoctorDutyDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.HospitalDoctorDuty" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="VARCHAR"/>
 		<result property="deptId" column="dept_id" jdbcType="VARCHAR"/>
@@ -64,12 +64,12 @@
 		where t.id = #{id,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDuty">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.HospitalDoctorDuty">
 		delete from hospital_doctor_duty where 1=1
 		and id=#{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDuty" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.HospitalDoctorDuty" useGeneratedKeys="true" keyProperty="id">
 		insert into hospital_doctor_duty (
 		hospital_id,
 		dept_id,
@@ -92,7 +92,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDoctorDuty">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.HospitalDoctorDuty">
 		update hospital_doctor_duty
 		<set>
 		  <if test="hospitalId != null">hospital_id=#{hospitalId,jdbcType=VARCHAR},</if>

@@ -10,7 +10,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.dal.pojo.Hospital;
+import com.kanglian.healthcare.back.pojo.Hospital;
 import com.kanglian.healthcare.back.service.HospitalBo;
 
 /**

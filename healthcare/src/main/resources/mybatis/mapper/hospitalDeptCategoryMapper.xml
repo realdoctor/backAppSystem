@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.HospitalDeptCategoryDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.HospitalDeptCategoryDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.HospitalDeptCategory" id="BaseResultMap">
 		<result property="deptId" column="dept_id" jdbcType="INTEGER"/>
 		<result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
 		<result property="deptCode" column="dept_code" jdbcType="VARCHAR"/>
@@ -50,7 +50,7 @@
 		delete from hospital_dept_category where dept_id = #{deptId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory" useGeneratedKeys="true" keyProperty="deptId">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.HospitalDeptCategory" useGeneratedKeys="true" keyProperty="deptId">
 		insert into hospital_dept_category (
 		dept_name,
 		dept_code
@@ -61,7 +61,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.HospitalDeptCategory">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.HospitalDeptCategory">
 		update hospital_dept_category
 		<set>
 		  <if test="deptName != null">dept_name=#{deptName,jdbcType=VARCHAR},</if>

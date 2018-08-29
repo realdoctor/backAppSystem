@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.GoodsDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.GoodsDao">
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.Goods" id="BaseResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.Goods" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="store" column="store" jdbcType="INTEGER"/>
@@ -90,11 +90,11 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.Goods">
 		delete from goods where 1=1 and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.Goods" useGeneratedKeys="true" keyProperty="id">
 		insert into goods (
 		name,
 		store,
@@ -131,7 +131,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.Goods">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.Goods">
 		update goods
 		<set>
 		  <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>

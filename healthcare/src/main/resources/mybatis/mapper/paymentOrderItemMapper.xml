@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PaymentOrderItemDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.PaymentOrderItemDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.PaymentOrderItem" id="BaseResultMap">
 		<result property="itemId" column="item_id" jdbcType="INTEGER"/>
 		<result property="orderId" column="order_id" jdbcType="VARCHAR"/>
 		<result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
@@ -59,7 +59,7 @@
 		delete from payment_order_item where item_id = #{itemId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem" useGeneratedKeys="true" keyProperty="itemId">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.PaymentOrderItem" useGeneratedKeys="true" keyProperty="itemId">
 		insert into payment_order_item (
 		order_id,
 		goods_id,
@@ -76,7 +76,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PaymentOrderItem">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.PaymentOrderItem">
 		update payment_order_item
 		<set>
 		  <if test="orderId != null">order_id=#{orderId,jdbcType=VARCHAR},</if>

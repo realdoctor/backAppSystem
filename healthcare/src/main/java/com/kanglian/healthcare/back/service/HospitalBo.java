@@ -1,15 +1,15 @@
 package com.kanglian.healthcare.back.service;
 
-import com.kanglian.healthcare.back.dal.pojo.Hospital;
 import com.kanglian.healthcare.exception.DBException;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.Grid;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.kanglian.healthcare.back.common.DaoExecutorAdapter;
-import com.kanglian.healthcare.back.common.DaoTemplate;
-import com.kanglian.healthcare.back.dal.dao.HospitalDao;
+import com.kanglian.healthcare.back.dao.HospitalDao;
+import com.kanglian.healthcare.back.pojo.Hospital;
+import com.kanglian.healthcare.common.DaoExecutorAdapter;
+import com.kanglian.healthcare.common.DaoTemplate;
 
 @Service
 public class HospitalBo extends CrudBo<Hospital,HospitalDao> {

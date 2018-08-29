@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.UserRoleDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UserRole" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.UserRoleDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.UserRole" id="BaseResultMap">
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="roleId" column="role_id" jdbcType="INTEGER"/>
 	</resultMap>
@@ -43,12 +43,12 @@
 		where t.user_id = #{userId,jdbcType=INTEGER}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.UserRole">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.UserRole">
 		delete from user_role where 1=1
 		and user_id=#{userId,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UserRole">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.UserRole">
 		insert into user_role (
 		user_id,
 		role_id
@@ -59,7 +59,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UserRole">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.UserRole">
 		update user_role
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

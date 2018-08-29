@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.UploadPatientRecordDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.UploadPatientRecordDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.UploadPatientRecord" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="title" column="title" jdbcType="VARCHAR"/>
@@ -65,7 +65,7 @@
 		delete from upload_patient_record where id = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.UploadPatientRecord" useGeneratedKeys="true" keyProperty="id">
 		insert into upload_patient_record (
 		user_id,
 		title,
@@ -86,7 +86,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.UploadPatientRecord">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.UploadPatientRecord">
 		update upload_patient_record
 		<set>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>

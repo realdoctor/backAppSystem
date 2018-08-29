@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.CodetableDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.Codetable" id="CodeEntryResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.CodetableDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.Codetable" id="CodeEntryResultMap">
 		<result property="code" column="code" jdbcType="VARCHAR"/>
 		<result property="description" column="description" jdbcType="VARCHAR"/>
 	</resultMap>

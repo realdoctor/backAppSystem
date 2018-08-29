@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.NoticeMessageDao">
+<mapper namespace="com.kanglian.healthcare.back.dao.NoticeMessageDao">
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeMessage" id="BaseResultMapExt" extends="BaseResultMap">
-		<collection property="noticeDiagList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" select="getNoticeDiag" column="id">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NoticeMessage" id="BaseResultMapExt" extends="BaseResultMap">
+		<collection property="noticeDiagList" ofType="com.kanglian.healthcare.back.pojo.NoticeDiag" select="getNoticeDiag" column="id">
 		</collection>
-		<collection property="noticeDiagDrugList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" select="getNoticeDiagDrug" column="id">
+		<collection property="noticeDiagDrugList" ofType="com.kanglian.healthcare.back.pojo.NoticeDiagDrug" select="getNoticeDiagDrug" column="id">
 		</collection>
-		<collection property="noticeCommentList" ofType="com.kanglian.healthcare.back.dal.pojo.NoticeComment" select="getNoticeComment" column="id">
+		<collection property="noticeCommentList" ofType="com.kanglian.healthcare.back.pojo.NoticeComment" select="getNoticeComment" column="id">
 		</collection>
 	</resultMap>
 
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiag" id="NoticeDiagResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NoticeDiag" id="NoticeDiagResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
 		<result property="diagCode" column="diag_code" jdbcType="VARCHAR"/>
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeDiagDrug" id="NoticeDiagDrugResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NoticeDiagDrug" id="NoticeDiagDrugResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
 		<result property="drugCode" column="drug_code" jdbcType="VARCHAR"/>
 		<result property="drugName" column="drug_name" jdbcType="VARCHAR"/>
 	</resultMap>
 	
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.NoticeComment" id="NoticeCommentResultMap">
+	<resultMap type="com.kanglian.healthcare.back.pojo.NoticeComment" id="NoticeCommentResultMap">
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="noticeMessageId" column="notice_message_id" jdbcType="VARCHAR"/>
 		<result property="sentUser" column="sent_user" jdbcType="VARCHAR"/>

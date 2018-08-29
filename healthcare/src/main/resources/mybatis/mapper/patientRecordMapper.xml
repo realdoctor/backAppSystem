@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kanglian.healthcare.back.dal.dao.PatientRecordDao">
-	<resultMap type="com.kanglian.healthcare.back.dal.pojo.PatientRecord" id="BaseResultMap">
+<mapper namespace="com.kanglian.healthcare.back.dao.PatientRecordDao">
+	<resultMap type="com.kanglian.healthcare.back.pojo.PatientRecord" id="BaseResultMap">
 		<result property="id" column="id" jdbcType="BIGINT"/>
 		<result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
 		<result property="patientId" column="patient_id" jdbcType="VARCHAR"/>
@@ -73,11 +73,11 @@
 		where t.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<delete id="delete" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
+	<delete id="delete" parameterType="com.kanglian.healthcare.back.pojo.PatientRecord">
 		delete from patient_record where 1=1 and id=#{id,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="save" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.kanglian.healthcare.back.pojo.PatientRecord" useGeneratedKeys="true" keyProperty="id">
 		insert into patient_record (
 		org_code,
 		patient_id,
@@ -106,7 +106,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kanglian.healthcare.back.dal.pojo.PatientRecord">
+	<update id="update" parameterType="com.kanglian.healthcare.back.pojo.PatientRecord">
 		update patient_record
 		<set>
 		  <if test="orgCode != null">org_code=#{orgCode,jdbcType=VARCHAR},</if>

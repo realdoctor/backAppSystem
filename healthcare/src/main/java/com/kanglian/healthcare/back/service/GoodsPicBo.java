@@ -1,9 +1,8 @@
 package com.kanglian.healthcare.back.service;
 
 import com.easyway.business.framework.bo.CrudBo;
-import com.kanglian.healthcare.back.dal.dao.GoodsPicDao;
-import com.kanglian.healthcare.back.dal.pojo.GoodsPic;
-
+import com.kanglian.healthcare.back.dao.GoodsPicDao;
+import com.kanglian.healthcare.back.pojo.GoodsPic;
 import org.springframework.stereotype.Service;
 
 @Service
