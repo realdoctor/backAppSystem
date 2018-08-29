@@ -18,7 +18,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.common.PaymentOrder;
-import com.kanglian.healthcare.back.common.PaymentOrderT;
+import com.kanglian.healthcare.back.common.CommonOrder;
 import com.kanglian.healthcare.back.constant.AlipayConfig;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.FromType;
@@ -188,7 +188,7 @@ public class PaymentController extends BaseController {
      */
     @RequestMapping(value = "/orderPayT", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBody orderPayT(@RequestBody PaymentOrderT paymentOrder, HttpServletRequest request)
+    public ResultBody orderPayT(@RequestBody CommonOrder paymentOrder, HttpServletRequest request)
             throws Exception {
         logger.info("==============进入拉取预付单");
         final String ptype = paymentOrder.getType();

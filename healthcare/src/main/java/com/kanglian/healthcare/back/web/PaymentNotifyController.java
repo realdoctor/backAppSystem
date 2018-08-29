@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.easyway.business.framework.util.DateUtil;
-import com.kanglian.healthcare.back.common.PaymentOrderT;
+import com.kanglian.healthcare.back.common.CommonOrder;
 import com.kanglian.healthcare.back.constant.AlipayConfig;
 import com.kanglian.healthcare.back.constant.AlipayNotifyResponse;
 import com.kanglian.healthcare.back.constant.Constants;
@@ -88,7 +88,7 @@ public class PaymentNotifyController extends BaseController {
                         order.setUpdateTime(DateUtil.currentDate());
                         goodsOrderBo.updateOrderStatus(order);
                     } else if(Constants.NOTIFY_RETURN_TAG_WQ.equals(type) && !paymentOrderBo.orderPayStatus(out_trade_no)) {
-                        PaymentOrderT paymentOrderT = new PaymentOrderT();
+                        CommonOrder paymentOrderT = new CommonOrder();
                         paymentOrderT.setOrderNo(out_trade_no);
                         paymentOrderT.setUserId(retMap.get("userId") + "");
                         paymentOrderBo.updatePaymentOrderAndLog(paymentOrderT);

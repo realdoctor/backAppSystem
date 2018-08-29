@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
+import com.easyway.business.framework.pojo.QueryPojo;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
-import com.kanglian.healthcare.back.common.ApList;
 import com.kanglian.healthcare.back.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
@@ -89,7 +89,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @throws Exception
      */
     @PostMapping("/deleteCartItem")
-    public ResultBody deleteCartItem(@RequestBody ApList cond) throws Exception {
+    public ResultBody deleteCartItem(@RequestBody CommonList cond) throws Exception {
         this.bo.deleteByIds(cond.getIds());
         return ResultUtil.success();
     }
@@ -110,6 +110,19 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
         return ResultUtil.success();
     }
 
+    public static class CommonList extends QueryPojo {
+
+        private String[] ids;
+
+        public String[] getIds() {
+            return ids;
+        }
+
+        public void setIds(String[] ids) {
+            this.ids = ids;
+        }
+    }
+    
     public static class ShopcarQuery extends Grid {
 
         private String userId;
