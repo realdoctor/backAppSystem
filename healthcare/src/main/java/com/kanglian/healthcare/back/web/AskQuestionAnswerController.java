@@ -22,19 +22,17 @@ import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.constants.Constants;
 import com.kanglian.healthcare.back.dal.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.dal.pojo.User;
-import com.kanglian.healthcare.back.dal.pojo.UserInfo;
 import com.kanglian.healthcare.back.dal.pojo.UserRole;
 import com.kanglian.healthcare.back.jpush.JPushService;
 import com.kanglian.healthcare.back.jpush.PushModel;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 import com.kanglian.healthcare.util.PropConfig;
 
 /**
- * 寻医问诊问题与解答
+ * 我的复诊-图文通讯问诊
  * 
  * @author xl.liu
  */
@@ -48,26 +46,24 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     @Autowired
     private UserRoleBo   userRoleBo;
     @Autowired
-    private UserInfoBo   userInfoBo;
-    @Autowired
     private JPushService jPushService;
     
     /**
-     * 我的复诊-上传病历问题列表
+     * 我的复诊-患者病历列表
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @GetMapping("/reply/list")
-    public ResultBody list(AskQuestionQuery query) throws Exception {
+    @GetMapping("/reply/doctorList")
+    public ResultBody doctorReplyList(AskQuestionQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
-        if (StringUtil.isEmpty(query.getRoleId())) {
-            throw new InvalidParamException("roleId");
+        if (StringUtil.isEmpty(query.getStatus())) {
+            throw new InvalidParamException("status");
         }
-        
+        query.setRoleId("0");
         logger.info("[我的复诊]患者病历列表，roleId=" + query.getRoleId());
         return super.list(query, new JsonClothProcessor() {
 
@@ -76,10 +72,42 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                 AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
                 String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                 try {
-                    User user = new User();
-                    user.setUserId(Long.valueOf(askQuestionAnswer.getUserId()));
-                    UserInfo userInfo = userInfoBo.getUserInfo(user);
-                    jsonObject.put("userInfo", userInfoBo.reformUserInfo(userInfo));
+                    if (StringUtil.isNotEmpty(askQuestionAnswer.getPatientImageUrl())) {
+                        jsonObject.put("patientImageUrl", domainUrl.concat(askQuestionAnswer.getPatientImageUrl()));
+                    }
+                    if (StringUtil.isNotEmpty(askQuestionAnswer.getDoctorImageUrl())) {
+                        jsonObject.put("doctorImageUrl", domainUrl.concat(askQuestionAnswer.getDoctorImageUrl()));
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+            
+        });
+    }
+    
+    /**
+     * 我的复诊-患者管理列表
+     * 
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/reply/patientList")
+    public ResultBody patientReplyList(AskQuestionQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getUserId())) {
+            throw new InvalidParamException("userId");
+        }
+        query.setRoleId("1");
+        logger.info("[我的复诊]患者管理列表，roleId=" + query.getRoleId());
+        return ResultUtil.success(this.bo.frontList(query), new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
+                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
+                try {
                     if (StringUtil.isNotEmpty(askQuestionAnswer.getPatientImageUrl())) {
                         jsonObject.put("patientImageUrl", domainUrl.concat(askQuestionAnswer.getPatientImageUrl()));
                     }
@@ -259,15 +287,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
                 query.addParam("roleId", "0");
                 query.addSingleValueCondition(new SingleValueCondition("user_id", getUserId()));
             }
-//            if ("2".equals(getStatus())) {// 已结束
-////                query.addWithoutValueCondition(
-////                        new WithoutValueCondition(" IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) > 3, datediff(now(), t.add_time) > 3) OR t.status=2 "));
-//                query.addWithoutValueCondition(new WithoutValueCondition(" t.status=2 "));
-//            } else if ("1".equals(getStatus())) {// 进行中
-////                query.addWithoutValueCondition(new WithoutValueCondition(
-////                        " IF((t.last_update_dtime IS NOT NULL AND t.last_update_dtime <> ''), datediff(now(), t.last_update_dtime) <= 3, datediff(now(), t.add_time) <= 3) OR t.status=1 "));
-//                query.addWithoutValueCondition(new WithoutValueCondition(" t.status=1 "));
-//            }
             return query;
         }
     }

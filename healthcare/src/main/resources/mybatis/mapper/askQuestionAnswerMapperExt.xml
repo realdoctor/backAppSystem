@@ -19,60 +19,78 @@
 			t.title,
 			t.question,
 			t.answer,
-			t.status,
+			t.`status`,
 			t.add_time,
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
 			u2.real_name AS doctorRealName,
 			t2.src,
 			t2.remark
+			,(3 - t1.replyNum) retryNum
 		FROM
 			ask_question_answer t
-		LEFT JOIN upload_patient t2 ON t2.question_id=t.id
-		LEFT JOIN user u1 ON u1.user_id=t.user_id
-		LEFT JOIN user u2 ON u2.user_id=t.to_user
-		WHERE message_id=#{messageId,jdbcType=VARCHAR}
-		ORDER BY t.add_time desc
+		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
+		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
+		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
+		LEFT JOIN (
+			SELECT
+				max(t.id) AS id,
+				message_id AS messageId,
+				COUNT(t.message_id) replyNum
+			FROM
+				ask_question_answer t
+			GROUP BY
+				t.message_id
+			ORDER BY
+				t.add_time DESC
+		) t1 ON t.message_id = t1.messageId
+		WHERE t.message_id=#{messageId,jdbcType=VARCHAR}
+		ORDER BY t.add_time asc
 	</select>
 	
-	<!-- 分组后取出最新一条回复数据 -->
+	<!-- 获取最新一条回复数据 -->
 	<select id="frontList" resultMap="BaseResultMap" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
 		SELECT
 			t.id,
 			t.message_id,
+			t.patient_record_id,
 			t.user_id,
 			t.to_user,
 			t.title,
 			t.question,
 			t.answer,
-			t.status,
+			t.`status`,
 			t.add_time,
 			t.last_update_dtime,
 			u1.real_name AS patientRealName,
 			u2.real_name AS doctorRealName,
+			up1.thumbnail_pic AS patientImageUrl,
+			up2.thumbnail_pic AS doctorImageUrl,
 			t2.src,
 			t2.remark
+			,(3 - t1.replyNum) retryNum
 		FROM
 			ask_question_answer t
-		LEFT JOIN upload_patient t2 ON t2.question_id=t.id
-		LEFT JOIN user u1 ON u1.user_id=t.user_id
-		LEFT JOIN user u2 ON u2.user_id=t.to_user
+		LEFT JOIN upload_patient t2 ON t2.question_id = t.id
+		LEFT JOIN `user` u1 ON u1.user_id = t.user_id
+		LEFT JOIN `user` u2 ON u2.user_id = t.to_user
+		LEFT JOIN user_pic up1 ON up1.user_id = t.user_id
+		LEFT JOIN user_pic up2 ON up2.user_id = t.to_user
 		INNER JOIN (
 			SELECT
 				max(t.id) as id,
 				COUNT(t.message_id) replyNum
 			FROM
 				ask_question_answer t
-			WHERE t.answer IS NULL OR t.answer=''
 			GROUP BY
 				t.message_id
 			<![CDATA[
 			HAVING
-				replyNum < 3
+				replyNum <= 3
 			]]>
 			ORDER BY
 				t.add_time DESC
-		) t1 ON t.id = t1.id
+		) t1 ON t1.id = t.id
 		<include refid="conditionQuery.core" />
 		order by
 		<choose>
