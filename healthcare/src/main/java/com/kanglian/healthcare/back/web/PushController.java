@@ -39,6 +39,11 @@ public class PushController extends BaseController {
             throw new InvalidParamException("receiveId");
         }
         
+        String mobilePhone = query.getMobilePhone();
+        if (StringUtil.isEmpty(mobilePhone) || "null".equals(mobilePhone)) {
+            throw new InvalidParamException("mobilePhone");
+        }
+        
         String content = query.getContent();
         if (StringUtil.isEmpty(content) || "null".equals(content)) {
             throw new InvalidParamException("content");
@@ -50,9 +55,10 @@ public class PushController extends BaseController {
         pushModel.addAlias(receiveId);
         pushModel.addParam(Constants.TAG_ID, Constants.TAG_CHAT_ID);
         pushModel.addParam(Constants.USER_ID, String.valueOf(user.getUserId()));
+        pushModel.addParam(Constants.MOBILE_PHONE, mobilePhone);
         jPushService.pushToAndroid(pushModel);
-        LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 内容={}",
-                new Object[] {user.getUserId(), receiveId, content});
+        LogUtil.getMessageLogger().info("【即时聊天】发送用户userId={}，接收用户receiveUserId={}, 手机={}，内容={}",
+                new Object[] {user.getUserId(), receiveId, mobilePhone, content});
         return ResultUtil.success();
     }
 
@@ -60,6 +66,7 @@ public class PushController extends BaseController {
         private String userId;
         private String receiveId;
         private String content;
+        private String mobilePhone;
         public String getUserId() {
             return userId;
         }
@@ -77,6 +84,12 @@ public class PushController extends BaseController {
         }
         public void setContent(String content) {
             this.content = content;
+        }
+        public String getMobilePhone() {
+            return mobilePhone;
+        }
+        public void setMobilePhone(String mobilePhone) {
+            this.mobilePhone = mobilePhone;
         }
     }
 }
