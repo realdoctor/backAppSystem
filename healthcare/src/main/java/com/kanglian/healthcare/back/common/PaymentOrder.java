@@ -17,7 +17,7 @@ public class PaymentOrder {
     private Double                 totalAmount;
     // 订单列表
     private List<PaymentOrderItem> goodsList;
-    // 支付类型
+    // 支付类型（支付类型 ：支付宝支付|alipay，微信支付|wxpay..）
     private String                 type;
 
     public String getType() {

@@ -5,9 +5,9 @@ package com.kanglian.healthcare.back.common;
  * 
  * @author xl.liu
  */
-public class PaymentOrderT {
+public class CommonOrder {
 
-    // 付费用户Id
+    // 用户Id
     private String userId;
     // 支付给用户Id
     private String toUserId;
@@ -17,9 +17,9 @@ public class PaymentOrderT {
     private Double payAmount;
     // 商品id
     private String goodsId;
-    // 支付类型
+    // 支付类型（支付类型 ：支付宝支付|alipay，微信支付|wxpay..）
     private String type;
-    // 支付来源(支付来源：1，聊天支付；2，问诊支付；3，视频支付；4，图文支付；5，资讯支付)
+    // 支付来源（支付来源：1，聊天支付；2，问诊支付；3，视频支付；4，图文支付；5，资讯支付）
     private String from;
 
     public String getType() {

@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
-import com.kanglian.healthcare.back.common.PaymentOrderT;
+import com.kanglian.healthcare.back.common.CommonOrder;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.FromType;
 import com.kanglian.healthcare.back.constant.PaymentStatus;
@@ -49,17 +49,17 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
      * @param paymentOrder
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void createPaymentOrder(PaymentOrderT paymentOrderT) {
+    public void createPaymentOrder(final CommonOrder baseOrder) throws Exception {
         try {
             // 创建订单
             PaymentOrder paymentOrder = new PaymentOrder();
-            paymentOrder.setOrderNo(paymentOrderT.getOrderNo());
-            paymentOrder.setUserId(Integer.valueOf(paymentOrderT.getUserId()));
-            if (StringUtil.isNotEmpty(paymentOrderT.getToUserId())) {
-                paymentOrder.setToUser(Integer.valueOf(paymentOrderT.getToUserId()));
+            paymentOrder.setOrderNo(baseOrder.getOrderNo());
+            paymentOrder.setUserId(Integer.valueOf(baseOrder.getUserId()));
+            if (StringUtil.isNotEmpty(baseOrder.getToUserId())) {
+                paymentOrder.setToUser(Integer.valueOf(baseOrder.getToUserId()));
             }
-            paymentOrder.setPayType(PaymentType.getValue(paymentOrderT.getType()));
-            paymentOrder.setPayPrice(paymentOrderT.getPayAmount());
+            paymentOrder.setPayType(PaymentType.getValue(baseOrder.getType()));
+            paymentOrder.setPayPrice(baseOrder.getPayAmount());
             paymentOrder.setPayTime(DateUtil.currentDate());
             paymentOrder.setPayStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentOrder.setAddTime(DateUtil.currentDate());
@@ -68,7 +68,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             // 订单明细
             PaymentOrderItem paymentOrderItem = new PaymentOrderItem();
             paymentOrderItem.setOrderId(paymentOrder.getOrderId()+"");
-            paymentOrderItem.setGoodsId(paymentOrderT.getGoodsId());
+            paymentOrderItem.setGoodsId(baseOrder.getGoodsId());
             paymentOrderItem.setNum(1);
             paymentOrderItem.setPrice(paymentOrder.getPayPrice());
             paymentOrderItem.setAddTime(DateUtil.currentDate());
@@ -82,7 +82,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentLog.setUserId(paymentOrder.getUserId());
             paymentLog.setToUser(paymentOrder.getToUser());
             paymentLog.setType(paymentOrder.getPayType());// 支付类型
-            paymentLog.setFrom(FromType.getName(paymentOrderT.getFrom()));// 支付来源
+            paymentLog.setFrom(FromType.getName(baseOrder.getFrom()));// 支付来源
             paymentLog.setMark(Constants.MARK_PAY);
             paymentLog.setMoney(paymentOrder.getPayPrice());
             paymentLog.setStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
@@ -141,9 +141,9 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void updatePaymentOrderAndLog(final PaymentOrderT paymentOrderT) {
+    public void updatePaymentOrderAndLog(final CommonOrder baseOrder) throws Exception {
         try {
-            PaymentOrder paymentOrder = getByOrderNo(paymentOrderT.getOrderNo());
+            PaymentOrder paymentOrder = getByOrderNo(baseOrder.getOrderNo());
             if (paymentOrder != null) {
                 Integer userId = paymentOrder.getUserId();
                 Integer toUserId = paymentOrder.getToUser();
@@ -193,7 +193,7 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
      * @param askQuestionAnswer
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void refundAskQuestion(AskQuestionAnswer askQuestionAnswer) {
+    public void refundAskQuestion(AskQuestionAnswer askQuestionAnswer) throws Exception {
         if (askQuestionAnswer == null) {
             return;
         }
