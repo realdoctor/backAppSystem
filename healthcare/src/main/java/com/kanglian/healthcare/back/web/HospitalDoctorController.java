@@ -26,7 +26,7 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 public class HospitalDoctorController extends CrudController<HospitalDoctor, HospitalDoctorBo> {
 
     @Autowired
-    private UserDoctorBo        userDoctorBo;
+    private UserDoctorBo userDoctorBo;
 
     /**
      * 医生一览
@@ -48,30 +48,32 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
      * @throws Exception
      */
     @GetMapping("/getDoctorInfo")
-    public ResultBody getDoctorInfo(UserQuery query) throws Exception {
-        if (StringUtil.isEmpty(query.getUserId())) {
-            throw new InvalidParamException("userId");
+    public ResultBody getDoctorInfo(UserQuery query, @RequestParam("flag") String flag,
+            @RequestParam("hospitalName") String hospitalName,
+            @RequestParam("doctorName") String doctorName)
+            throws Exception {
+        if ("1".equals(flag)) {
+            if (StringUtil.isEmpty(hospitalName)) {
+                throw new InvalidParamException("hospitalName");
+            }
+            if (StringUtil.isEmpty(hospitalName)) {
+                throw new InvalidParamException("doctorName");
+            }
+            return ResultUtil
+                    .success(this.userDoctorBo.getDoctorInfoByName(hospitalName, doctorName));
+        } else {
+            if (StringUtil.isEmpty(query.getUserId())) {
+                throw new InvalidParamException("userId");
+            }
+            return ResultUtil.success(this.userDoctorBo.getDoctorInfo(query.buildConditionQuery()));
         }
-        return ResultUtil.success(this.userDoctorBo.getDoctorInfo(query.buildConditionQuery()));
     }
-    
-    @GetMapping("/getDoctorInfoByName")
-    public ResultBody getDoctorInfoByName(@RequestParam("hospitalName") String hospitalName,
-            @RequestParam("doctorName") String doctorName) throws Exception {
-        if (StringUtil.isEmpty(hospitalName)) {
-            throw new InvalidParamException("hospitalName");
-        }
-        if (StringUtil.isEmpty(hospitalName)) {
-            throw new InvalidParamException("doctorName");
-        }
-        return ResultUtil.success(this.userDoctorBo.getDoctorInfoByName(hospitalName, doctorName));
-    }
-    
+
     public static class UserQuery extends Grid {
 
         private String userId;
         private String doctorCode;
-        
+
         @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
@@ -81,7 +83,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
             this.userId = userId;
         }
 
-        @SingleValue(tableAlias="t2", column = "doctor_code", equal = "=")
+        @SingleValue(tableAlias = "t2", column = "doctor_code", equal = "=")
         public String getDoctorCode() {
             return doctorCode;
         }
@@ -89,6 +91,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
         public void setDoctorCode(String doctorCode) {
             this.doctorCode = doctorCode;
         }
+
     }
-    
+
 }

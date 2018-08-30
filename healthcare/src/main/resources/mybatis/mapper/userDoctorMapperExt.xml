@@ -3,6 +3,7 @@
 <mapper namespace="com.kanglian.healthcare.back.dao.UserDoctorDao">
 	<resultMap type="com.kanglian.healthcare.back.pojo.UserDoctor" id="BaseResultMapExt">
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
+		<result property="doctorUserId" column="doctor_user_id" jdbcType="INTEGER"/>
 		<result property="doctorId" column="doctor_id" jdbcType="INTEGER"/>
 		<result property="hospitalId" column="hospital_id" jdbcType="INTEGER"/>
 		<result property="doctorCode" column="doctor_code" jdbcType="VARCHAR"/>
@@ -19,7 +20,8 @@
 	
 	<sql id="Query_UserDoctor_Sql">
 		SELECT
-			t.user_id,
+			t.user_id AS user_id,
+			t.user_id AS doctor_user_id,
 			t.doctor_id,
 			t2.doctor_code,
 			t2.doctor_name,

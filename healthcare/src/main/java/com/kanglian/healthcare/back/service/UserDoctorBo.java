@@ -31,14 +31,14 @@ public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {
         });
     }
 
-    public UserDoctor getDoctorInfoById(final Integer userId) {
+    public UserDoctor getDoctorInfoById(final Integer doctorUserId) {
         return DaoTemplate.select(new DaoExecutorAdapter() {
 
             @SuppressWarnings("unchecked")
             @Override
             public UserDoctor select() throws Exception {
                 ConditionQuery query = new ConditionQuery();
-                query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
+                query.addSingleValueCondition(new SingleValueCondition("user_id", doctorUserId));
                 return getDao().getDoctorInfo(query);
             }
 

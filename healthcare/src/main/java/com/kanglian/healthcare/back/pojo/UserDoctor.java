@@ -1,11 +1,14 @@
 package com.kanglian.healthcare.back.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class UserDoctor extends BasePojo {
     private static final long serialVersionUID = 1L;
     // 用户Id
     private Integer           userId;
+    private Integer           doctorUserId;
+    @JSONField(serialize=false)
     private Integer           doctorId;
     private Integer           hospitalId;
     private String            hospitalCode;
@@ -31,6 +34,12 @@ public class UserDoctor extends BasePojo {
     }
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+    public Integer getDoctorUserId() {
+        return doctorUserId;
+    }
+    public void setDoctorUserId(Integer doctorUserId) {
+        this.doctorUserId = doctorUserId;
     }
     public Integer getDoctorId() {
         return doctorId;
