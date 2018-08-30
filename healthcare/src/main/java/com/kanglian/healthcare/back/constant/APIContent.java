@@ -27,7 +27,7 @@ public final class APIContent {
     // 检查是否已实名
     public final static String USER_IDENTIFY_CHECK             = "/user/certification/check";
     // 刷新token
-    public final static String USER_REFRESH_TOKEN               = "/user/refreshToken";
+    public final static String USER_REFRESH_TOKEN              = "/user/refreshToken";
 
     /**
      * 上传信息
@@ -43,7 +43,7 @@ public final class APIContent {
      * 首页
      */
     // 提醒信息内容
-    public final static String USER_MESSAGE                    = "/user/message";
+    public final static String USER_MESSAGE_LIST               = "/user/message";
     // 提醒信息列表
     public final static String USER_MESSAGE_NOTICELIST         = "/user/message/noticeList";
 
