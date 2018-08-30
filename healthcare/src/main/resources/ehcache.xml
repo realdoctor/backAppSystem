@@ -5,7 +5,7 @@
     <diskStore path="/home/app/cache"/>
  
     <defaultCache
-            maxElementsInMemory="10000"
+            maxElementsInMemory="1000"
             maxElementsOnDisk="10000000"
             eternal="false"
             timeToIdleSeconds="120"
