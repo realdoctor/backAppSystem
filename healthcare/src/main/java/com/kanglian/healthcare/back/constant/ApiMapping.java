@@ -1,7 +1,7 @@
 package com.kanglian.healthcare.back.constant;
 
 /**
- * 接口服务上下文
+ * 接口服务管理
  * 
  * @author xl.liu
  */
