@@ -58,7 +58,7 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
     @PostMapping("/add")
     public ResultBody addDoctor(@RequestBody MyDoctor myDoctor) {
         String userId = myDoctor.getUserId();
-        String doctorId = myDoctor.getDoctorId();
+        String doctorUserId = myDoctor.getDoctorUserId();
         if (StringUtil.isEmpty(userId)) {
             throw new InvalidParamException("userId");
         } else {
@@ -69,17 +69,17 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
             }
         }
         
-        if (StringUtil.isEmpty(doctorId)) {
+        if (StringUtil.isEmpty(doctorUserId)) {
             throw new InvalidParamException("doctorId");
         } else {
             try {
-                Long.valueOf(doctorId);
+                Long.valueOf(doctorUserId);
             } catch (Exception e) {
-                throw new InvalidOperationException("doctorId");
+                throw new InvalidOperationException("doctorUserId");
             }
         }
         
-        User u2 = userBo.get(Long.valueOf(doctorId));
+        User u2 = userBo.get(Long.valueOf(doctorUserId));
         if (u2 == null) {
             return ResultUtil.error("医生不存在");
         }

@@ -6,7 +6,7 @@ import com.easyway.business.framework.pojo.BasePojo;
 public class MyDoctor extends BasePojo {
     private static final long serialVersionUID = 1L;
     private String            userId;
-    private String            doctorId;
+    private String            doctorUserId;
     private Integer           hospitalId;
     private String            hospitalCode;
     // 医院名称
@@ -35,12 +35,12 @@ public class MyDoctor extends BasePojo {
         this.userId = userId;
     }
 
-    public String getDoctorId() {
-        return doctorId;
+    public String getDoctorUserId() {
+        return doctorUserId;
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorUserId(String doctorUserId) {
+        this.doctorUserId = doctorUserId;
     }
 
     public Integer getHospitalId() {
