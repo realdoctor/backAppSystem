@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
@@ -16,6 +15,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.CollectionUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.HealthNews;
 import com.kanglian.healthcare.back.service.HealthNewsBo;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
@@ -28,7 +28,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  * @author xl.liu
  */
 @RestController
-@RequestMapping(value = "/healthnews")
 public class HealthNewsController extends CrudController<HealthNews, HealthNewsBo> {
 
     @Autowired
@@ -43,7 +42,7 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.NEWS_LIST)
     public ResultBody list(final BaseQuery query) throws Exception {
         return super.list(query, new JsonClothProcessor() {
 
@@ -97,7 +96,7 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
      * @return
      * @throws Exception
      */
-    @GetMapping("/info")
+    @GetMapping(ApiMapping.NEWS_INFO)
     public ResultBody newsInfo(String newsId) throws Exception {
         if (StringUtil.isEmpty(newsId)) {
             throw new InvalidParamException("newsId");
@@ -105,7 +104,7 @@ public class HealthNewsController extends CrudController<HealthNews, HealthNewsB
         return ResultUtil.success(this.bo.get(Integer.valueOf(newsId)));
     }
 
-    @GetMapping("/ad/list")
+    @GetMapping(ApiMapping.NEWS_AD_LIST)
     public ResultBody newsAd() throws Exception {
         return ResultUtil.success(newsAdBo.queryAll());
     }
