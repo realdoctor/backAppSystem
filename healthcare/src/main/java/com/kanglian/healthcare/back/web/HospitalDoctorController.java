@@ -3,6 +3,7 @@ package com.kanglian.healthcare.back.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -52,6 +53,18 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
             throw new InvalidParamException("userId");
         }
         return ResultUtil.success(this.userDoctorBo.getDoctorInfo(query.buildConditionQuery()));
+    }
+    
+    @GetMapping("/getDoctorInfoByName")
+    public ResultBody getDoctorInfoByName(@RequestParam("hospitalName") String hospitalName,
+            @RequestParam("doctorName") String doctorName) throws Exception {
+        if (StringUtil.isEmpty(hospitalName)) {
+            throw new InvalidParamException("hospitalName");
+        }
+        if (StringUtil.isEmpty(hospitalName)) {
+            throw new InvalidParamException("doctorName");
+        }
+        return ResultUtil.success(this.userDoctorBo.getDoctorInfoByName(hospitalName, doctorName));
     }
     
     public static class UserQuery extends Grid {

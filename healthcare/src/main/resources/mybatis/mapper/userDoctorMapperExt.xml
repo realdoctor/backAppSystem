@@ -60,4 +60,11 @@
 		ORDER BY
 			t3.hospital_id DESC
 	</select>
+	
+	<select id="getDoctorInfoByName" resultMap="BaseResultMapExt" parameterType="com.easyway.business.framework.mybatis.query.ConditionQuery">
+        <include refid="Query_UserDoctor_Sql" />
+		<include refid="conditionQuery.core" />
+		ORDER BY
+			t3.hospital_id DESC
+	</select>
 </mapper>

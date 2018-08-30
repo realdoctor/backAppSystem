@@ -1,5 +1,6 @@
 package com.kanglian.healthcare.back.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
@@ -39,6 +40,27 @@ public class UserDoctorBo extends NewCrudBo<UserDoctor, UserDoctorDao> {
                 ConditionQuery query = new ConditionQuery();
                 query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
                 return getDao().getDoctorInfo(query);
+            }
+
+        });
+    }
+    
+    public UserDoctor getDoctorInfoByName(final String hospitalName, final String doctorName) {
+        return DaoTemplate.select(new DaoExecutorAdapter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public UserDoctor select() throws Exception {
+                ConditionQuery query = new ConditionQuery();
+                query.addSingleValueCondition(
+                        new SingleValueCondition("t4", "hospital_name", "=", hospitalName));
+                query.addSingleValueCondition(
+                        new SingleValueCondition("t2", "doctor_name", "=", doctorName));
+                List<UserDoctor> list = getDao().getDoctorInfoByName(query);
+                if (list != null && list.size() > 0) {
+                    return list.get(0);
+                }
+                return null;
             }
 
         });
