@@ -13,6 +13,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.UploadContent;
 import com.kanglian.healthcare.back.service.UploadContentBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -33,7 +34,7 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
      * @return
      * @throws Exception
      */
-    @GetMapping("/news_pub/list")
+    @GetMapping(ApiMapping.NEWS_PUB_LIST)
     public ResultBody list(final ContentQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
@@ -48,7 +49,7 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
      * @return
      * @throws Exception
      */
-    @GetMapping("/news_pub/info")
+    @GetMapping(ApiMapping.NEWS_PUB_INFO)
     public ResultBody info(String pubId) throws Exception {
         return ResultUtil.success(this.bo.getByPubId(pubId));
     }
@@ -60,7 +61,7 @@ public class UploadContentController extends CrudController<UploadContent, Uploa
      * @return
      * @throws Exception
      */
-    @PostMapping("/news_pub/del")
+    @PostMapping(ApiMapping.NEWS_PUB_DEL)
     public ResultBody del(@RequestBody UploadContent uploadContent) throws Exception {
         String pubId = uploadContent.getPubId();
         if (StringUtil.isEmpty(pubId)) {

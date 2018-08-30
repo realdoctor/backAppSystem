@@ -24,6 +24,7 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.UploadType;
 import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
@@ -50,7 +51,6 @@ import net.coobird.thumbnailator.Thumbnails;
 
 @Authorization
 @Controller
-@RequestMapping("/upload")
 public class UploadController {
     /** logger **/
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
@@ -80,7 +80,7 @@ public class UploadController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.UPLOAD_IMG, method = RequestMethod.POST)
     public ResultBody headpicUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile imageFile,
             HttpServletRequest request) throws Exception {
@@ -169,7 +169,7 @@ public class UploadController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.UPLOAD_UPLOADFILES, method = RequestMethod.POST)
     public ResultBody filesUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
@@ -312,7 +312,7 @@ public class UploadController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadPatient", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.UPLOAD_PATIENT, method = RequestMethod.POST)
     public ResultBody patientUpload(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile[] files,
             HttpServletRequest request) throws Exception {
@@ -492,7 +492,7 @@ public class UploadController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadPatientRecord", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.UPLOAD_PATIENT_RECORD, method = RequestMethod.POST)
     public ResultBody uploadPatientRecord(@CurrentUser User user,
             @RequestParam(value = "attach", required = false) MultipartFile file,
             HttpServletRequest request) throws Exception {
