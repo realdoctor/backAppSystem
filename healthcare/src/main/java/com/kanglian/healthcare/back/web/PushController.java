@@ -12,6 +12,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.PushModel;
 import com.kanglian.healthcare.back.pojo.User;
@@ -25,14 +26,13 @@ import com.kanglian.healthcare.util.LogUtil;
  * @author xl.liu
  */
 @Controller
-@RequestMapping(value = "/push")
 public class PushController extends BaseController {
 
     @Autowired
     private PushService jPushService;
 
     @Authorization
-    @RequestMapping(value = "/pushmsg", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.PUSH_PUSHMSG, method = RequestMethod.POST)
     public @ResponseBody ResultBody pushmsg(@CurrentUser User user, @RequestBody PushmsgQuery query) throws Exception {
         String receiveId = query.getReceiveId();
         if (StringUtil.isEmpty(receiveId) || "null".equals(receiveId)) {

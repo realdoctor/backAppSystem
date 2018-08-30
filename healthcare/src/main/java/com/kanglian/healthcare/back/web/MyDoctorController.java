@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -14,6 +13,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.MyDoctor;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.MyDoctorBo;
@@ -28,7 +28,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/user/mydoctor")
 public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
 
     @Autowired
@@ -41,7 +40,7 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.USER_MYDOCTOR_LIST)
     public ResultBody list(MyDoctorQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
@@ -55,7 +54,7 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
      * @param myDoctor
      * @return
      */
-    @PostMapping("/add")
+    @PostMapping(ApiMapping.USER_MYDOCTOR_ADD)
     public ResultBody addDoctor(@RequestBody MyDoctor myDoctor) {
         String userId = myDoctor.getUserId();
         String doctorUserId = myDoctor.getDoctorUserId();
@@ -70,7 +69,7 @@ public class MyDoctorController extends CrudController<MyDoctor, MyDoctorBo> {
         }
         
         if (StringUtil.isEmpty(doctorUserId)) {
-            throw new InvalidParamException("doctorId");
+            throw new InvalidParamException("doctorUserId");
         } else {
             try {
                 Long.valueOf(doctorUserId);
