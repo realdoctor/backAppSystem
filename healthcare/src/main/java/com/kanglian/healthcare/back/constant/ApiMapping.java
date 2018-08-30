@@ -5,7 +5,7 @@ package com.kanglian.healthcare.back.constant;
  * 
  * @author xl.liu
  */
-public final class APIContent {
+public final class ApiMapping {
 
     /**
      * 用户管理
@@ -28,6 +28,10 @@ public final class APIContent {
     public final static String USER_IDENTIFY_CHECK             = "/user/certification/check";
     // 刷新token
     public final static String USER_REFRESH_TOKEN              = "/user/refreshToken";
+    // 扫描关注医生
+    public final static String USER_MYDOCTOR_ADD               = "/user/mydoctor/add";
+    // 关注医生列表
+    public final static String USER_MYDOCTOR_LIST              = "/user/mydoctor/list";
 
     /**
      * 上传信息
