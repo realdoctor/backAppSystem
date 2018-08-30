@@ -48,9 +48,9 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
      * @throws Exception
      */
     @GetMapping("/getDoctorInfo")
-    public ResultBody getDoctorInfo(UserQuery query, @RequestParam("flag") String flag,
-            @RequestParam("hospitalName") String hospitalName,
-            @RequestParam("doctorName") String doctorName)
+    public ResultBody getDoctorInfo(UserQuery query, @RequestParam(required=false, value="flag") String flag,
+            @RequestParam(required=false, value="hospitalName") String hospitalName,
+            @RequestParam(required=false, value="doctorName") String doctorName)
             throws Exception {
         if ("1".equals(flag)) {
             if (StringUtil.isEmpty(hospitalName)) {

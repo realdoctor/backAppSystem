@@ -16,6 +16,7 @@
 		<result property="doctorIntro" column="doctor_intro" jdbcType="LONGVARCHAR"/>
 		<result property="positional" column="positional" jdbcType="VARCHAR"/>
 		<result property="goodAt" column="field" jdbcType="VARCHAR"/>
+		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<sql id="Query_UserDoctor_Sql">
@@ -23,6 +24,7 @@
 			t.user_id AS user_id,
 			t.user_id AS doctor_user_id,
 			t.doctor_id,
+			t1.mobile_phone,
 			t2.doctor_code,
 			t2.doctor_name,
 			t2.doctor_intro,
@@ -36,6 +38,7 @@
 			t4.hospital_level
 		FROM
 			user_doctor t
+		LEFT JOIN `user` t1 ON t1.user_id = t.user_id
 		LEFT JOIN hospital_doctor t2 ON t2.doctor_id = t.doctor_id
 		LEFT JOIN hospital_dept t3 ON t3.dept_id = t2.dept_id
 		LEFT JOIN hospital t4 ON t4.hospital_id = t3.hospital_id
