@@ -123,7 +123,7 @@ public final class ApiMapping {
      */
     public final static String PATIENT_REVISIT_DIAG_LIST       = "/patient/revisit/diagList";
     /**
-     * <H5>我的复诊-患者回复</H5>
+     * <H5>我的复诊-患者回复（同医生）</H5>
      */
     public final static String ASKQUESTION_REPLY               = "/askQuestion/reply";
     /**

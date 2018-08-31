@@ -129,7 +129,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
      * @return
      * @throws Exception
      */
-    @PostMapping("/reply")
+    @PostMapping(ApiMapping.ASKQUESTION_REPLY)
     public ResultBody reply(@RequestBody AskQuestionQuery query) throws Exception {
         String userId = query.getUserId();
         String questionId = query.getQuestionId();
@@ -196,7 +196,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
      * @return
      * @throws Exception
      */
-    @GetMapping("/reply/info")
+    @GetMapping(ApiMapping.ASKQUESTION_REPLY_INFO)
     public ResultBody info(String messageId) throws Exception {
         if (StringUtil.isEmpty(messageId)) {
             throw new InvalidParamException("messageId");
