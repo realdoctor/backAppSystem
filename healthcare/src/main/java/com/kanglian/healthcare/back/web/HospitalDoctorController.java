@@ -2,7 +2,6 @@ package com.kanglian.healthcare.back.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
@@ -11,6 +10,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.github.pagehelper.util.StringUtil;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.HospitalDoctor;
 import com.kanglian.healthcare.back.service.HospitalDoctorBo;
 import com.kanglian.healthcare.back.service.UserDoctorBo;
@@ -22,7 +22,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  * @author xl.liu
  */
 @RestController
-@RequestMapping(value = "/doctor")
 public class HospitalDoctorController extends CrudController<HospitalDoctor, HospitalDoctorBo> {
 
     @Autowired
@@ -35,7 +34,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.DOCTOR_LIST)
     public ResultBody list(UserQuery query) throws Exception {
         return ResultUtil.success(this.userDoctorBo.frontList(query));
     }
@@ -47,7 +46,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
      * @return
      * @throws Exception
      */
-    @GetMapping("/getDoctorInfo")
+    @GetMapping(ApiMapping.DOCTOR_GETINFO)
     public ResultBody getDoctorInfo(UserQuery query, @RequestParam(required=false, value="flag") String flag,
             @RequestParam(required=false, value="hospitalName") String hospitalName,
             @RequestParam(required=false, value="doctorName") String doctorName)

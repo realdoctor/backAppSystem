@@ -11,6 +11,7 @@ import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.Hospital;
 import com.kanglian.healthcare.back.service.HospitalBo;
 import com.kanglian.healthcare.back.service.HospitalDeptCategoryBo;
@@ -33,7 +34,7 @@ public class HospitalController extends CrudController<Hospital, HospitalBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/guahao/hospital/list")
+    @GetMapping(ApiMapping.GUAHAO_HOSPITAL_LIST)
     public ResultBody list(HospitalQuery query) throws Exception {
         return super.list(query);
     }
@@ -44,7 +45,7 @@ public class HospitalController extends CrudController<Hospital, HospitalBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/guahao/hospital/deptCategory")
+    @GetMapping(ApiMapping.GUAHAO_HOSPITAL_DEPTCATEGORY)
     public ResultBody hospitalDeptCategory() throws Exception {
         return ResultUtil.success(hospitalDeptCategoryBo.getHospitalDeptList());
     }

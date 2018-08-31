@@ -147,6 +147,14 @@ public final class ApiMapping {
      * <H5>设置问诊收费配置</H5>
      */
     public final static String ASKQUESTION_SETMONEY            = "/askQuestion/setAskQuestionMoney";
+    /**
+     * <H5>医生一览</H5>
+     */
+    public final static String DOCTOR_LIST                     = "/doctor/list";
+    /**
+     * <H5>医生详情</H5>
+     */
+    public final static String DOCTOR_GETINFO                  = "/doctor/getDoctorInfo";
 
     // ==========================================================================
     // ============预约挂号
