@@ -54,7 +54,10 @@ public final class ApiMapping {
      * <H5>关注医生列表</H5>
      */
     public final static String USER_MYDOCTOR_LIST              = "/user/mydoctor/list";
-
+    /**
+     * <H5>用户列表</H5>
+     */
+    public final static String USER_LIST                       = "/user/list";
     /**
      * <H5>用户基本信息</H5>
      */
@@ -62,7 +65,7 @@ public final class ApiMapping {
     /**
      * <H5>获取用户认证信息</H5>
      */
-    public final static String USER_CERTIFICATION_INFO         = "/user/certification/info";
+    public final static String USER_IDENTIFY_INFO              = "/user/certification/info";
     /**
      * <H5>用户消费记录</H5>
      */
@@ -70,7 +73,7 @@ public final class ApiMapping {
     /**
      * <H5>从服务器获取病历下载</H5>
      */
-    public final static String USER_GETUPLOADPATIENTURL        = "/user/getUploadPatientUrl";
+    public final static String USER_GET_UPLOADPATIENTURL       = "/user/getUploadPatientUrl";
 
     // ==========================================================================
     // ============上传信息
@@ -154,7 +157,7 @@ public final class ApiMapping {
     /**
      * <H5>医生详情</H5>
      */
-    public final static String DOCTOR_GETINFO                  = "/doctor/getDoctorInfo";
+    public final static String DOCTOR_INFO                     = "/doctor/getDoctorInfo";
 
     // ==========================================================================
     // ============预约挂号
@@ -162,11 +165,11 @@ public final class ApiMapping {
     /**
      * <H5>我的预约-患者挂号一览（患者）</H5>
      */
-    public final static String USER_MYGUAHAOORDER              = "/user/myGuahaoOrder";
+    public final static String USER_MYGUAHAO_ORDER             = "/user/myGuahaoOrder";
     /**
      * <H5>我的预约-患者挂号一览（医生）</H5>
      */
-    public final static String USER_MYPATIENTORDER             = "/user/myPatientOrder";
+    public final static String USER_MYPATIENT_ORDER            = "/user/myPatientOrder";
     /**
      * <H5>挂号医院一览</H5>
      */
@@ -178,7 +181,7 @@ public final class ApiMapping {
     /**
      * <H5>预约日期列表</H5>
      */
-    public final static String GUAHAO_HOSPITAL_DUTYDAY         = "/guahao/hospital/orderDate";
+    public final static String GUAHAO_HOSPITAL_ORDERDATE       = "/guahao/hospital/orderDate";
     /**
      * <H5>按专家预约列表</H5>
      */
@@ -206,23 +209,27 @@ public final class ApiMapping {
     /**
      * <H5>添加购物车</H5>
      */
-    public final static String GOODS_CART_ADDCARTITEM          = "/goods/cart/addCartItem";
+    public final static String GOODS_CART_ADD                  = "/goods/cart/addCartItem";
     /**
      * <H5>清空购物车</H5>
      */
-    public final static String GOODS_CART_CLEARCART            = "/goods/cart/clearCart";
+    public final static String GOODS_CART_CLEAR                = "/goods/cart/clearCart";
     /**
      * <H5>删除购物车</H5>
      */
-    public final static String GOODS_CART_DELETECARTITEM       = "/goods/cart/deleteCartItem";
+    public final static String GOODS_CART_DELETE               = "/goods/cart/deleteCartItem";
+    /**
+     * <H5>我的订单</H5>
+     */
+    public final static String GOODS_ORDER_LIST                = "/goods/order/orderList";
     /**
      * <H5>取消订单</H5>
      */
-    public final static String GOODS_ORDER_CANCELORDER         = "/goods/order/cancelOrder";
+    public final static String GOODS_ORDER_CANCEL              = "/goods/order/cancelOrder";
     /**
      * <H5>订单明细</H5>
      */
-    public final static String GOODS_ORDER_ORDERDETAIL         = "/goods/order/orderDetail";
+    public final static String GOODS_ORDER_DETAIL              = "/goods/order/orderDetail";
 
     // ==========================================================================
     // ============图文视频

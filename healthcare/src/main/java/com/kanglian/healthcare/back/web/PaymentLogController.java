@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
@@ -15,6 +14,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.PaymentLog;
 import com.kanglian.healthcare.back.pojo.User;
@@ -24,11 +24,9 @@ import com.kanglian.healthcare.util.PropConfig;
 
 @Authorization
 @RestController
-@RequestMapping(value = "/account")
-public class PaymentLogController
-        extends CrudController<PaymentLog, PaymentLogBo> {
+public class PaymentLogController extends CrudController<PaymentLog, PaymentLogBo> {
 
-    @GetMapping("/payment/list")
+    @GetMapping(ApiMapping.ACCOUNT_PAYMENT_LIST)
     public ResultBody list(@CurrentUser User user, PaymentIncomeQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");

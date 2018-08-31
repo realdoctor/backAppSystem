@@ -3,7 +3,6 @@ package com.kanglian.healthcare.back.web;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -14,6 +13,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.GoodsShopcar;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.GoodsShopcarBo;
@@ -26,7 +26,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/goods/cart")
 public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsShopcarBo> {
 
     /**
@@ -36,7 +35,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.GOODS_CART_LIST)
     public ResultBody list(@CurrentUser User user, ShopcarQuery query) throws Exception {
         if (user.getUserId() == null) {
             throw new InvalidParamException("userId");
@@ -52,7 +51,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @return
      * @throws Exception
      */
-    @PostMapping("/addCartItem")
+    @PostMapping(ApiMapping.GOODS_CART_ADD)
     public ResultBody addCartItem(@CurrentUser User user, @RequestBody GoodsShopcar cart) throws Exception {
         Integer goodsId = cart.getGoodsId();
         Integer num = cart.getNum();
@@ -88,7 +87,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @return
      * @throws Exception
      */
-    @PostMapping("/deleteCartItem")
+    @PostMapping(ApiMapping.GOODS_CART_DELETE)
     public ResultBody deleteCartItem(@RequestBody CommonList cond) throws Exception {
         this.bo.deleteByIds(cond.getIds());
         return ResultUtil.success();
@@ -101,7 +100,7 @@ public class GoodsShopcarController extends CrudController<GoodsShopcar, GoodsSh
      * @return
      * @throws Exception
      */
-    @PostMapping("/clearCart")
+    @PostMapping(ApiMapping.GOODS_CART_CLEAR)
     public ResultBody clearCartItems(@CurrentUser User user) throws Exception {
         if (user.getUserId() == null) {
             throw new InvalidParamException("userId");

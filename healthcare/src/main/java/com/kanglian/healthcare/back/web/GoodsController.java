@@ -1,9 +1,7 @@
 package com.kanglian.healthcare.back.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
@@ -11,6 +9,7 @@ import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.util.StringUtil;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.Goods;
 import com.kanglian.healthcare.back.service.GoodsBo;
 
@@ -20,7 +19,6 @@ import com.kanglian.healthcare.back.service.GoodsBo;
  * @author xl.liu
  */
 @RestController
-@RequestMapping(value = "/goods")
 public class GoodsController extends CrudController<Goods, GoodsBo> {
 
     /**
@@ -30,19 +28,19 @@ public class GoodsController extends CrudController<Goods, GoodsBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.GOODS_LIST)
     public ResultBody list(GoodsQuery query) throws Exception {
         return super.list(query);
     }
 
     /**
-     * 商品搜索（已迁移到solr）
+     * 商品搜索（已迁移到Solr）
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @GetMapping("/search")
+    @GetMapping("/goods/search")
     public ResultBody search(GoodsQuery query) throws Exception {
         return super.list(query);
     }

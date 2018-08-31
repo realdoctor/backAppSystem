@@ -19,6 +19,7 @@ import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.pojo.UserIdentify;
@@ -33,7 +34,6 @@ import com.kanglian.healthcare.util.SmsUtil;
 import com.kanglian.healthcare.util.ValidateUtil;
 
 @RestController
-@RequestMapping(value = "/user")
 public class UserController extends CrudController<User, UserBo> {
 
     @Autowired
@@ -41,7 +41,7 @@ public class UserController extends CrudController<User, UserBo> {
     @Autowired
     private UserIdentifyBo userIdentifyBo;
     
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.USER_LIST)
     public ResultBody list(UserQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getMobilePhone())) {
             return ResultUtil.error("手机号不能为空！");
@@ -59,7 +59,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PostMapping("/login")
+    @PostMapping(ApiMapping.USER_LOGIN)
     public ResultBody login(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
@@ -98,7 +98,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PostMapping("/regist")
+    @PostMapping(ApiMapping.USER_REGIST)
     public ResultBody regist(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
@@ -140,7 +140,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/sendCode", method = RequestMethod.GET)
+    @RequestMapping(value = ApiMapping.USER_SENDCODE, method = RequestMethod.GET)
     public ResultBody sendCode(String mobilePhone) throws Exception {
         if (StringUtil.isBlank(mobilePhone)) {
             return ResultUtil.error("手机号不能为空！");
@@ -169,7 +169,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @PostMapping("/updatePwd")
+    @PostMapping(ApiMapping.USER_UPDATEPWD)
     public ResultBody updatePwd(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
@@ -200,7 +200,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @return
      * @throws Exception
      */
-    @PostMapping("/resetPwd")
+    @PostMapping(ApiMapping.USER_RESETPWD)
     public ResultBody resetPwd(@RequestBody User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
         String pwd = user.getPwd();
@@ -242,7 +242,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @PostMapping("/logout")
+    @PostMapping(ApiMapping.USER_LOGOUT)
     public ResultBody logout(@CurrentUser User user) throws Exception {
         logger.info("====================================手机用户{}，退出登录。", user.getMobilePhone());
         return ResultUtil.success();
@@ -256,7 +256,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @GetMapping("/refreshToken")
+    @GetMapping(ApiMapping.USER_REFRESH_TOKEN)
     public ResultBody refreshToken(@CurrentUser User user) throws Exception {
         logger.info("====================================手机用户{}，客户端自动刷新token。", user.getMobilePhone());
         final String mobilePhone = user.getMobilePhone();
@@ -276,7 +276,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @PostMapping("/certification")
+    @PostMapping(ApiMapping.USER_IDENTIFY)
     public ResultBody certification(@RequestBody UserIdentify userIdentify)
             throws Exception {
         String mobilePhone = userIdentify.getMobilePhone();
@@ -308,7 +308,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @GetMapping("/certification/info")
+    @GetMapping(ApiMapping.USER_IDENTIFY_INFO)
     public ResultBody getIdentifyInfo(@CurrentUser User user, String userId) throws Exception {
         return ResultUtil.success(this.bo.getIdentifyInfo(user.getUserId().intValue()));
     }
@@ -321,7 +321,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @GetMapping("/certification/check")
+    @GetMapping(ApiMapping.USER_IDENTIFY_CHECK)
     public ResultBody verifyIdCard(@CurrentUser User user) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         UserIdentify userIdentify = userIdentifyBo.getByUserId(user.getUserId().intValue());
@@ -342,7 +342,7 @@ public class UserController extends CrudController<User, UserBo> {
      * @throws Exception
      */
     @Authorization
-    @GetMapping("/getUploadPatientUrl")
+    @GetMapping(ApiMapping.USER_GET_UPLOADPATIENTURL)
     public ResultBody getUploadPatientUrl(@CurrentUser User user, String userId) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("url", "");

@@ -1,7 +1,6 @@
 package com.kanglian.healthcare.back.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
@@ -11,6 +10,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.RevisitPatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -22,7 +22,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/patient/revisit")
 public class PatientRecordRevisitController
         extends CrudController<PatientRecord, RevisitPatientRecordBo> {
 
@@ -33,7 +32,7 @@ public class PatientRecordRevisitController
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.PATIENT_REVISIT_LIST)
     public ResultBody list(RevisitPatientQuery query) throws Exception {
         return ResultUtil.success(this.bo.frontList(query));
     }
@@ -45,7 +44,7 @@ public class PatientRecordRevisitController
      * @return
      * @throws Exception
      */
-    @GetMapping("/diagList")
+    @GetMapping(ApiMapping.PATIENT_REVISIT_DIAG_LIST)
     public ResultBody diagList(RevisitPatientQuery query) throws Exception {
         String mobilePhone = query.getMobilePhone();
         if (StringUtil.isBlank(mobilePhone)) {

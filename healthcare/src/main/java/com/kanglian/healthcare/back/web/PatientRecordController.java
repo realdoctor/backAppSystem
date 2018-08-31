@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
@@ -14,6 +13,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.PatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
@@ -25,7 +25,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/patient")
 public class PatientRecordController extends CrudController<PatientRecord, PatientRecordBo> {
 
     /**
@@ -35,7 +34,7 @@ public class PatientRecordController extends CrudController<PatientRecord, Patie
      * @return
      * @throws Exception
      */
-    @GetMapping("/list")
+    @GetMapping(ApiMapping.PATIENT_LIST)
     public ResultBody list(PatientQuery query) throws Exception {
         String mobilePhone = query.getMobilePhone();
         Integer clientNum = query.getClientNum();

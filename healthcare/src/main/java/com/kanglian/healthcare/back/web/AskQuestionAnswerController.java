@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
@@ -19,6 +18,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.pojo.PushModel;
@@ -38,7 +38,6 @@ import com.kanglian.healthcare.util.PropConfig;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/askQuestion")
 public class AskQuestionAnswerController extends CrudController<AskQuestionAnswer, AskQuestionAnswerBo> {
 
     @Autowired
@@ -49,13 +48,13 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     private PushService jPushService;
     
     /**
-     * 我的复诊-患者病历列表
+     * 我的复诊-患者病历列表[患者端]
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @GetMapping("/reply/doctorList")
+    @GetMapping(ApiMapping.ASKQUESTION_REPLY_DOCTORLIST)
     public ResultBody doctorReplyList(AskQuestionQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
@@ -88,13 +87,13 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     }
     
     /**
-     * 我的复诊-患者管理列表
+     * 我的复诊-患者管理列表[医生端]
      * 
      * @param query
      * @return
      * @throws Exception
      */
-    @GetMapping("/reply/patientList")
+    @GetMapping(ApiMapping.ASKQUESTION_REPLY_PATIENTLIST)
     public ResultBody patientReplyList(AskQuestionQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");

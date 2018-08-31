@@ -46,7 +46,7 @@ public class HospitalDoctorController extends CrudController<HospitalDoctor, Hos
      * @return
      * @throws Exception
      */
-    @GetMapping(ApiMapping.DOCTOR_GETINFO)
+    @GetMapping(ApiMapping.DOCTOR_INFO)
     public ResultBody getDoctorInfo(UserQuery query, @RequestParam(required=false, value="flag") String flag,
             @RequestParam(required=false, value="hospitalName") String hospitalName,
             @RequestParam(required=false, value="doctorName") String doctorName)

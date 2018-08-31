@@ -2,7 +2,6 @@ package com.kanglian.healthcare.back.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
@@ -16,6 +15,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.pojo.UserInfo;
@@ -26,7 +26,6 @@ import com.kanglian.healthcare.util.PropConfig;
 
 @Authorization
 @RestController
-@RequestMapping(value = "/user")
 public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
     @Autowired
@@ -39,7 +38,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/info")
+    @GetMapping(ApiMapping.USER_INFO)
     public ResultBody getUserInfo(User user) throws Exception {
         String mobilePhone = user.getMobilePhone();
         if (StringUtil.isEmpty(mobilePhone)) {
@@ -59,7 +58,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      * @return
      * @throws Exception
      */
-    @GetMapping("/myGuahaoOrder")
+    @GetMapping(ApiMapping.USER_MYGUAHAO_ORDER)
     public ResultBody myGuahaoOrder(@CurrentUser User user, MyGuahaoOrderQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
@@ -93,7 +92,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      * @throws Exception
      */
     @Authorization
-    @GetMapping("/myPatientOrder")
+    @GetMapping(ApiMapping.USER_MYPATIENT_ORDER)
     public ResultBody myPatientOrder(@CurrentUser User user, MyPatientOrderQuery query)
             throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {

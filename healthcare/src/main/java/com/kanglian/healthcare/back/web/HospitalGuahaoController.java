@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
@@ -21,6 +20,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.Hospital;
 import com.kanglian.healthcare.back.pojo.HospitalDept;
 import com.kanglian.healthcare.back.pojo.HospitalGuahaoLog;
@@ -35,7 +35,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
  * @author xl.liu
  */
 @RestController
-@RequestMapping(value = "/guahao")
 public class HospitalGuahaoController extends CrudController<Hospital, HospitalBo> {
 
     @Autowired
@@ -50,7 +49,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
      * @return
      * @throws Exception
      */
-    @GetMapping("/hospital/orderExpert")
+    @GetMapping(ApiMapping.GUAHAO_HOSPITAL_ORDEREXPERT)
     public ResultBody orderExpert(HospitalGuohaoQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
@@ -70,7 +69,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
      * @return
      * @throws Exception
      */
-    @GetMapping("/hospital/orderDateExpert")
+    @GetMapping(ApiMapping.GUAHAO_HOSPITAL_ORDERDATEEXPERT)
     public ResultBody orderDateExpert(HospitalGuohaoQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
@@ -117,7 +116,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
      * @return
      * @throws Exception
      */
-    @GetMapping("/hospital/orderDate")
+    @GetMapping(ApiMapping.GUAHAO_HOSPITAL_ORDERDATE)
     public ResultBody orderDate(OrderDateQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getHospitalId())) {
             throw new InvalidParamException("hospitalId");
@@ -138,7 +137,7 @@ public class HospitalGuahaoController extends CrudController<Hospital, HospitalB
      * @throws Exception
      */
     @Authorization
-    @PostMapping("/fastorder")
+    @PostMapping(ApiMapping.GUAHAO_FASTORDER)
     public ResultBody fastorder(@RequestBody HospitalGuahaoLog hospitalGuahaoLog) throws Exception {
         if (hospitalGuahaoLog.getUserId() == null) {
             throw new InvalidParamException("userId");

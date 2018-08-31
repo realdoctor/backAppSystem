@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
@@ -15,6 +14,7 @@ import com.easyway.business.framework.springmvc.result.ResultBody;
 import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.GoodsOrder;
 import com.kanglian.healthcare.back.service.GoodsOrderBo;
 import com.kanglian.healthcare.back.service.GoodsOrderItemBo;
@@ -22,7 +22,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 
 @Authorization
 @RestController
-@RequestMapping(value = "/goods/order")
 public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderBo> {
 
     @Autowired
@@ -35,7 +34,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
      * @return
      * @throws Exception
      */
-    @GetMapping("/orderList")
+    @GetMapping(ApiMapping.GOODS_ORDER_LIST)
     public ResultBody list(GoodsOrderQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
@@ -45,7 +44,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
         }
         return super.list(query);
     }
-    
+
     /**
      * 我的订单明细
      * 
@@ -53,7 +52,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
      * @return
      * @throws Exception
      */
-    @GetMapping("/orderDetail")
+    @GetMapping(ApiMapping.GOODS_ORDER_DETAIL)
     public ResultBody myGoodsOrderDetail(@RequestParam("goodsOrderId") String goodsOrderId)
             throws Exception {
         if (StringUtil.isEmpty(goodsOrderId)) {
@@ -61,14 +60,15 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
         }
         return ResultUtil.success(goodsOrderItemBo.getGoodsOrderDetail(goodsOrderId));
     }
-    
+
     /**
      * 取消订单
+     * 
      * @param goodsOrderId
      * @return
      * @throws Exception
      */
-    @PostMapping("/cancelOrder")
+    @PostMapping(ApiMapping.GOODS_ORDER_CANCEL)
     public ResultBody cancelOrder(@RequestBody Map<String, String> paramMap) throws Exception {
         String goodsOrderId = paramMap.get("goodsOrderId");
         if (StringUtil.isEmpty(goodsOrderId)) {
@@ -77,7 +77,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
         this.bo.cancelOrder(goodsOrderId);
         return ResultUtil.success();
     }
-    
+
     public static class GoodsOrderQuery extends Grid {
 
         private String userId;
@@ -91,7 +91,7 @@ public class GoodsOrderController extends CrudController<GoodsOrder, GoodsOrderB
         public void setUserId(String userId) {
             this.userId = userId;
         }
-        
+
         @SingleValue(column = "trade_status", equal = "=")
         public String getTradeStatus() {
             return tradeStatus;
