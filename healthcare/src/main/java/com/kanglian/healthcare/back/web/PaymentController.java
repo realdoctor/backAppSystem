@@ -20,6 +20,7 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.common.PaymentOrder;
 import com.kanglian.healthcare.back.common.CommonOrder;
 import com.kanglian.healthcare.back.constant.AlipayConfig;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.FromType;
 import com.kanglian.healthcare.back.constant.PaymentType;
@@ -38,7 +39,6 @@ import com.kanglian.healthcare.util.PayCommonUtil;
  * @author xl.liu
  */
 @Controller
-@RequestMapping(value = "/pay")
 public class PaymentController extends BaseController {
     @Autowired
     private GoodsOrderBo     goodsOrderBo;
@@ -56,7 +56,7 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/orderPay", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.PAY_ORDERPAY, method = RequestMethod.POST)
     @ResponseBody
     public ResultBody orderPay(@RequestBody PaymentOrder paymentOrder, HttpServletRequest request)
             throws Exception {
@@ -186,7 +186,7 @@ public class PaymentController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/orderPayT", method = RequestMethod.POST)
+    @RequestMapping(value = ApiMapping.PAY_ORDERPAYT, method = RequestMethod.POST)
     @ResponseBody
     public ResultBody orderPayT(@RequestBody CommonOrder paymentOrder, HttpServletRequest request)
             throws Exception {
