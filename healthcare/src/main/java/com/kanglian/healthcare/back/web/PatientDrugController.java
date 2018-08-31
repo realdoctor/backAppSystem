@@ -6,6 +6,7 @@ import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.PatientDrug;
@@ -29,7 +30,7 @@ public class PatientDrugController extends CrudController<PatientDrug, PatientDr
      */
     @GetMapping(ApiMapping.PATIENT_DRUG_LIST)
     public ResultBody list(PatientDrugQuery query) throws Exception {
-        return super.list(query);
+        return ResultUtil.success(this.bo.queryList(query));// 不分页
     }
 
     public static class PatientDrugQuery extends Grid {

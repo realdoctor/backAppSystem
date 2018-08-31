@@ -55,6 +55,23 @@ public final class ApiMapping {
      */
     public final static String USER_MYDOCTOR_LIST              = "/user/mydoctor/list";
 
+    /**
+     * <H5>用户基本信息</H5>
+     */
+    public final static String USER_INFO                       = "/user/info";
+    /**
+     * <H5>获取用户认证信息</H5>
+     */
+    public final static String USER_CERTIFICATION_INFO         = "/user/certification/info";
+    /**
+     * <H5>用户消费记录</H5>
+     */
+    public final static String ACCOUNT_PAYMENT_LIST            = "/account/payment/list";
+    /**
+     * <H5>从服务器获取病历下载</H5>
+     */
+    public final static String USER_GETUPLOADPATIENTURL        = "/user/getUploadPatientUrl";
+
     // ==========================================================================
     // ============上传信息
     // ==========================================================================
@@ -93,7 +110,7 @@ public final class ApiMapping {
     /**
      * <H5>病历归档-病历用药列表</H5>
      */
-    public final static String PATIENT_DRUG_LIST               = "/patient/drug";
+    public final static String PATIENT_DRUG_LIST               = "/patient/drugList";
     /**
      * <H5>在线复诊-复诊病历列表</H5>
      */
@@ -194,6 +211,10 @@ public final class ApiMapping {
      * <H5>取消订单</H5>
      */
     public final static String GOODS_ORDER_CANCELORDER         = "/goods/order/cancelOrder";
+    /**
+     * <H5>订单明细</H5>
+     */
+    public final static String GOODS_ORDER_ORDERDETAIL         = "/goods/order/orderDetail";
 
     // ==========================================================================
     // ============图文视频
@@ -237,7 +258,7 @@ public final class ApiMapping {
     /**
      * <H5>我关注的资讯列表</H5>
      */
-    public final static String NEWS_FOCUS_LIST                 = "/healthnews/myFocusList";
+    public final static String NEWS_FOCUS_LIST                 = "/healthnews/focus/list";
     /**
      * <H5>广告列表</H5>
      */

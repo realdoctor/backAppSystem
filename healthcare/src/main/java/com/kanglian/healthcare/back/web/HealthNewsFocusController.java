@@ -3,7 +3,6 @@ package com.kanglian.healthcare.back.web;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.pojo.Grid;
@@ -13,6 +12,7 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.HealthNewsFocus;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.HealthNewsFocusBo;
@@ -20,7 +20,6 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 
 @Authorization
 @RestController
-@RequestMapping(value = "/healthnews")
 public class HealthNewsFocusController extends CrudController<HealthNewsFocus, HealthNewsFocusBo> {
 
     /**
@@ -30,7 +29,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @return
      * @throws Exception
      */
-    @GetMapping("/myFocusList")
+    @GetMapping(ApiMapping.NEWS_FOCUS_LIST)
     public ResultBody newsFocusList(@CurrentUser User user, NewsFocusQuery query) throws Exception {
         query.setUserId(String.valueOf(user.getUserId()));
         return super.list(query);
@@ -43,7 +42,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @return
      * @throws Exception
      */
-    @PostMapping("/focus")
+    @PostMapping(ApiMapping.NEWS_FOCUS)
     public ResultBody newsFocus(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getNewsId() == null) {
@@ -63,7 +62,7 @@ public class HealthNewsFocusController extends CrudController<HealthNewsFocus, H
      * @return
      * @throws Exception
      */
-    @PostMapping("/focus/off")
+    @PostMapping(ApiMapping.NEWS_FOCUS_OFF)
     public ResultBody newsFocusOff(@CurrentUser User user, @RequestBody HealthNewsFocus healthNewsFocus) throws Exception {
         healthNewsFocus.setUserId(user.getUserId().intValue());
         if (healthNewsFocus.getNewsId() == null) {

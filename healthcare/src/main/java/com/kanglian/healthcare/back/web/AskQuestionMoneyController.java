@@ -3,7 +3,6 @@ package com.kanglian.healthcare.back.web;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -12,6 +11,7 @@ import com.easyway.business.framework.util.DateUtil;
 import com.github.pagehelper.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
+import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.pojo.AskQuestionMoney;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.AskQuestionMoneyBo;
@@ -25,7 +25,6 @@ import com.kanglian.healthcare.util.NumberUtil;
  */
 @Authorization
 @RestController
-@RequestMapping(value = "/askQuestion")
 public class AskQuestionMoneyController extends CrudController<AskQuestionMoney, AskQuestionMoneyBo> {
 
     /**
@@ -36,7 +35,7 @@ public class AskQuestionMoneyController extends CrudController<AskQuestionMoney,
      * @return
      * @throws Exception
      */
-    @GetMapping("/getAskQuestionMoney")
+    @GetMapping(ApiMapping.ASKQUESTION_GETMONEY)
     public ResultBody getAskQuestionMoney(@CurrentUser User user, String userId)
             throws Exception {
         if (StringUtil.isEmpty(userId)) {
@@ -53,7 +52,7 @@ public class AskQuestionMoneyController extends CrudController<AskQuestionMoney,
      * @return
      * @throws Exception
      */
-    @PostMapping("/setAskQuestionMoney")
+    @PostMapping(ApiMapping.ASKQUESTION_SETMONEY)
     public ResultBody setAskQuestionMoney(@CurrentUser User user, @RequestBody AskQuestionMoney query)
             throws Exception {
         Double chatMoney = query.getChatMoney();
