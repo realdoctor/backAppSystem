@@ -61,6 +61,9 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
      */
     @GetMapping("/myGuahaoOrder")
     public ResultBody myGuahaoOrder(@CurrentUser User user, MyGuahaoOrderQuery query) throws Exception {
+        if (StringUtil.isEmpty(query.getUserId())) {
+            throw new InvalidParamException("userId");
+        }
         return ResultUtil.success(hospitalGuahaoLogBo.myDoctorOrder(query),
                 new JsonClothProcessor() {
 
@@ -83,7 +86,7 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     }
 
     /**
-     * 我的预约-医生的被预约记录
+     * 我的预约-医生被预约记录
      * 
      * @param user
      * @return
@@ -93,6 +96,9 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
     @GetMapping("/myPatientOrder")
     public ResultBody myPatientOrder(@CurrentUser User user, MyPatientOrderQuery query)
             throws Exception {
+        if (StringUtil.isEmpty(query.getUserId())) {
+            throw new InvalidParamException("userId");
+        }
         return ResultUtil.success(hospitalGuahaoLogBo.myPatientOrder(query),
                 new JsonClothProcessor() {
 
