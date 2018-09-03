@@ -112,7 +112,7 @@ public class UploadController {
 
         // 获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");
-        pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+        pathRoot = Constants.getUploadPath();
         String thumbnailPath = "";
         try {
             String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
@@ -154,8 +154,7 @@ public class UploadController {
         }
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("imageUrl", PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL)
-                .concat(thumbnailPath));
+        resultMap.put("imageUrl", Constants.getStaticUrl().concat(thumbnailPath));
         return ResultUtil.success(resultMap);
     }
 
@@ -199,8 +198,8 @@ public class UploadController {
         // 描述
         String description = request.getParameter("description");
 
-        String staticUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+        String staticUrl = Constants.getStaticUrl();
+        String pathRoot = Constants.getUploadPath();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Map<String, String>> pathList = new ArrayList<Map<String, String>>();
 
@@ -381,7 +380,7 @@ public class UploadController {
             if (files.length > 1) {
                 return ResultUtil.error("不能上传病历多个");
             }
-            String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+            String pathRoot = Constants.getUploadPath();
             if (StringUtil.isNotEmpty(questionId)) {// 判断同一问题id
                 AskQuestionAnswer askQuestionAnswer =
                         askQuestionAnswerBo.get(Long.valueOf(questionId));
@@ -439,8 +438,7 @@ public class UploadController {
                     uploadContent.setMessageId(messageId);
                     uploadContent.setUserId(userId.intValue());
                     uploadContent.setContent(content);
-                    uploadContent.setSrc(PropConfig.getInstance()
-                            .getPropertyValue(Constants.STATIC_URL).concat(filePath));
+                    uploadContent.setSrc(Constants.getStaticUrl().concat(filePath));
                     uploadContent.setAddTime(DateUtil.currentDate());
                     StringBuilder buff = new StringBuilder();
                     buff.append("[复诊病历]");
@@ -517,11 +515,9 @@ public class UploadController {
             return ResultUtil.error("上传格式不符合");
         }
 
-        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         Map<String, Object> resultMap = new HashMap<String, Object>();
-
         try {
-            File uploadedFile = new File(pathRoot + filePath);
+            File uploadedFile = new File(Constants.getUploadPath() + filePath);
             FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
         } catch (Exception e) {
             logger.error("上传本地病历异常", e);
@@ -539,8 +535,7 @@ public class UploadController {
         } else {
             uploadContent = new UploadPatientRecord();
             uploadContent.setUserId(user.getUserId().intValue());
-            uploadContent.setSrc(PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL)
-                    .concat(filePath));
+            uploadContent.setSrc(Constants.getStaticUrl().concat(filePath));
             uploadContent.setAddTime(DateUtil.currentDate());
             uploadContent.setRemark("[病历归档]" + fileName);
             uploadPatientRecordBo.save(uploadContent);

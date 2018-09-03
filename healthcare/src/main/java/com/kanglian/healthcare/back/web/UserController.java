@@ -28,7 +28,6 @@ import com.kanglian.healthcare.back.service.UserIdentifyBo;
 import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.MD5Util;
 import com.kanglian.healthcare.util.NumberUtil;
-import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
 import com.kanglian.healthcare.util.SmsUtil;
 import com.kanglian.healthcare.util.ValidateUtil;
@@ -349,8 +348,8 @@ public class UserController extends CrudController<User, UserBo> {
         resultMap.put("fileSize", "");
         try {
             String dataUrl = this.bo.getUploadPatientUrl(user.getUserId().intValue());
-            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
-            String uploadPath = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+            String domainUrl = Constants.getStaticUrl();
+            String uploadPath = Constants.getUploadPath();
             String filePath = dataUrl.replace(domainUrl, uploadPath);
             resultMap.put("fileSize", FileUtil.getKBSize(FileUtil.getFileSize(filePath)));
             resultMap.put("url", dataUrl);

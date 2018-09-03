@@ -17,7 +17,6 @@ import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.RevisitPatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
-import com.kanglian.healthcare.util.PropConfig;
 
 /**
  * 在线复诊
@@ -43,10 +42,9 @@ public class PatientRecordRevisitController
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 PatientRecord patientRecord = (PatientRecord)pojo;
-                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                 try {
                     if (StringUtil.isNotEmpty(patientRecord.getImageUrl())) {
-                        jsonObject.put("imageUrl", domainUrl.concat(patientRecord.getImageUrl()));
+                        jsonObject.put("imageUrl", Constants.getStaticUrl().concat(patientRecord.getImageUrl()));
                     }
                 } catch (Exception e) {
                     // TODO: handle exception

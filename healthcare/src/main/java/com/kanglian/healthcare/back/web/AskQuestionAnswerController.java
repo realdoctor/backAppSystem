@@ -29,7 +29,6 @@ import com.kanglian.healthcare.back.service.PushService;
 import com.kanglian.healthcare.back.service.UserBo;
 import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
-import com.kanglian.healthcare.util.PropConfig;
 
 /**
  * 我的复诊-图文通讯问诊
@@ -69,13 +68,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
-                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                 try {
                     if (StringUtil.isNotEmpty(askQuestionAnswer.getPatientImageUrl())) {
-                        jsonObject.put("patientImageUrl", domainUrl.concat(askQuestionAnswer.getPatientImageUrl()));
+                        jsonObject.put("patientImageUrl", Constants.getStaticUrl().concat(askQuestionAnswer.getPatientImageUrl()));
                     }
                     if (StringUtil.isNotEmpty(askQuestionAnswer.getDoctorImageUrl())) {
-                        jsonObject.put("doctorImageUrl", domainUrl.concat(askQuestionAnswer.getDoctorImageUrl()));
+                        jsonObject.put("doctorImageUrl", Constants.getStaticUrl().concat(askQuestionAnswer.getDoctorImageUrl()));
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -105,13 +103,12 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
                 AskQuestionAnswer askQuestionAnswer = (AskQuestionAnswer)pojo;
-                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                 try {
                     if (StringUtil.isNotEmpty(askQuestionAnswer.getPatientImageUrl())) {
-                        jsonObject.put("patientImageUrl", domainUrl.concat(askQuestionAnswer.getPatientImageUrl()));
+                        jsonObject.put("patientImageUrl", Constants.getStaticUrl().concat(askQuestionAnswer.getPatientImageUrl()));
                     }
                     if (StringUtil.isNotEmpty(askQuestionAnswer.getDoctorImageUrl())) {
-                        jsonObject.put("doctorImageUrl", domainUrl.concat(askQuestionAnswer.getDoctorImageUrl()));
+                        jsonObject.put("doctorImageUrl", Constants.getStaticUrl().concat(askQuestionAnswer.getDoctorImageUrl()));
                     }
                 } catch (Exception e) {
                     // TODO: handle exception

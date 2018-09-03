@@ -135,4 +135,9 @@ public final class Constants {
         String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
         return domainUrl;
     }
+    
+    public static String getUploadPath() {
+        String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
+        return pathRoot;
+    }
 }
