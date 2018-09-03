@@ -472,7 +472,7 @@ public class UploadController {
             logger.info("======================" + pushModel.getContent() + "医生用户userId=" + receiveId);
         } catch (Exception e) {
             // TODO: handle exception
-            logger.info("【资讯问题】极光推送异常", e);
+            logger.info("【图文问诊】极光推送异常", e);
         }
     }
     
