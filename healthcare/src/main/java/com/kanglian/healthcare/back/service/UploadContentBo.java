@@ -66,7 +66,7 @@ public class UploadContentBo extends NewCrudBo<UploadContent, UploadContentDao> 
      * @param uploadContent
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void saveUploadContent(final UploadContent uploadContent) {
+    public void saveUploadContent(final UploadContent uploadContent) throws Exception {
         try {
             this.dao.save(uploadContent);
             UserDoctor userDoctor = userDoctorBo.getDoctorInfoById(uploadContent.getUserId());
