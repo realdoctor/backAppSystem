@@ -320,45 +320,42 @@ public class UploadController {
         
         // 用户Id
         final Long userId = user.getUserId();
-        
+
         // 上传病历名
         String title = request.getParameter("title");
-        
+
         // 询问问题Id（第一次询问问题没有，继续询问必须带入）
         String questionId = request.getParameter("questionId");
-        
+
         // 复诊病历Id
         String patientRecordId = request.getParameter("patientRecordId");
-        if (StringUtil.isEmpty(patientRecordId)
-                || "null".equals(patientRecordId)) {
+        if (checkEmpty(patientRecordId)) {
             throw new InvalidParamException("patientRecordId");
         }
-        
+
         // 上传病历，接收人[医生用户]
         String receiveUserId = request.getParameter("doctorUserId");
-        if (StringUtil.isEmpty(receiveUserId)
-                || "null".equals(receiveUserId)) {
+        if (checkEmpty(receiveUserId)) {
             throw new InvalidParamException("doctorUserId");
         }
-        
-        // 上传病历问题内容
+
+        // 上传病历内容
         String content = request.getParameter("content");
-        if (StringUtil.isEmpty(content)
-                || "null".equals(content)) {
+        if (checkEmpty(content)) {
             throw new InvalidParamException("content");
         }
-        
-        // 支付订单号
+
+        // 支付订单号[orderNo->messageId]
         String messageId = request.getParameter("messageId");
-        if (StringUtil.isEmpty(messageId)
-                || "null".equals(messageId)) {
+        if (checkEmpty(messageId)) {
             throw new InvalidParamException("messageId");
         }
         
         if (files == null || files.length == 0) {// 只咨询问题，不上传病历
             if (StringUtil.isNotEmpty(questionId)) {
                 // 此问题已询问过，可继续询问
-                AskQuestionAnswer askQuestionAnswer = askQuestionAnswerBo.get(Long.valueOf(questionId));
+                AskQuestionAnswer askQuestionAnswer =
+                        askQuestionAnswerBo.get(Long.valueOf(questionId));
                 if (askQuestionAnswer == null) {
                     return ResultUtil.error("问题不存在，不能继续询问");
                 }
@@ -377,23 +374,12 @@ public class UploadController {
             newAskQuestionAnswer.setStatus("1");
             newAskQuestionAnswer.setAddTime(DateUtil.currentDate());
             askQuestionAnswerBo.save(newAskQuestionAnswer);
-            try {
-                User u = userBo.get(userId);
-                PushModel pushModel = new PushModel();
-                pushModel.setTitle("复诊");
-                pushModel.setContent(u.getRealName() + "给您发送了病历。");
-                pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
-                pushModel.addAlias(receiveUserId);
-                jPushService.pushToAndroid(pushModel);
-            } catch (Exception e) {
-                // TODO: handle exception
-                logger.info("【资讯问题】极光推送异常1", e);
-            }
+            pushMsg(userId, receiveUserId);// 推送消息
             return ResultUtil.success();
         } else {
             // 上传病历限制一个
             if (files.length > 1) {
-                return ResultUtil.error("上传病历不能多个");
+                return ResultUtil.error("不能上传病历多个");
             }
             String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
             if (StringUtil.isNotEmpty(questionId)) {// 判断同一问题id
@@ -463,22 +449,30 @@ public class UploadController {
                     buff.append(fileName);
                     uploadContent.setRemark(buff.toString());
                     uploadPatientBo.saveUploadPatientAndQuestion(uploadContent, askQuestionAnswer);
-                    try {
-                        User u = userBo.get(userId);
-                        PushModel pushModel = new PushModel();
-                        pushModel.setTitle("复诊");
-                        pushModel.setContent(u.getRealName() + "给您发送了病历。");
-                        pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
-                        pushModel.addAlias(receiveUserId);
-                        jPushService.pushToAndroid(pushModel);
-                        logger.info("======================"+pushModel.getContent()+"医生用户userId="+receiveUserId);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        logger.info("【资讯问题】极光推送异常2", e);
-                    }
+                    pushMsg(userId, receiveUserId);// 推送消息
                 }
             }
             return ResultUtil.success();
+        }
+    }
+    
+    public static boolean checkEmpty(String str) {
+        return StringUtil.isEmpty(str) || ("null".equals(str));
+    }
+    
+    private void pushMsg(Long userId, String receiveId) {
+        try {
+            User u = userBo.get(userId);
+            PushModel pushModel = new PushModel();
+            pushModel.setTitle("复诊");
+            pushModel.setContent(u.getRealName() + "给您发送了病历。");
+            pushModel.addParam(Constants.TAG_ID, Constants.TAG_DOCTOR_ID);
+            pushModel.addAlias(receiveId);
+            jPushService.pushToAndroid(pushModel);
+            logger.info("======================" + pushModel.getContent() + "医生用户userId=" + receiveId);
+        } catch (Exception e) {
+            // TODO: handle exception
+            logger.info("【资讯问题】极光推送异常", e);
         }
     }
     

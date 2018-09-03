@@ -18,7 +18,7 @@ public class UploadPatientBo extends NewCrudBo<UploadPatient, UploadPatientDao> 
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void saveUploadPatientAndQuestion(UploadPatient uploadPatient,
-            AskQuestionAnswer askQuestionAnswer) {
+            AskQuestionAnswer askQuestionAnswer) throws Exception {
         try {
             askQuestionAnswerBo.save(askQuestionAnswer);
             if (uploadPatient != null) {
