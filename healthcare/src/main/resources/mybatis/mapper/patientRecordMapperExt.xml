@@ -18,7 +18,10 @@
 		<result property="diagName" column="diag_name" jdbcType="VARCHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 		<result property="doctorUserId" column="doctor_user_id" jdbcType="INTEGER"/>
-		<collection property="drugList" ofType="com.kanglian.healthcare.back.pojo.PatientDrug" select="com.kanglian.healthcare.back.dao.PatientDrugDao.getByPatientDiagId" column="patient_diag_id">
+		<collection property="drugList"
+			ofType="com.kanglian.healthcare.back.pojo.PatientDrug"
+			select="com.kanglian.healthcare.back.dao.PatientDrugDao.getByPatientDiagId"
+			column="{patientDiagId=patient_diag_id}">
 		</collection>
 	</resultMap>
 	
