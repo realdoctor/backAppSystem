@@ -77,7 +77,7 @@
 			t0.diag_name,
 			t.`name` AS patient_real_name,
 			t.user_id AS patient_user_id,
-			t1.real_name AS doctor_real_name,
+			t1.doctor_name AS doctor_real_name,
 			t1.user_id AS doctor_user_id,
 			t1.hospital_id,
 			t1.dept_code,
@@ -99,15 +99,16 @@
 				u.mobile_phone,
 				uc.thumbnail_pic,
 				d.doctor_code,
+				d.doctor_name,
 				e.hospital_id,
 				e.dept_code,
 				e.dept_name
 			FROM
 				user_doctor t
-			INNER JOIN `user` u ON u.user_id = t.user_id
-			INNER JOIN user_pic uc ON uc.user_id = u.user_id
-			INNER JOIN hospital_doctor d ON d.doctor_id = t.doctor_id
-			INNER JOIN hospital_dept e ON e.dept_id = d.dept_id
+			LEFT JOIN `user` u ON u.user_id = t.user_id
+			LEFT JOIN user_pic uc ON uc.user_id = u.user_id
+			LEFT JOIN hospital_doctor d ON d.doctor_id = t.doctor_id
+			LEFT JOIN hospital_dept e ON e.dept_id = d.dept_id
 		) t1 ON t1.doctor_code = t0.doctor_code
 		<include refid="conditionQuery.core" />
 		GROUP BY
