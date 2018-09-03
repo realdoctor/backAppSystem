@@ -136,6 +136,11 @@ public final class Constants {
         return domainUrl;
     }
     
+    /**
+     * 上传路径
+     * 
+     * @return
+     */
     public static String getUploadPath() {
         String pathRoot = PropConfig.getInstance().getPropertyValue(Constants.UPLOAD_PATH);
         return pathRoot;
