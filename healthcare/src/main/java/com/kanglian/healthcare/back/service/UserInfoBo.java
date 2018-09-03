@@ -11,7 +11,6 @@ import com.kanglian.healthcare.back.dao.UserInfoDao;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.pojo.UserInfo;
 import com.kanglian.healthcare.exception.DBException;
-import com.kanglian.healthcare.util.PropConfig;
 import com.kanglian.healthcare.util.RedisCacheManager;
 import com.kanglian.healthcare.util.ValidateUtil;
 
@@ -88,16 +87,14 @@ public class UserInfoBo extends CrudBo<UserInfo, UserInfoDao> {
                 jsonObject.put("typeId", "");
                 jsonObject.put("idNo", "");
             }
-            // 用户头像
-            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
             jsonObject.put("originalImageUrl", "");
             jsonObject.put("imageUrl", "");
             if (StringUtil.isNotEmpty(userInfo.getOriginalImageUrl())) {
                 jsonObject.put("originalImageUrl",
-                        domainUrl.concat(userInfo.getOriginalImageUrl()));
+                        Constants.getStaticUrl().concat(userInfo.getOriginalImageUrl()));
             }
             if (StringUtil.isNotEmpty(userInfo.getImageUrl())) {
-                jsonObject.put("imageUrl", domainUrl.concat(userInfo.getImageUrl()));
+                jsonObject.put("imageUrl", Constants.getStaticUrl().concat(userInfo.getImageUrl()));
             }
         } catch (Exception e) {
             // TODO: handle exception

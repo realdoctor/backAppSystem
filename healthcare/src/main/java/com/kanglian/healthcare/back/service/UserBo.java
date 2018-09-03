@@ -131,6 +131,20 @@ public class UserBo extends CrudBo<User, UserDao> {
     }
     
     /**
+     * 获取用户信息
+     * 
+     * @param mobilePhone
+     * @return
+     */
+    public Map<String, Object> getUserInfo(String mobilePhone) {
+        try {
+            return this.dao.getUserInfo(mobilePhone);
+        } catch (Exception ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    /**
      * 用户实名认证，关联用户信息
      * 
      * @param user

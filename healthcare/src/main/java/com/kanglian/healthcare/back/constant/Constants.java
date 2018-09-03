@@ -1,5 +1,7 @@
 package com.kanglian.healthcare.back.constant;
 
+import com.kanglian.healthcare.util.PropConfig;
+
 public final class Constants {
 
     // 卡类型代码（社保卡、医保卡、身份证）
@@ -118,7 +120,19 @@ public final class Constants {
 
     public static final String USER_ID                       = "userId";
     public static final String MOBILE_PHONE                  = "mobilePhone";
+    public static final String USER_NAME                     = "userName";
+    public static final String IMAGE_URL                     = "imageUrl";
 
     // 导入医生数据
     public static final String IMPORT_DOCTOR_FILE            = "import_doctor_file";
+    
+    /**
+     * 获取静态访问路径
+     * 
+     * @return
+     */
+    public static String getStaticUrl() {
+        String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
+        return domainUrl;
+    }
 }

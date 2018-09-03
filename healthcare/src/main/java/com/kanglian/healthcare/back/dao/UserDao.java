@@ -11,4 +11,6 @@ public interface UserDao extends CrudDao<User> {
     public User queryUser(String mobilePhone);
     
     public Map<String, Object> getIdentifyInfo(Integer userId);
+    
+    public Map<String, Object> getUserInfo(String mobilePhone);
 }

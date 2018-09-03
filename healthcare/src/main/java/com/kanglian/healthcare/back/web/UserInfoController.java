@@ -22,7 +22,6 @@ import com.kanglian.healthcare.back.pojo.UserInfo;
 import com.kanglian.healthcare.back.service.HospitalGuahaoLogBo;
 import com.kanglian.healthcare.back.service.UserInfoBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
-import com.kanglian.healthcare.util.PropConfig;
 
 @Authorization
 @RestController
@@ -68,12 +67,10 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
                     @Override
                     public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
-                        String domainUrl =
-                                PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                         try {
                             if (StringUtil.isNotEmpty(jsonObject.getString("imageUrl"))) {
                                 jsonObject.put("imageUrl",
-                                        domainUrl.concat(jsonObject.getString("imageUrl")));
+                                        Constants.getStaticUrl().concat(jsonObject.getString("imageUrl")));
                             }
                         } catch (Exception e) {
                             // TODO: handle exception
@@ -103,12 +100,10 @@ public class UserInfoController extends CrudController<UserInfo, UserInfoBo> {
 
                     @Override
                     public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
-                        String domainUrl =
-                                PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
                         try {
                             if (StringUtil.isNotEmpty(jsonObject.getString("imageUrl"))) {
                                 jsonObject.put("imageUrl",
-                                        domainUrl.concat(jsonObject.getString("imageUrl")));
+                                        Constants.getStaticUrl().concat(jsonObject.getString("imageUrl")));
                             }
                         } catch (Exception e) {
                             // TODO: handle exception

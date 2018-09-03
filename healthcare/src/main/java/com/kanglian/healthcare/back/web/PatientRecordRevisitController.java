@@ -2,6 +2,8 @@ package com.kanglian.healthcare.back.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSONObject;
+import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.Grid;
@@ -11,9 +13,11 @@ import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.constant.ApiMapping;
+import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.pojo.PatientRecord;
 import com.kanglian.healthcare.back.service.RevisitPatientRecordBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
+import com.kanglian.healthcare.util.PropConfig;
 
 /**
  * 在线复诊
@@ -34,7 +38,25 @@ public class PatientRecordRevisitController
      */
     @GetMapping(ApiMapping.PATIENT_REVISIT_LIST)
     public ResultBody list(RevisitPatientQuery query) throws Exception {
-        return ResultUtil.success(this.bo.frontList(query));
+        return ResultUtil.success(this.bo.frontList(query), new JsonClothProcessor() {
+
+            @Override
+            public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
+                PatientRecord patientRecord = (PatientRecord)pojo;
+                String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
+                try {
+                    if (StringUtil.isNotEmpty(patientRecord.getImageUrl())) {
+                        jsonObject.put("imageUrl", domainUrl.concat(patientRecord.getImageUrl()));
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                return jsonObject;
+            }
+            
+        });
+        
+        
     }
 
     /**

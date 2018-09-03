@@ -117,6 +117,7 @@ public class PatientRecord extends BasePojo {
     private String deptName;
     private String patientRealName;
     private String doctorRealName;
+    private String imageUrl;
     
     public Integer getPatientUserId() {
         return patientUserId;
@@ -169,6 +170,13 @@ public class PatientRecord extends BasePojo {
     }
     public void setMobilePhone(String mobilePhone) {
         this.mobilePhone = mobilePhone;
+    }
+    
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
     
     public Integer getHospitalId() {
