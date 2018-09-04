@@ -120,7 +120,7 @@ public final class Constants {
 
     public static final String USER_ID                       = "userId";
     public static final String MOBILE_PHONE                  = "mobilePhone";
-    public static final String USER_NAME                     = "userName";
+    public static final String USER_NAME                     = "realName";
     public static final String IMAGE_URL                     = "imageUrl";
 
     // 导入医生数据
