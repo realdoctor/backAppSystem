@@ -60,7 +60,7 @@
 	<select id="getUserInfo" resultType="map" parameterType="java.lang.String">
 		SELECT
 			t.user_id AS userId,
-			t.real_name AS realName,
+			t.real_name AS userName,
 			t.mobile_phone AS mobilePhone,
 			t1.thumbnail_pic AS imageUrl
 		FROM
