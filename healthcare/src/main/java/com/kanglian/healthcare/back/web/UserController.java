@@ -313,7 +313,7 @@ public class UserController extends CrudController<User, UserBo> {
     }
     
     /**
-     * 实名认证审核
+     * 实名认证校验
      * 
      * @param user
      * @return
