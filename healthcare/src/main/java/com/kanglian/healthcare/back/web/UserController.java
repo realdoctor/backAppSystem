@@ -348,12 +348,15 @@ public class UserController extends CrudController<User, UserBo> {
         resultMap.put("fileSize", "");
         try {
             String dataUrl = this.bo.getUploadPatientUrl(user.getUserId().intValue());
-            String domainUrl = Constants.getStaticUrl();
-            String uploadPath = Constants.getUploadPath();
-            String filePath = dataUrl.replace(domainUrl, uploadPath);
-            resultMap.put("fileSize", FileUtil.getKBSize(FileUtil.getFileSize(filePath)));
-            resultMap.put("url", dataUrl);
+            if (StringUtil.isNotBlank(dataUrl)) {
+                String domainUrl = Constants.getStaticUrl();
+                String uploadPath = Constants.getUploadPath();
+                String filePath = dataUrl.replace(domainUrl, uploadPath);
+                resultMap.put("fileSize", FileUtil.getKBSize(FileUtil.getFileSize(filePath)));
+                resultMap.put("url", dataUrl);
+            }
         } catch (Exception e) {
+            logger.error("获取下载链接失败", e);
             return ResultUtil.error("获取下载链接失败");
         }
         return ResultUtil.success(resultMap);
