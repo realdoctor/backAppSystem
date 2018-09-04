@@ -18,8 +18,7 @@ public class UserInfo extends BasePojo {
 	private Date birthDate;
 	private String aboCode;
 	private String rhCode;
-	@JSONField(serialize=false)
-	private String idTypeCode;
+	private String typeId;
 	private String idNo;
 	private String mobilePhone;
 	private String marriageCode;
@@ -32,7 +31,6 @@ public class UserInfo extends BasePojo {
 	private String originalImageUrl;
 	// 头像缩略图200x200
     private String imageUrl;
-    private String typeId;
     private String doctorCode;
     private Integer hospitalId;
     private String hospitalCode;
@@ -150,13 +148,12 @@ public class UserInfo extends BasePojo {
 	public void setRhCode(String rhCode) {
 		this.rhCode = rhCode;
 	}
-	@NotJsonData
-	public String getIdTypeCode() {
-		return idTypeCode;
-	}
-	public void setIdTypeCode(String idTypeCode) {
-		this.idTypeCode = idTypeCode;
-	}
+	public String getTypeId() {
+        return typeId;
+    }
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
 	public String getIdNo() {
 		return idNo;
 	}
@@ -202,10 +199,4 @@ public class UserInfo extends BasePojo {
 	public void setLastUpdateDtime(Date lastUpdateDtime) {
 		this.lastUpdateDtime = lastUpdateDtime;
 	}
-	public String getTypeId() {
-        return typeId;
-    }
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
-    }
 }

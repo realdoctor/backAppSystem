@@ -11,7 +11,7 @@
 		<result property="birthDate" column="birth_date" jdbcType="TIMESTAMP"/>
 		<result property="aboCode" column="abo_code" jdbcType="VARCHAR"/>
 		<result property="rhCode" column="rh_code" jdbcType="VARCHAR"/>
-		<result property="idTypeCode" column="id_type_code" jdbcType="VARCHAR"/>
+		<result property="typeId" column="type_id" jdbcType="VARCHAR"/>
 		<result property="idNo" column="id_no" jdbcType="VARCHAR"/>
 		<result property="mobilePhone" column="mobile_phone" jdbcType="VARCHAR"/>
 		<result property="marriageCode" column="marriage_code" jdbcType="VARCHAR"/>
@@ -31,7 +31,7 @@
 		t.birth_date,
 		t.abo_code,
 		t.rh_code,
-		t.id_type_code,
+		t.type_id,
 		t.id_no,
 		t.mobile_phone,
 		t.marriage_code,
@@ -52,7 +52,7 @@
 		t.birth_date,
 		t.abo_code,
 		t.rh_code,
-		t.id_type_code,
+		t.type_id,
 		t.id_no,
 		t.mobile_phone,
 		t.marriage_code,
@@ -102,7 +102,7 @@
 		birth_date,
 		abo_code,
 		rh_code,
-		id_type_code,
+		type_id,
 		id_no,
 		mobile_phone,
 		marriage_code,
@@ -120,7 +120,7 @@
 		#{birthDate,jdbcType=TIMESTAMP},
 		#{aboCode,jdbcType=VARCHAR},
 		#{rhCode,jdbcType=VARCHAR},
-		#{idTypeCode,jdbcType=VARCHAR},
+		#{typeId,jdbcType=VARCHAR},
 		#{idNo,jdbcType=VARCHAR},
 		#{mobilePhone,jdbcType=VARCHAR},
 		#{marriageCode,jdbcType=VARCHAR},
@@ -142,7 +142,7 @@
 		  <if test="birthDate != null">birth_date=#{birthDate,jdbcType=TIMESTAMP},</if>
 		  <if test="aboCode != null">abo_code=#{aboCode,jdbcType=VARCHAR},</if>
 		  <if test="rhCode != null">rh_code=#{rhCode,jdbcType=VARCHAR},</if>
-		  <if test="idTypeCode != null">id_type_code=#{idTypeCode,jdbcType=VARCHAR},</if>
+		  <if test="typeId != null">type_id=#{typeId,jdbcType=VARCHAR},</if>
 		  <if test="idNo != null">id_no=#{idNo,jdbcType=VARCHAR},</if>
 		  <if test="mobilePhone != null">mobile_phone=#{mobilePhone,jdbcType=VARCHAR},</if>
 		  <if test="marriageCode != null">marriage_code=#{marriageCode,jdbcType=VARCHAR},</if>

@@ -3,7 +3,6 @@
 <mapper namespace="com.kanglian.healthcare.back.dao.UserInfoDao">
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 	<resultMap type="com.kanglian.healthcare.back.pojo.UserInfo" id="BaseResultMapExt" extends="BaseResultMap">
-		<result property="typeId" column="type_id" jdbcType="VARCHAR"/>
 		<result property="realName" column="real_name" jdbcType="VARCHAR"/>
 		<result property="originalImageUrl" column="pic" jdbcType="VARCHAR"/>
 		<result property="imageUrl" column="thumbnail_pic" jdbcType="VARCHAR"/>
