@@ -26,7 +26,6 @@ public class UserInfo extends BasePojo {
 	private String nationalityCode;
 	private String cardTypeCode;
 	private String cardNo;
-	private String drugAllergyMark;
 	private Date lastUpdateDtime;
 	private String realName;
     // 头像原图
@@ -196,12 +195,6 @@ public class UserInfo extends BasePojo {
 	}
 	public void setCardNo(String cardNo) {
 		this.cardNo = cardNo;
-	}
-	public String getDrugAllergyMark() {
-		return drugAllergyMark;
-	}
-	public void setDrugAllergyMark(String drugAllergyMark) {
-		this.drugAllergyMark = drugAllergyMark;
 	}
 	public Date getLastUpdateDtime() {
 		return lastUpdateDtime;

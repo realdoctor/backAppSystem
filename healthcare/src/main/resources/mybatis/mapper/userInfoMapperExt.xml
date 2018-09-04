@@ -30,7 +30,6 @@
 			t1.nationality_code,
 			t1.card_type_code,
 			t1.card_no,
-			t1.drug_allergy_mark,
 			t.user_id,
 			t.real_name,
 			t.mobile_phone,

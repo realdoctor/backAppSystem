@@ -18,7 +18,6 @@
 		<result property="nationalityCode" column="nationality_code" jdbcType="VARCHAR"/>
 		<result property="cardTypeCode" column="card_type_code" jdbcType="VARCHAR"/>
 		<result property="cardNo" column="card_no" jdbcType="VARCHAR"/>
-		<result property="drugAllergyMark" column="drug_allergy_mark" jdbcType="CHAR"/>
 		<result property="lastUpdateDtime" column="last_update_dtime" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
@@ -39,7 +38,6 @@
 		t.nationality_code,
 		t.card_type_code,
 		t.card_no,
-		t.drug_allergy_mark,
 		t.last_update_dtime
 	</sql>
 
@@ -61,7 +59,6 @@
 		t.nationality_code,
 		t.card_type_code,
 		t.card_no,
-		t.drug_allergy_mark,
 		t.last_update_dtime
 		from user_info t 
 		<include refid="conditionQuery.core" />
@@ -112,7 +109,6 @@
 		nationality_code,
 		card_type_code,
 		card_no,
-		drug_allergy_mark,
 		last_update_dtime
 		)
 		values(
@@ -131,7 +127,6 @@
 		#{nationalityCode,jdbcType=VARCHAR},
 		#{cardTypeCode,jdbcType=VARCHAR},
 		#{cardNo,jdbcType=VARCHAR},
-		#{drugAllergyMark,jdbcType=CHAR},
 		#{lastUpdateDtime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -154,7 +149,6 @@
 		  <if test="nationalityCode != null">nationality_code=#{nationalityCode,jdbcType=VARCHAR},</if>
 		  <if test="cardTypeCode != null">card_type_code=#{cardTypeCode,jdbcType=VARCHAR},</if>
 		  <if test="cardNo != null">card_no=#{cardNo,jdbcType=VARCHAR},</if>
-		  <if test="drugAllergyMark != null">drug_allergy_mark=#{drugAllergyMark,jdbcType=CHAR},</if>
 		  <if test="lastUpdateDtime != null">last_update_dtime=#{lastUpdateDtime,jdbcType=TIMESTAMP},</if>
 		</set>
 		where id = #{id,jdbcType=BIGINT}
