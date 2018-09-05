@@ -418,7 +418,7 @@ public class UploadController {
         return ResultUtil.success();
     }
     
-    public static boolean checkIsEmpty(String str) {
+    public boolean checkIsEmpty(String str) {
         return StringUtil.isEmpty(str) || ("null".equals(str));
     }
     
