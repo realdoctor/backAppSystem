@@ -63,7 +63,7 @@ public class HospitalController extends CrudController<Hospital, HospitalBo> {
         // 城市名称
         private String cityName;
 
-        @SingleValue(tableAlias = "t1", column = "hospital_level", equal = "=")
+        @SingleValue(tableAlias = "t", column = "hospital_level", equal = "=")
         public String getHospitalLevel() {
             return hospitalLevel;
         }
