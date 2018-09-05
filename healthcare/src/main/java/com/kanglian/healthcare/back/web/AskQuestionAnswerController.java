@@ -20,14 +20,13 @@ import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.back.constant.ApiMapping;
 import com.kanglian.healthcare.back.constant.Constants;
+import com.kanglian.healthcare.back.constant.OperateStatus;
 import com.kanglian.healthcare.back.pojo.AskQuestionAnswer;
 import com.kanglian.healthcare.back.pojo.PushModel;
 import com.kanglian.healthcare.back.pojo.User;
-import com.kanglian.healthcare.back.pojo.UserRole;
 import com.kanglian.healthcare.back.service.AskQuestionAnswerBo;
 import com.kanglian.healthcare.back.service.PushService;
 import com.kanglian.healthcare.back.service.UserBo;
-import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
@@ -41,8 +40,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
 
     @Autowired
     private UserBo       userBo;
-    @Autowired
-    private UserRoleBo   userRoleBo;
     @Autowired
     private PushService jPushService;
     
@@ -138,13 +135,6 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("questionId");
         }
         
-        UserRole userRole = userRoleBo.get(Integer.valueOf(userId));
-        if (userRole != null && userRole.getRoleId() == 0) {
-            String retryNum = query.getRetryNum();
-            if (StringUtil.isEmpty(retryNum)) {
-                throw new InvalidParamException("retryNum");
-            }
-        }
         AskQuestionAnswer askQuestionAnswer = this.bo.get(Long.valueOf(questionId));
         if (askQuestionAnswer == null) {
             return ResultUtil.error("请求回复不存在");
@@ -178,7 +168,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             
             // 三次问诊机会已用完，则更新为已结束。
             if (StringUtil.isNotEmpty(query.getRetryNum()) && "0".equals(query.getRetryNum())) {
-                askQuestionAnswer.setStatus("2");
+                askQuestionAnswer.setStatus(OperateStatus.STRING_STATUS_FINISH);
                 askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
                 this.bo.update(askQuestionAnswer);
             }
