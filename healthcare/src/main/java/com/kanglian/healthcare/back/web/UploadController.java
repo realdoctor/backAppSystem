@@ -329,25 +329,25 @@ public class UploadController {
 
         // 复诊病历Id
         String patientRecordId = request.getParameter("patientRecordId");
-        if (checkEmpty(patientRecordId)) {
+        if (checkIsEmpty(patientRecordId)) {
             throw new InvalidParamException("patientRecordId");
         }
 
         // 上传病历，接收人[医生用户]
         String receiveUserId = request.getParameter("doctorUserId");
-        if (checkEmpty(receiveUserId)) {
+        if (checkIsEmpty(receiveUserId)) {
             throw new InvalidParamException("doctorUserId");
         }
 
         // 上传病历内容
         String content = request.getParameter("content");
-        if (checkEmpty(content)) {
+        if (checkIsEmpty(content)) {
             throw new InvalidParamException("content");
         }
 
         // 取支付订单号
         String messageId = request.getParameter("messageId");
-        if (checkEmpty(messageId)) {
+        if (checkIsEmpty(messageId)) {
             throw new InvalidParamException("messageId");
         }
         
@@ -403,7 +403,6 @@ public class UploadController {
             messageId = askQuestionAnswer.getMessageId();
             askQuestionAnswer.setStatus(OperateStatus.STRING_STATUS_FINISH);// 直接覆盖上一条为已结束
             askQuestionAnswer.setLastUpdateDtime(DateUtil.currentDate());
-            askQuestionAnswerBo.update(askQuestionAnswer);
         }
         AskQuestionAnswer newAskQuestionAnswer = new AskQuestionAnswer();
         newAskQuestionAnswer.setMessageId(messageId);
@@ -419,7 +418,7 @@ public class UploadController {
         return ResultUtil.success();
     }
     
-    public static boolean checkEmpty(String str) {
+    public static boolean checkIsEmpty(String str) {
         return StringUtil.isEmpty(str) || ("null".equals(str));
     }
     
