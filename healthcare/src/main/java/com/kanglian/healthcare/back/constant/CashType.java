@@ -1,6 +1,6 @@
 package com.kanglian.healthcare.back.constant;
 
-public enum OperateType {
+public enum CashType {
 
     /**
      * 冻结
@@ -32,7 +32,7 @@ public enum OperateType {
     private String value;
 
     // 构造方法
-    private OperateType(String name, String value) {
+    private CashType(String name, String value) {
         this.name = name;
         this.value = value;
     }
