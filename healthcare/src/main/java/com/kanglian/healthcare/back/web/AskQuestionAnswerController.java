@@ -31,7 +31,7 @@ import com.kanglian.healthcare.back.service.UserRoleBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
 
 /**
- * 我的复诊-图文通讯问诊
+ * 我的复诊-图文问诊
  * 
  * @author xl.liu
  */
@@ -62,7 +62,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("status");
         }
         query.setRoleId("0");
-        logger.info("[我的复诊]患者病历列表，roleId=" + query.getRoleId());
+        logger.info("[我的复诊-患者]患者管理列表，roleId=" + query.getRoleId());
         return super.list(query, new JsonClothProcessor() {
 
             @Override
@@ -97,7 +97,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
             throw new InvalidParamException("userId");
         }
         query.setRoleId("1");
-        logger.info("[我的复诊]患者管理列表，roleId=" + query.getRoleId());
+        logger.info("[我的复诊-医生]患者管理列表，roleId=" + query.getRoleId());
         return ResultUtil.success(this.bo.frontList(query), new JsonClothProcessor() {
 
             @Override
