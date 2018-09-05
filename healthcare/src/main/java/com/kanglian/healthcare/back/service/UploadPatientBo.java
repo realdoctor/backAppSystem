@@ -17,16 +17,22 @@ public class UploadPatientBo extends NewCrudBo<UploadPatient, UploadPatientDao> 
     private AskQuestionAnswerBo askQuestionAnswerBo;
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void saveUploadPatientAndQuestion(UploadPatient uploadPatient,
-            AskQuestionAnswer askQuestionAnswer) throws Exception {
+    public void updateAndSaveQuestion(AskQuestionAnswer updateAskQuestionAnswer,
+            AskQuestionAnswer saveAskQuestionAnswer, UploadPatient uploadPatient) throws Exception {
         try {
-            askQuestionAnswerBo.save(askQuestionAnswer);
-            if (uploadPatient != null) {
-                uploadPatient.setQuestionId(askQuestionAnswer.getId().intValue());
-                this.dao.save(uploadPatient);
+            if (updateAskQuestionAnswer != null) {
+                askQuestionAnswerBo.update(updateAskQuestionAnswer);
+            }
+            if (saveAskQuestionAnswer != null) {
+                askQuestionAnswerBo.save(saveAskQuestionAnswer);
+                if (uploadPatient != null) {
+                    uploadPatient.setQuestionId(saveAskQuestionAnswer.getId().intValue());
+                    this.dao.save(uploadPatient);
+                }
             }
         } catch (Exception ex) {
             throw new DBException(ex);
         }
     }
+
 }
