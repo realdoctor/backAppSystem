@@ -120,7 +120,7 @@ public class AskQuestionAnswerController extends CrudController<AskQuestionAnswe
     }
     
     /**
-     * 患者医生回复问诊
+     * 图文问诊回复
      * 
      * @param messageId
      * @return
