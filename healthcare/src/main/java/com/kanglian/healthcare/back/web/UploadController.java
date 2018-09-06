@@ -47,6 +47,7 @@ import com.kanglian.healthcare.util.FileUtil;
 import com.kanglian.healthcare.util.GeneralKey;
 import com.kanglian.healthcare.util.NumberUtil;
 import com.kanglian.healthcare.util.PropConfig;
+import com.kanglian.healthcare.util.ValidateUtil;
 import com.kanglian.healthcare.util.VideoPictureUtil;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -329,25 +330,25 @@ public class UploadController {
 
         // 复诊病历Id
         String patientRecordId = request.getParameter("patientRecordId");
-        if (checkIsEmpty(patientRecordId)) {
+        if (ValidateUtil.checkIsEmpty(patientRecordId)) {
             throw new InvalidParamException("patientRecordId");
         }
 
         // 上传病历，接收人[医生用户]
         String receiveUserId = request.getParameter("doctorUserId");
-        if (checkIsEmpty(receiveUserId)) {
+        if (ValidateUtil.checkIsEmpty(receiveUserId)) {
             throw new InvalidParamException("doctorUserId");
         }
 
         // 上传病历内容
         String content = request.getParameter("content");
-        if (checkIsEmpty(content)) {
+        if (ValidateUtil.checkIsEmpty(content)) {
             throw new InvalidParamException("content");
         }
 
         // 取支付订单号
         String messageId = request.getParameter("messageId");
-        if (checkIsEmpty(messageId)) {
+        if (ValidateUtil.checkIsEmpty(messageId)) {
             throw new InvalidParamException("messageId");
         }
         
@@ -417,10 +418,6 @@ public class UploadController {
         uploadPatientBo.updateAndSaveQuestion(askQuestionAnswer, newAskQuestionAnswer, uploadContent);
         pushMsg(userId, receiveUserId);// 推送消息
         return ResultUtil.success();
-    }
-    
-    public boolean checkIsEmpty(String str) {
-        return StringUtil.isEmpty(str) || ("null".equals(str));
     }
     
     private void pushMsg(Long userId, String receiveId) {

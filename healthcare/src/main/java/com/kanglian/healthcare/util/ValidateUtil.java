@@ -21,6 +21,10 @@ public final class ValidateUtil {
         return (str == null || str.length() == 0) ? "" : str;
     }
 
+    public static boolean checkIsEmpty(String str) {
+        return StringUtil.isEmpty(str) || ("null".equals(str));
+    }
+    
     /**
      * 校验是否中文
      * 
