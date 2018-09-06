@@ -92,24 +92,7 @@
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
 		)
-		LEFT JOIN (
-			SELECT
-				t.user_id,
-				u.real_name,
-				u.mobile_phone,
-				uc.thumbnail_pic,
-				d.doctor_code,
-				d.doctor_name,
-				e.hospital_id,
-				e.dept_code,
-				e.dept_name
-			FROM
-				user_doctor t
-			LEFT JOIN `user` u ON u.user_id = t.user_id
-			LEFT JOIN user_pic uc ON uc.user_id = u.user_id
-			LEFT JOIN hospital_doctor d ON d.doctor_id = t.doctor_id
-			LEFT JOIN hospital_dept e ON e.dept_id = d.dept_id
-		) t1 ON t1.doctor_code = t0.doctor_code
+		LEFT JOIN v_user_doctor t1 ON t1.doctor_code = t0.doctor_code
 		<include refid="conditionQuery.core" />
 		GROUP BY
 			org_code,

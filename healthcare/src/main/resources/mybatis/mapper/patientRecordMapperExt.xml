@@ -54,16 +54,7 @@
 			LEFT JOIN patient_diag b ON (
 				a.id = b.patient_record_id
 			)
-			LEFT JOIN (
-				SELECT
-					u.user_id,
-					u.mobile_phone,
-					d.doctor_code
-				FROM
-					user_doctor c
-				INNER JOIN hospital_doctor d ON d.doctor_id = c.doctor_id
-				INNER JOIN `user` u ON u.user_id = c.user_id
-			) ud ON ud.doctor_code = a.doctor_code
+			LEFT JOIN v_user_doctor ud ON ud.doctor_code = a.doctor_code
 		) t0 ON (
 			t.org_code = t0.org_code
 			AND t.patient_id = t0.patient_id
