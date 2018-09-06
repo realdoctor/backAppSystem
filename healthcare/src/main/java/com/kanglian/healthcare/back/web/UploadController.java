@@ -118,7 +118,7 @@ public class UploadController {
         String thumbnailPath = "";
         try {
             final String randomPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-            String originalPath = randomPath.substring(0, randomPath.lastIndexOf(".")) + "_appTh.jpg";
+            String originalPath = randomPath.substring(0, randomPath.lastIndexOf(".")) + "_appTx.jpg";
             thumbnailPath = randomPath.substring(0, randomPath.lastIndexOf(".")) + "_appTh.png";
             File uploadFile = new File(pathRoot + originalPath);
             FileUtils.writeByteArrayToFile(uploadFile, imageFile.getBytes());
