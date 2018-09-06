@@ -97,9 +97,9 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             if (paymentLog.getUserId() != null
                     && paymentLog.getToUser() != null) {
                 PaymentLog paymentLog2 = new PaymentLog();
-                paymentLog2.setOrderNo(paymentOrder.getOrderNo());
-                paymentLog2.setUserId(paymentLog.getUserId());
-                paymentLog2.setToUser(Integer.valueOf(baseOrder.getUserId()));
+                paymentLog2.setOrderNo(paymentLog.getOrderNo());
+                paymentLog2.setUserId(paymentLog.getToUser());
+                paymentLog2.setToUser(paymentLog.getUserId());
                 paymentLog2.setPayFlag(OperateStatus.MARK_MONEY_INCOME);// 收入
                 paymentLog2.setMoney(paymentLog.getMoney());
                 paymentLog2.setPayType(paymentLog.getPayType());
