@@ -352,7 +352,8 @@ public class UploadController {
         }
         
         UploadPatient uploadContent = null;
-        if (!file.isEmpty() && file.getSize() > 0) {
+        if (file != null 
+                && !file.isEmpty() && file.getSize() > 0) {
             // 文件名
             final String fileName = file.getOriginalFilename();
             // 获取文件类型
