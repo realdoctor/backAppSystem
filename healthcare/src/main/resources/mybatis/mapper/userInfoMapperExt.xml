@@ -15,7 +15,7 @@
 	</resultMap>
 	
 	<!-- 用户基本信息 -->
-	<select id="getUserInfo" resultMap="BaseResultMapExt" parameterType="com.kanglian.healthcare.back.pojo.User">
+	<select id="getUserInfo" resultMap="BaseResultMapExt" parameterType="com.kanglian.healthcare.back.pojo.User" useCache="false">
 		SELECT
 			t1.id,
 			t1.org_code,
