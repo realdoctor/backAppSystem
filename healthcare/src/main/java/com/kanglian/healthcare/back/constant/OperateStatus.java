@@ -14,4 +14,12 @@ public final class OperateStatus {
     // 状态：1，进行中；2，已结束
     public static final String STRING_STATUS_CONTINUE = "1";
     public static final String STRING_STATUS_FINISH   = "2";
+
+    // 退款
+    public static final String MARK_MONEY_REFUND      = "0";
+    // 支付
+    public static final String MARK_MONEY_PAY         = "1";
+    // 收入
+    public static final String MARK_MONEY_INCOME      = "2";
+
 }

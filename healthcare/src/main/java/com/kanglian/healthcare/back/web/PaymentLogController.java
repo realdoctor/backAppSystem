@@ -6,8 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.easyway.business.framework.json.JsonClothProcessor;
 import com.easyway.business.framework.mybatis.annotion.SingleValue;
 import com.easyway.business.framework.mybatis.query.ConditionQuery;
-import com.easyway.business.framework.mybatis.query.condition.SingleValueCondition;
-import com.easyway.business.framework.mybatis.query.condition.WithoutValueCondition;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
@@ -20,7 +18,6 @@ import com.kanglian.healthcare.back.pojo.PaymentLog;
 import com.kanglian.healthcare.back.pojo.User;
 import com.kanglian.healthcare.back.service.PaymentLogBo;
 import com.kanglian.healthcare.exception.InvalidParamException;
-import com.kanglian.healthcare.util.PropConfig;
 
 @Authorization
 @RestController
@@ -31,11 +28,9 @@ public class PaymentLogController extends CrudController<PaymentLog, PaymentLogB
         if (StringUtil.isEmpty(query.getUserId())) {
             throw new InvalidParamException("userId");
         }
-        query.setUserId(user.getUserId()+"");
-        query.setRoleId(user.getRoleId()+"");
         return super.list(query, new JsonClothProcessor() {
 
-            String domainUrl = PropConfig.getInstance().getPropertyValue(Constants.STATIC_URL);
+            final String domainUrl = Constants.getStaticUrl();
 
             @Override
             public JSONObject wearCloth(Object pojo, JSONObject jsonObject) {
@@ -58,10 +53,10 @@ public class PaymentLogController extends CrudController<PaymentLog, PaymentLogB
 
     public static class PaymentIncomeQuery extends Grid {
         private String userId;
-        private String roleId;
-        private String mark;
+        // 1=支出，2=收入，0=退款
+        private String payFlag;
 
-//        @SingleValue(column = "user_id", equal = "=")
+        @SingleValue(column = "user_id", equal = "=")
         public String getUserId() {
             return userId;
         }
@@ -70,37 +65,20 @@ public class PaymentLogController extends CrudController<PaymentLog, PaymentLogB
             this.userId = userId;
         }
 
-        public String getRoleId() {
-            return roleId;
+        @SingleValue(column = "pay_flag", equal = "=")
+        public String getPayFlag() {
+            return payFlag;
         }
 
-        public void setRoleId(String roleId) {
-            this.roleId = roleId;
-        }
-        
-        @SingleValue(column = "mark", equal = "=")
-        public String getMark() {
-            return mark;
-        }
-
-        public void setMark(String mark) {
-            this.mark = mark;
+        public void setPayFlag(String payFlag) {
+            this.payFlag = payFlag;
         }
 
         @Override
         public ConditionQuery buildConditionQuery() {
             ConditionQuery query = super.buildConditionQuery();
-            if (StringUtil.isNotBlank(roleId)) {
-                if ("1".equals(roleId)) {// 医生用户，查看收入
-                    query.addWithoutValueCondition(new WithoutValueCondition(
-                            " t.user_id = " + userId + " OR (t.to_user = " + userId + " AND t.mark !=2)"));
-                } else {
-                    query.addSingleValueCondition(new SingleValueCondition("user_id", userId));
-                }
-            }
-
             return query;
         }
-        
+
     }
 }

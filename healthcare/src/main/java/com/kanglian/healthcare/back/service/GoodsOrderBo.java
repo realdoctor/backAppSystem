@@ -13,8 +13,8 @@ import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.kanglian.healthcare.back.common.PaymentOrder;
 import com.kanglian.healthcare.back.common.PaymentOrderItem;
-import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.FromType;
+import com.kanglian.healthcare.back.constant.OperateStatus;
 import com.kanglian.healthcare.back.constant.PaymentStatus;
 import com.kanglian.healthcare.back.constant.PaymentType;
 import com.kanglian.healthcare.back.dao.GoodsDao;
@@ -114,13 +114,13 @@ public class GoodsOrderBo extends CrudBo<GoodsOrder, GoodsOrderDao> {
             PaymentLog paymentLog = new PaymentLog();
             paymentLog.setOrderNo(goodsOrder.getOrderNo());
             paymentLog.setUserId(goodsOrder.getUserId());
-            paymentLog.setType(goodsOrder.getPayType());// 支付类型
-            paymentLog.setFrom(FromType.getName("6"));// 支付来源
-            paymentLog.setMark(Constants.MARK_PAY);
+            paymentLog.setPayType(goodsOrder.getPayType());// 支付类型
+            paymentLog.setPayFrom(FromType.getName("6"));// 支付来源
+            paymentLog.setPayFlag(OperateStatus.MARK_MONEY_PAY);
             paymentLog.setMoney(goodsOrder.getPayPrice());
             paymentLog.setStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentLog.setMessage(
-                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
+                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getPayFrom()+"】支付（" + paymentLog.getMoney() + "）元");
             paymentLog.setAddTime(goodsOrder.getAddTime());
             paymentLogDao.save(paymentLog);
             logger.info("==========[商城]用户支出明细：{}", JsonUtil.object2Json(paymentLog));

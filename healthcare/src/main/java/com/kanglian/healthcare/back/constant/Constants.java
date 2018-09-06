@@ -101,10 +101,6 @@ public final class Constants {
     public static final String WXPAY_PREFIX                  = "WX";
     // 医保支付
     public static final String YBPAY_PREFIX                  = "YB";
-    // 收入标识
-    public static final String MARK_INCOME                   = "1";
-    // 支付标识
-    public static final String MARK_PAY                      = "2";
     // 支付回调，来源标识
     public static final String NOTIFY_RETURN_TAG             = "type";
     // 商品支付

@@ -1,21 +1,19 @@
 package com.kanglian.healthcare.back.pojo;
 
 import java.util.Date;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.easyway.business.framework.pojo.BasePojo;
 
 public class PaymentLog extends BasePojo {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String orderNo;
-	@JSONField(name="payFrom")
-	private String from;
+	private String payFrom;
     private Integer userId;
 	private Integer toUser;
-	private String type;
-	private Double money;
-	private String mark;
-	private String message;
+	private String payType;
+    private Double money;
+	private String payFlag;
+    private String message;
 	private String status;
 	private String remark;
     private Date addTime;
@@ -51,11 +49,11 @@ public class PaymentLog extends BasePojo {
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
-	public String getFrom() {
-        return from;
+    public String getPayFrom() {
+        return payFrom;
     }
-    public void setFrom(String from) {
-        this.from = from;
+    public void setPayFrom(String payFrom) {
+        this.payFrom = payFrom;
     }
 	public Integer getUserId() {
 		return userId;
@@ -69,24 +67,24 @@ public class PaymentLog extends BasePojo {
 	public void setToUser(Integer toUser) {
 		this.toUser = toUser;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getPayType() {
+        return payType;
+    }
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
 	public Double getMoney() {
 		return money;
 	}
 	public void setMoney(Double money) {
 		this.money = money;
 	}
-	public String getMark() {
-		return mark;
-	}
-	public void setMark(String mark) {
-		this.mark = mark;
-	}
+    public String getPayFlag() {
+        return payFlag;
+    }
+    public void setPayFlag(String payFlag) {
+        this.payFlag = payFlag;
+    }
 	public String getMessage() {
 		return message;
 	}

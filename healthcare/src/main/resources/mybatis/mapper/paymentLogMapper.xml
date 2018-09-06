@@ -6,10 +6,10 @@
 		<result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
 		<result property="userId" column="user_id" jdbcType="INTEGER"/>
 		<result property="toUser" column="to_user" jdbcType="INTEGER"/>
-		<result property="type" column="type" jdbcType="VARCHAR"/>
-		<result property="from" column="from" jdbcType="VARCHAR"/>
+		<result property="payType" column="pay_type" jdbcType="VARCHAR"/>
+		<result property="payFrom" column="pay_from" jdbcType="VARCHAR"/>
 		<result property="money" column="money" jdbcType="DOUBLE"/>
-		<result property="mark" column="mark" jdbcType="CHAR"/>
+		<result property="payFlag" column="pay_flag" jdbcType="CHAR"/>
 		<result property="message" column="message" jdbcType="VARCHAR"/>
 		<result property="status" column="status" jdbcType="CHAR"/>
 		<result property="remark" column="remark" jdbcType="VARCHAR"/>
@@ -26,10 +26,10 @@
 		t.order_no,
 		t.user_id,
 		t.to_user,
-		t.type,
-		t.from,
+		t.pay_type,
+		t.pay_from,
 		t.money,
-		t.mark,
+		t.pay_flag,
 		t.message,
 		t.status,
 		t.remark,
@@ -43,12 +43,12 @@
 			t.order_no,
 			t.user_id,
 			t.to_user,
-			t.type,
-			t.from,
+			t.pay_type,
+			t.pay_from,
 			t.money,
-			t.mark,
+			t.pay_flag,
 			t.message,
-			t.status,
+			t.`status`,
 			t.remark,
 			t.add_time,
 			t.last_update_dtime,
@@ -97,10 +97,10 @@
 		order_no,
 		user_id,
 		to_user,
-		type,
-		`from`,
+		pay_type,
+		pay_from,
 		money,
-		mark,
+		pay_flag,
 		message,
 		status,
 		remark,
@@ -111,10 +111,10 @@
 		#{orderNo,jdbcType=VARCHAR},
 		#{userId,jdbcType=INTEGER},
 		#{toUser,jdbcType=INTEGER},
-		#{type,jdbcType=VARCHAR},
-		#{from,jdbcType=VARCHAR},
+		#{payType,jdbcType=VARCHAR},
+		#{payFrom,jdbcType=VARCHAR},
 		#{money,jdbcType=DOUBLE},
-		#{mark,jdbcType=CHAR},
+		#{payFlag,jdbcType=CHAR},
 		#{message,jdbcType=VARCHAR},
 		#{status,jdbcType=CHAR},
 		#{remark,jdbcType=VARCHAR},
@@ -129,10 +129,10 @@
 		  <if test="orderNo != null">order_no=#{orderNo,jdbcType=VARCHAR},</if>
 		  <if test="userId != null">user_id=#{userId,jdbcType=INTEGER},</if>
 		  <if test="toUser != null">to_user=#{toUser,jdbcType=INTEGER},</if>
-		  <if test="type != null">type=#{type,jdbcType=VARCHAR},</if>
-		  <if test="from != null">from=#{from,jdbcType=VARCHAR},</if>
+		  <if test="pay_type != null">type=#{payType,jdbcType=VARCHAR},</if>
+		  <if test="pay_from != null">from=#{payFrom,jdbcType=VARCHAR},</if>
 		  <if test="money != null">money=#{money,jdbcType=DOUBLE},</if>
-		  <if test="mark != null">mark=#{mark,jdbcType=CHAR},</if>
+		  <if test="pay_flag != null">mark=#{payFlag,jdbcType=CHAR},</if>
 		  <if test="message != null">message=#{message,jdbcType=VARCHAR},</if>
 		  <if test="status != null">mark=#{status,jdbcType=CHAR},</if>
 		  <if test="remark != null">remark=#{remark,jdbcType=VARCHAR},</if>

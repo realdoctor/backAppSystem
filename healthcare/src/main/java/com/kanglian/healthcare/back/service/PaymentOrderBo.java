@@ -12,8 +12,8 @@ import com.easyway.business.framework.bo.CrudBo;
 import com.easyway.business.framework.util.DateUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.back.common.CommonOrder;
-import com.kanglian.healthcare.back.constant.Constants;
 import com.kanglian.healthcare.back.constant.FromType;
+import com.kanglian.healthcare.back.constant.OperateStatus;
 import com.kanglian.healthcare.back.constant.PaymentStatus;
 import com.kanglian.healthcare.back.constant.PaymentType;
 import com.kanglian.healthcare.back.dao.PaymentLogDao;
@@ -81,13 +81,13 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             paymentLog.setOrderNo(paymentOrder.getOrderNo());
             paymentLog.setUserId(paymentOrder.getUserId());
             paymentLog.setToUser(paymentOrder.getToUser());
-            paymentLog.setType(paymentOrder.getPayType());// 支付类型
-            paymentLog.setFrom(FromType.getName(baseOrder.getFrom()));// 支付来源
-            paymentLog.setMark(Constants.MARK_PAY);
+            paymentLog.setPayType(paymentOrder.getPayType());// 支付类型
+            paymentLog.setPayFrom(FromType.getName(baseOrder.getFrom()));// 支付来源
+            paymentLog.setPayFlag(OperateStatus.MARK_MONEY_PAY);
             paymentLog.setMoney(paymentOrder.getPayPrice());
             paymentLog.setStatus(PaymentStatus.PAYMENT_WAIT_BUYER_PAY);
             paymentLog.setMessage(
-                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getFrom()+"】支付（" + paymentLog.getMoney() + "）元");
+                    "您" + DateUtil.getCurrentDate() + "【"+paymentLog.getPayFrom()+"】支付（" + paymentLog.getMoney() + "）元");
             paymentLog.setAddTime(paymentOrder.getAddTime());
             paymentLogDao.save(paymentLog);
             logger.info("==========用户支出明细：{}", JsonUtil.object2Json(paymentLog));
@@ -171,13 +171,13 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
                     paymentLog2.setOrderNo(orderNo);
                     paymentLog2.setUserId(toUserId);
                     paymentLog2.setToUser(userId);
-                    paymentLog2.setMark(Constants.MARK_INCOME);// 收入
+                    paymentLog2.setPayFlag(OperateStatus.MARK_MONEY_INCOME);// 收入
                     paymentLog2.setMoney(money);
                     if (paymentLog1 != null) {
-                        paymentLog2.setType(paymentLog1.getType());
-                        paymentLog2.setFrom(paymentLog1.getFrom());
+                        paymentLog2.setPayType(paymentLog1.getPayType());
+                        paymentLog2.setPayFrom(paymentLog1.getPayFrom());
                     }
-                    paymentLog2.setMessage("您" + DateUtil.getCurrentDate() + "【"+paymentLog2.getFrom()+"】收入（" + money + "）元");
+                    paymentLog2.setMessage("您" + DateUtil.getCurrentDate() + "【"+paymentLog2.getPayFrom()+"】收入（" + money + "）元");
                     paymentLog2.setAddTime(DateUtil.currentDate());
                     paymentLogDao.save(paymentLog2);
                 }
@@ -214,7 +214,8 @@ public class PaymentOrderBo extends CrudBo<PaymentOrder, PaymentOrderDao> {
             List<PaymentLog> paymentLogList = paymentLogDao.getByOrderNo(orderNo);
             LogUtil.getTaskLogger().info("===============在线问诊，收支明细记录。paymentLog={}", JSON.toJSONString(paymentLogList));
             for (PaymentLog paymentLog : paymentLogList) {
-                paymentLog.setMark("3");// 1=收入，2=支出，3=退回
+                paymentLog.setPayFlag(OperateStatus.MARK_MONEY_REFUND);// 1=收入，2=支出，3=退款
+                paymentLog.setStatus(PaymentStatus.PAYMENT_TRADE_CLOSE);
                 paymentLog.setLastUpdateDtime(DateUtil.currentDate());
                 paymentLogDao.update(paymentLog);
             }
