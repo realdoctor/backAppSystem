@@ -9,6 +9,7 @@ import com.easyway.business.framework.mybatis.query.ConditionQuery;
 import com.easyway.business.framework.pojo.Grid;
 import com.easyway.business.framework.springmvc.controller.CrudController;
 import com.easyway.business.framework.springmvc.result.ResultBody;
+import com.easyway.business.framework.springmvc.result.ResultUtil;
 import com.easyway.business.framework.util.StringUtil;
 import com.kanglian.healthcare.authorization.annotation.Authorization;
 import com.kanglian.healthcare.authorization.annotation.CurrentUser;
@@ -23,6 +24,14 @@ import com.kanglian.healthcare.exception.InvalidParamException;
 @RestController
 public class PaymentLogController extends CrudController<PaymentLog, PaymentLogBo> {
 
+    /**
+     * 用户消费记录
+     * 
+     * @param user
+     * @param query
+     * @return
+     * @throws Exception
+     */
     @GetMapping(ApiMapping.ACCOUNT_PAYMENT_LIST)
     public ResultBody list(@CurrentUser User user, PaymentIncomeQuery query) throws Exception {
         if (StringUtil.isEmpty(query.getUserId())) {
@@ -49,6 +58,22 @@ public class PaymentLogController extends CrudController<PaymentLog, PaymentLogB
             }
 
         });
+    }
+    
+    /**
+     * 获取支出、收入金额
+     * 
+     * @param user
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(ApiMapping.ACCOUNT_PAYMENT_SUM)
+    public ResultBody getPaySum(@CurrentUser User user, String userId) throws Exception {
+        if (StringUtil.isEmpty(userId)) {
+            throw new InvalidParamException("userId");
+        }
+        return ResultUtil.success(this.bo.sumPayment(Integer.valueOf(userId)));
     }
 
     public static class PaymentIncomeQuery extends Grid {

@@ -71,6 +71,10 @@ public final class ApiMapping {
      */
     public final static String ACCOUNT_PAYMENT_LIST            = "/account/payment/list";
     /**
+     * <H5>用户消费金额</H5>
+     */
+    public final static String ACCOUNT_PAYMENT_SUM            = "/account/payment/getPaySum";
+    /**
      * <H5>从服务器获取病历下载</H5>
      */
     public final static String USER_GET_UPLOADPATIENTURL       = "/user/getUploadPatientUrl";
