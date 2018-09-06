@@ -117,14 +117,11 @@ public class UploadController {
         pathRoot = Constants.getUploadPath();
         String thumbnailPath = "";
         try {
-            String originalPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-            originalPath =
-                    originalPath.substring(0, originalPath.lastIndexOf(".")) + "_appTh." + extension;
-            File uploadedFile = new File(pathRoot + originalPath);
-            FileUtils.writeByteArrayToFile(uploadedFile, imageFile.getBytes());
-            thumbnailPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
-            thumbnailPath =
-                    thumbnailPath.substring(0, thumbnailPath.lastIndexOf(".")) + "_appTh.png";
+            final String randomPath = "/files/headpic".concat(FileUtil.randomPathname(extension));
+            String originalPath = randomPath.substring(0, randomPath.lastIndexOf(".")) + "_appTh.jpg";
+            thumbnailPath = randomPath.substring(0, randomPath.lastIndexOf(".")) + "_appTh.png";
+            File uploadFile = new File(pathRoot + originalPath);
+            FileUtils.writeByteArrayToFile(uploadFile, imageFile.getBytes());
             Thumbnails.of(new File(pathRoot + originalPath)).size(200, 200).keepAspectRatio(false)
                     .toFile(new File(pathRoot + thumbnailPath));
             logger.info("===============原始图路径" + originalPath);
