@@ -47,4 +47,24 @@ public final class GeneralKey {
         System.out.println(orderNo);
         return orderNo;
     }
+    
+    /**
+     * 科室编码
+     * 
+     * @return
+     */
+    public static String getDeptCode() {
+        String sss = RandomStringUtils.randomAlphanumeric(16);
+        return "DEPT" + sss;
+    }
+
+    /**
+     * 医生编码
+     * 
+     * @return
+     */
+    public static String getDoctorCode() {
+        String sss = RandomStringUtils.randomAlphanumeric(18);
+        return "DOC" + sss;
+    }
 }
